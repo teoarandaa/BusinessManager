@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ChartsView: View {
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    
     var body: some View {
         Text("Charts")
     }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    
     var body: some View {
         Text("Calendar")
     }

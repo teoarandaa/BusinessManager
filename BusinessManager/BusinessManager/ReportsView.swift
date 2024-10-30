@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ReportsView: View {
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    
     var body: some View {
         Text("Reports")
     }
