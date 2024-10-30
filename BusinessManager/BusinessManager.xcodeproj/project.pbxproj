@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		936F83302CD2E9C700C4BCF0 /* BusinessManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = BusinessManager.xcodeproj; sourceTree = SOURCE_ROOT; };
 		93E9184D2CD2A9460021CF74 /* BusinessManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusinessManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E9185D2CD2A9470021CF74 /* BusinessManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BusinessManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E918672CD2A9470021CF74 /* BusinessManagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BusinessManagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +80,7 @@
 				93E918602CD2A9470021CF74 /* BusinessManagerTests */,
 				93E9186A2CD2A9470021CF74 /* BusinessManagerUITests */,
 				93E9184E2CD2A9460021CF74 /* Products */,
+				936F83302CD2E9C700C4BCF0 /* BusinessManager.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
