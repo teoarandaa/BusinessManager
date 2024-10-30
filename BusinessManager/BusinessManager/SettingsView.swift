@@ -26,18 +26,24 @@ struct SettingsView: View {
                         Text("Dark mode")
                     }
                 }
-                // MARK: - Others
-                Section("Others") {
+                // MARK: - Plans
+                Section("Pricing") {
+                    NavigationLink(destination: PlansView()) {
+                        Text("Payment plans")
+                    }
+                }
+                // MARK: - Resources
+                Section("Resources") {
                     NavigationLink(destination: FaqView()) {
-                        Text("FAQ (Frequently Asked Questions)")
+                        Text("FAQ")
                     }
                     NavigationLink(destination: PrivacyView()) {
                         Text("Privacy")
                     }
                     Button(action: {
-                        sendEmail(to: "help.cleancode@gmail.com")
+                        sendEmail(to: "help.businessmanager@gmail.com")
                     }) {
-                        Text("CleanCode Support")
+                        Text("Business Manager support")
                     }
                 }
             }
