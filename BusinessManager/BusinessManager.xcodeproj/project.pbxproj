@@ -73,6 +73,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		936F83682CD4553200C4BCF0 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		93E918442CD2A9460021CF74 = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +205,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 93E9184E2CD2A9460021CF74 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 936F83682CD4553200C4BCF0 /* Products */;
+					ProjectRef = 936F83302CD2E9C700C4BCF0 /* BusinessManager.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				93E9184C2CD2A9460021CF74 /* BusinessManager */,
