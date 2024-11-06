@@ -29,7 +29,7 @@ struct SettingsView: View {
                 // MARK: - Plans
                 Section("Pricing") {
                     NavigationLink(destination: PlansView()) {
-                        Text("Payment plans")
+                        Text("Subscription packages")
                     }
                 }
                 // MARK: - Resources
