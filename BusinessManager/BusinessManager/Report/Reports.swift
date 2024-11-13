@@ -11,15 +11,15 @@ import SwiftData
 @Model
 class Report {
     var date: Date
-    var departamentName: String
+    var departmentName: String
     var performanceMark: Int
     var volumeOfWorkMark: Int
     var numberOfFinishedTasks: Int
     var annotations: String
     
-    init(date: Date, departamentName: String, performanceMark: Int, volumeOfWorkMark: Int, numberOfFinishedTasks: Int, annotations: String) {
+    init(date: Date, departmentName: String, performanceMark: Int, volumeOfWorkMark: Int, numberOfFinishedTasks: Int, annotations: String) {
         self.date = date
-        self.departamentName = departamentName
+        self.departmentName = departmentName
         self.performanceMark = performanceMark
         self.volumeOfWorkMark = volumeOfWorkMark
         self.numberOfFinishedTasks = numberOfFinishedTasks

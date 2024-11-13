@@ -10,7 +10,8 @@ import SwiftData
 
 struct ReportsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @State private var isShowingItemSheet = false
+    @State private var isShowingItemSheet1 = false
+    @State private var isShowingItemSheet2 = false
     @Environment(\.modelContext) var context
     // @Query(filter: #Predicate<Report> { $0.date >= Date() }, sort: \Report.date)     --> Filtro de los reports
     @Query(sort: \Report.date) var reports: [Report]
@@ -33,14 +34,22 @@ struct ReportsView: View {
             }
             .navigationTitle("Reports")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $isShowingItemSheet) { AddReportSheet() }
+            .sheet(isPresented: $isShowingItemSheet1) { AddReportSheet() }
+            .sheet(isPresented: $isShowingItemSheet2) { ReportsInfoSheet() }
             .sheet(item: $reportToEdit) { report in
                 UpdateReportSheet(report: report)
             }
             .toolbar {
                 if !reports.isEmpty {
-                    Button("Add Report", systemImage: "plus") {
-                        isShowingItemSheet = true
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button("Add Report", systemImage: "plus") {
+                            isShowingItemSheet1 = true
+                        }
+                    }
+                }
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button("Add Report", systemImage: "info.circle") {
+                        isShowingItemSheet2 = true
                     }
                 }
             }
@@ -51,7 +60,7 @@ struct ReportsView: View {
                     }, description: {
                         Text("Start adding reports to see your list.")
                     }, actions: {
-                        Button("Add Report") { isShowingItemSheet = true }
+                        Button("Add Report") { isShowingItemSheet1 = true }
                     })
                     .offset(y: -60)
                 }
@@ -72,7 +81,7 @@ struct ReportCell: View {
             Text(report.date, format: .dateTime.year().month(.abbreviated).day())
                 .frame(width: 100, alignment: .leading)
             Spacer()
-            Text(report.departamentName)
+            Text(report.departmentName)
         }
     }
 }
@@ -82,7 +91,7 @@ struct AddReportSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var date: Date = .now
-    @State private var departamentName: String = ""
+    @State private var departmentName: String = ""
     @State private var performanceMark: Int = 0
     @State private var volumeOfWorkMark: Int = 0
     @State private var numberOfFinishedTasks: Int = 0
@@ -92,7 +101,7 @@ struct AddReportSheet: View {
         NavigationStack {
             Form {
                 DatePicker("Date", selection: $date, displayedComponents: .date)
-                TextField("Departament name", text: $departamentName)
+                TextField("Department name", text: $departmentName)
                 TextField("Performance (%)", value: $performanceMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Volume of work (%)", value: $volumeOfWorkMark, format: .number)
@@ -110,7 +119,7 @@ struct AddReportSheet: View {
 
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
-                        let report = Report(date: date, departamentName: departamentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
+                        let report = Report(date: date, departmentName: departmentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
                         context.insert(report)
                         dismiss()
                     }
@@ -128,7 +137,7 @@ struct UpdateReportSheet: View {
         NavigationStack {
             Form {
                 DatePicker("Date", selection: $report.date, displayedComponents: .date)
-                TextField("Departament name", text: $report.departamentName)
+                TextField("Department name", text: $report.departmentName)
                 TextField("Percentatge of performance", value: $report.performanceMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Percentatge of volume of work", value: $report.volumeOfWorkMark, format: .number)
@@ -145,5 +154,11 @@ struct UpdateReportSheet: View {
                 }
             }
         }
+    }
+}
+
+struct ReportsInfoSheet: View {
+    var body: some View {
+        Text("Information sheet")
     }
 }
