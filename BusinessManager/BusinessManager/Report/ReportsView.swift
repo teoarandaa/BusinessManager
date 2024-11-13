@@ -93,9 +93,9 @@ struct AddReportSheet: View {
             Form {
                 DatePicker("Date", selection: $date, displayedComponents: .date)
                 TextField("Departament name", text: $departamentName)
-                TextField("Percentatge of performance", value: $performanceMark, format: .number)
+                TextField("Performance (%)", value: $performanceMark, format: .number)
                     .keyboardType(.decimalPad)
-                TextField("Percentatge of volume of work", value: $volumeOfWorkMark, format: .number)
+                TextField("Volume of work (%)", value: $volumeOfWorkMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Number of finished tasks", value: $numberOfFinishedTasks, format: .number)
                     .keyboardType(.decimalPad)
@@ -141,7 +141,7 @@ struct UpdateReportSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("Done") { dismiss() }
                 }
             }
         }
