@@ -10,7 +10,7 @@ import SwiftUI
 struct CalendarView: View {
     var data: [SleepDataPoint] = []
     var body: some View {
-     Text("Hello world")
+     Text("Calendar")
     }
 }
 

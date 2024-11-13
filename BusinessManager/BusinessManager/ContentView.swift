@@ -18,7 +18,7 @@ struct ContentView: View {
                 }
             ChartsView()
                 .tabItem {
-                    Label("Chart", systemImage: "chart.bar")
+                    Label("Charts", systemImage: "chart.bar")
             }
             CalendarView()
                 .tabItem {
