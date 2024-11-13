@@ -2,16 +2,15 @@
 //  CalendarView.swift
 //  BusinessManager
 //
-//  Created by Teo Aranda Páez on 30/10/24.
+//  Created by Teo Aranda Páez on 8/11/24.
 //
 
 import SwiftUI
 
 struct CalendarView: View {
-    @AppStorage("isDarkMode") private var isDarkMode = false
-    
+    var data: [SleepDataPoint] = []
     var body: some View {
-        Text("Calendar")
+     Text("Hello world")
     }
 }
 

@@ -6,15 +6,102 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ReportsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @State private var isShowingItemSheet = false
+    @Query(sort: \Report.date) var reports: [Report]
     
     var body: some View {
-        Text("Reports")
+        NavigationStack {
+            List {
+                ForEach(reports) { report in
+                    ReportCell(report: report)
+                }
+            }
+            .navigationTitle("Reports")
+            .navigationBarTitleDisplayMode(.large)
+            .sheet(isPresented: $isShowingItemSheet) { AddReportSheet() }
+            .toolbar {
+                if !reports.isEmpty {
+                    Button("Add Report", systemImage: "plus") {
+                        isShowingItemSheet = true
+                    }
+                }
+            }
+            .overlay {
+                if reports.isEmpty {
+                    ContentUnavailableView(label: {
+                        Label("No Reports", systemImage: "list.bullet.rectangle.portrait")
+                    }, description: {
+                        Text("Start adding reports to see your list.")
+                    }, actions: {
+                        Button("Add Report") { isShowingItemSheet = true }
+                    })
+                    .offset(y: -60)
+                }
+            }
+        }
     }
 }
 
 #Preview {
     ReportsView()
+}
+
+struct ReportCell: View {
+    let report: Report
+    
+    var body: some View {
+        HStack {
+            Text(report.date, format: .dateTime.year().month(.abbreviated).day())
+                .frame(width: 100, alignment: .leading)
+            Spacer()
+            Text(report.departamentName)
+        }
+    }
+}
+
+struct AddReportSheet: View {
+    @Environment(\.modelContext) var context
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var date: Date = .now
+    @State private var departamentName: String = ""
+    @State private var performanceMark: Int = 0
+    @State private var volumeOfWorkMark: Int = 0
+    @State private var numberOfFinishedTasks: Int = 0
+    @State private var annotations: String = ""
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                DatePicker("Date", selection: $date, displayedComponents: .date)
+                TextField("Departament name", text: $departamentName)
+                TextField("Percentatge of performance", value: $performanceMark, format: .number)
+                    .keyboardType(.decimalPad)
+                TextField("Percentatge of volume of work", value: $volumeOfWorkMark, format: .number)
+                    .keyboardType(.decimalPad)
+                TextField("Number of finished tasks", value: $numberOfFinishedTasks, format: .number)
+                    .keyboardType(.decimalPad)
+                TextField("Annotations", text: $annotations)
+            }
+            .navigationTitle("New Report")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button("Cancel") { dismiss() }
+                }
+
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button("Save") {
+                        let report = Report(date: date, departamentName: departamentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
+                        context.insert(report)
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
 }
