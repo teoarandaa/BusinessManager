@@ -101,14 +101,14 @@ struct AddReportSheet: View {
         NavigationStack {
             Form {
                 DatePicker("Date", selection: $date, displayedComponents: .date)
-                TextField("Department name", text: $departmentName)
+                TextField("Department name", text: $departmentName, axis: .vertical)
                 TextField("Performance (%)", value: $performanceMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Volume of work (%)", value: $volumeOfWorkMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Number of finished tasks", value: $numberOfFinishedTasks, format: .number)
                     .keyboardType(.decimalPad)
-                TextField("Annotations", text: $annotations)
+                TextField("Annotations", text: $annotations, axis: .vertical)
             }
             .navigationTitle("New Report")
             .navigationBarTitleDisplayMode(.inline)
@@ -137,14 +137,14 @@ struct UpdateReportSheet: View {
         NavigationStack {
             Form {
                 DatePicker("Date", selection: $report.date, displayedComponents: .date)
-                TextField("Department name", text: $report.departmentName)
+                TextField("Department name", text: $report.departmentName, axis: .vertical)
                 TextField("Percentatge of performance", value: $report.performanceMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Percentatge of volume of work", value: $report.volumeOfWorkMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Number of finished tasks", value: $report.numberOfFinishedTasks, format: .number)
                     .keyboardType(.decimalPad)
-                TextField("Annotations", text: $report.annotations)
+                TextField("Annotations", text: $report.annotations, axis: .vertical)
             }
             .navigationTitle("Update Report")
             .navigationBarTitleDisplayMode(.inline)
