@@ -20,9 +20,9 @@ struct ContentView: View {
                 .tabItem {
                     Label("Charts", systemImage: "chart.bar")
             }
-            CalendarView()
+            TaskView()
                 .tabItem {
-                    Label("Calendar", systemImage: "calendar")
+                    Label("Tasks", systemImage: "list.bullet.clipboard")
                 }
             SettingsView()
                 .tabItem {
