@@ -88,8 +88,23 @@ struct TasksCell: View {
                 .frame(width: 100, alignment: .leading)
             Spacer()
             Text(task.title)
+                .bold()
             Spacer()
             Text(task.priority)
+                .padding(8)
+                .foregroundStyle(
+                    task.priority == "High" ? Color.red :
+                    task.priority == "Medium" ? Color.yellow :
+                    Color.green
+                )
+                .background(
+                    (task.priority == "High" ? Color.red :
+                    task.priority == "Medium" ? Color.yellow :
+                    Color.green)
+                    .opacity(0.2)
+                    .cornerRadius(8)
+                )
+                .bold()
         }
     }
 }
