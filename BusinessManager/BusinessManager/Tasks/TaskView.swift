@@ -88,6 +88,7 @@ struct TasksCell: View {
                 .frame(width: 100, alignment: .leading)
             Spacer()
             Text(task.title)
+            Spacer()
             Text(task.priority)
         }
     }
