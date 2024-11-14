@@ -93,13 +93,13 @@ struct TasksCell: View {
             Text(task.priority)
                 .padding(8)
                 .foregroundStyle(
-                    task.priority == "High" ? Color.red :
-                    task.priority == "Medium" ? Color.yellow :
+                    task.priority == "P1" ? Color.red :
+                    task.priority == "P2" ? Color.yellow :
                     Color.green
                 )
                 .background(
-                    (task.priority == "High" ? Color.red :
-                    task.priority == "Medium" ? Color.yellow :
+                    (task.priority == "P1" ? Color.red :
+                    task.priority == "P2" ? Color.yellow :
                     Color.green)
                     .opacity(0.2)
                     .cornerRadius(8)
@@ -117,9 +117,9 @@ struct AddTaskSheet: View {
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var comments: String = ""
-    @State private var priority: String = "Low"
+    @State private var priority: String = "P3"
     
-    let priorityOptions = ["Low", "Medium", "High"]
+    let priorityOptions = ["P3", "P2", "P1"]
     
     var body: some View {
         NavigationStack {
@@ -158,7 +158,7 @@ struct UpdateTaskSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var task: Task
     
-    let priorityOptions = ["Low", "Medium", "High"]
+    let priorityOptions = ["P3", "P2", "P1"]
     
     var body: some View {
         NavigationStack {
