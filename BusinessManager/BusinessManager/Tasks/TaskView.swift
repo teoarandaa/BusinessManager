@@ -149,7 +149,7 @@ struct UpdateTaskSheet: View {
             Form {
                 DatePicker("Date", selection: $task.date, displayedComponents: .date)
                 TextField("Title", text: $task.title, axis: .vertical)
-                TextField("Content", text: $task.content), axis: .vertical
+                TextField("Content", text: $task.content, axis: .vertical)
                 TextField("Comments", text: $task.comments, axis: .vertical)
                 Picker("Priority", selection: $task.priority) {
                     ForEach(priorityOptions, id: \.self) { option in
