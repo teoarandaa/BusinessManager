@@ -13,7 +13,6 @@ struct ReportsView: View {
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @Environment(\.modelContext) var context
-    // @Query(filter: #Predicate<Report> { $0.date >= Date() }, sort: \Report.date)     --> Filtro de los reports
     @Query(sort: \Report.date) var reports: [Report]
     @State private var reportToEdit: Report?
     
