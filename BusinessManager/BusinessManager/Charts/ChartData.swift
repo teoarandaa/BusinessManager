@@ -14,6 +14,7 @@ struct ChartData: Identifiable, Equatable {
     let performanceMark: Int
     let volumeOfWorkMark: Int
     let numberOfFinishedTasks: Int
+    var size: Double
     var id: Int { date.hashValue }
     
     init(from report: Report) {
@@ -22,5 +23,6 @@ struct ChartData: Identifiable, Equatable {
         self.performanceMark = report.performanceMark
         self.volumeOfWorkMark = report.volumeOfWorkMark
         self.numberOfFinishedTasks = report.numberOfFinishedTasks
+        self.size = Double(report.numberOfFinishedTasks)
     }
 }

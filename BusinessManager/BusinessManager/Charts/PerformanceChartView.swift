@@ -10,29 +10,31 @@ import SwiftData
 import Charts
 
 struct PerformanceChartView: View {
-    @Query var reports: [Report] // Obtiene los datos almacenados en SwiftData
-
+    @Query var reports: [Report] // Retrieves the data stored in SwiftData
+    
     var chartData: [ChartData] {
-        reports.map { ChartData(from: $0) } // Convierte los datos de Report a ChartData
+        reports.map { ChartData(from: $0) }
     }
 
     var body: some View {
         Chart(chartData) { data in
-            LineMark(
-                x: .value("Date", data.date),
-                y: .value("Performance", data.performanceMark)
+            PointMark(
+                x: .value("Department", data.departmentName),
+                y: .value("Tasks Completed", data.numberOfFinishedTasks)
             )
             .foregroundStyle(by: .value("Department", data.departmentName))
+            .symbolSize(data.size) // Controls the size of the bubble based on tasks completed
+            .symbol(by: .value("Department", data.departmentName))
         }
         .chartXAxis {
-            AxisMarks(values: .stride(by: .month)) // Configura el eje X con marcas mensuales
+            AxisMarks()
         }
         .chartYAxis {
-            AxisMarks() // Configura el eje Y con marcas automáticas
+            AxisMarks()
         }
         .aspectRatio(1.0, contentMode: .fit)
         .padding()
-        .navigationTitle("Performance")
+        .navigationTitle("Tasks by Department")
     }
 }
 

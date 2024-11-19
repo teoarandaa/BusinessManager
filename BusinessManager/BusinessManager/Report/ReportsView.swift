@@ -13,7 +13,7 @@ struct ReportsView: View {
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @Environment(\.modelContext) var context
-    @Query(sort: \Report.date) var reports: [Report]
+    @Query(sort: \Report.departmentName) var reports: [Report]
     @State private var reportToEdit: Report?
     
     var body: some View {
