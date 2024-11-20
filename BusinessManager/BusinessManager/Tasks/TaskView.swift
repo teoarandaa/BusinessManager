@@ -41,7 +41,7 @@ struct TaskView: View {
             .navigationTitle("Tasks")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet1) { AddTaskSheet() }
-            .sheet(isPresented: $isShowingItemSheet2) { TasksInfoSheet() }
+            .sheet(isPresented: $isShowingItemSheet2) { TasksInfoSheetView() }
             .sheet(item: $taskToEdit) { task in
                 UpdateTaskSheet(task: task)
             }
@@ -183,11 +183,5 @@ struct UpdateTaskSheet: View {
                 }
             }
         }
-    }
-}
-
-struct TasksInfoSheet: View {
-    var body: some View {
-        Text("Information sheet")
     }
 }

@@ -34,7 +34,7 @@ struct ReportsView: View {
             .navigationTitle("Reports")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet1) { AddReportSheet() }
-            .sheet(isPresented: $isShowingItemSheet2) { ReportsInfoSheet() }
+            .sheet(isPresented: $isShowingItemSheet2) { ReportsInfoSheetView() }
             .sheet(item: $reportToEdit) { report in
                 UpdateReportSheet(report: report)
             }
@@ -47,7 +47,7 @@ struct ReportsView: View {
                     }
                 }
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Add Report", systemImage: "info.circle") {
+                    Button("Information", systemImage: "info.circle") {
                         isShowingItemSheet2 = true
                     }
                 }
@@ -153,11 +153,5 @@ struct UpdateReportSheet: View {
                 }
             }
         }
-    }
-}
-
-struct ReportsInfoSheet: View {
-    var body: some View {
-        Text("Information sheet")
     }
 }
