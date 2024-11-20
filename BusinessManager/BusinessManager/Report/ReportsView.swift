@@ -81,6 +81,7 @@ struct ReportCell: View {
                 .frame(width: 100, alignment: .leading)
             Spacer()
             Text(report.departmentName)
+                .bold()
         }
     }
 }
@@ -137,9 +138,9 @@ struct UpdateReportSheet: View {
             Form {
                 DatePicker("Date", selection: $report.date, displayedComponents: .date)
                 TextField("Department name", text: $report.departmentName, axis: .vertical)
-                TextField("Percentatge of performance", value: $report.performanceMark, format: .number)
+                TextField("Performance (%)", value: $report.performanceMark, format: .number)
                     .keyboardType(.decimalPad)
-                TextField("Percentatge of volume of work", value: $report.volumeOfWorkMark, format: .number)
+                TextField("Volume of work (%)", value: $report.volumeOfWorkMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Number of finished tasks", value: $report.numberOfFinishedTasks, format: .number)
                     .keyboardType(.decimalPad)
