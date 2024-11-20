@@ -124,7 +124,7 @@ struct AddTaskSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                DatePicker("Date", selection: $date, displayedComponents: .date)
+                DatePicker("Expiring date", selection: $date, displayedComponents: .date)
                 TextField("Title", text: $title, axis: .vertical)
                 TextField("Content", text: $content, axis: .vertical)
                 TextField("Comments", text: $comments, axis: .vertical)
@@ -163,7 +163,7 @@ struct UpdateTaskSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                DatePicker("Date", selection: $task.date, displayedComponents: .date)
+                DatePicker("Expiring date", selection: $task.date, displayedComponents: .date)
                 TextField("Title", text: $task.title, axis: .vertical)
                 TextField("Content", text: $task.content, axis: .vertical)
                 TextField("Comments", text: $task.comments, axis: .vertical)

@@ -10,49 +10,47 @@ import SwiftData
 import Charts
 
 struct WorkloadChartView: View {
-    @Query var reports: [Report] // Obtiene los datos almacenados en SwiftData
+    @Query var reports: [Report]
     
     var chartData: [ChartData] {
         reports.map { ChartData(from: $0) }
     }
     
-    // Agrupa los datos por departamento
     var groupedReports: [String: [ChartData]] {
         Dictionary(grouping: chartData, by: { $0.departmentName })
     }
 
     var body: some View {
-        ScrollView { // Hacemos que todo el contenido sea desplazable
-            VStack(spacing: 20) { // Espaciado entre los gráficos
+        ScrollView {
+            VStack(spacing: 20) {
                 ForEach(groupedReports.keys.sorted(), id: \.self) { department in
                     VStack {
-                        // Título con el nombre del departamento
                         Text(department)
                             .font(.title)
+                            .bold()
                             .padding()
                         
-                        // Gráfico de dispersión para cada departamento
                         Chart(groupedReports[department]!) { data in
                             PointMark(
-                                x: .value("Volume of Work", data.volumeOfWorkMark), // Eje X: porcentaje de volumen de trabajo
-                                y: .value("Performance", data.performanceMark) // Eje Y: porcentaje de productividad
+                                x: .value("Volume of Work", data.volumeOfWorkMark),
+                                y: .value("Performance", data.performanceMark)
                             )
-                            .foregroundStyle(by: .value("Department", data.departmentName)) // Estilo por departamento
-                            .symbol(by: .value("Department", data.departmentName)) // Símbolo por departamento
+                            .foregroundStyle(by: .value("Department", data.departmentName))
+                            .symbol(by: .value("Department", data.departmentName))
                         }
                         .chartXAxis {
-                            AxisMarks() // Marcas en el eje X
+                            AxisMarks()
                         }
                         .chartYAxis {
-                            AxisMarks() // Marcas en el eje Y
+                            AxisMarks()
                         }
-                        .aspectRatio(1.0, contentMode: .fit) // Mantener la proporción del gráfico
+                        .aspectRatio(1.0, contentMode: .fit)
                         .padding()
                     }
                 }
             }
         }
-        .navigationTitle("Performance by Department") // Título de la vista
+        .navigationTitle("Performance by Department")
     }
 }
 
