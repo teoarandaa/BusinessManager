@@ -22,6 +22,8 @@ struct TaskView: View {
     @Environment(\.modelContext) var context
     @Query(sort: \Task.date) var tasks: [Task]
     @State private var taskToEdit: Task?
+    @State private var showingBottomSheet: Bool = false
+
     
     var body: some View {
         NavigationStack {
@@ -71,6 +73,11 @@ struct TaskView: View {
                     .offset(y: -60)
                 }
             }
+        }
+        .sheet(isPresented: $showingBottomSheet) {
+            ReportsInfoSheetView()
+                .presentationDetents(.init([.height(700)]))
+                .presentationDragIndicator(.visible)
         }
     }
 }

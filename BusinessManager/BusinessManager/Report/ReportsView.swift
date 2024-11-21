@@ -15,6 +15,7 @@ struct ReportsView: View {
     @Environment(\.modelContext) var context
     @Query(sort: \Report.departmentName) var reports: [Report]
     @State private var reportToEdit: Report?
+    @State private var showingBottomSheet: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -64,6 +65,11 @@ struct ReportsView: View {
                     .offset(y: -60)
                 }
             }
+        }
+        .sheet(isPresented: $showingBottomSheet) {
+            ReportsInfoSheetView()
+                .presentationDetents(.init([.height(700)]))
+                .presentationDragIndicator(.visible)
         }
     }
 }

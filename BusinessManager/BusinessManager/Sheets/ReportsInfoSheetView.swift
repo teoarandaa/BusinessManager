@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ReportsInfoSheetView: View {
+struct ReportsInfoSheetView: View {    
     var body: some View {
-        Text("Information sheet")
+        Text("Reports Information sheet")
     }
 }
 

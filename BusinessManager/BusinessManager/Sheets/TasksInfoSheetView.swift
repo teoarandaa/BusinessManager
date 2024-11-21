@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TasksInfoSheetView: View {
     var body: some View {
-        Text("Information sheet")
+        Text("Task Information sheet")
     }
 }
 
