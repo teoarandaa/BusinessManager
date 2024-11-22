@@ -15,25 +15,42 @@ struct ProductivityChartView: View {
     var chartData: [ChartData] {
         reports.map { ChartData(from: $0) }
     }
+    
+    var groupedReports: [String: [ChartData]] {
+        Dictionary(grouping: chartData, by: { $0.departmentName })
+    }
 
     var body: some View {
-        Chart(chartData) { data in
-            LineMark(
-                x: .value("Date", data.date),
-                y: .value("Performance", data.performanceMark)
-            )
-            .foregroundStyle(by: .value("Department", data.departmentName))
-            .symbol(by: .value("Department", data.departmentName))
+        ScrollView {
+            VStack(spacing: 20) {
+                ForEach(groupedReports.keys.sorted(), id: \.self) { department in
+                    VStack {
+                        Text(department)
+                            .font(.title)
+                            .bold()
+                            .padding()
+                        
+                        Chart(groupedReports[department]!) { data in
+                            LineMark(
+                                x: .value("Date", data.date),
+                                y: .value("Performance", data.performanceMark)
+                            )
+                            .foregroundStyle(by: .value("Department", data.departmentName))
+                            .symbol(by: .value("Department", data.departmentName))
+                        }
+                        .chartXAxis {
+                            AxisMarks(values: .stride(by: .month))
+                        }
+                        .chartYAxis {
+                            AxisMarks()
+                        }
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .padding()
+                    }
+                }
+            }
         }
-        .chartXAxis {
-            AxisMarks(values: .stride(by: .month))
-        }
-        .chartYAxis {
-            AxisMarks()
-        }
-        .aspectRatio(1.0, contentMode: .fit)
-        .padding()
-        .navigationTitle("Performance")
+        .navigationTitle("Performance by Department")
     }
 }
 

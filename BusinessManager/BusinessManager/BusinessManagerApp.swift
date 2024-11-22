@@ -14,7 +14,7 @@ struct BusinessManagerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
                 .preferredColorScheme(isDarkMode ? .dark : .light)
         }
         .modelContainer(for: [Report.self, Task.self])
