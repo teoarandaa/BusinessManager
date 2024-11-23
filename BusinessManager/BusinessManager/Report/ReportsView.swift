@@ -5,6 +5,13 @@
 //  Created by Teo Aranda Páez on 30/10/24.
 //
 
+//
+//  ReportsView.swift
+//  BusinessManager
+//
+//  Created by Teo Aranda Páez on 30/10/24.
+//
+
 import SwiftUI
 import SwiftData
 
@@ -20,15 +27,26 @@ struct ReportsView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(reports) { report in
-                    ReportCell(report: report)
-                        .onTapGesture {
-                            reportToEdit = report
+                // Agrupamos los reportes por departamento y ordenamos cada grupo
+                ForEach(
+                    Dictionary(grouping: reports, by: { $0.departmentName })
+                        .sorted(by: { $0.key < $1.key }), // Ordenar departamentos por nombre ascendente
+                    id: \.key
+                ) { department, departmentReports in
+                    Section(header: Text(department)) {
+                        ForEach(
+                            departmentReports.sorted(by: { $0.date < $1.date }) // Ordenar reportes por fecha descendente
+                        ) { report in
+                            ReportCell(report: report)
+                                .onTapGesture {
+                                    reportToEdit = report
+                                }
                         }
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        context.delete(reports[index])
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                context.delete(departmentReports[index])
+                            }
+                        }
                     }
                 }
             }
