@@ -13,6 +13,8 @@ struct ChartsView: View {
     @State private var chart: String = "Productivity" // Valor inicial
     let chartOptions = ["Productivity", "Workload", "Performance"]
     @Environment(\.modelContext) var context
+    @AppStorage("isWelcomeChartsSheetShowing") var isWelcomeChartsSheetShowing: Bool = true
+
     
     var body: some View {
         VStack {
@@ -37,6 +39,9 @@ struct ChartsView: View {
                 }
             }
             Spacer()
+        }
+        .sheet(isPresented: $isWelcomeChartsSheetShowing) {
+            WelcomeChartsView(isWelcomeChartsSheetShowing: $isWelcomeChartsSheetShowing)
         }
     }
 }

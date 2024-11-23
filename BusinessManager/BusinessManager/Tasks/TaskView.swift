@@ -23,7 +23,7 @@ struct TaskView: View {
     @Query(sort: \Task.date) var tasks: [Task]
     @State private var taskToEdit: Task?
     @State private var showingBottomSheet: Bool = false
-
+    @AppStorage("isWelcomeTasksSheetShowing") var isWelcomeTasksSheetShowing: Bool = true
     
     var body: some View {
         NavigationStack {
@@ -73,6 +73,9 @@ struct TaskView: View {
                     .offset(y: -60)
                 }
             }
+        }
+        .sheet(isPresented: $isWelcomeTasksSheetShowing) {
+            WelcomeTasksView(isWelcomeTasksSheetShowing: $isWelcomeTasksSheetShowing)
         }
         .sheet(isPresented: $showingBottomSheet) {
             ReportsInfoSheetView()
