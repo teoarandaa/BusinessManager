@@ -52,8 +52,13 @@ struct ReportsView: View {
             }
             .navigationTitle("Reports")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $isShowingItemSheet1) { AddReportSheet() }
-            .sheet(isPresented: $isShowingItemSheet2) { ReportsInfoSheetView() }
+            .sheet(isPresented: $isShowingItemSheet1) {
+                AddReportSheet()
+            }
+            .sheet(isPresented: $isShowingItemSheet2) {
+                ReportsInfoSheetView()
+                    .presentationDetents([.height(600)])
+            }
             .sheet(item: $reportToEdit) { report in
                 UpdateReportSheet(report: report)
             }
