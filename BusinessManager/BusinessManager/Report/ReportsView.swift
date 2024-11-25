@@ -88,6 +88,7 @@ struct ReportsView: View {
         }
         .sheet(isPresented: $isWelcomeReportsSheetShowing) {
             WelcomeReportsView(isWelcomeReportsSheetShowing: $isWelcomeReportsSheetShowing)
+                .presentationDetents(.init([.height(600)]))
         }
         .sheet(isPresented: $showingBottomSheet) {
             ReportsInfoSheetView()

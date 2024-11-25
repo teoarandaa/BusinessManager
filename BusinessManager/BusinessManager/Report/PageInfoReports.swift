@@ -20,9 +20,8 @@ struct PageInfoReports: Identifiable {
 
 // MARK: - Array of pages. They contain the information for every page. Create a new one to create a new page that will automatically add
 let pagesReports = [
-    PageInfoReports(label: "Welcome to CleanCode", text: "We’re excited to have you! CleanCode helps you optimize your coding experience, making your projects cleaner and easier to maintain.", image: .tasksReports001),
-    PageInfoReports(label: "Benefits", text: "CleanCode provides offline programming knowledge, allowing you to explore languages and get instant coding tips anytime, anywhere.", image: .tasksReports002),
-    PageInfoReports(label: "Are you ready?", text: "Join us in revolutionizing the way you approach coding. Your exciting journey begins here, right now. Are you ready to take the first step? Let’s get started!", image: .tasksReports003)
+    PageInfoReports(label: "Reports", text: "Reports allow you to log your department’s KPIs for better control. They are automatically grouped by department and sorted from oldest to newest.", image: .infoReports1),
+    PageInfoReports(label: "Reports", text: "Set the report date and store incoming tasks, workload volume, the number of completed tasks, and any notes you want to keep.", image: .infoReports2)
 ]
 
 // MARK: - Structure of the view for every page (UI)
