@@ -35,7 +35,7 @@ struct WorkloadChartView: View {
                                 x: .value("Volume of Work", data.volumeOfWorkMark),
                                 y: .value("Performance", data.performanceMark)
                             )
-                            .foregroundStyle(by: .value("Department", data.departmentName))
+                            .foregroundStyle(Color.accentColor)
                             .symbol(by: .value("Department", data.departmentName))
                         }
                         .chartXAxis {

@@ -35,7 +35,7 @@ struct ProductivityChartView: View {
                                 x: .value("Date", data.date),
                                 y: .value("Performance", data.performanceMark)
                             )
-                            .foregroundStyle(by: .value("Department", data.departmentName))
+                            .foregroundStyle(Color.accentColor)
                             .symbol(by: .value("Department", data.departmentName))
                         }
                         .chartXAxis {

@@ -37,7 +37,7 @@ struct PerformanceChartView: View {
                                     x: .value("Month", data.date, unit: .month),
                                     y: .value("Volume of Work", data.volumeOfWorkMark)
                                 )
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(Color.accentColor)
                             }
                             
                             // Barras para las Tareas Completadas
@@ -46,7 +46,7 @@ struct PerformanceChartView: View {
                                     x: .value("Month", data.date, unit: .month),
                                     y: .value("Tasks Completed", data.numberOfFinishedTasks)
                                 )
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(Color.blue)
                             }
                         }
                         .chartXAxis {
@@ -63,13 +63,13 @@ struct PerformanceChartView: View {
                         // Leyenda
                         HStack {
                             Circle()
-                                .fill(Color.blue)
+                                .fill(Color.accentColor)
                                 .frame(width: 10, height: 10)
                             Text("Volume of Work")
                                 .font(.caption)
                             
                             Circle()
-                                .fill(Color.orange)
+                                .fill(Color.blue)
                                 .frame(width: 10, height: 10)
                             Text("Tasks Completed")
                                 .font(.caption)
