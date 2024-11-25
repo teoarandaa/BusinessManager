@@ -13,35 +13,45 @@ struct ChartsView: View {
     @State private var chart: String = "Productivity" // Valor inicial
     let chartOptions = ["Productivity", "Workload", "Performance"]
     @Environment(\.modelContext) var context
-    @AppStorage("isWelcomeChartsSheetShowing") var isWelcomeChartsSheetShowing: Bool = true
+    @State private var isShowingItemSheet2 = false
+    @State private var showingBottomSheet: Bool = false
 
-    
     var body: some View {
-        VStack {
-            Picker("Charts", selection: $chart) {
-                ForEach(chartOptions, id: \.self) { option in
-                    Text(option)
+        NavigationStack {
+            VStack {
+                Picker("Charts", selection: $chart) {
+                    ForEach(chartOptions, id: \.self) { option in
+                        Text(option)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+                
+                Group {
+                    switch chart {
+                    case "Productivity":
+                        ProductivityChartView()
+                    case "Workload":
+                        WorkloadChartView()
+                    case "Performance":
+                        PerformanceChartView()
+                    default:
+                        Text("Select a chart")
+                    }
+                }
+                Spacer()
+            }
+            .navigationTitle("Charts")
+            .sheet(isPresented: $isShowingItemSheet2) { ChartsInfoSheetView() }
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button(action: {
+                        isShowingItemSheet2 = true
+                    }) {
+                        Label("Information", systemImage: "info.circle")
+                    }
                 }
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            Group {
-                switch chart {
-                case "Productivity":
-                    ProductivityChartView()
-                case "Workload":
-                    WorkloadChartView()
-                case "Performance":
-                    PerformanceChartView()
-                default:
-                    Text("Select a chart")
-                }
-            }
-            Spacer()
-        }
-        .sheet(isPresented: $isWelcomeChartsSheetShowing) {
-            WelcomeChartsView(isWelcomeChartsSheetShowing: $isWelcomeChartsSheetShowing)
         }
     }
 }

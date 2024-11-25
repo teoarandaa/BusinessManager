@@ -50,7 +50,6 @@ struct ProductivityChartView: View {
                 }
             }
         }
-        .navigationTitle("Performance by Department")
     }
 }
 

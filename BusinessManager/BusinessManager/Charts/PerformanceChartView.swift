@@ -79,7 +79,6 @@ struct PerformanceChartView: View {
                 }
             }
         }
-        .navigationTitle("Performance by Department")
     }
 }
 

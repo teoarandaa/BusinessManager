@@ -5,13 +5,6 @@
 //  Created by Teo Aranda Páez on 14/11/24.
 //
 
-//
-//  ReportsView.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 30/10/24.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -23,7 +16,6 @@ struct TaskView: View {
     @Query(sort: \Task.date) var tasks: [Task]
     @State private var taskToEdit: Task?
     @State private var showingBottomSheet: Bool = false
-    @AppStorage("isWelcomeTasksSheetShowing") var isWelcomeTasksSheetShowing: Bool = true
     
     var body: some View {
         NavigationStack {
@@ -56,7 +48,7 @@ struct TaskView: View {
                     }
                 }
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Add Task", systemImage: "info.circle") {
+                    Button("Information", systemImage: "info.circle") {
                         isShowingItemSheet2 = true
                     }
                 }
@@ -73,14 +65,6 @@ struct TaskView: View {
                     .offset(y: -60)
                 }
             }
-        }
-        .sheet(isPresented: $isWelcomeTasksSheetShowing) {
-            WelcomeTasksView(isWelcomeTasksSheetShowing: $isWelcomeTasksSheetShowing)
-        }
-        .sheet(isPresented: $showingBottomSheet) {
-            ReportsInfoSheetView()
-                .presentationDetents(.init([.height(700)]))
-                .presentationDragIndicator(.visible)
         }
     }
 }

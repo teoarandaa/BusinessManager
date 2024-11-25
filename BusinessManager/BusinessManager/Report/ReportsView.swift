@@ -23,8 +23,6 @@ struct ReportsView: View {
     @Query(sort: \Report.departmentName) var reports: [Report]
     @State private var reportToEdit: Report?
     @State private var showingBottomSheet: Bool = false
-    @AppStorage("isWelcomeReportsSheetShowing") var isWelcomeReportsSheetShowing: Bool = true
-
     
     var body: some View {
         NavigationStack {
@@ -86,16 +84,6 @@ struct ReportsView: View {
                 }
             }
         }
-        .sheet(isPresented: $isWelcomeReportsSheetShowing) {
-            WelcomeReportsView(isWelcomeReportsSheetShowing: $isWelcomeReportsSheetShowing)
-                .presentationDetents(.init([.height(600)]))
-        }
-        .sheet(isPresented: $showingBottomSheet) {
-            ReportsInfoSheetView()
-                .presentationDetents(.init([.height(700)]))
-                .presentationDragIndicator(.visible)
-        }
-        
     }
 }
 

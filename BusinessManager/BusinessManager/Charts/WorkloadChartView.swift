@@ -50,7 +50,6 @@ struct WorkloadChartView: View {
                 }
             }
         }
-        .navigationTitle("Performance by Department")
     }
 }
 
