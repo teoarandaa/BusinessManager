@@ -31,22 +31,22 @@ struct PerformanceChartView: View {
                             .padding()
                         
                         Chart {
-                            // Barras para el Volumen de Trabajo
                             ForEach(groupedReports[department]!) { data in
                                 BarMark(
                                     x: .value("Month", data.date, unit: .month),
                                     y: .value("Volume of Work", data.volumeOfWorkMark)
                                 )
                                 .foregroundStyle(Color.accentColor)
+                                .position(by: .value("Category", "Volume of Work"))
                             }
                             
-                            // Barras para las Tareas Completadas
                             ForEach(groupedReports[department]!) { data in
                                 BarMark(
                                     x: .value("Month", data.date, unit: .month),
                                     y: .value("Tasks Completed", data.numberOfFinishedTasks)
                                 )
                                 .foregroundStyle(Color.blue)
+                                .position(by: .value("Category", "Tasks Completed"))
                             }
                         }
                         .chartXAxis {
