@@ -42,7 +42,10 @@ struct ChartsView: View {
                 Spacer()
             }
             .navigationTitle("Charts")
-            .sheet(isPresented: $isShowingItemSheet2) { ChartsInfoSheetView() }
+            .sheet(isPresented: $isShowingItemSheet2) {
+                ChartsInfoSheetView()
+                    .presentationDetents([.height(600)])
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button(action: {
