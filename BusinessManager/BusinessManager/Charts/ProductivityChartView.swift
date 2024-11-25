@@ -24,7 +24,7 @@ struct ProductivityChartView: View {
         ScrollView {
             VStack(spacing: 20) {
                 ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    VStack {
+                    VStack(spacing: 35) {
                         Text(department)
                             .font(.title)
                             .bold()
