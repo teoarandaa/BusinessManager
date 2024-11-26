@@ -57,11 +57,17 @@ struct YearChartsView: View {
                 Chart {
                     ForEach(data) { data in
                         LineMark(
-                            x: .value("Month", data.date, unit: .month),
+                            x: .value("Date", data.date),
                             y: .value("Performance", data.performanceMark)
                         )
                         .foregroundStyle(by: .value("Department", data.departmentName))
                         .symbol(by: .value("Department", data.departmentName))
+                        
+                        PointMark(
+                            x: .value("Date", data.date),
+                            y: .value("Performance", data.performanceMark)
+                        )
+                        .foregroundStyle(by: .value("Department", data.departmentName))
                     }
                 }
                 .chartXAxis {
