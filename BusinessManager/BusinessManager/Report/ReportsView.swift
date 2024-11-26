@@ -47,6 +47,12 @@ struct ReportsView: View {
                                 let reportToDelete = departmentReports[index]
                                 context.delete(reportToDelete)
                             }
+                            // Save the context if necessary
+                            do {
+                                try context.save()
+                            } catch {
+                                print("Failed to save context: \(error)")
+                            }
                         }
                     }
                 }
