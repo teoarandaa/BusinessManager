@@ -44,7 +44,8 @@ struct ReportsView: View {
                         }
                         .onDelete { indexSet in
                             for index in indexSet {
-                                context.delete(departmentReports[index])
+                                let reportToDelete = departmentReports[index]
+                                context.delete(reportToDelete)
                             }
                         }
                     }

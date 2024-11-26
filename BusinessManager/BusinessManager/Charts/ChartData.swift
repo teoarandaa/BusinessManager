@@ -15,7 +15,7 @@ struct ChartData: Identifiable, Equatable {
     let volumeOfWorkMark: Int
     let numberOfFinishedTasks: Int
     var size: Double
-    var id: Int { date.hashValue }
+    var id: UUID = UUID()
     
     init(from report: Report) {
         self.date = report.date
