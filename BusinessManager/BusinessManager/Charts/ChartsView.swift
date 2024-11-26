@@ -54,6 +54,11 @@ struct ChartsView: View {
                         Label("Information", systemImage: "info.circle")
                     }
                 }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    NavigationLink(destination: YearlyChartsView()) {
+                        Label("Yearly Charts", systemImage: "calendar")
+                    }
+                }
             }
         }
     }
