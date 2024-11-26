@@ -15,7 +15,7 @@ struct YearlyChartsView: View {
             List {
                 ForEach(yearlyData.keys.sorted(), id: \.self) { year in
                     NavigationLink(destination: YearChartsView(year: year, data: yearlyData[year]!)) {
-                        Text("Year: \(year)")
+                        Text("\(year)")
                             .font(.headline)
                     }
                 }

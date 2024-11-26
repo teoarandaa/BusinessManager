@@ -17,6 +17,10 @@ struct YearChartsView: View {
         ScrollView {
             VStack(spacing: 35) {
                 // Performance Chart with both BarMarks
+                Text("Performance")
+                    .font(.title)
+                    .bold()
+                    .padding()
                 Chart {
                     ForEach(data) { data in
                         BarMark(
@@ -46,6 +50,10 @@ struct YearChartsView: View {
                 .padding()
                 
                 // Productivity Chart
+                Text("Productivity")
+                    .font(.title)
+                    .bold()
+                    .padding()
                 Chart {
                     ForEach(data) { data in
                         LineMark(
@@ -68,6 +76,10 @@ struct YearChartsView: View {
                 .padding()
                 
                 // Workload Chart
+                Text("Workload")
+                    .font(.title)
+                    .bold()
+                    .padding()
                 Chart(data) { data in
                     PointMark(
                         x: .value("Department", data.departmentName),
