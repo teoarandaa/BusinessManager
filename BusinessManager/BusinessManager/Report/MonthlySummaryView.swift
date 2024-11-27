@@ -5,7 +5,7 @@ struct MonthlySummaryView: View {
     @Environment(\.dismiss) private var dismiss
     @Query var reports: [Report]
     @State private var isLoading = true
-    @State private var monthlySummary: [String: (finishedTasks: Int, totalPerformance: Int, totalVolumeOfWork: Int, reportCount: Int)] = [:] // Dictionary to hold summary data
+    @State private var monthlySummary: [String: (finishedTasks: Int, totalPerformance: Int, totalVolumeOfWork: Int, reportCount: Int)] = [:]
 
     var body: some View {
         NavigationStack {
@@ -27,8 +27,8 @@ struct MonthlySummaryView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 VStack(alignment: .leading) {
                                     Text("Finished Tasks: \(summary.finishedTasks)")
-                                    Text("Performance: \(averagePerformance)")
-                                    Text("Volume of Work: \(averageVolumeOfWork)")
+                                    Text("Performance: \(averagePerformance)%")
+                                    Text("Workload: \(averageVolumeOfWork)%")
                                 }
                                 .font(.subheadline)
                             }
@@ -43,11 +43,6 @@ struct MonthlySummaryView: View {
                 loadMonthlySummary()
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save as File") {
-                        saveSummaryAsFile()
-                    }
-                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Close") {
                         dismiss()
@@ -68,22 +63,16 @@ struct MonthlySummaryView: View {
             let reportDate = Calendar.current.dateComponents([.year, .month], from: report.date)
             if reportDate.year == currentYear && reportDate.month == currentMonth {
                 if monthlySummary[report.departmentName] == nil {
-                    monthlySummary[report.departmentName] = (finishedTasks: report.numberOfFinishedTasks, totalPerformance: report.performanceMark, totalVolumeOfWork: report.volumeOfWorkMark, reportCount: 1) // Initialize totals and count
+                    monthlySummary[report.departmentName] = (finishedTasks: report.numberOfFinishedTasks, totalPerformance: report.performanceMark, totalVolumeOfWork: report.volumeOfWorkMark, reportCount: 1)
                 } else {
                     monthlySummary[report.departmentName]!.finishedTasks += report.numberOfFinishedTasks
-                    monthlySummary[report.departmentName]!.totalPerformance += report.performanceMark // Sum performance
-                    monthlySummary[report.departmentName]!.totalVolumeOfWork += report.volumeOfWorkMark // Sum volume of work
-                    monthlySummary[report.departmentName]!.reportCount += 1 // Increment report count
+                    monthlySummary[report.departmentName]!.totalPerformance += report.performanceMark
+                    monthlySummary[report.departmentName]!.totalVolumeOfWork += report.volumeOfWorkMark
+                    monthlySummary[report.departmentName]!.reportCount += 1
                 }
             }
         }
         
         isLoading = false
-    }
-
-    private func saveSummaryAsFile() {
-        // Implement file saving logic here
-        // This could involve creating a CSV or a text file with the summary data
-        print("Saving summary as file...")
     }
 } 
