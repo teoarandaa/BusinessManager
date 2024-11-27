@@ -151,8 +151,6 @@ struct AddReportSheet: View {
                     .keyboardType(.decimalPad)
                 TextField("Number of finished tasks", value: $numberOfFinishedTasks, format: .number)
                     .keyboardType(.decimalPad)
-                TextField("Tasks Created", value: $tasksCreated, format: .number)
-                    .keyboardType(.decimalPad)
                 TextField("Annotations", text: $annotations, axis: .vertical)
             }
             .navigationTitle("New Report")
