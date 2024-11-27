@@ -22,6 +22,14 @@ struct ReportsView: View {
         NavigationStack {
             VStack {
                 List {
+                    Section {
+                        Button("Monthly Summary") {
+                            isShowingMonthlySummary = true
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(Color.accentColor)
+                        .frame(maxWidth: .infinity)
+                    }
                     // Agrupamos los reportes por departamento y ordenamos cada grupo
                     ForEach(
                         Dictionary(grouping: reports, by: { $0.departmentName })
@@ -79,13 +87,6 @@ struct ReportsView: View {
                         .offset(y: -60)
                     }
                 }
-                
-                // Monthly Summary Button at the bottom
-                Button("Monthly Summary") {
-                    isShowingMonthlySummary = true
-                }
-                .padding()
-                .buttonStyle(.borderedProminent)
             }
             .toolbar {
                 if !reports.isEmpty {
@@ -132,6 +133,7 @@ struct AddReportSheet: View {
     @State private var performanceMark: Int = 0
     @State private var volumeOfWorkMark: Int = 0
     @State private var numberOfFinishedTasks: Int = 0
+    @State private var tasksCreated: Int = 0
     @State private var annotations: String = ""
     
     // State variables for alert
@@ -148,6 +150,8 @@ struct AddReportSheet: View {
                 TextField("Volume of work (%)", value: $volumeOfWorkMark, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Number of finished tasks", value: $numberOfFinishedTasks, format: .number)
+                    .keyboardType(.decimalPad)
+                TextField("Tasks Created", value: $tasksCreated, format: .number)
                     .keyboardType(.decimalPad)
                 TextField("Annotations", text: $annotations, axis: .vertical)
             }
