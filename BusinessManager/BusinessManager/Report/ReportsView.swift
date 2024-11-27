@@ -5,13 +5,6 @@
 //  Created by Teo Aranda Páez on 30/10/24.
 //
 
-//
-//  ReportsView.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 30/10/24.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -23,56 +16,81 @@ struct ReportsView: View {
     @Query(sort: \Report.departmentName) var reports: [Report]
     @State private var reportToEdit: Report?
     @State private var showingBottomSheet: Bool = false
+    @State private var isShowingMonthlySummary = false
     
     var body: some View {
         NavigationStack {
-            List {
-                // Agrupamos los reportes por departamento y ordenamos cada grupo
-                ForEach(
-                    Dictionary(grouping: reports, by: { $0.departmentName })
-                        .sorted(by: { $0.key < $1.key }), // Ordenar departamentos por nombre ascendente
-                    id: \.key
-                ) { department, departmentReports in
-                    Section(header: Text(department)) {
-                        ForEach(
-                            departmentReports.sorted(by: { $0.date < $1.date }) // Ordenar reportes por fecha descendente
-                        ) { report in
-                            ReportCell(report: report)
-                                .onTapGesture {
-                                    reportToEdit = report
-                                }
-                        }
-                        .onDelete { indexSet in
-                            for index in indexSet {
-                                let reportToDelete = departmentReports[index]
-                                context.delete(reportToDelete)
+            VStack {
+                List {
+                    // Agrupamos los reportes por departamento y ordenamos cada grupo
+                    ForEach(
+                        Dictionary(grouping: reports, by: { $0.departmentName })
+                            .sorted(by: { $0.key < $1.key }), // Ordenar departamentos por nombre ascendente
+                        id: \.key
+                    ) { department, departmentReports in
+                        Section(header: Text(department)) {
+                            ForEach(
+                                departmentReports.sorted(by: { $0.date < $1.date }) // Ordenar reportes por fecha descendente
+                            ) { report in
+                                ReportCell(report: report)
+                                    .onTapGesture {
+                                        reportToEdit = report
+                                    }
                             }
-                            // Save the context if necessary
-                            do {
-                                try context.save()
-                            } catch {
-                                print("Failed to save context: \(error)")
+                            .onDelete { indexSet in
+                                for index in indexSet {
+                                    let reportToDelete = departmentReports[index]
+                                    context.delete(reportToDelete)
+                                }
+                                // Save the context if necessary
+                                do {
+                                    try context.save()
+                                } catch {
+                                    print("Failed to save context: \(error)")
+                                }
                             }
                         }
                     }
                 }
-            }
-            .navigationTitle("Reports")
-            .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $isShowingItemSheet1) {
-                AddReportSheet()
-            }
-            .sheet(isPresented: $isShowingItemSheet2) {
-                ReportsInfoSheetView()
-                    .presentationDetents([.height(600)])
-            }
-            .sheet(item: $reportToEdit) { report in
-                UpdateReportSheet(report: report)
+                .navigationTitle("Reports")
+                .navigationBarTitleDisplayMode(.large)
+                .sheet(isPresented: $isShowingItemSheet1) {
+                    AddReportSheet()
+                }
+                .sheet(isPresented: $isShowingItemSheet2) {
+                    ReportsInfoSheetView()
+                        .presentationDetents([.height(600)])
+                }
+                .sheet(item: $reportToEdit) { report in
+                    UpdateReportSheet(report: report)
+                }
+                .sheet(isPresented: $isShowingMonthlySummary) {
+                    MonthlySummaryView()
+                }
+                .overlay {
+                    if reports.isEmpty {
+                        ContentUnavailableView(label: {
+                            Label("No Reports", systemImage: "list.bullet.rectangle.portrait")
+                        }, description: {
+                            Text("Start adding reports to see your list.")
+                        }, actions: {
+                            Button("Add Report") { isShowingItemSheet1 = true }
+                        })
+                        .offset(y: -60)
+                    }
+                }
+                
+                // Monthly Summary Button at the bottom
+                Button("Monthly Summary") {
+                    isShowingMonthlySummary = true
+                }
+                .padding()
+                .buttonStyle(.borderedProminent)
             }
             .toolbar {
                 if !reports.isEmpty {
                     ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button("Add Report", systemImage: "plus") {
+                        Button("Add Task", systemImage: "plus") {
                             isShowingItemSheet1 = true
                         }
                     }
@@ -81,18 +99,6 @@ struct ReportsView: View {
                     Button("Information", systemImage: "info.circle") {
                         isShowingItemSheet2 = true
                     }
-                }
-            }
-            .overlay {
-                if reports.isEmpty {
-                    ContentUnavailableView(label: {
-                        Label("No Reports", systemImage: "list.bullet.rectangle.portrait")
-                    }, description: {
-                        Text("Start adding reports to see your list.")
-                    }, actions: {
-                        Button("Add Report") { isShowingItemSheet1 = true }
-                    })
-                    .offset(y: -60)
                 }
             }
         }
