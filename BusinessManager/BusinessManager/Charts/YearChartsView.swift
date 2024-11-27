@@ -21,14 +21,22 @@ struct YearChartsView: View {
                     .font(.title)
                     .bold()
                     .padding()
+                
                 Chart {
-                    ForEach(data) { data in
+                    // Calculate average volume of work for each department
+                    let groupedData = Dictionary(grouping: data, by: { $0.departmentName })
+                    
+                    ForEach(groupedData.keys.sorted(), id: \.self) { department in
+                        let departmentData = groupedData[department] ?? []
+                        let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
+                        let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
+                        
                         BarMark(
-                            x: .value("Department", data.departmentName),
-                            y: .value("Volume of Work", data.volumeOfWorkMark)
+                            x: .value("Department", department),
+                            y: .value("Average Volume of Work", averageVolume)
                         )
                         .foregroundStyle(Color.accentColor)
-                        .position(by: .value("Category", "Volume of Work"))
+                        .position(by: .value("Category", "Average Volume of Work"))
                     }
                     
                     ForEach(data) { data in
