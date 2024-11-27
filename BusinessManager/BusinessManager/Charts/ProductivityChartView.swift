@@ -13,7 +13,10 @@ struct ProductivityChartView: View {
     @Query var reports: [Report] // Obtiene los datos almacenados en SwiftData
 
     var chartData: [ChartData] {
-        reports.map { ChartData(from: $0) }
+    let currentYear = Calendar.current.component(.year, from: Date())
+    return reports
+        .filter { Calendar.current.component(.year, from: $0.date) == currentYear }
+        .map { ChartData(from: $0) }
     }
     
     var groupedReports: [String: [ChartData]] {

@@ -13,7 +13,10 @@ struct WorkloadChartView: View {
     @Query var reports: [Report]
     
     var chartData: [ChartData] {
-        reports.map { ChartData(from: $0) }
+    let currentYear = Calendar.current.component(.year, from: Date())
+    return reports
+        .filter { Calendar.current.component(.year, from: $0.date) == currentYear }
+        .map { ChartData(from: $0) }
     }
     
     var groupedReports: [String: [ChartData]] {
