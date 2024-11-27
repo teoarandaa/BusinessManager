@@ -128,6 +128,10 @@ struct AddReportSheet: View {
     @State private var numberOfFinishedTasks: Int = 0
     @State private var annotations: String = ""
     
+    // State variables for alert
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -147,14 +151,32 @@ struct AddReportSheet: View {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }
                 }
-
-                ToolbarItemGroup(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let report = Report(date: date, departmentName: departmentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
-                        context.insert(report)
-                        dismiss()
+                        let currentMonth = Calendar.current.component(.month, from: Date())
+                        let reportMonth = Calendar.current.component(.month, from: date)
+                        
+                        if reportMonth < currentMonth {
+                            alertMessage = "The report date cannot be in a previous month."
+                            showAlert = true
+                        } else {
+                            // Create the report
+                            let newReport = Report(date: date, departmentName: departmentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
+                            context.insert(newReport)
+                            do {
+                                try context.save()
+                                dismiss()
+                            } catch {
+                                print("Failed to save report: \(error)")
+                            }
+                        }
                     }
                 }
+            }
+            .alert("Invalid Date", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(alertMessage)
             }
         }
     }
