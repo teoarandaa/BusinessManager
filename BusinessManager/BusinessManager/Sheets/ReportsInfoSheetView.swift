@@ -7,9 +7,50 @@
 
 import SwiftUI
 
-struct ReportsInfoSheetView: View {    
+struct ReportsInfoSheetView: View {
     var body: some View {
-        Text("Reports Information sheet")
+        TabView {
+            // First Page
+            VStack {
+                Text("Reports Overview")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Text("This section provides an overview of the reports generated.")
+                    .padding()
+                
+                Image("reports_overview") // Replace with your image name
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .padding()
+            }
+            .tabItem {
+                Text("Overview")
+            }
+            
+            // Second Page
+            VStack {
+                Text("How to Create Reports")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Text("Follow these steps to create a report...")
+                    .padding()
+                
+                Image("create_report") // Replace with your image name
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .padding()
+            }
+            .tabItem {
+                Text("Creating Reports")
+            }
+        }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
     }
 }
 
