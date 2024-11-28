@@ -9,7 +9,48 @@ import SwiftUI
 
 struct TasksInfoSheetView: View {
     var body: some View {
-        Text("Task Information sheet")
+        TabView {
+            // First Page
+            VStack {
+                Text("Tasks Overview")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Text("This section provides an overview of the tasks.")
+                    .padding()
+                
+                Image("tasks_overview") // Replace with your image name
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .padding()
+            }
+            .tabItem {
+                Text("Overview")
+            }
+            
+            // Second Page
+            VStack {
+                Text("How to Manage Tasks")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Text("Follow these steps to manage your tasks effectively...")
+                    .padding()
+                
+                Image("manage_tasks") // Replace with your image name
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .padding()
+            }
+            .tabItem {
+                Text("Managing Tasks")
+            }
+        }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
     }
 }
 
