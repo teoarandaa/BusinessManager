@@ -21,16 +21,26 @@ struct MonthlySummaryView: View {
                             let averagePerformance = summary.reportCount > 0 ? summary.totalPerformance / summary.reportCount : 0
                             let averageVolumeOfWork = summary.reportCount > 0 ? summary.totalVolumeOfWork / summary.reportCount : 0
                             
-                            HStack {
+                            VStack {
                                 Text(department)
                                     .font(.headline)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                VStack(alignment: .leading) {
-                                    Text("Finished Tasks: \(summary.finishedTasks)")
-                                    Text("Performance: \(averagePerformance)%")
-                                    Text("Workload: \(averageVolumeOfWork)%")
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .padding(.bottom, 10)
+                                
+                                HStack {
+                                    CircularProgressBar(percentage: averagePerformance, title: "Efficiency")
+                                    Spacer()
+                                    CircularProgressBar(percentage: averageVolumeOfWork, title: "Workload")
+                                    Spacer()
+                                    VStack {
+                                        Text("\(summary.finishedTasks)")
+                                            .font(.title)
+                                            .bold()
+                                        Text("Finished Tasks")
+                                            .font(.caption2)
+                                    }
                                 }
-                                .font(.subheadline)
+                                .padding(.bottom, 10)
                             }
                             .padding()
                         }
@@ -74,5 +84,35 @@ struct MonthlySummaryView: View {
         }
         
         isLoading = false
+    }
+}
+
+struct CircularProgressBar: View {
+    var percentage: Int
+    var title: String
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(lineWidth: 12)
+                .frame(width: 90, height: 90)
+                .foregroundStyle(Color.gray.opacity(0.3))
+
+            Circle()
+                .trim(from: 0, to: CGFloat(percentage) / 100)
+                .stroke(style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
+                .frame(width: 90, height: 90)
+                .foregroundStyle(Color.accentColor)
+                .rotationEffect(.degrees(-90))
+
+            VStack {
+                Text("\(percentage)%")
+                    .font(.body)
+                    .bold()
+                    .monospacedDigit()
+                Text(title)
+                    .font(.caption2)
+            }
+        }
     }
 } 
