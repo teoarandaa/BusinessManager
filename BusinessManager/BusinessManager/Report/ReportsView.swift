@@ -23,12 +23,15 @@ struct ReportsView: View {
             VStack {
                 List {
                     Section {
-                        Button("Monthly Summary") {
-                            isShowingMonthlySummary = true
+                        // Show the Monthly Summary button only if there are reports
+                        if !reports.isEmpty {
+                            Button("Monthly Summary") {
+                                isShowingMonthlySummary = true
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(Color.accentColor)
+                            .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(Color.accentColor)
-                        .frame(maxWidth: .infinity)
                     }
                     // Agrupamos los reportes por departamento y ordenamos cada grupo
                     ForEach(
