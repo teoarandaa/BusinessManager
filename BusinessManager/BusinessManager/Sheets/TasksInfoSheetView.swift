@@ -17,10 +17,11 @@ struct TasksInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("This section provides an overview of the tasks.")
+                Text("Tasks help you organize, prioritize, and track your work efficiently. With a clear structure and real-time updates, you can manage deadlines, monitor progress, and keep your workflow optimized, all in one place.")
                     .padding()
+                    .multilineTextAlignment(.center)
                 
-                Image("tasks_overview") // Replace with your image name
+                Image("tasks1") // Replace with your image name
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
@@ -32,15 +33,16 @@ struct TasksInfoSheetView: View {
             
             // Second Page
             VStack {
-                Text("How to Manage Tasks")
+                Text("How to Create Tasks")
                     .font(.largeTitle)
                     .bold()
                     .padding()
                 
-                Text("Follow these steps to manage your tasks effectively...")
+                Text("Tasks are created with the following information: expiring date to set deadlines, title for the task name, content for task details, comments for additional notes, and priority to indicate urgency. This data ensures tasks are well-organized and managed effectively.")
                     .padding()
+                    .multilineTextAlignment(.center)
                 
-                Image("manage_tasks") // Replace with your image name
+                Image("tasks2") // Replace with your image name
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
