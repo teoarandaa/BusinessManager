@@ -14,7 +14,8 @@ struct YearlyChartsView: View {
         NavigationView {
             List {
                 ForEach(yearlyData.keys.sorted(), id: \.self) { year in
-                    NavigationLink(destination: YearChartsView(year: year, data: yearlyData[year]!)) {
+                    let reportsForYear = reports.filter { Calendar.current.component(.year, from: $0.date) == year }
+                    NavigationLink(destination: YearChartsView(year: year, data: yearlyData[year]!, reports: reportsForYear)) {
                         Text("\(year)")
                             .font(.headline)
                     }

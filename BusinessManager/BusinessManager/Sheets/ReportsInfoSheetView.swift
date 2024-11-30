@@ -17,10 +17,11 @@ struct ReportsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("This section provides an overview of the reports generated.")
+                Text("Reports offer insights into performance, productivity, and progress. Securely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
                     .padding()
+                    .multilineTextAlignment(.center)
                 
-                Image("reports_overview") // Replace with your image name
+                Image("reports1") // Replace with your image name
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
@@ -37,10 +38,11 @@ struct ReportsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("Follow these steps to create a report...")
+                Text("To create accurate reports, we need the current date, department name, performance, volume of work, and tasks completed. This data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
                     .padding()
+                    .multilineTextAlignment(.center)
                 
-                Image("create_report") // Replace with your image name
+                Image("reports2") // Replace with your image name
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)

@@ -5,6 +5,7 @@ import Charts
 struct YearChartsView: View {
     let year: Int
     let data: [ChartData]
+    let reports: [Report]
     
     // Define colors for each month
     let monthColors: [Int: Color] = [
@@ -16,6 +17,17 @@ struct YearChartsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 35) {
+                // Add a button for Yearly Summary
+                NavigationLink(destination: YearlySummaryView(year: year, reports: reports)) {
+                    Text("Yearly Summary")
+                        .font(.headline)
+                        .padding()
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(Color.accentColor)
+                .frame(maxWidth: .infinity)
+                .padding()
+
                 // Performance Chart with both BarMarks
                 Text("Performance")
                     .font(.title)
@@ -23,20 +35,20 @@ struct YearChartsView: View {
                     .padding()
                 
                 Chart {
-                    // Calculate average volume of work for each department
                     let groupedData = Dictionary(grouping: data, by: { $0.departmentName })
                     
                     ForEach(groupedData.keys.sorted(), id: \.self) { department in
-                        let departmentData = groupedData[department] ?? []
-                        let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
-                        let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
-                        
-                        BarMark(
-                            x: .value("Department", department),
-                            y: .value("Average Volume of Work", averageVolume)
-                        )
-                        .foregroundStyle(Color.accentColor)
-                        .position(by: .value("Category", "Average Volume of Work"))
+                        if let departmentData = groupedData[department] {
+                            let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
+                            let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
+                            
+                            BarMark(
+                                x: .value("Department", department),
+                                y: .value("Average Volume of Work", averageVolume)
+                            )
+                            .foregroundStyle(Color.accentColor)
+                            .position(by: .value("Category", "Average Volume of Work"))
+                        }
                     }
                     
                     ForEach(data) { data in
@@ -134,5 +146,5 @@ struct YearChartsView: View {
 }
 
 #Preview {
-    YearChartsView(year: 2024, data: [])
+    YearChartsView(year: 2024, data: [], reports: [])
 } 
