@@ -17,7 +17,7 @@ struct ReportsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("Reports offer insights into performance, productivity, and progress. Securely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
+                Text("Reports offer insights into performance, productivity, and progress.\n\nSecurely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
                     .padding()
                     .multilineTextAlignment(.center)
                 
@@ -38,7 +38,7 @@ struct ReportsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("To create accurate reports, we need the current date, department name, performance, volume of work, and tasks completed. This data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
+                Text("To create accurate reports, we need the current date, department name, performance, volume of work, and tasks completed.\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
                     .padding()
                     .multilineTextAlignment(.center)
                 
