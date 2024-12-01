@@ -14,19 +14,22 @@ struct YearChartsView: View {
         9: .brown, 10: .cyan, 11: .indigo, 12: .mint
     ]
     
+    @State private var isShowingYearlySummary = false
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 35) {
-                // Add a button for Yearly Summary
-                NavigationLink(destination: YearlySummaryView(year: year, reports: reports)) {
-                    Text("Yearly Summary")
-                        .font(.headline)
-                        .padding()
+                // Yearly Summary Button
+                Button("Yearly Summary") {
+                    isShowingYearlySummary = true
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(Color.accentColor)
                 .frame(maxWidth: .infinity)
                 .padding()
+                .sheet(isPresented: $isShowingYearlySummary) {
+                    YearlySummaryView(year: year, reports: reports)
+                }
 
                 // Performance Chart with both BarMarks
                 Text("Performance")
