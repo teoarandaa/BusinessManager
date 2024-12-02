@@ -163,16 +163,9 @@ struct AddReportSheet: View {
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let currentMonth = Calendar.current.component(.month, from: Date())
-                        let reportMonth = Calendar.current.component(.month, from: date)
-                        let reportYear = Calendar.current.component(.year, from: date)
-                        let currentYear = Calendar.current.component(.year, from: Date())
-                        
-                        if reportMonth < currentMonth && reportYear == currentYear {
-                            alertMessage = "The report date cannot be in a previous month."
-                            showAlert = true
-                        } else if reportYear > currentYear || (reportYear == currentYear && reportMonth > currentMonth) {
-                            alertMessage = "The report date cannot be in a future month."
+                        let currentDate = Date()
+                        if date > currentDate {
+                            alertMessage = "The report date cannot be in the future."
                             showAlert = true
                         } else {
                             // Create the report
