@@ -11,7 +11,7 @@ import SwiftData
 struct ChartsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @State private var chart: String = "Productivity" // Valor inicial
-    let chartOptions = ["Productivity", "Workload", "Performance"]
+    let chartOptions = ["Productivity", "Efficiency", "Performance"]
     @Environment(\.modelContext) var context
     @State private var isShowingItemSheet2 = false
     @State private var showingBottomSheet: Bool = false
@@ -31,7 +31,7 @@ struct ChartsView: View {
                     switch chart {
                     case "Productivity":
                         ProductivityChartView()
-                    case "Workload":
+                    case "Efficiency":
                         WorkloadChartView()
                     case "Performance":
                         PerformanceChartView()
