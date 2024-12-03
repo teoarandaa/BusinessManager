@@ -78,7 +78,9 @@ struct YearChartsView: View {
                     .bold()
                     .padding()
                 Chart {
-                    ForEach(data) { data in
+                    let sortedData = data.sorted(by: { $0.date < $1.date })
+                    
+                    ForEach(sortedData) { data in
                         LineMark(
                             x: .value("Date", data.date),
                             y: .value("Performance", data.performanceMark)

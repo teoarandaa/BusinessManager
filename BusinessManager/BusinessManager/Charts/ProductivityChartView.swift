@@ -22,6 +22,7 @@ struct ProductivityChartView: View {
                 return reportYear == currentYear && reportMonth == currentMonth
             }
             .map { ChartData(from: $0) }
+            .sorted(by: { $0.date < $1.date })
     }
     
     var groupedReports: [String: [ChartData]] {
