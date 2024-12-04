@@ -46,31 +46,14 @@ struct ReportsView: View {
                             .sorted(by: { $0.key < $1.key }),
                         id: \.key
                     ) { department, departmentReports in
-                        Section(header: Text(department)) {
-                            ForEach(
-                                departmentReports.sorted(by: { $0.date < $1.date })
-                            ) { report in
-                                ReportCell(report: report)
-                                    .onTapGesture {
-                                        reportToEdit = report
-                                    }
-                            }
-                            .onDelete { indexSet in
-                                for index in indexSet {
-                                    let reportToDelete = departmentReports[index]
-                                    context.delete(reportToDelete)
-                                }
-                                do {
-                                    try context.save()
-                                } catch {
-                                    print("Failed to save context: \(error)")
-                                }
-                            }
+                        NavigationLink(destination: DepartmentReportsView(departmentReports: departmentReports)) {
+                            Text(department)
+                                .font(.headline)
                         }
                     }
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Reports")
+                .navigationTitle("Departments")
                 .navigationBarTitleDisplayMode(.large)
                 .sheet(isPresented: $isShowingItemSheet1) {
                     AddReportSheet()
