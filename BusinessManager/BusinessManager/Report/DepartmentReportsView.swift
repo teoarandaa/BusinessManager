@@ -26,21 +26,36 @@ struct YearReportsView: View {
     let reports: [Report]
     let year: Int
     @State private var reportToEdit: Report?
+    @State private var selectedMonth: Int? = nil
 
     var body: some View {
         let reportsByMonth = Dictionary(grouping: reports, by: { Calendar.current.component(.month, from: $0.date) })
-        
-        List {
-            ForEach(reportsByMonth.keys.sorted(), id: \.self) { month in
-                if let reportsForMonth = reportsByMonth[month] {
-                    Section(header: Text(monthName(for: month))) {
-                        ForEach(reportsForMonth) { report in
-                            ReportCell(report: report)
-                                .onTapGesture {
-                                    reportToEdit = report
+        let months = reportsByMonth.keys.sorted()
+
+        VStack {
+            Picker("Select Month", selection: $selectedMonth) {
+                Text("All").tag(nil as Int?)
+                ForEach(months, id: \.self) { month in
+                    Text(monthName(for: month)).tag(month as Int?)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            .padding()
+
+            List {
+                ForEach(months, id: \.self) { month in
+                    if selectedMonth == nil || selectedMonth == month {
+                        if let reportsForMonth = reportsByMonth[month] {
+                            Section(header: Text(monthName(for: month))) {
+                                ForEach(reportsForMonth) { report in
+                                    ReportCell(report: report)
+                                        .onTapGesture {
+                                            reportToEdit = report
+                                        }
                                 }
+                                .onDelete(perform: deleteReports)
+                            }
                         }
-                        .onDelete(perform: deleteReports)
                     }
                 }
             }
