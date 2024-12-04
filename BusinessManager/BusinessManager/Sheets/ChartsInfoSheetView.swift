@@ -17,7 +17,7 @@ struct ChartsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("Charts visualize key metrics for each department. Productivity Chart tracks performance over time, highlighting trends and improvements. Workload Chart compares performance against workload using a scatter plot, revealing efficiency. Performance Chart uses a bar chart to show average workload versus tasks completed, measuring task efficiency.")
+                Text("Charts visualize key metrics for each department. The Productivity Chart tracks performance trends over time. The Workload Chart compares performance to workload with a scatter plot, highlighting efficiency. The Performance Chart shows average workload versus completed tasks in a bar chart, measuring task efficiency.")
                     .padding()
                     .multilineTextAlignment(.center)
                 
