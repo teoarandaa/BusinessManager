@@ -113,7 +113,7 @@ struct YearChartsView: View {
                     .padding()
                 Chart(data) { data in
                     PointMark(
-                        x: .value("Department", data.departmentName),
+                        x: .value("Volume of work", data.volumeOfWorkMark),
                         y: .value("Performance", data.performanceMark)
                     )
                     .foregroundStyle(monthColors[Calendar.current.component(.month, from: data.date)] ?? .black)
