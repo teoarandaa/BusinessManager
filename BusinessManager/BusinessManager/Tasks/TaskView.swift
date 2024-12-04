@@ -16,11 +16,20 @@ struct TaskView: View {
     @Query(sort: \Task.date) var tasks: [Task]
     @State private var taskToEdit: Task?
     @State private var showingBottomSheet: Bool = false
+    @State private var searchText = ""
+    
+    var filteredTasks: [Task] {
+        if searchText.isEmpty {
+            return tasks
+        } else {
+            return tasks.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(tasks) { task in
+                ForEach(filteredTasks) { task in
                     TasksCell(task: task)
                         .onTapGesture {
                             taskToEdit = task
@@ -28,10 +37,11 @@ struct TaskView: View {
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
-                        context.delete(tasks[index])
+                        context.delete(filteredTasks[index])
                     }
                 }
             }
+            .searchable(text: $searchText)
             .navigationTitle("Tasks")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet1) {
@@ -45,7 +55,7 @@ struct TaskView: View {
                 UpdateTaskSheet(task: task)
             }
             .toolbar {
-                if !tasks.isEmpty {
+                if !filteredTasks.isEmpty {
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Button("Add Task", systemImage: "plus") {
                             isShowingItemSheet1 = true
@@ -59,7 +69,7 @@ struct TaskView: View {
                 }
             }
             .overlay {
-                if tasks.isEmpty {
+                if filteredTasks.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
                     }, description: {
