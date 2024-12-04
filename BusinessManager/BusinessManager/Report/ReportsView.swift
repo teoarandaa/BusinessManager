@@ -17,14 +17,22 @@ struct ReportsView: View {
     @State private var reportToEdit: Report?
     @State private var showingBottomSheet: Bool = false
     @State private var isShowingMonthlySummary = false
+    @State private var searchText = ""
+    
+    var filteredReports: [Report] {
+        if searchText.isEmpty {
+            return reports
+        } else {
+            return reports.filter { $0.departmentName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 List {
                     Section {
-                        // Show the Monthly Summary button only if there are reports
-                        if !reports.isEmpty {
+                        if !filteredReports.isEmpty {
                             Button("Monthly Summary") {
                                 isShowingMonthlySummary = true
                             }
@@ -33,15 +41,14 @@ struct ReportsView: View {
                             .frame(maxWidth: .infinity)
                         }
                     }
-                    // Agrupamos los reportes por departamento y ordenamos cada grupo
                     ForEach(
-                        Dictionary(grouping: reports, by: { $0.departmentName })
-                            .sorted(by: { $0.key < $1.key }), // Ordenar departamentos por nombre ascendente
+                        Dictionary(grouping: filteredReports, by: { $0.departmentName })
+                            .sorted(by: { $0.key < $1.key }),
                         id: \.key
                     ) { department, departmentReports in
                         Section(header: Text(department)) {
                             ForEach(
-                                departmentReports.sorted(by: { $0.date < $1.date }) // Ordenar reportes por fecha descendente
+                                departmentReports.sorted(by: { $0.date < $1.date })
                             ) { report in
                                 ReportCell(report: report)
                                     .onTapGesture {
@@ -53,7 +60,6 @@ struct ReportsView: View {
                                     let reportToDelete = departmentReports[index]
                                     context.delete(reportToDelete)
                                 }
-                                // Save the context if necessary
                                 do {
                                     try context.save()
                                 } catch {
@@ -63,6 +69,7 @@ struct ReportsView: View {
                         }
                     }
                 }
+                .searchable(text: $searchText)
                 .navigationTitle("Reports")
                 .navigationBarTitleDisplayMode(.large)
                 .sheet(isPresented: $isShowingItemSheet1) {

@@ -11,6 +11,7 @@ import Charts
 
 struct PerformanceChartView: View {
     @Query var reports: [Report] // Recupera los datos almacenados en SwiftData
+    @State private var searchText = "" // Añadir propiedad de estado para el texto de búsqueda
     
     var chartData: [ChartData] {
         let currentYear = Calendar.current.component(.year, from: Date())
@@ -24,8 +25,16 @@ struct PerformanceChartView: View {
             .map { ChartData(from: $0) }
     }
     
+    var filteredChartData: [ChartData] {
+        if searchText.isEmpty {
+            return chartData
+        } else {
+            return chartData.filter { $0.departmentName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
     var groupedReports: [String: [ChartData]] {
-        Dictionary(grouping: chartData, by: { $0.departmentName })
+        Dictionary(grouping: filteredChartData, by: { $0.departmentName })
     }
     
     var body: some View {
@@ -91,6 +100,7 @@ struct PerformanceChartView: View {
                 }
             }
         }
+        .searchable(text: $searchText) // Añadir la barra de búsqueda
     }
 }
 

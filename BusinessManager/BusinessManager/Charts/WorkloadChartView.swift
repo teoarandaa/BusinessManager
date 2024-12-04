@@ -11,6 +11,7 @@ import Charts
 
 struct WorkloadChartView: View {
     @Query var reports: [Report]
+    @State private var searchText = ""
     
     var chartData: [ChartData] {
         let currentYear = Calendar.current.component(.year, from: Date())
@@ -24,8 +25,16 @@ struct WorkloadChartView: View {
             .map { ChartData(from: $0) }
     }
     
+    var filteredChartData: [ChartData] {
+        if searchText.isEmpty {
+            return chartData
+        } else {
+            return chartData.filter { $0.departmentName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
     var groupedReports: [String: [ChartData]] {
-        Dictionary(grouping: chartData, by: { $0.departmentName })
+        Dictionary(grouping: filteredChartData, by: { $0.departmentName })
     }
 
     var body: some View {
@@ -58,6 +67,7 @@ struct WorkloadChartView: View {
                 }
             }
         }
+        .searchable(text: $searchText)
     }
 }
 
