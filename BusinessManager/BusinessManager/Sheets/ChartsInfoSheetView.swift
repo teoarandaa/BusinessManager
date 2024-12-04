@@ -17,11 +17,11 @@ struct ChartsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("In Business Manager, charts visualize key metrics for each department. The Productivity Chart tracks performance over time, highlighting trends and improvements. The Workload Chart compares performance against workload using a scatter plot, revealing efficiency. The Performance Chart uses a bar chart to show average workload versus tasks completed, measuring task efficiency. Each chart offers actionable insights to support informed decisions.")
+                Text("Charts visualize key metrics for each department. Productivity Chart tracks performance over time, highlighting trends and improvements. Workload Chart compares performance against workload using a scatter plot, revealing efficiency. Performance Chart uses a bar chart to show average workload versus tasks completed, measuring task efficiency.")
                     .padding()
                     .multilineTextAlignment(.center)
                 
-                Image("reports_overview") // Replace with your image name
+                Image("charts1") // Replace with your image name
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
@@ -38,10 +38,11 @@ struct ChartsInfoSheetView: View {
                     .bold()
                     .padding()
                 
-                Text("Follow these steps to create a report")
+                Text("They are generated using data from reports. Information such as performance, workload, and tasks completed is processed to create visual representations that highlight key insights. These charts help analyze trends, efficiency, and productivity for each department, turning raw data into actionable information.")
                     .padding()
+                    .multilineTextAlignment(.center)
                 
-                Image("create_report") // Replace with your image name
+                Image("charts2") // Replace with your image name
                     .resizable()
                     .scaledToFit()
                     .frame(height: 200)
