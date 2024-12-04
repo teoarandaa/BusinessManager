@@ -182,6 +182,7 @@ struct AddReportSheet: View {
 
 struct UpdateReportSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) var context
     @Bindable var report: Report
     
     var body: some View {
@@ -201,7 +202,17 @@ struct UpdateReportSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Done") { dismiss() }
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        do {
+                            try context.save()
+                            dismiss()
+                        } catch {
+                            print("Failed to save updated report: \(error)")
+                        }
+                    }
                 }
             }
         }
