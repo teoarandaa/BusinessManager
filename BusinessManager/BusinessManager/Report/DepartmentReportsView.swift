@@ -104,32 +104,71 @@ struct ReportDetailView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Date") {
-                    Text(report.date, format: .dateTime.year().month(.abbreviated).day())
-                }
-                
-                Section("Department") {
-                    Text(report.departmentName)
-                }
-                
-                Section("Performance") {
-                    Text("\(report.performanceMark)%")
-                }
-                
-                Section("Volume of Work") {
-                    Text("\(report.volumeOfWorkMark)%")
-                }
-                
-                Section("Finished Tasks") {
-                    Text("\(report.numberOfFinishedTasks)")
-                }
-                
-                if !report.annotations.isEmpty {
-                    Section("Annotations") {
-                        Text(report.annotations)
+            VStack {
+                List {
+                    HStack {
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text("Date")
+                        }
+                            .bold()
+                        Spacer()
+                        Text(report.date, format: .dateTime.year().month(.abbreviated).day())
+                    }
+                    
+                    HStack {
+                        HStack {
+                            Image(systemName: "building")
+                            Text("Department")
+                        }
+                            .bold()
+                        Spacer()
+                        Text(report.departmentName)
+                    }
+                    
+                    HStack {
+                        HStack {
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                            Text("Performance")
+                        }
+                            .bold()
+                        Spacer()
+                        Text("\(report.performanceMark)%")
+                    }
+                    
+                    HStack {
+                        HStack {
+                            Image(systemName: "document.on.document")
+                            Text("Volume of Work")
+                        }
+                            .bold()
+                        Spacer()
+                        Text("\(report.volumeOfWorkMark)%")
+                    }
+                    
+                    HStack {
+                        HStack {
+                            Image(systemName: "checkmark.circle")
+                            Text("Finished Tasks")
+                        }
+                            .bold()
+                        Spacer()
+                        Text("\(report.numberOfFinishedTasks)")
+                    }
+                    
+                    if !report.annotations.isEmpty {
+                        HStack {
+                            HStack {
+                                Image(systemName: "pencil")
+                                Text("Annotations")
+                            }
+                                .bold()
+                            Spacer()
+                            Text(report.annotations)
+                        }
                     }
                 }
+                .listStyle(InsetGroupedListStyle())
             }
             .navigationTitle("Report Details")
             .navigationBarTitleDisplayMode(.inline)
