@@ -17,6 +17,23 @@ struct TaskView: View {
     @State private var taskToEdit: Task?
     @State private var showingBottomSheet: Bool = false
     @State private var searchText = ""
+    @State private var sortOption: SortOption = .date
+
+    enum SortOption: String, CaseIterable, Identifiable {
+        case date = "Date"
+        case priority = "Priority"
+        
+        var id: String { self.rawValue }
+    }
+    
+    var sortedTasks: [Task] {
+        switch sortOption {
+        case .date:
+            return filteredTasks.sorted(by: { $0.date < $1.date })
+        case .priority:
+            return filteredTasks.sorted(by: { $0.priority < $1.priority })
+        }
+    }
     
     var filteredTasks: [Task] {
         if searchText.isEmpty {
@@ -28,56 +45,66 @@ struct TaskView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(filteredTasks) { task in
-                    TasksCell(task: task)
-                        .onTapGesture {
-                            taskToEdit = task
-                        }
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        context.delete(filteredTasks[index])
+            VStack {
+                Picker("Sort by", selection: $sortOption) {
+                    ForEach(SortOption.allCases) { option in
+                        Text(option.rawValue).tag(option)
                     }
                 }
-            }
-            .searchable(text: $searchText)
-            .navigationTitle("Tasks")
-            .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $isShowingItemSheet1) {
-                AddTaskSheet()
-            }
-            .sheet(isPresented: $isShowingItemSheet2) {
-                TasksInfoSheetView()
-                    .presentationDetents([.height(600)])
-            }
-            .sheet(item: $taskToEdit) { task in
-                UpdateTaskSheet(task: task)
-            }
-            .toolbar {
-                if !filteredTasks.isEmpty {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button("Add Task", systemImage: "plus") {
-                            isShowingItemSheet1 = true
+                .pickerStyle(MenuPickerStyle())
+
+
+                List {
+                    ForEach(sortedTasks) { task in
+                        TasksCell(task: task)
+                            .onTapGesture {
+                                taskToEdit = task
+                            }
+                    }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            context.delete(sortedTasks[index])
                         }
                     }
                 }
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Information", systemImage: "info.circle") {
-                        isShowingItemSheet2 = true
+                .searchable(text: $searchText)
+                .navigationTitle("Tasks")
+                .navigationBarTitleDisplayMode(.large)
+                .sheet(isPresented: $isShowingItemSheet1) {
+                    AddTaskSheet()
+                }
+                .sheet(isPresented: $isShowingItemSheet2) {
+                    TasksInfoSheetView()
+                        .presentationDetents([.height(600)])
+                }
+                .sheet(item: $taskToEdit) { task in
+                    UpdateTaskSheet(task: task)
+                }
+                .toolbar {
+                    if !filteredTasks.isEmpty {
+                        ToolbarItemGroup(placement: .topBarTrailing) {
+                            Button("Add Task", systemImage: "plus") {
+                                isShowingItemSheet1 = true
+                            }
+                        }
+                    }
+                    ToolbarItemGroup(placement: .topBarLeading) {
+                        Button("Information", systemImage: "info.circle") {
+                            isShowingItemSheet2 = true
+                        }
                     }
                 }
-            }
-            .overlay {
-                if filteredTasks.isEmpty {
-                    ContentUnavailableView(label: {
-                        Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
-                    }, description: {
-                        Text("Start adding tasks to see your list.")
-                    }, actions: {
-                        Button("Add Task") { isShowingItemSheet1 = true }
-                    })
-                    .offset(y: -60)
+                .overlay {
+                    if filteredTasks.isEmpty {
+                        ContentUnavailableView(label: {
+                            Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
+                        }, description: {
+                            Text("Start adding tasks to see your list.")
+                        }, actions: {
+                            Button("Add Task") { isShowingItemSheet1 = true }
+                        })
+                        .offset(y: -60)
+                    }
                 }
             }
         }
