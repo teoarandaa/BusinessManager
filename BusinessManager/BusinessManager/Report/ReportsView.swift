@@ -138,41 +138,65 @@ struct AddReportSheet: View {
             Form {
                 HStack {
                     Image(systemName: "calendar")
-                    DatePicker("Date", selection: $date, displayedComponents: .date)
+                    Text("Date")
+                        .bold()
+                    Spacer()
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
                 }
                 
                 HStack {
                     Image(systemName: "building.2")
-                    TextField("Department name", text: $departmentName, axis: .vertical)
+                    Text("Department name")
+                        .bold()
+                    Spacer()
+                    TextField("", text: $departmentName, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "chart.line.uptrend.xyaxis")
-                    Text("Performance:")
+                    Text("Performance")
                         .bold()
+                    Spacer()
                     TextField("", value: $performanceMark, format: .number)
                         .keyboardType(.decimalPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "doc.on.doc")
-                    Text("Volume of Work:")
+                    Text("Volume of Work")
                         .bold()
+                    Spacer()
                     TextField("", value: $volumeOfWorkMark, format: .number)
                         .keyboardType(.decimalPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "checkmark.circle")
-                    Text("Finished Tasks:")
+                    Text("Finished Tasks")
                         .bold()
+                    Spacer()
                     TextField("", value: $numberOfFinishedTasks, format: .number)
                         .keyboardType(.decimalPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
-                HStack {
+                HStack(alignment: .top) {
                     Image(systemName: "pencil")
-                    TextField("Annotations", text: $annotations, axis: .vertical)
+                    Text("Annotations")
+                        .bold()
+                    Spacer()
+                    TextField("", text: $annotations, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
             }
             .navigationTitle("New Report")
@@ -220,41 +244,65 @@ struct UpdateReportSheet: View {
             Form {
                 HStack {
                     Image(systemName: "calendar")
-                    DatePicker("Date", selection: $report.date, displayedComponents: .date)
+                    Text("Date")
+                        .bold()
+                    Spacer()
+                    DatePicker("", selection: $report.date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
                 }
                 
                 HStack {
                     Image(systemName: "building.2")
-                    TextField("Department name", text: $report.departmentName, axis: .vertical)
+                    Text("Department name")
+                        .bold()
+                    Spacer()
+                    TextField("", text: $report.departmentName, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "chart.line.uptrend.xyaxis")
-                    Text("Performance:")
+                    Text("Performance")
                         .bold()
+                    Spacer()
                     TextField("", value: $report.performanceMark, format: .number)
                         .keyboardType(.decimalPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "doc.on.doc")
-                    Text("Volume of Work:")
+                    Text("Volume of Work")
                         .bold()
+                    Spacer()
                     TextField("", value: $report.volumeOfWorkMark, format: .number)
                         .keyboardType(.decimalPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "checkmark.circle")
-                    Text("Finished Tasks:")
+                    Text("Finished Tasks")
                         .bold()
+                    Spacer()
                     TextField("", value: $report.numberOfFinishedTasks, format: .number)
                         .keyboardType(.decimalPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
                 
-                HStack {
+                HStack(alignment: .top) {
                     Image(systemName: "pencil")
-                    TextField("Annotations", text: $report.annotations, axis: .vertical)
+                    Text("Annotations")
+                        .bold()
+                    Spacer()
+                    TextField("", text: $report.annotations, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
                 }
             }
             .navigationTitle("Update Report")
