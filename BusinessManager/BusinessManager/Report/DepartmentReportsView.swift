@@ -40,7 +40,6 @@ struct YearReportsView: View {
                 }
             }
             .pickerStyle(MenuPickerStyle())
-            .padding()
 
             List {
                 ForEach(months, id: \.self) { month in
