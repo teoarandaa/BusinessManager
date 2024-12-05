@@ -26,6 +26,7 @@ struct YearReportsView: View {
     let reports: [Report]
     let year: Int
     @State private var reportToEdit: Report?
+    @State private var reportToView: Report?
     @State private var selectedMonth: Int? = nil
 
     var body: some View {
@@ -40,6 +41,7 @@ struct YearReportsView: View {
                 }
             }
             .pickerStyle(MenuPickerStyle())
+            .padding()
 
             List {
                 ForEach(months, id: \.self) { month in
@@ -47,10 +49,18 @@ struct YearReportsView: View {
                         if let reportsForMonth = reportsByMonth[month] {
                             Section(header: Text(monthName(for: month))) {
                                 ForEach(reportsForMonth) { report in
-                                    ReportCell(report: report)
-                                        .onTapGesture {
-                                            reportToEdit = report
+                                    HStack {
+                                        ReportCell(report: report)
+                                            .onTapGesture {
+                                                reportToEdit = report
+                                            }
+                                        Button(action: {
+                                            reportToView = report
+                                        }) {
+                                            Image(systemName: "info.circle")
+                                                .foregroundStyle(Color.accentColor)
                                         }
+                                    }
                                 }
                                 .onDelete(perform: deleteReports)
                             }
@@ -63,6 +73,9 @@ struct YearReportsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $reportToEdit) { report in
             UpdateReportSheet(report: report)
+        }
+        .sheet(item: $reportToView) { report in
+            ReportDetailView(report: report)
         }
     }
 
@@ -82,5 +95,49 @@ struct YearReportsView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         return dateFormatter.monthSymbols[month - 1]
+    }
+}
+
+struct ReportDetailView: View {
+    @Environment(\.dismiss) private var dismiss
+    let report: Report
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Date") {
+                    Text(report.date, format: .dateTime.year().month(.abbreviated).day())
+                }
+                
+                Section("Department") {
+                    Text(report.departmentName)
+                }
+                
+                Section("Performance") {
+                    Text("\(report.performanceMark)%")
+                }
+                
+                Section("Volume of Work") {
+                    Text("\(report.volumeOfWorkMark)%")
+                }
+                
+                Section("Finished Tasks") {
+                    Text("\(report.numberOfFinishedTasks)")
+                }
+                
+                if !report.annotations.isEmpty {
+                    Section("Annotations") {
+                        Text(report.annotations)
+                    }
+                }
+            }
+            .navigationTitle("Report Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
     }
 } 

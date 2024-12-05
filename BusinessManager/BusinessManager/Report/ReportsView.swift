@@ -113,6 +113,7 @@ struct ReportCell: View {
             Spacer()
             Text(report.departmentName)
                 .bold()
+            Spacer()
         }
     }
 }
