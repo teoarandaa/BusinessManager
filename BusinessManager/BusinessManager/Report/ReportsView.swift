@@ -136,15 +136,44 @@ struct AddReportSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-                TextField("Department name", text: $departmentName, axis: .vertical)
-                TextField("Performance (%)", value: $performanceMark, format: .number)
-                    .keyboardType(.decimalPad)
-                TextField("Volume of work (%)", value: $volumeOfWorkMark, format: .number)
-                    .keyboardType(.decimalPad)
-                TextField("Number of finished tasks", value: $numberOfFinishedTasks, format: .number)
-                    .keyboardType(.decimalPad)
-                TextField("Annotations", text: $annotations, axis: .vertical)
+                HStack {
+                    Image(systemName: "calendar")
+                    DatePicker("Date", selection: $date, displayedComponents: .date)
+                }
+                
+                HStack {
+                    Image(systemName: "building.2")
+                    TextField("Department name", text: $departmentName, axis: .vertical)
+                }
+                
+                HStack {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                    Text("Performance:")
+                        .bold()
+                    TextField("", value: $performanceMark, format: .number)
+                        .keyboardType(.decimalPad)
+                }
+                
+                HStack {
+                    Image(systemName: "doc.on.doc")
+                    Text("Volume of Work:")
+                        .bold()
+                    TextField("", value: $volumeOfWorkMark, format: .number)
+                        .keyboardType(.decimalPad)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.circle")
+                    Text("Finished Tasks:")
+                        .bold()
+                    TextField("", value: $numberOfFinishedTasks, format: .number)
+                        .keyboardType(.decimalPad)
+                }
+                
+                HStack {
+                    Image(systemName: "pencil")
+                    TextField("Annotations", text: $annotations, axis: .vertical)
+                }
             }
             .navigationTitle("New Report")
             .navigationBarTitleDisplayMode(.inline)
@@ -152,7 +181,7 @@ struct AddReportSheet: View {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }
                 }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
                         let currentDate = Date()
                         if date > currentDate {
@@ -189,15 +218,44 @@ struct UpdateReportSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                DatePicker("Date", selection: $report.date, displayedComponents: .date)
-                TextField("Department name", text: $report.departmentName, axis: .vertical)
-                TextField("Performance (%)", value: $report.performanceMark, format: .number)
-                    .keyboardType(.decimalPad)
-                TextField("Volume of work (%)", value: $report.volumeOfWorkMark, format: .number)
-                    .keyboardType(.decimalPad)
-                TextField("Number of finished tasks", value: $report.numberOfFinishedTasks, format: .number)
-                    .keyboardType(.decimalPad)
-                TextField("Annotations", text: $report.annotations, axis: .vertical)
+                HStack {
+                    Image(systemName: "calendar")
+                    DatePicker("Date", selection: $report.date, displayedComponents: .date)
+                }
+                
+                HStack {
+                    Image(systemName: "building.2")
+                    TextField("Department name", text: $report.departmentName, axis: .vertical)
+                }
+                
+                HStack {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                    Text("Performance:")
+                        .bold()
+                    TextField("", value: $report.performanceMark, format: .number)
+                        .keyboardType(.decimalPad)
+                }
+                
+                HStack {
+                    Image(systemName: "doc.on.doc")
+                    Text("Volume of Work:")
+                        .bold()
+                    TextField("", value: $report.volumeOfWorkMark, format: .number)
+                        .keyboardType(.decimalPad)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.circle")
+                    Text("Finished Tasks:")
+                        .bold()
+                    TextField("", value: $report.numberOfFinishedTasks, format: .number)
+                        .keyboardType(.decimalPad)
+                }
+                
+                HStack {
+                    Image(systemName: "pencil")
+                    TextField("Annotations", text: $report.annotations, axis: .vertical)
+                }
             }
             .navigationTitle("Update Report")
             .navigationBarTitleDisplayMode(.inline)
