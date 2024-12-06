@@ -14,7 +14,7 @@ struct SettingsView: View {
                         Label {
                             Text("Push notifications")
                         } icon: {
-                            Image(systemName: isPushEnabled ? "bell.slash" : "bell")
+                            Image(systemName: isPushEnabled ? "bell" : "bell.slash")
                                 .symbolEffect(.bounce, value: isPushEnabled)
                                 .contentTransition(.symbolEffect(.replace))
                         }
@@ -24,9 +24,9 @@ struct SettingsView: View {
                 Section("Appearance") {
                     Toggle(isOn: $isDarkMode) {
                         Label {
-                            Text(isDarkMode ? "Light mode" : "Dark mode")
+                            Text(isDarkMode ? "Dark mode" : "Light mode")
                         } icon: {
-                            Image(systemName: isDarkMode ? "lightbulb" : "lightbulb.slash")
+                            Image(systemName: isDarkMode ? "lightbulb.slash" : "lightbulb")
                                 .symbolEffect(.bounce, value: isDarkMode)
                                 .contentTransition(.symbolEffect(.replace))
                         }
