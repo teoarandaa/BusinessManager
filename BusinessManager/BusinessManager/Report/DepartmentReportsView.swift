@@ -10,7 +10,7 @@ struct DepartmentReportsView: View {
             ForEach(reportsByYear.keys.sorted(), id: \.self) { year in
                 if let reportsForYear = reportsByYear[year] {
                     NavigationLink(destination: YearReportsView(reports: reportsForYear, year: year)) {
-                        Text("\(year)")
+                        Text("\(String(year))")
                             .font(.headline)
                     }
                 }
@@ -71,7 +71,7 @@ struct YearReportsView: View {
                 }
             }
         }
-        .navigationTitle("Reports for \(year)")
+        .navigationTitle("Reports for \(String(year))")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $reportToEdit) { report in
             UpdateReportSheet(report: report)

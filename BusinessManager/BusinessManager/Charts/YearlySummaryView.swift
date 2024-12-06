@@ -47,7 +47,7 @@ struct YearlySummaryView: View {
                     }
                 }
             }
-            .navigationTitle("Yearly Summary for \(year)")
+            .navigationTitle("Yearly Summary for \(String(year))")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 loadYearlySummary()
