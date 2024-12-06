@@ -55,8 +55,6 @@ struct TaskView: View {
                             }
                     }
                     .onDelete { indexSet in
-                        let generator = UINotificationFeedbackGenerator()
-                        generator.notificationOccurred(.success)
                         for index in indexSet {
                             context.delete(sortedTasks[index])
                         }
@@ -223,7 +221,11 @@ struct AddTaskSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { 
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss() 
+                    }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
