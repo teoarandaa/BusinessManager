@@ -63,6 +63,12 @@ struct SettingsView: View {
             UIApplication.shared.open(url)
         }
     }
+    
+    // Añadir haptic feedback para acciones importantes
+    func performHapticFeedback() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+    }
 }
 
 #Preview {
