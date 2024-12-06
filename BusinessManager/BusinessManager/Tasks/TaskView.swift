@@ -156,7 +156,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "calendar")
-                        Text("Expiring date:")
+                        Text("Expiring date")
                             .bold()
                     }
                     Spacer()
@@ -168,43 +168,43 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.alignleft")
-                        Text("Title:")
+                        Text("Title")
                             .bold()
                     }
                     Spacer()
                     TextField("", text: $title, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     HStack {
                         Image(systemName: "doc.text")
-                        Text("Content:")
+                        Text("Content")
                             .bold()
                     }
                     Spacer()
                     TextField("", text: $content, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     HStack {
                         Image(systemName: "text.bubble")
-                        Text("Comments:")
+                        Text("Comments")
                             .bold()
                     }
                     Spacer()
                     TextField("", text: $comments, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     HStack {
                         Image(systemName: "flag")
-                        Text("Priority:")
+                        Text("Priority")
                             .bold()
                     }
                     Spacer()
@@ -247,7 +247,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "calendar")
-                        Text("Expiring date:")
+                        Text("Expiring date")
                             .bold()
                     }
                     Spacer()
@@ -259,43 +259,43 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.alignleft")
-                        Text("Title:")
+                        Text("Title")
                             .bold()
                     }
                     Spacer()
                     TextField("", text: $task.title, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     HStack {
                         Image(systemName: "doc.text")
-                        Text("Content:")
+                        Text("Content")
                             .bold()
                     }
                     Spacer()
                     TextField("", text: $task.content, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     HStack {
                         Image(systemName: "text.bubble")
-                        Text("Comments:")
+                        Text("Comments")
                             .bold()
                     }
                     Spacer()
                     TextField("", text: $task.comments, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     HStack {
                         Image(systemName: "flag")
-                        Text("Priority:")
+                        Text("Priority")
                             .bold()
                     }
                     Spacer()
