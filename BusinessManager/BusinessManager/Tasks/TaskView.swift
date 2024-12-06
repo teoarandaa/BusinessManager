@@ -153,16 +153,69 @@ struct AddTaskSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                DatePicker("Expiring date", selection: $date, displayedComponents: .date)
-                TextField("Title", text: $title, axis: .vertical)
-                TextField("Content", text: $content, axis: .vertical)
-                TextField("Comments", text: $comments, axis: .vertical)
-                Picker("Priority", selection: $priority) {
-                    ForEach(priorityOptions, id: \.self) { option in
-                        Text(option)
+                HStack {
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text("Expiring date:")
+                            .bold()
                     }
+                    Spacer()
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
                 }
-                .pickerStyle(SegmentedPickerStyle())
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "text.alignleft")
+                        Text("Title:")
+                            .bold()
+                    }
+                    Spacer()
+                    TextField("", text: $title, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "doc.text")
+                        Text("Content:")
+                            .bold()
+                    }
+                    Spacer()
+                    TextField("", text: $content, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "text.bubble")
+                        Text("Comments:")
+                            .bold()
+                    }
+                    Spacer()
+                    TextField("", text: $comments, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "flag")
+                        Text("Priority:")
+                            .bold()
+                    }
+                    Spacer()
+                    Picker("", selection: $priority) {
+                        ForEach(priorityOptions, id: \.self) { option in
+                            Text(option)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(maxWidth: 120)
+                }
             }
             .navigationTitle("New Task")
             .navigationBarTitleDisplayMode(.inline)
@@ -170,7 +223,6 @@ struct AddTaskSheet: View {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }
                 }
-
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
                         let task = Task(date: date, title: title, content: content, comments: comments, priority: priority)
@@ -192,17 +244,69 @@ struct UpdateTaskSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                DatePicker("Expiring date", selection: $task.date, displayedComponents: .date)
-                TextField("Title", text: $task.title, axis: .vertical)
-                TextField("Content", text: $task.content, axis: .vertical)
-                TextField("Comments", text: $task.comments, axis: .vertical)
-                Picker("Priority", selection: $task.priority) {
-                    ForEach(priorityOptions, id: \.self) { option in
-                        Text(option)
+                HStack {
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text("Expiring date:")
+                            .bold()
                     }
+                    Spacer()
+                    DatePicker("", selection: $task.date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
                 }
-                .pickerStyle(SegmentedPickerStyle())
                 
+                HStack {
+                    HStack {
+                        Image(systemName: "text.alignleft")
+                        Text("Title:")
+                            .bold()
+                    }
+                    Spacer()
+                    TextField("", text: $task.title, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "doc.text")
+                        Text("Content:")
+                            .bold()
+                    }
+                    Spacer()
+                    TextField("", text: $task.content, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "text.bubble")
+                        Text("Comments:")
+                            .bold()
+                    }
+                    Spacer()
+                    TextField("", text: $task.comments, axis: .vertical)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "flag")
+                        Text("Priority:")
+                            .bold()
+                    }
+                    Spacer()
+                    Picker("", selection: $task.priority) {
+                        ForEach(priorityOptions, id: \.self) { option in
+                            Text(option)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(maxWidth: 120)
+                }
             }
             .navigationTitle("Update Task")
             .navigationBarTitleDisplayMode(.inline)
