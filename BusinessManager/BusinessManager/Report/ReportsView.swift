@@ -44,6 +44,13 @@ struct ReportsView: View {
                                 .font(.headline)
                         }
                     }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            context.delete(filteredReports[index])
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.success)
+                        }
+                    }
                 }
                 .searchable(text: $searchText)
                 .navigationTitle("Departments")
@@ -196,7 +203,11 @@ struct AddReportSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { 
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss() 
+                    }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
@@ -204,22 +215,30 @@ struct AddReportSheet: View {
                         if date > currentDate {
                             alertMessage = "The report date cannot be in the future."
                             showAlert = true
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.error)
                         } else {
-                            // Create the report
                             let newReport = Report(date: date, departmentName: departmentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
                             context.insert(newReport)
                             do {
                                 try context.save()
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.success)
                                 dismiss()
                             } catch {
                                 print("Failed to save report: \(error)")
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.error)
                             }
                         }
                     }
                 }
             }
             .alert("Invalid Date", isPresented: $showAlert) {
-                Button("OK", role: .cancel) { }
+                Button("OK", role: .cancel) { 
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                }
             } message: {
                 Text(alertMessage)
             }
@@ -302,15 +321,23 @@ struct UpdateReportSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { 
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss() 
+                    }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save") {
                         do {
                             try context.save()
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.success)
                             dismiss()
                         } catch {
                             print("Failed to save updated report: \(error)")
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.error)
                         }
                     }
                 }
