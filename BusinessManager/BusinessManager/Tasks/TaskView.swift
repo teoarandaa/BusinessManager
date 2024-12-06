@@ -55,6 +55,8 @@ struct TaskView: View {
                             }
                     }
                     .onDelete { indexSet in
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
                         for index in indexSet {
                             context.delete(sortedTasks[index])
                         }
@@ -227,6 +229,8 @@ struct AddTaskSheet: View {
                     Button("Save") {
                         let task = Task(date: date, title: title, content: content, comments: comments, priority: priority)
                         context.insert(task)
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
                         dismiss()
                     }
                 }
