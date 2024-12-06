@@ -1,51 +1,66 @@
 import SwiftUI
 
 struct ChartsInfoSheetView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
-        TabView {
-            // First Page
-            VStack {
-                Text("Charts Overview")
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
+        NavigationStack {
+            TabView {
+                // First Page
+                ScrollView {
+                    VStack {
+                        Text("Charts Overview")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("Charts visualize key metrics: the Productivity Chart tracks performance trends, the Workload Chart compares performance with workload using a scatter plot to highlight efficiency, and the Performance Chart displays average workload versus completed tasks in a bar chart, measuring efficiency.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("charts1")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Overview")
+                }
                 
-                Text("Charts visualize key metrics for each department. The Productivity Chart tracks performance trends over time. The Workload Chart compares performance to workload with a scatter plot, highlighting efficiency. The Performance Chart shows average workload versus completed tasks in a bar chart, measuring task efficiency.")
-                    .padding()
-                    .multilineTextAlignment(.center)
-                
-                Image("charts1") // Replace with your image name
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
-                    .padding()
+                // Second Page
+                ScrollView {
+                    VStack {
+                        Text("How to Create Charts")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("Charts are generated from report data, processing performance, workload, and completed tasks to create visual insights. They highlight trends, efficiency, and productivity by transforming raw data into actionable information for each department.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("charts2")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Creating Reports")
+                }
             }
-            .tabItem {
-                Text("Overview")
-            }
-            
-            // Second Page
-            VStack {
-                Text("How to Create Charts")
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
-                
-                Text("They are generated using data from reports. Information such as performance, workload, and tasks completed is processed to create visual representations that highlight key insights. These charts help analyze trends, efficiency, and productivity for each department, turning raw data into actionable information.")
-                    .padding()
-                    .multilineTextAlignment(.center)
-                
-                Image("charts2") // Replace with your image name
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
-                    .padding()
-            }
-            .tabItem {
-                Text("Creating Reports")
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Ok") {
+                        dismiss()
+                    }
+                }
             }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
     }
 }
 
