@@ -146,7 +146,7 @@ struct YearChartsView: View {
                 .padding(.top, 5)
             }
         }
-        .navigationTitle("Charts for \(year)")
+        .navigationTitle("Charts for \(String(year))")
     }
 }
 
