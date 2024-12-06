@@ -16,7 +16,7 @@ struct SettingsView: View {
                 // MARK: - Appearance
                 Section("Appearance") {
                     Toggle(isOn: $isDarkMode) {
-                        Text("Dark mode")
+                        Text(isDarkMode ? "Light mode" : "Dark mode")
                     }
                 }
                 // MARK: - Plans
