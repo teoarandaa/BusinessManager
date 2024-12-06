@@ -68,7 +68,7 @@ struct TaskView: View {
                 }
                 .sheet(isPresented: $isShowingItemSheet2) {
                     TasksInfoSheetView()
-                        .presentationDetents([.height(600)])
+                        .presentationDetents([.height(700)])
                 }
                 .sheet(item: $taskToEdit) { task in
                     UpdateTaskSheet(task: task)

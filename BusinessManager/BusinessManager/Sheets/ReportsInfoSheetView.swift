@@ -1,51 +1,66 @@
 import SwiftUI
 
 struct ReportsInfoSheetView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
-        TabView {
-            // First Page
-            VStack {
-                Text("Reports Overview")
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
+        NavigationStack {
+            TabView {
+                // First Page
+                ScrollView {
+                    VStack {
+                        Text("Reports Overview")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("Reports offer insights into performance, productivity, and progress.\n\nSecurely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("reports1")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Overview")
+                }
                 
-                Text("Reports offer insights into performance, productivity, and progress.\n\nSecurely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
-                    .padding()
-                    .multilineTextAlignment(.center)
-                
-                Image("reports1") // Replace with your image name
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
-                    .padding()
+                // Second Page
+                ScrollView {
+                    VStack {
+                        Text("How to Create Reports")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("To create accurate reports, we need the current date, department name, performance, volume of work, and tasks completed.\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("reports2")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Creating Reports")
+                }
             }
-            .tabItem {
-                Text("Overview")
-            }
-            
-            // Second Page
-            VStack {
-                Text("How to Create Reports")
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
-                
-                Text("To create accurate reports, we need the current date, department name, performance, volume of work, and tasks completed.\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
-                    .padding()
-                    .multilineTextAlignment(.center)
-                
-                Image("reports2") // Replace with your image name
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
-                    .padding()
-            }
-            .tabItem {
-                Text("Creating Reports")
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Ok") {
+                        dismiss()
+                    }
+                }
             }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
     }
 }
 
