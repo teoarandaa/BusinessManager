@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("isPushEnabled") private var isPushEnabled = false
     
     // MARK: - Sections for every setting
     var body: some View {
@@ -9,34 +10,46 @@ struct SettingsView: View {
             List {
                 // MARK: - Notifications
                 Section("Notifications") {
-                    Toggle (isOn: $isDarkMode){
-                        Text("Push notifications")
+                    Toggle(isOn: $isPushEnabled) {
+                        Label {
+                            Text("Push notifications")
+                        } icon: {
+                            Image(systemName: isPushEnabled ? "bell" : "bell.slash")
+                                .symbolEffect(.bounce, value: isPushEnabled)
+                                .contentTransition(.symbolEffect(.replace))
+                        }
                     }
                 }
                 // MARK: - Appearance
                 Section("Appearance") {
                     Toggle(isOn: $isDarkMode) {
-                        Text(isDarkMode ? "Light mode" : "Dark mode")
+                        Label {
+                            Text(isDarkMode ? "Dark mode" : "Light mode")
+                        } icon: {
+                            Image(systemName: isDarkMode ? "lightbulb.slash" : "lightbulb")
+                                .symbolEffect(.bounce, value: isDarkMode)
+                                .contentTransition(.symbolEffect(.replace))
+                        }
                     }
                 }
                 // MARK: - Plans
                 Section("Pricing") {
                     NavigationLink(destination: PlansView()) {
-                        Text("Subscription packages")
+                        Label("Subscription packages", systemImage: "creditcard")
                     }
                 }
                 // MARK: - Resources
                 Section("Resources") {
                     NavigationLink(destination: FaqView()) {
-                        Text("FAQ")
+                        Label("FAQ", systemImage: "questionmark.circle")
                     }
                     NavigationLink(destination: PrivacyView()) {
-                        Text("Privacy")
+                        Label("Privacy", systemImage: "lock")
                     }
                     Button(action: {
                         sendEmail(to: "help.businessmanager@gmail.com")
                     }) {
-                        Text("Business Manager support")
+                        Label("Business Manager support", systemImage: "envelope")
                     }
                 }
             }
@@ -44,6 +57,7 @@ struct SettingsView: View {
             .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
+    
     func sendEmail(to address: String) {
         if let url = URL(string: "mailto:\(address)") {
             UIApplication.shared.open(url)
