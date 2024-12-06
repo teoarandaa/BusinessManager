@@ -56,7 +56,7 @@ struct YearReportsView: View {
                                                 reportToEdit = report
                                             }
                                         
-                                        Image(systemName: "info.circle")
+                                        Image(systemName: "eye")
                                             .foregroundStyle(Color.accentColor)
                                             .onTapGesture {
                                                 reportToView = report
