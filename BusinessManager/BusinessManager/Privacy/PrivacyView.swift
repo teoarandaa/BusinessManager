@@ -10,6 +10,9 @@ struct PrivacyView: View {
                 NavigationLink(destination: TermsOfUseView()) {
                     Text("Terms of Use")
                 }
+                NavigationLink(destination: PrivacyPolicyView()) {
+                    Text("Privacy Policy")
+                }
             }
         }
         .navigationTitle("Privacy")
