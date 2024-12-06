@@ -1,10 +1,3 @@
-//
-//  PerformanceChartView.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 17/11/24.
-//
-
 import SwiftUI
 import SwiftData
 import Charts

@@ -1,10 +1,3 @@
-//
-//  Tasks.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 14/11/24.
-//
-
 import Foundation
 import SwiftData
 

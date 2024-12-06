@@ -1,10 +1,3 @@
-//
-//  ChartsInfoSheetView.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 28/11/24.
-//
-
 import SwiftUI
 
 struct ChartsInfoSheetView: View {

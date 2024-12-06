@@ -1,10 +1,3 @@
-//
-//  Reports.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 13/11/24.
-//
-
 import Foundation
 import SwiftData
 
