@@ -19,6 +19,10 @@ struct ChartsView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
+                .onChange(of: chart) {
+                    let generator = UISelectionFeedbackGenerator()
+                    generator.selectionChanged()
+                }
                 
                 Group {
                     switch chart {
