@@ -145,7 +145,7 @@ struct AddReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("", text: $departmentName, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -188,7 +188,7 @@ struct AddReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("", text: $annotations, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
             }
@@ -251,7 +251,7 @@ struct UpdateReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("", text: $report.departmentName, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -294,7 +294,7 @@ struct UpdateReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("", text: $report.annotations, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
             }

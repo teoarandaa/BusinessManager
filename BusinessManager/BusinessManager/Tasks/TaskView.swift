@@ -173,7 +173,7 @@ struct AddTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $title, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -185,7 +185,7 @@ struct AddTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $content, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -197,7 +197,7 @@ struct AddTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $comments, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -264,7 +264,7 @@ struct UpdateTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $task.title, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -276,7 +276,7 @@ struct UpdateTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $task.content, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -288,7 +288,7 @@ struct UpdateTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $task.comments, axis: .vertical)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
