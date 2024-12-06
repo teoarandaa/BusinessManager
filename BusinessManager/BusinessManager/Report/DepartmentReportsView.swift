@@ -51,15 +51,17 @@ struct YearReportsView: View {
                                 ForEach(reportsForMonth) { report in
                                     HStack {
                                         ReportCell(report: report)
+                                            .contentShape(Rectangle())
                                             .onTapGesture {
                                                 reportToEdit = report
                                             }
-                                        Button(action: {
-                                            reportToView = report
-                                        }) {
-                                            Image(systemName: "info.circle")
-                                                .foregroundStyle(Color.accentColor)
-                                        }
+                                        
+                                        Image(systemName: "info.circle")
+                                            .foregroundStyle(Color.accentColor)
+                                            .onTapGesture {
+                                                reportToView = report
+                                            }
+                                            .padding(.leading, 8)
                                     }
                                 }
                                 .onDelete(perform: deleteReports)
