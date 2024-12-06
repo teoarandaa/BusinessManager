@@ -1,10 +1,3 @@
-//
-//  TaskView.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 14/11/24.
-//
-
 import SwiftUI
 import SwiftData
 
