@@ -156,7 +156,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "calendar")
-                        Text("Expiring date:")
+                        Text("Expiring date")
                             .bold()
                     }
                     Spacer()
@@ -168,7 +168,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.alignleft")
-                        Text("Title:")
+                        Text("Title")
                             .bold()
                     }
                     Spacer()
@@ -180,7 +180,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "doc.text")
-                        Text("Content:")
+                        Text("Content")
                             .bold()
                     }
                     Spacer()
@@ -192,7 +192,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.bubble")
-                        Text("Comments:")
+                        Text("Comments")
                             .bold()
                     }
                     Spacer()
@@ -204,7 +204,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "flag")
-                        Text("Priority:")
+                        Text("Priority")
                             .bold()
                     }
                     Spacer()
@@ -247,7 +247,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "calendar")
-                        Text("Expiring date:")
+                        Text("Expiring date")
                             .bold()
                     }
                     Spacer()
@@ -259,7 +259,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.alignleft")
-                        Text("Title:")
+                        Text("Title")
                             .bold()
                     }
                     Spacer()
@@ -271,7 +271,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "doc.text")
-                        Text("Content:")
+                        Text("Content")
                             .bold()
                     }
                     Spacer()
@@ -283,7 +283,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.bubble")
-                        Text("Comments:")
+                        Text("Comments")
                             .bold()
                     }
                     Spacer()
@@ -295,7 +295,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "flag")
-                        Text("Priority:")
+                        Text("Priority")
                             .bold()
                     }
                     Spacer()
