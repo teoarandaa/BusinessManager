@@ -71,7 +71,7 @@ struct ReportsView: View {
                 .overlay {
                     if reports.isEmpty {
                         ContentUnavailableView(label: {
-                            Label("No Reports", systemImage: "list.bullet.rectangle.portrait")
+                            Label("No Reports", systemImage: "text.document")
                         }, description: {
                             Text("Start adding reports to see your list.")
                         }, actions: {
