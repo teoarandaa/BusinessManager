@@ -52,7 +52,17 @@ struct ReportsView: View {
                         }
                     }
                 }
-                .searchable(text: $searchText)
+                .if(!reports.isEmpty) { view in
+                    view.searchable(text: $searchText, prompt: "Search departments")
+                        .searchSuggestions {
+                            if searchText.isEmpty {
+                                ForEach(reports.prefix(3)) { report in
+                                    Text(report.departmentName)
+                                        .searchCompletion(report.departmentName)
+                                }
+                            }
+                        }
+                }
                 .navigationTitle("Departments")
                 .navigationBarTitleDisplayMode(.large)
                 .sheet(isPresented: $isShowingItemSheet1) {
@@ -251,6 +261,10 @@ struct UpdateReportSheet: View {
     @Environment(\.modelContext) var context
     @Bindable var report: Report
     
+    // Añadidas variables para el alert
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -329,19 +343,46 @@ struct UpdateReportSheet: View {
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        do {
-                            try context.save()
-                            let generator = UINotificationFeedbackGenerator()
-                            generator.notificationOccurred(.success)
-                            dismiss()
-                        } catch {
-                            print("Failed to save updated report: \(error)")
+                        let currentDate = Date()
+                        if report.date > currentDate {
+                            alertMessage = "The report date cannot be in the future."
+                            showAlert = true
                             let generator = UINotificationFeedbackGenerator()
                             generator.notificationOccurred(.error)
+                        } else {
+                            do {
+                                try context.save()
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.success)
+                                dismiss()
+                            } catch {
+                                print("Failed to save updated report: \(error)")
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.error)
+                            }
                         }
                     }
                 }
             }
+            .alert("Invalid Date", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { 
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                }
+            } message: {
+                Text(alertMessage)
+            }
+        }
+    }
+}
+
+// Extensión para el modificador condicional
+extension View {
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
         }
     }
 }

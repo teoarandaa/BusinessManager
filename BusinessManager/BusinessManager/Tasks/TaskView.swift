@@ -39,13 +39,14 @@ struct TaskView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Picker("Sort by", selection: $sortOption) {
-                    ForEach(SortOption.allCases) { option in
-                        Text(option.rawValue).tag(option)
+                if !tasks.isEmpty {
+                    Picker("Sort by", selection: $sortOption) {
+                        ForEach(SortOption.allCases) { option in
+                            Text(option.rawValue).tag(option)
+                        }
                     }
+                    .pickerStyle(MenuPickerStyle())
                 }
-                .pickerStyle(MenuPickerStyle())
-
 
                 List {
                     ForEach(sortedTasks) { task in
@@ -60,7 +61,9 @@ struct TaskView: View {
                         }
                     }
                 }
-                .searchable(text: $searchText)
+                .if(!tasks.isEmpty) { view in
+                    view.searchable(text: $searchText)
+                }
                 .navigationTitle("Tasks")
                 .navigationBarTitleDisplayMode(.large)
                 .sheet(isPresented: $isShowingItemSheet1) {

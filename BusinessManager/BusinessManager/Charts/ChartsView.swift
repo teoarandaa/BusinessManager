@@ -14,28 +14,41 @@ struct ChartsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Picker("Charts", selection: $chart) {
-                    ForEach(chartOptions, id: \.self) { option in
-                        Text(option)
+                if reports.isEmpty {
+                    ContentUnavailableView(label: {
+                        Label("No Charts", systemImage: "chart.bar")
+                    }, description: {
+                        Text("Start adding reports to see your charts.")
+                    }, actions: {
+                        Button("Go to Reports") {
+                            selectedTab = 0
+                        }
+                    })
+                    .offset(y: -60)
+                } else {
+                    Picker("Charts", selection: $chart) {
+                        ForEach(chartOptions, id: \.self) { option in
+                            Text(option)
+                        }
                     }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding()
-                .onChange(of: chart) {
-                    let generator = UISelectionFeedbackGenerator()
-                    generator.selectionChanged()
-                }
-                
-                Group {
-                    switch chart {
-                    case "Productivity":
-                        ProductivityChartView()
-                    case "Efficiency":
-                        WorkloadChartView()
-                    case "Performance":
-                        PerformanceChartView()
-                    default:
-                        Text("Select a chart")
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding()
+                    .onChange(of: chart) {
+                        let generator = UISelectionFeedbackGenerator()
+                        generator.selectionChanged()
+                    }
+                    
+                    Group {
+                        switch chart {
+                        case "Productivity":
+                            ProductivityChartView()
+                        case "Efficiency":
+                            WorkloadChartView()
+                        case "Performance":
+                            PerformanceChartView()
+                        default:
+                            Text("Select a chart")
+                        }
                     }
                 }
                 Spacer()
@@ -58,20 +71,6 @@ struct ChartsView: View {
                         Label("Yearly Charts", systemImage: "calendar")
                     }
                     .disabled(reports.isEmpty)
-                }
-            }
-            .overlay {
-                if reports.isEmpty {
-                    ContentUnavailableView(label: {
-                        Label("No Charts", systemImage: "chart.bar")
-                    }, description: {
-                        Text("Start adding reports to see your charts.")
-                    }, actions: {
-                        Button("Go to Reports") {
-                            selectedTab = 0
-                        }
-                    })
-                    .offset(y: -60)
                 }
             }
         }

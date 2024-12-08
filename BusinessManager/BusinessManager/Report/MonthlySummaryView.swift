@@ -15,34 +15,43 @@ struct MonthlySummaryView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
                 } else {
-                    List {
-                        ForEach(monthlySummary.keys.sorted(), id: \.self) { department in
-                            let summary = monthlySummary[department]!
-                            let averagePerformance = summary.reportCount > 0 ? summary.totalPerformance / summary.reportCount : 0
-                            let averageVolumeOfWork = summary.reportCount > 0 ? summary.totalVolumeOfWork / summary.reportCount : 0
-                            
-                            VStack {
-                                Text(department)
-                                    .font(.headline)
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                                    .padding(.bottom, 10)
+                    if monthlySummary.isEmpty {
+                        ContentUnavailableView(label: {
+                            Label("No Monthly Reports", systemImage: "calendar.badge.exclamationmark")
+                        }, description: {
+                            Text("There are no reports for the current month.")
+                        })
+                        .offset(y: -60)
+                    } else {
+                        List {
+                            ForEach(monthlySummary.keys.sorted(), id: \.self) { department in
+                                let summary = monthlySummary[department]!
+                                let averagePerformance = summary.reportCount > 0 ? summary.totalPerformance / summary.reportCount : 0
+                                let averageVolumeOfWork = summary.reportCount > 0 ? summary.totalVolumeOfWork / summary.reportCount : 0
                                 
-                                HStack {
-                                    CircularProgressBar(percentage: averagePerformance, title: "Efficiency")
-                                    Spacer()
-                                    CircularProgressBar(percentage: averageVolumeOfWork, title: "Workload")
-                                    Spacer()
-                                    VStack {
-                                        Text("\(summary.finishedTasks)")
-                                            .font(.title)
-                                            .bold()
-                                        Text("Finished Tasks")
-                                            .font(.caption2)
+                                VStack {
+                                    Text(department)
+                                        .font(.headline)
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                        .padding(.bottom, 10)
+                                    
+                                    HStack {
+                                        CircularProgressBar(percentage: averagePerformance, title: "Efficiency")
+                                        Spacer()
+                                        CircularProgressBar(percentage: averageVolumeOfWork, title: "Workload")
+                                        Spacer()
+                                        VStack {
+                                            Text("\(summary.finishedTasks)")
+                                                .font(.title)
+                                                .bold()
+                                            Text("Finished Tasks")
+                                                .font(.caption2)
+                                        }
                                     }
+                                    .padding(.bottom, 10)
                                 }
-                                .padding(.bottom, 10)
+                                .padding()
                             }
-                            .padding()
                         }
                     }
                 }
