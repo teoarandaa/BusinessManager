@@ -12,7 +12,7 @@ struct MainTabView: View {
                 }
                 .tag(0)
             
-            ChartsView()
+            ChartsView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Charts", systemImage: "chart.bar")
                 }
