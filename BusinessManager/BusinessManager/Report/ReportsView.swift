@@ -434,12 +434,6 @@ struct DepartmentCell: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .font(.caption)
-                .foregroundStyle(.secondary)
         }
         .contentShape(Rectangle())
         .padding(.vertical, 4)

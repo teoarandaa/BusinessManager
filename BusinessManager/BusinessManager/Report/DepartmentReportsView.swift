@@ -32,40 +32,29 @@ struct YearReportsView: View {
     var body: some View {
         let reportsByMonth = Dictionary(grouping: reports, by: { Calendar.current.component(.month, from: $0.date) })
         let months = reportsByMonth.keys.sorted()
-
-        VStack {
-            Picker("Select Month", selection: $selectedMonth) {
-                Text("All").tag(nil as Int?)
-                ForEach(months, id: \.self) { month in
-                    Text(monthName(for: month)).tag(month as Int?)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-            .padding()
-
-            List {
-                ForEach(months, id: \.self) { month in
-                    if selectedMonth == nil || selectedMonth == month {
-                        if let reportsForMonth = reportsByMonth[month] {
-                            Section(header: Text(monthName(for: month))) {
-                                ForEach(reportsForMonth) { report in
-                                    HStack {
-                                        ReportCell(report: report)
-                                            .contentShape(Rectangle())
-                                            .onTapGesture {
-                                                reportToEdit = report
-                                            }
-                                        
-                                        Image(systemName: "eye")
-                                            .foregroundStyle(Color.accentColor)
-                                            .onTapGesture {
-                                                reportToView = report
-                                            }
-                                            .padding(.leading, 8)
-                                    }
+        
+        List {
+            ForEach(months, id: \.self) { month in
+                if selectedMonth == nil || selectedMonth == month {
+                    if let reportsForMonth = reportsByMonth[month] {
+                        Section(header: Text(monthName(for: month))) {
+                            ForEach(reportsForMonth) { report in
+                                HStack {
+                                    ReportCell(report: report)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            reportToEdit = report
+                                        }
+                                    
+                                    Image(systemName: "eye")
+                                        .foregroundStyle(Color.accentColor)
+                                        .onTapGesture {
+                                            reportToView = report
+                                        }
+                                        .padding(.leading, 8)
                                 }
-                                .onDelete(perform: deleteReports)
                             }
+                            .onDelete(perform: deleteReports)
                         }
                     }
                 }
@@ -73,6 +62,22 @@ struct YearReportsView: View {
         }
         .navigationTitle("Reports for \(String(year))")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button("All") {
+                        selectedMonth = nil
+                    }
+                    ForEach(months, id: \.self) { month in
+                        Button(monthName(for: month)) {
+                            selectedMonth = month
+                        }
+                    }
+                } label: {
+                    Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                }
+            }
+        }
         .sheet(item: $reportToEdit) { report in
             UpdateReportSheet(report: report)
         }
