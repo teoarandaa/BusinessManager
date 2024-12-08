@@ -58,6 +58,8 @@ struct TaskView: View {
                     .onDelete { indexSet in
                         for index in indexSet {
                             context.delete(sortedTasks[index])
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.success)
                         }
                     }
                 }
@@ -138,6 +140,7 @@ struct TasksCell: View {
                 )
                 .bold()
         }
+        .contentShape(Rectangle())
     }
 }
 
