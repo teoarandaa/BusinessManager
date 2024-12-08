@@ -7,10 +7,22 @@ struct TermsOfUseView: View {
         NavigationView {
             ScrollView(.vertical) {
                 VStack(alignment: .leading) {
+                    // Terms Icon
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.accentColor)
+                        .frame(height: 150)
+                        .overlay(
+                            Image(systemName: "text.document")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.white)
+                                .padding(50)
+                        )
+                        .padding(.bottom, 20)
                     Text("1. Acceptance of Terms\n")
                         .bold()
                         
-                    Text("By downloading or using the BusinessManager mobile application, you agree to these Terms of Use. If you do not agree with these terms, please do not use the app\n")
+                    Text("By downloading or using the Business Manager mobile application, you agree to these Terms of Use. If you do not agree with these terms, please do not use the app\n")
                         
                     Text("2. Description of Service\n")
                         .bold()
@@ -38,7 +50,7 @@ struct TermsOfUseView: View {
                     Text("4. Intellectual Property\n")
                         .bold()
                         
-                    Text("All content within the App, including but not limited to text, graphics, logos, and software, is owned by or licensed to CleanCode and is protected by applicable intellectual property laws. Unauthorized use of any content from the App is prohibited.\n")
+                    Text("All content within the App, including but not limited to text, graphics, logos, and software, is owned by or licensed to Business Manager and is protected by applicable intellectual property laws. Unauthorized use of any content from the App is prohibited.\n")
                         
                     Text("5. Limitation of Liability\n")
                         .bold()
