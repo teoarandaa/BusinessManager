@@ -393,12 +393,37 @@ struct DepartmentCell: View {
     let departmentName: String
     let reportsCount: Int
     @State private var isEditingDepartment = false
+    @AppStorage("departmentIcons") private var iconStorage: String = "{}"
     @Environment(\.modelContext) var context
-    @Query var reports: [Report]
+    @Query(sort: \Report.date) var reports: [Report]
+    
+    var currentIcon: String {
+        let dictionary = (try? JSONDecoder().decode([String: String].self, 
+            from: Data(iconStorage.utf8))) ?? [:]
+        return dictionary[departmentName] ?? "building.2"
+    }
+    
+    let icons = [
+        "building.2",
+        "building.columns",
+        "building",
+        "house",
+        "briefcase",
+        "folder",
+        "doc",
+        "chart.bar",
+        "gear",
+        "wrench.and.screwdriver",
+        "hammer",
+        "scissors",
+        "cart",
+        "box.truck",
+        "creditcard"
+    ]
     
     var body: some View {
         HStack {
-            Image(systemName: "building.2")
+            Image(systemName: currentIcon)
                 .foregroundStyle(.accent)
                 .font(.title3)
             
@@ -422,7 +447,25 @@ struct DepartmentCell: View {
             Button {
                 isEditingDepartment = true
             } label: {
-                Label("Edit Department", systemImage: "pencil")
+                Label("Change Department Name", systemImage: "pencil")
+            }
+            
+            Menu("Change Icon") {
+                ForEach(icons, id: \.self) { icon in
+                    Button {
+                        var dictionary = (try? JSONDecoder().decode([String: String].self, 
+                            from: Data(iconStorage.utf8))) ?? [:]
+                        dictionary[departmentName] = icon
+                        if let encoded = try? JSONEncoder().encode(dictionary),
+                           let string = String(data: encoded, encoding: .utf8) {
+                            iconStorage = string
+                        }
+                        let generator = UISelectionFeedbackGenerator()
+                        generator.selectionChanged()
+                    } label: {
+                        Label(icon, systemImage: icon)
+                    }
+                }
             }
         }
         .sheet(isPresented: $isEditingDepartment) {
