@@ -136,9 +136,9 @@ struct AddReportSheet: View {
     
     @State private var date: Date = .now
     @State private var departmentName: String = ""
-    @State private var performanceMark: Int = 0
-    @State private var volumeOfWorkMark: Int = 0
-    @State private var numberOfFinishedTasks: Int = 0
+    @State private var performanceMark: String = ""
+    @State private var volumeOfWorkMark: String = ""
+    @State private var numberOfFinishedTasks: String = ""
     @State private var annotations: String = ""
     
     // State variables for alerts
@@ -173,10 +173,11 @@ struct AddReportSheet: View {
                     Text("Performance")
                         .bold()
                     Spacer()
-                    TextField("", value: $performanceMark, format: .number)
-                        .keyboardType(.decimalPad)
+                    TextField("0-100", text: $performanceMark)
+                        .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(performanceMark.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack {
@@ -184,10 +185,11 @@ struct AddReportSheet: View {
                     Text("Volume of Work")
                         .bold()
                     Spacer()
-                    TextField("", value: $volumeOfWorkMark, format: .number)
-                        .keyboardType(.decimalPad)
+                    TextField("0-100", text: $volumeOfWorkMark)
+                        .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(volumeOfWorkMark.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack {
@@ -195,10 +197,11 @@ struct AddReportSheet: View {
                     Text("Finished Tasks")
                         .bold()
                     Spacer()
-                    TextField("", value: $numberOfFinishedTasks, format: .number)
-                        .keyboardType(.decimalPad)
+                    TextField("Number", text: $numberOfFinishedTasks)
+                        .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack(alignment: .top) {
@@ -230,7 +233,14 @@ struct AddReportSheet: View {
                             let generator = UINotificationFeedbackGenerator()
                             generator.notificationOccurred(.error)
                         } else {
-                            let newReport = Report(date: date, departmentName: departmentName, performanceMark: performanceMark, volumeOfWorkMark: volumeOfWorkMark, numberOfFinishedTasks: numberOfFinishedTasks, annotations: annotations)
+                            let newReport = Report(
+                                date: date,
+                                departmentName: departmentName,
+                                performanceMark: Int(performanceMark) ?? 0,
+                                volumeOfWorkMark: Int(volumeOfWorkMark) ?? 0,
+                                numberOfFinishedTasks: Int(numberOfFinishedTasks) ?? 0,
+                                annotations: annotations
+                            )
                             context.insert(newReport)
                             do {
                                 try context.save()
@@ -267,6 +277,10 @@ struct UpdateReportSheet: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     
+    @State private var performanceMark: String = ""
+    @State private var volumeOfWorkMark: String = ""
+    @State private var numberOfFinishedTasks: String = ""
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -285,7 +299,7 @@ struct UpdateReportSheet: View {
                     Text("Department name")
                         .bold()
                     Spacer()
-                    TextField("", text: $report.departmentName, axis: .vertical)
+                    TextField("Name", text: $report.departmentName, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
@@ -295,10 +309,11 @@ struct UpdateReportSheet: View {
                     Text("Performance")
                         .bold()
                     Spacer()
-                    TextField("", value: $report.performanceMark, format: .number)
-                        .keyboardType(.decimalPad)
+                    TextField("0-100", text: $performanceMark)
+                        .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(performanceMark.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack {
@@ -306,10 +321,11 @@ struct UpdateReportSheet: View {
                     Text("Volume of Work")
                         .bold()
                     Spacer()
-                    TextField("", value: $report.volumeOfWorkMark, format: .number)
-                        .keyboardType(.decimalPad)
+                    TextField("0-100", text: $volumeOfWorkMark)
+                        .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(volumeOfWorkMark.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack {
@@ -317,10 +333,11 @@ struct UpdateReportSheet: View {
                     Text("Finished Tasks")
                         .bold()
                     Spacer()
-                    TextField("", value: $report.numberOfFinishedTasks, format: .number)
-                        .keyboardType(.decimalPad)
+                    TextField("Quantity", text: $numberOfFinishedTasks)
+                        .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack(alignment: .top) {
@@ -328,7 +345,7 @@ struct UpdateReportSheet: View {
                     Text("Annotations")
                         .bold()
                     Spacer()
-                    TextField("", text: $report.annotations, axis: .vertical)
+                    TextField("Extra info...", text: $report.annotations, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
@@ -345,6 +362,9 @@ struct UpdateReportSheet: View {
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save") {
+                        report.performanceMark = Int(performanceMark) ?? 0
+                        report.volumeOfWorkMark = Int(volumeOfWorkMark) ?? 0
+                        report.numberOfFinishedTasks = Int(numberOfFinishedTasks) ?? 0
                         let currentDate = Date()
                         if report.date > currentDate {
                             alertMessage = "The report date cannot be in the future."
@@ -373,6 +393,11 @@ struct UpdateReportSheet: View {
                 }
             } message: {
                 Text(alertMessage)
+            }
+            .onAppear {
+                performanceMark = String(report.performanceMark)
+                volumeOfWorkMark = String(report.volumeOfWorkMark)
+                numberOfFinishedTasks = String(report.numberOfFinishedTasks)
             }
         }
     }
