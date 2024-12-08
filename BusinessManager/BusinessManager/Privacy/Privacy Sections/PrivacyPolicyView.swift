@@ -15,7 +15,7 @@ struct PrivacyPolicyView: View {
                         .bold()
                     
                     Text("All data will be securely stored on your device. If at any time we change our Privacy Policy, we will notify you with a notification.\n")
-                        .font(.subheadline)
+                        .font(.footnote)
                         .foregroundStyle(.secondary)
                         
                     Text("Contact Us\n")
