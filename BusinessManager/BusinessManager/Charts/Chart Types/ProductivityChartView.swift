@@ -63,7 +63,7 @@ struct ProductivityChartView: View {
                 }
             }
         }
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, prompt: "Search departments")
     }
 }
 
