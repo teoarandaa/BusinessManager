@@ -404,21 +404,21 @@ struct DepartmentCell: View {
     }
     
     let icons = [
-        "person.2.wave.2",
-        "chart.pie",
-        "megaphone",
-        "cart",
-        "wrench.and.screwdriver",
-        "desktopcomputer",
-        "text.page.badge.magnifyingglass",
-        "gearshape",
-        "lightbulb",
-        "bubble.left.and.bubble.right",
-        "pencil.and.outline",
-        "shield.checkerboard",
-        "truck.box",
-        "checkmark.seal",
-        "target"
+        ("person.2.wave.2", "Human Resources"),
+        ("chart.pie", "Analytics"),
+        ("megaphone", "Marketing"),
+        ("cart", "Sales"),
+        ("wrench.and.screwdriver", "Maintenance"),
+        ("desktopcomputer", "IT"),
+        ("text.page.badge.magnifyingglass", "Research"),
+        ("gearshape", "Operations"),
+        ("lightbulb", "Innovation"),
+        ("bubble.left.and.bubble.right", "Communication"),
+        ("pencil.and.outline", "Design"),
+        ("shield.checkerboard", "Security"),
+        ("truck.box", "Logistics"),
+        ("checkmark.seal", "Quality"),
+        ("target", "Strategy")
     ]
     
     var body: some View {
@@ -445,11 +445,11 @@ struct DepartmentCell: View {
             }
             
             Menu("Change Icon") {
-                ForEach(icons, id: \.self) { icon in
+                ForEach(icons, id: \.0) { icon in
                     Button {
                         var dictionary = (try? JSONDecoder().decode([String: String].self, 
                             from: Data(iconStorage.utf8))) ?? [:]
-                        dictionary[departmentName] = icon
+                        dictionary[departmentName] = icon.0
                         if let encoded = try? JSONEncoder().encode(dictionary),
                            let string = String(data: encoded, encoding: .utf8) {
                             iconStorage = string
@@ -457,7 +457,7 @@ struct DepartmentCell: View {
                         let generator = UISelectionFeedbackGenerator()
                         generator.selectionChanged()
                     } label: {
-                        Label(icon, systemImage: icon)
+                        Label(icon.1, systemImage: icon.0)
                     }
                 }
             }

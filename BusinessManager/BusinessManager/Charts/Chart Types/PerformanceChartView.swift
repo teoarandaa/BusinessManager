@@ -93,7 +93,7 @@ struct PerformanceChartView: View {
                 }
             }
         }
-        .searchable(text: $searchText) // Añadir la barra de búsqueda
+        .searchable(text: $searchText, prompt: "Search departments") // Añadir la barra de búsqueda
     }
 }
 

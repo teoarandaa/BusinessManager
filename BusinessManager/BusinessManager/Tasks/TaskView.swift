@@ -54,7 +54,7 @@ struct TaskView: View {
                 }
             }
             .if(!tasks.isEmpty) { view in
-                view.searchable(text: $searchText)
+                view.searchable(text: $searchText, prompt: "Search tasks")
             }
             .navigationTitle("Tasks")
             .navigationBarTitleDisplayMode(.large)
