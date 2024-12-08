@@ -404,21 +404,21 @@ struct DepartmentCell: View {
     }
     
     let icons = [
-        "building.2",
-        "building.columns",
-        "building",
-        "house",
-        "briefcase",
-        "folder",
-        "doc",
-        "chart.bar",
-        "gear",
-        "wrench.and.screwdriver",
-        "hammer",
-        "scissors",
+        "person.2.wave.2",
+        "chart.pie",
+        "megaphone",
         "cart",
-        "box.truck",
-        "creditcard"
+        "wrench.and.screwdriver",
+        "desktopcomputer",
+        "text.page.badge.magnifyingglass",
+        "gearshape",
+        "lightbulb",
+        "bubble.left.and.bubble.right",
+        "pencil.and.outline",
+        "shield.checkerboard",
+        "truck.box",
+        "checkmark.seal",
+        "target"
     ]
     
     var body: some View {
