@@ -392,6 +392,9 @@ extension View {
 struct DepartmentCell: View {
     let departmentName: String
     let reportsCount: Int
+    @State private var isEditingDepartment = false
+    @Environment(\.modelContext) var context
+    @Query var reports: [Report]
     
     var body: some View {
         HStack {
@@ -406,8 +409,77 @@ struct DepartmentCell: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
         .contentShape(Rectangle())
         .padding(.vertical, 4)
+        .contextMenu {
+            Button {
+                isEditingDepartment = true
+            } label: {
+                Label("Edit Department", systemImage: "pencil")
+            }
+        }
+        .sheet(isPresented: $isEditingDepartment) {
+            EditDepartmentSheet(departmentName: departmentName, reports: reports)
+        }
+    }
+}
+
+struct EditDepartmentSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) var context
+    let departmentName: String
+    let reports: [Report]
+    
+    @State private var newDepartmentName: String = ""
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Department Name", text: $newDepartmentName)
+                }
+            }
+            .navigationTitle("Edit Department")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Save") {
+                        // Actualizar el nombre del departamento en todos los reports asociados
+                        for report in reports where report.departmentName == departmentName {
+                            report.departmentName = newDepartmentName
+                        }
+                        
+                        do {
+                            try context.save()
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.success)
+                            dismiss()
+                        } catch {
+                            print("Error saving context: \(error)")
+                            let generator = UINotificationFeedbackGenerator()
+                            generator.notificationOccurred(.error)
+                        }
+                    }
+                    .disabled(newDepartmentName.isEmpty)
+                }
+            }
+            .onAppear {
+                newDepartmentName = departmentName
+            }
+        }
     }
 }
