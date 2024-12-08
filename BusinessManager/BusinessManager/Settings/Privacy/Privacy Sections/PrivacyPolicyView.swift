@@ -7,8 +7,21 @@ struct PrivacyPolicyView: View {
         NavigationView {
             ScrollView(.vertical) {
                 VStack(alignment: .leading) {
+                    // Privacy Icon
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.accentColor)
+                        .frame(height: 150)
+                        .overlay(
+                            Image(systemName: "lock.iphone")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.white)
+                                .padding(50)
+                        )
+                        .padding(.bottom, 20)
                     
                     Text("Last updated: December 06, 2024\n")
+                        .font(.footnote)
                     
                     Text("Business Manager for SwiftUI does not collect any data about you.\n")
                         .font(.title2)
