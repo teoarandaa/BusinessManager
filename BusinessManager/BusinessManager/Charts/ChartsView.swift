@@ -57,6 +57,7 @@ struct ChartsView: View {
                     NavigationLink(destination: YearlyChartsView()) {
                         Label("Yearly Charts", systemImage: "calendar")
                     }
+                    .disabled(reports.isEmpty)
                 }
             }
             .overlay {
