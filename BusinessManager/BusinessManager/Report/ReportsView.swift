@@ -40,8 +40,10 @@ struct ReportsView: View {
                         id: \.key
                     ) { department, departmentReports in
                         NavigationLink(destination: DepartmentReportsView(departmentReports: departmentReports)) {
-                            Text(department)
-                                .font(.headline)
+                            DepartmentCell(
+                                departmentName: department,
+                                reportsCount: departmentReports.count
+                            )
                         }
                     }
                     .onDelete { indexSet in
@@ -384,5 +386,28 @@ extension View {
         } else {
             self
         }
+    }
+}
+
+struct DepartmentCell: View {
+    let departmentName: String
+    let reportsCount: Int
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "building.2")
+                .foregroundStyle(.accent)
+                .font(.title3)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(departmentName)
+                    .font(.headline)
+                Text("\(reportsCount) reports")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .contentShape(Rectangle())
+        .padding(.vertical, 4)
     }
 }
