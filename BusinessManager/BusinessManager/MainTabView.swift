@@ -11,8 +11,8 @@ struct MainTabView: View {
                     Label("Reports", systemImage: "text.document")
                 }
                 .tag(0)
-
-                GoalsView()  // <- Añadir aquí
+            
+            GoalsView()
                 .tabItem {
                     Label("Goals", systemImage: "target")
                 }
@@ -29,12 +29,6 @@ struct MainTabView: View {
                     Label("Tasks", systemImage: "list.bullet.clipboard")
                 }
                 .tag(3)
-            
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
-                .tag(4)
         }
     }
 }

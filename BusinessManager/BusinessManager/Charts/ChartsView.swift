@@ -10,6 +10,7 @@ struct ChartsView: View {
     @State private var showingBottomSheet: Bool = false
     @Query(sort: \Report.departmentName) var reports: [Report]
     @Binding var selectedTab: Int
+    @State private var isShowingSettings = false
 
     var body: some View {
         NavigationStack {
@@ -65,6 +66,11 @@ struct ChartsView: View {
                     }) {
                         Label("Information", systemImage: "info.circle")
                     }
+                    Button(action: {
+                        isShowingSettings = true
+                    }) {
+                        Label("Settings", systemImage: "gear")
+                    }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     NavigationLink(destination: YearlyChartsView()) {
@@ -72,6 +78,9 @@ struct ChartsView: View {
                     }
                     .disabled(reports.isEmpty)
                 }
+            }
+            .sheet(isPresented: $isShowingSettings) {
+                SettingsView()
             }
         }
     }
