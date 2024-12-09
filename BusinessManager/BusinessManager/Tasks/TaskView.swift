@@ -226,10 +226,10 @@ struct AddTaskSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { 
+                    Button("Cancel") {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
-                        dismiss() 
+                        dismiss()
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
