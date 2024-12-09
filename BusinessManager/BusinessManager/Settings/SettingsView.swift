@@ -3,10 +3,11 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("isPushEnabled") private var isPushEnabled = false
+    @Environment(\.dismiss) private var dismiss
     
     // MARK: - Sections for every setting
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 // MARK: - Notifications
                 Section("Notifications") {
@@ -54,8 +55,15 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
-            .preferredColorScheme(isDarkMode ? .dark : .light)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
         }
+        .preferredColorScheme(isDarkMode ? .dark : .light)
     }
     
     func sendEmail(to address: String) {

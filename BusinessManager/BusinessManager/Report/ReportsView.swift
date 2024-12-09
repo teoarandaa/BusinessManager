@@ -12,6 +12,7 @@ struct ReportsView: View {
     @State private var showingBottomSheet: Bool = false
     @State private var isShowingMonthlySummary = false
     @State private var searchText = ""
+    @State private var isShowingSettings = false
     
     var filteredReports: [Report] {
         if searchText.isEmpty {
@@ -81,6 +82,9 @@ struct ReportsView: View {
                 .sheet(isPresented: $isShowingMonthlySummary) {
                     MonthlySummaryView()
                 }
+                .sheet(isPresented: $isShowingSettings) {
+                    SettingsView()
+                }
                 .overlay {
                     if reports.isEmpty {
                         ContentUnavailableView(label: {
@@ -105,6 +109,9 @@ struct ReportsView: View {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button("Information", systemImage: "info.circle") {
                         isShowingItemSheet2 = true
+                    }
+                    Button("Settings", systemImage: "gear") {
+                        isShowingSettings = true
                     }
                 }
             }
