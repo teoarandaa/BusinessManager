@@ -7,6 +7,7 @@ struct ReportsView: View {
     @State private var isShowingItemSheet2 = false
     @Environment(\.modelContext) var context
     @Query(sort: \Report.departmentName) var reports: [Report]
+    @Query var goals: [Goal]
     @State private var reportToEdit: Report?
     @State private var showingBottomSheet: Bool = false
     @State private var isShowingMonthlySummary = false
@@ -24,6 +25,17 @@ struct ReportsView: View {
         NavigationStack {
             VStack {
                 List {
+                    Section {
+                        if !filteredReports.isEmpty {
+                            Button("Monthly Summary") {
+                                isShowingMonthlySummary = true
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(Color.accentColor)
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                    
                     ForEach(
                         Dictionary(grouping: filteredReports, by: { $0.departmentName })
                             .sorted(by: { $0.key < $1.key }),
@@ -38,9 +50,8 @@ struct ReportsView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            context.delete(filteredReports[index])
-                            let generator = UINotificationFeedbackGenerator()
-                            generator.notificationOccurred(.success)
+                            let reportToDelete = filteredReports[index]
+                            deleteReport(reportToDelete)
                         }
                     }
                 }
@@ -99,6 +110,51 @@ struct ReportsView: View {
             }
         }
     }
+    
+    private func deleteReport(_ report: Report) {
+        context.delete(report)
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error deleting report: \(error)")
+            return
+        }
+        
+        let departmentGoals = goals.filter { goal in
+            goal.department == report.departmentName && 
+            goal.status == .inProgress
+        }
+        
+        let remainingReports = reports.filter { 
+            $0.departmentName == report.departmentName && 
+            !$0.isDeleted
+        }
+        
+        for goal in departmentGoals {
+            switch goal.type {
+            case .tasks:
+                goal.currentValue -= report.numberOfFinishedTasks
+                if goal.currentValue < 0 { goal.currentValue = 0 }
+                
+            case .performance:
+                goal.currentValue = remainingReports.isEmpty ? 0 : (remainingReports.map(\.performanceMark).max() ?? 0)
+                
+            case .volume:
+                goal.currentValue = remainingReports.isEmpty ? 0 : (remainingReports.map(\.volumeOfWorkMark).max() ?? 0)
+            }
+        }
+        
+        do {
+            try context.save()
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        } catch {
+            print("Error saving goals after report deletion: \(error)")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+        }
+    }
 }
 
 #Preview {
@@ -123,6 +179,7 @@ struct ReportCell: View {
 struct AddReportSheet: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
+    @Query var goals: [Goal]
     
     @State private var date: Date = .now
     @State private var departmentName: String = ""
@@ -130,8 +187,6 @@ struct AddReportSheet: View {
     @State private var volumeOfWorkMark: String = ""
     @State private var numberOfFinishedTasks: String = ""
     @State private var annotations: String = ""
-    
-    // State variables for alerts
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     
@@ -216,33 +271,7 @@ struct AddReportSheet: View {
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
-                        let currentDate = Date()
-                        if date > currentDate {
-                            alertMessage = "The report date cannot be in the future."
-                            showAlert = true
-                            let generator = UINotificationFeedbackGenerator()
-                            generator.notificationOccurred(.error)
-                        } else {
-                            let newReport = Report(
-                                date: date,
-                                departmentName: departmentName,
-                                performanceMark: Int(performanceMark) ?? 0,
-                                volumeOfWorkMark: Int(volumeOfWorkMark) ?? 0,
-                                numberOfFinishedTasks: Int(numberOfFinishedTasks) ?? 0,
-                                annotations: annotations
-                            )
-                            context.insert(newReport)
-                            do {
-                                try context.save()
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.success)
-                                dismiss()
-                            } catch {
-                                print("Failed to save report: \(error)")
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.error)
-                            }
-                        }
+                        saveReport()
                     }
                 }
             }
@@ -256,20 +285,85 @@ struct AddReportSheet: View {
             }
         }
     }
+    
+    private func saveReport() {
+        guard let performance = Int(performanceMark),
+              let volume = Int(volumeOfWorkMark),
+              let tasks = Int(numberOfFinishedTasks) else {
+            showAlert = true
+            alertMessage = "Please enter valid numbers"
+            return
+        }
+        
+        let report = Report(
+            date: date,
+            departmentName: departmentName,
+            performanceMark: performance,
+            volumeOfWorkMark: volume,
+            numberOfFinishedTasks: tasks,
+            annotations: annotations
+        )
+        
+        context.insert(report)
+        
+        updateRelatedGoals(
+            department: departmentName,
+            performance: performance,
+            volume: volume,
+            tasks: tasks
+        )
+        
+        do {
+            try context.save()
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            print("Error saving report: \(error)")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+        }
+    }
+    
+    private func updateRelatedGoals(department: String, performance: Int, volume: Int, tasks: Int) {
+        let activeGoals = goals.filter { goal in
+            goal.status == .inProgress && goal.department == department
+        }
+        
+        for goal in activeGoals {
+            switch goal.type {
+            case .performance:
+                goal.currentValue = max(goal.currentValue, performance)
+            case .volume:
+                goal.currentValue = max(goal.currentValue, volume)
+            case .tasks:
+                goal.currentValue += tasks
+            }
+        }
+    }
 }
 
 struct UpdateReportSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var context
+    @Query var goals: [Goal]
+    @Query var reports: [Report]
     @Bindable var report: Report
     
-    // Añadidas variables para el alert
-    @State private var showAlert: Bool = false
-    @State private var alertMessage: String = ""
+    @State private var performanceMark: String
+    @State private var volumeOfWorkMark: String
+    @State private var numberOfFinishedTasks: String
+    @State private var annotations: String
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
-    @State private var performanceMark: String = ""
-    @State private var volumeOfWorkMark: String = ""
-    @State private var numberOfFinishedTasks: String = ""
+    init(report: Report) {
+        self.report = report
+        _performanceMark = State(initialValue: String(report.performanceMark))
+        _volumeOfWorkMark = State(initialValue: String(report.volumeOfWorkMark))
+        _numberOfFinishedTasks = State(initialValue: String(report.numberOfFinishedTasks))
+        _annotations = State(initialValue: report.annotations)
+    }
     
     var body: some View {
         NavigationStack {
@@ -343,52 +437,77 @@ struct UpdateReportSheet: View {
             .navigationTitle("Update Report")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { 
-                        let generator = UIImpactFeedbackGenerator(style: .light)
-                        generator.impactOccurred()
-                        dismiss() 
-                    }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") { dismiss() }
                 }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        report.performanceMark = Int(performanceMark) ?? 0
-                        report.volumeOfWorkMark = Int(volumeOfWorkMark) ?? 0
-                        report.numberOfFinishedTasks = Int(numberOfFinishedTasks) ?? 0
-                        let currentDate = Date()
-                        if report.date > currentDate {
-                            alertMessage = "The report date cannot be in the future."
-                            showAlert = true
-                            let generator = UINotificationFeedbackGenerator()
-                            generator.notificationOccurred(.error)
-                        } else {
-                            do {
-                                try context.save()
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.success)
-                                dismiss()
-                            } catch {
-                                print("Failed to save updated report: \(error)")
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.error)
-                            }
-                        }
+                        updateReport()
                     }
                 }
             }
-            .alert("Invalid Date", isPresented: $showAlert) {
-                Button("OK", role: .cancel) { 
-                    let generator = UIImpactFeedbackGenerator(style: .light)
-                    generator.impactOccurred()
-                }
+            .alert("Error", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
             } message: {
                 Text(alertMessage)
             }
-            .onAppear {
-                performanceMark = String(report.performanceMark)
-                volumeOfWorkMark = String(report.volumeOfWorkMark)
-                numberOfFinishedTasks = String(report.numberOfFinishedTasks)
+        }
+    }
+    
+    private func updateReport() {
+        guard let performance = Int(performanceMark),
+              let volume = Int(volumeOfWorkMark),
+              let tasks = Int(numberOfFinishedTasks) else {
+            alertMessage = "Please enter valid numbers"
+            showAlert = true
+            return
+        }
+        
+        let oldTasks = report.numberOfFinishedTasks
+        
+        report.performanceMark = performance
+        report.volumeOfWorkMark = volume
+        report.numberOfFinishedTasks = tasks
+        report.annotations = annotations
+        
+        let departmentGoals = goals.filter { goal in
+            goal.department == report.departmentName && 
+            goal.status == .inProgress
+        }
+        
+        for goal in departmentGoals {
+            switch goal.type {
+            case .tasks:
+                goal.currentValue -= oldTasks
+                goal.currentValue += tasks
+                if goal.currentValue < 0 { goal.currentValue = 0 }
+                
+            case .performance:
+                let maxPerformance = reports
+                    .filter { $0.departmentName == report.departmentName }
+                    .map(\.performanceMark)
+                    .max() ?? 0
+                goal.currentValue = maxPerformance
+                
+            case .volume:
+                let maxVolume = reports
+                    .filter { $0.departmentName == report.departmentName }
+                    .map(\.volumeOfWorkMark)
+                    .max() ?? 0
+                goal.currentValue = maxVolume
             }
+        }
+        
+        do {
+            try context.save()
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            alertMessage = "Error saving changes: \(error.localizedDescription)"
+            showAlert = true
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
         }
     }
 }
