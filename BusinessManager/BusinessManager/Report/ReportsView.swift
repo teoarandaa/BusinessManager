@@ -24,16 +24,6 @@ struct ReportsView: View {
         NavigationStack {
             VStack {
                 List {
-                    Section {
-                        if !filteredReports.isEmpty {
-                            Button("Monthly Summary") {
-                                isShowingMonthlySummary = true
-                            }
-                            .buttonStyle(.plain)
-                            .foregroundStyle(Color.accentColor)
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
                     ForEach(
                         Dictionary(grouping: filteredReports, by: { $0.departmentName })
                             .sorted(by: { $0.key < $1.key }),
