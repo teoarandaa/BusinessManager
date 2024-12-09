@@ -9,7 +9,8 @@ struct BusinessManagerApp: App {
         do {
             let schema = Schema([
                 Report.self,
-                Goal.self
+                Goal.self,
+                Task.self
             ])
             let modelConfiguration = ModelConfiguration(schema: schema)
             container = try ModelContainer(for: schema, configurations: [modelConfiguration])
