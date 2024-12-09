@@ -6,9 +6,8 @@ struct TaskView: View {
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @Environment(\.modelContext) var context
-    @Query(sort: \Task.date) var tasks: [Task]
+    @Query(sort: [SortDescriptor(\Task.date)]) private var tasks: [Task]
     @State private var taskToEdit: Task?
-    @State private var showingBottomSheet: Bool = false
     @State private var searchText = ""
     @State private var sortOption: SortOption = .date
 
@@ -20,11 +19,15 @@ struct TaskView: View {
     }
     
     var sortedTasks: [Task] {
+        let filtered = filteredTasks
         switch sortOption {
         case .date:
-            return filteredTasks.sorted(by: { $0.date < $1.date })
+            return filtered.sorted { $0.date > $1.date }
         case .priority:
-            return filteredTasks.sorted(by: { $0.priority < $1.priority })
+            let priorityOrder = ["P1": 0, "P2": 1, "P3": 2]
+            return filtered.sorted { 
+                (priorityOrder[$0.priority] ?? 0) < (priorityOrder[$1.priority] ?? 0)
+            }
         }
     }
     
@@ -155,6 +158,30 @@ struct AddTaskSheet: View {
     
     let priorityOptions = ["P3", "P2", "P1"]
     
+    private func saveTask() {
+        let task = Task(
+            date: date,
+            title: title,
+            content: content,
+            comments: comments,
+            priority: priority
+        )
+        
+        context.insert(task)
+        
+        do {
+            try context.save()
+            print("Task saved: \(task.id) - \(task.title)")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            print("Error saving task: \(error)")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -226,20 +253,17 @@ struct AddTaskSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { 
+                    Button("Cancel") {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
-                        dismiss() 
+                        dismiss()
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Save") {
-                        let task = Task(date: date, title: title, content: content, comments: comments, priority: priority)
-                        context.insert(task)
-                        let generator = UINotificationFeedbackGenerator()
-                        generator.notificationOccurred(.success)
-                        dismiss()
+                        saveTask()
                     }
+                    .disabled(title.isEmpty)
                 }
             }
         }
