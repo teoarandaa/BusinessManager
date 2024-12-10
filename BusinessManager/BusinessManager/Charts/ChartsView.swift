@@ -11,15 +11,30 @@ struct ChartsView: View {
     @Query(sort: \Report.departmentName) var reports: [Report]
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
-
+    
+    var chartIcon: String {
+        switch chart {
+        case "Productivity":
+            return "chart.line.uptrend.xyaxis"
+        case "Efficiency":
+            return "gauge.medium"
+        case "Performance":
+            return "chart.bar.fill"
+        default:
+            return "chart.line.uptrend.xyaxis"
+        }
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
                 if reports.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Charts", systemImage: "chart.bar")
+                            .font(.title2)
                     }, description: {
                         Text("Start adding reports to see your charts.")
+                            .foregroundStyle(.secondary)
                     }, actions: {
                         Button("Go to Reports") {
                             selectedTab = 0
@@ -27,54 +42,60 @@ struct ChartsView: View {
                     })
                     .offset(y: -60)
                 } else {
-                    Picker("Charts", selection: $chart) {
-                        ForEach(chartOptions, id: \.self) { option in
-                            Text(option)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding()
-                    .onChange(of: chart) {
-                        let generator = UISelectionFeedbackGenerator()
-                        generator.selectionChanged()
-                    }
-                    
+                    // Chart Content
                     Group {
                         switch chart {
                         case "Productivity":
                             ProductivityChartView()
+                                .transition(.opacity)
                         case "Efficiency":
                             WorkloadChartView()
+                                .transition(.opacity)
                         case "Performance":
                             PerformanceChartView()
+                                .transition(.opacity)
                         default:
                             Text("Select a chart")
                         }
                     }
+                    .padding()
                 }
-                Spacer()
             }
-            .navigationTitle("Charts")
+            .navigationTitle("Charts & Analytics")
             .sheet(isPresented: $isShowingItemSheet2) {
                 ChartsInfoSheetView()
                     .presentationDetents([.height(700)])
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button(action: {
-                        isShowingItemSheet2 = true
-                    }) {
+                    Button(action: { isShowingItemSheet2 = true }) {
                         Label("Information", systemImage: "info.circle")
+                            .symbolRenderingMode(.hierarchical)
                     }
-                    Button(action: {
-                        isShowingSettings = true
-                    }) {
+                    Button(action: { isShowingSettings = true }) {
                         Label("Settings", systemImage: "gear")
+                            .symbolRenderingMode(.hierarchical)
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
+                    Menu {
+                        ForEach(chartOptions, id: \.self) { option in
+                            Button(action: { 
+                                chart = option
+                                let generator = UISelectionFeedbackGenerator()
+                                generator.selectionChanged()
+                            }) {
+                                Label(option, systemImage: getChartIcon(for: option))
+                            }
+                        }
+                    } label: {
+                        Label("Chart Type", systemImage: chartIcon)
+                            .symbolRenderingMode(.hierarchical)
+                    }
+                    
                     NavigationLink(destination: YearlyChartsView()) {
-                        Label("Yearly Charts", systemImage: "calendar")
+                        Label("Yearly", systemImage: "calendar")
+                            .symbolRenderingMode(.hierarchical)
                     }
                     .disabled(reports.isEmpty)
                 }
@@ -82,6 +103,33 @@ struct ChartsView: View {
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
             }
+            .animation(.easeInOut, value: chart)
+        }
+    }
+    
+    private func getChartIcon(for type: String) -> String {
+        switch type {
+        case "Productivity":
+            return "chart.line.uptrend.xyaxis"
+        case "Efficiency":
+            return "gauge.medium"
+        case "Performance":
+            return "chart.bar.fill"
+        default:
+            return "chart.line.uptrend.xyaxis"
+        }
+    }
+    
+    private func getChartDescription(for type: String) -> String {
+        switch type {
+        case "Productivity":
+            return "Track your team's productivity trends and patterns"
+        case "Efficiency":
+            return "Monitor workload distribution and efficiency metrics"
+        case "Performance":
+            return "Analyze overall performance and goal achievement"
+        default:
+            return ""
         }
     }
 }
