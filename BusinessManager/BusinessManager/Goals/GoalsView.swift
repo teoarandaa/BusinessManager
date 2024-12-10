@@ -32,7 +32,10 @@ struct GoalsView: View {
                         // Mostrar todos los objetivos
                         GoalsSections(goals: goals)
                     }
-                } else {
+                }
+            }
+            .overlay {
+                if goals.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Goals", systemImage: "target")
                     }, description: {
@@ -40,6 +43,7 @@ struct GoalsView: View {
                     }, actions: {
                         Button("Add Goal") { showingAddGoal = true }
                     })
+                    .offset(y: -60)
                 }
             }
             .navigationTitle("Goals & Metrics")
