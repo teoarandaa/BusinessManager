@@ -20,42 +20,17 @@ struct GoalsView: View {
                 if !goals.isEmpty {
                     GoalsOverviewSection(goals: goals)
                     
-                    GoalsByDepartmentSection(goals: goals, selectedDepartment: $selectedDepartment)
-                    
-                    Section("Active Goals") {
-                        if activeGoals.isEmpty {
-                            Text("No active goals")
-                                .foregroundStyle(.secondary)
-                                .italic()
-                                .frame(maxWidth: .infinity, alignment: .center)
-                                .listRowBackground(Color.clear)
-                        } else {
-                            ForEach(activeGoals) { goal in
-                                GoalCell(goal: goal)
-                            }
-                        }
+                    if !departments.isEmpty {
+                        GoalsByDepartmentSection(goals: goals, selectedDepartment: $selectedDepartment)
                     }
                     
-                    Section("Completed Goals") {
-                        if completedGoals.isEmpty {
-                            Text("No completed goals yet")
-                                .foregroundStyle(.secondary)
-                                .italic()
-                                .frame(maxWidth: .infinity, alignment: .center)
-                                .listRowBackground(Color.clear)
-                        } else {
-                            ForEach(completedGoals) { goal in
-                                GoalCell(goal: goal)
-                            }
-                        }
-                    }
-                    
-                    if !failedGoals.isEmpty {
-                        Section("Failed Goals") {
-                            ForEach(failedGoals) { goal in
-                                GoalCell(goal: goal)
-                            }
-                        }
+                    if let department = selectedDepartment {
+                        // Mostrar solo los objetivos del departamento seleccionado
+                        let departmentGoals = goals.filter { $0.department == department }
+                        GoalsSections(goals: departmentGoals)
+                    } else {
+                        // Mostrar todos los objetivos
+                        GoalsSections(goals: goals)
                     }
                 } else {
                     ContentUnavailableView(label: {
@@ -94,6 +69,10 @@ struct GoalsView: View {
             }
         }
     }
+    
+    var departments: [String] {
+        Array(Set(goals.map { $0.department })).sorted()
+    }
 }
 
 struct GoalsOverviewSection: View {
@@ -118,19 +97,21 @@ struct GoalsOverviewSection: View {
                     )
                 }
                 
-                Chart {
-                    ForEach(goals.filter { $0.status == .inProgress }) { goal in
-                        BarMark(
-                            x: .value("Goal", goal.title),
-                            y: .value("Progress", goal.progress * 100)
-                        )
-                        .foregroundStyle(by: .value("Type", goal.type.rawValue))
+                if !goals.filter({ $0.status == .inProgress }).isEmpty {
+                    Chart {
+                        ForEach(goals.filter { $0.status == .inProgress }) { goal in
+                            BarMark(
+                                x: .value("Goal", goal.title),
+                                y: .value("Progress", goal.progress * 100)
+                            )
+                            .foregroundStyle(Color.blue)
+                        }
                     }
-                }
-                .frame(height: 200)
-                .chartXAxis(.visible)
-                .chartYAxis {
-                    AxisMarks(position: .leading)
+                    .frame(height: 200)
+                    .chartXAxis(.visible)
+                    .chartYAxis {
+                        AxisMarks(position: .leading)
+                    }
                 }
             }
             .padding(.vertical)
@@ -174,6 +155,17 @@ struct GoalCell: View {
     @Environment(\.modelContext) var context
     @State private var showingDetail = false
     
+    var progressText: String {
+        switch goal.type {
+        case .tasks:
+            return "\(goal.currentValue)/\(goal.targetValue) tasks"
+        case .performance:
+            return String(format: "%.1f%%", goal.progress * 100)
+        case .volume:
+            return String(format: "%.1f%%", goal.progress * 100)
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -192,7 +184,7 @@ struct GoalCell: View {
                           goal.status == .completed ? .green : .red))
             
             HStack {
-                Text("\(goal.currentValue)/\(goal.targetValue)\(goal.type.unit)")
+                Text(progressText)
                     .font(.caption)
                 Spacer()
                 Text(goal.deadline, style: .date)
@@ -251,5 +243,40 @@ struct DepartmentCard: View {
         .padding()
         .background(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
         .cornerRadius(10)
+    }
+}
+
+// Nueva vista para organizar las secciones de objetivos
+struct GoalsSections: View {
+    let goals: [Goal]
+    
+    var activeGoals: [Goal] { goals.filter { $0.status == .inProgress } }
+    var completedGoals: [Goal] { goals.filter { $0.status == .completed } }
+    var failedGoals: [Goal] { goals.filter { $0.status == .failed } }
+    
+    var body: some View {
+        if !activeGoals.isEmpty {
+            Section("Active Goals") {
+                ForEach(activeGoals) { goal in
+                    GoalCell(goal: goal)
+                }
+            }
+        }
+        
+        if !completedGoals.isEmpty {
+            Section("Completed Goals") {
+                ForEach(completedGoals) { goal in
+                    GoalCell(goal: goal)
+                }
+            }
+        }
+        
+        if !failedGoals.isEmpty {
+            Section("Failed Goals") {
+                ForEach(failedGoals) { goal in
+                    GoalCell(goal: goal)
+                }
+            }
+        }
     }
 } 
