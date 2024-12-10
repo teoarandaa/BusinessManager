@@ -17,6 +17,7 @@ struct AdvancedFilters {
 }
 
 struct DepartmentReportsView: View {
+    @Environment(\.modelContext) var context
     let departmentReports: [Report]
     @State private var showingFilters = false
     @State private var filters = AdvancedFilters.default
@@ -50,6 +51,22 @@ struct DepartmentReportsView: View {
                         Text("\(String(year))")
                             .font(.headline)
                     }
+                }
+            }
+            .onDelete { indexSet in
+                let sortedYears = reportsByYear.keys.sorted()
+                for index in indexSet {
+                    let yearToDelete = sortedYears[index]
+                    let reportsToDelete = departmentReports.filter {
+                        Calendar.current.component(.year, from: $0.date) == yearToDelete
+                    }
+                    
+                    for report in reportsToDelete {
+                        context.delete(report)
+                    }
+                    
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.notificationOccurred(.success)
                 }
             }
         }

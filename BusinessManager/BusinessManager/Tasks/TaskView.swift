@@ -23,7 +23,7 @@ struct TaskView: View {
         let filtered = filteredTasks
         switch sortOption {
         case .date:
-            return filtered.sorted { $0.date > $1.date }
+            return filtered.sorted { $0.date < $1.date }
         case .priority:
             let priorityOrder = ["P1": 0, "P2": 1, "P3": 2]
             return filtered.sorted { 
