@@ -14,7 +14,7 @@ struct GoalsInfoSheetView: View {
                             .bold()
                             .padding()
                         
-                        Text("Goals help you track progress and achieve targets. Organize them by department and status to ensure alignment with your business objectives.")
+                        Text("Goals help you monitor progress and achieve specific targets within your business. By categorizing them by department and status, you can maintain clarity, prioritize tasks, and ensure they align with your business objectives. This approach simplifies tracking and enhances focus, helping your team work more effectively towards achieving their goals.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -37,7 +37,7 @@ struct GoalsInfoSheetView: View {
                             .bold()
                             .padding()
                         
-                        Text("Define clear, measurable goals for each department. Track their progress and adjust strategies to ensure success.")
+                        Text("Define clear, measurable goals for each department to provide direction and focus. Regularly track their progress, identify challenges, and adjust strategies as needed to stay on course. This approach ensures alignment with business objectives and fosters accountability, helping your team achieve consistent success.")
                             .padding()
                             .multilineTextAlignment(.center)
                         

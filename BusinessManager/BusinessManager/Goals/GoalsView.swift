@@ -38,6 +38,7 @@ struct GoalsView: View {
                 if goals.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Goals", systemImage: "target")
+                            .foregroundStyle(Color.accentColor)
                     }, description: {
                         Text("Start by adding goals for your departments")
                     }, actions: {
@@ -90,7 +91,7 @@ struct GoalsOverviewSection: View {
                         title: "Active Goals",
                         value: goals.filter { $0.status == .inProgress }.count,
                         icon: "target",
-                        color: .blue
+                        color: .accentColor
                     )
                     
                     MetricCard(
@@ -108,7 +109,7 @@ struct GoalsOverviewSection: View {
                                 x: .value("Goal", goal.title),
                                 y: .value("Progress", goal.progress * 100)
                             )
-                            .foregroundStyle(Color.blue)
+                            .foregroundStyle(Color.accentColor)
                         }
                     }
                     .frame(height: 200)
