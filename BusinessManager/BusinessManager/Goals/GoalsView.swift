@@ -8,6 +8,7 @@ struct GoalsView: View {
     @State private var showingAddGoal = false
     @State private var selectedDepartment: String?
     @State private var isShowingSettings = false
+    @State private var isShowingInfoSheet = false
     
     var activeGoals: [Goal] { goals.filter { $0.status == .inProgress } }
     var completedGoals: [Goal] { goals.filter { $0.status == .completed } }
@@ -68,7 +69,10 @@ struct GoalsView: View {
             }
             .navigationTitle("Goals & Metrics")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button("Information", systemImage: "info.circle") {
+                        isShowingInfoSheet = true
+                    }
                     Button("Settings", systemImage: "gear") {
                         isShowingSettings = true
                     }
@@ -84,6 +88,9 @@ struct GoalsView: View {
             }
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
+            }
+            .sheet(isPresented: $isShowingInfoSheet) {
+                GoalsInfoSheetView()
             }
         }
     }
