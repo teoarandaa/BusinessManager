@@ -279,4 +279,4 @@ struct GoalsSections: View {
             }
         }
     }
-} 
+}
