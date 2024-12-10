@@ -5,6 +5,7 @@ struct TaskView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
+    @State private var isShowingSettings = false
     @Environment(\.modelContext) var context
     @Query(sort: [SortDescriptor(\Task.date)]) private var tasks: [Task]
     @State private var taskToEdit: Task?
@@ -71,10 +72,16 @@ struct TaskView: View {
             .sheet(item: $taskToEdit) { task in
                 UpdateTaskSheet(task: task)
             }
+            .sheet(isPresented: $isShowingSettings) {
+                SettingsView()
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button("Information", systemImage: "info.circle") {
                         isShowingItemSheet2 = true
+                    }
+                    Button("Settings", systemImage: "gear") {
+                        isShowingSettings = true
                     }
                 }
                 if !tasks.isEmpty {
