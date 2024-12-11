@@ -27,7 +27,7 @@ struct ChartsView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            ScrollView {
                 if reports.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Charts", systemImage: "chart.bar")
@@ -42,26 +42,32 @@ struct ChartsView: View {
                     })
                     .offset(y: -60)
                 } else {
-                    // Chart Content
-                    Group {
-                        switch chart {
-                        case "Productivity":
-                            ProductivityChartView()
-                                .transition(.opacity)
-                        case "Efficiency":
-                            WorkloadChartView()
-                                .transition(.opacity)
-                        case "Performance":
-                            PerformanceChartView()
-                                .transition(.opacity)
-                        default:
-                            Text("Select a chart")
+                    VStack(spacing: 35) {
+                        // Chart Content
+                        Group {
+                            switch chart {
+                            case "Productivity":
+                                ProductivityChartView()
+                                    .transition(.opacity)
+                                
+                            case "Efficiency":
+                                WorkloadChartView()
+                                    .transition(.opacity)
+                                
+                            case "Performance":
+                                PerformanceChartView()
+                                    .transition(.opacity)
+                                
+                            default:
+                                Text("Select a chart")
+                            }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
             }
             .navigationTitle("Charts & Analytics")
+            .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet2) {
                 ChartsInfoSheetView()
                     .presentationDetents([.height(700)])
