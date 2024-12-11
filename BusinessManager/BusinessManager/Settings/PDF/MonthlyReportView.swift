@@ -236,15 +236,75 @@ class PDFGenerator {
             (reportDetails as NSString).draw(at: CGPoint(x: margin, y: margin + 70), withAttributes: summaryTextAttributes)
             
             // Draw goals summary
-            ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: margin + 150), withAttributes: summaryTitleAttributes)
+            let summaryY = margin + 150
+            ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: summaryY), withAttributes: summaryTitleAttributes)
             
+            ("Completed Goals by Department" as NSString).draw(
+                at: CGPoint(x: pageWidth - margin - 280, y: summaryY),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            // Draw goals details
             let goalDetails = """
             Active Goals: \(goals.filter { $0.status == .inProgress }.count)
             Completed Goals: \(goals.filter { $0.status == .completed }.count)
             Failed Goals: \(goals.filter { $0.status == .failed }.count)
             """
             
-            (goalDetails as NSString).draw(at: CGPoint(x: margin, y: margin + 170), withAttributes: summaryTextAttributes)
+            (goalDetails as NSString).draw(at: CGPoint(x: margin, y: summaryY + 20), withAttributes: summaryTextAttributes)
+            
+            // Draw pie chart
+            let chartCenterX = pageWidth - margin - 150
+            let chartCenterY = summaryY + 80
+            let radius: CGFloat = 60
+            
+            let departmentGoals = Dictionary(grouping: goals.filter { $0.status == .completed }, by: { $0.department })
+            let total = CGFloat(goals.filter { $0.status == .completed }.count)
+            
+            if total > 0 {
+                var startAngle: CGFloat = 0
+                
+                // Colores para el gráfico
+                let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, 
+                                       .systemOrange, .systemPurple, .systemTeal]
+                
+                // Dibujar el gráfico circular
+                departmentGoals.enumerated().forEach { index, entry in
+                    let percentage = CGFloat(entry.value.count) / total
+                    let endAngle = startAngle + (percentage * 2 * .pi)
+                    
+                    let path = UIBezierPath()
+                    path.move(to: CGPoint(x: chartCenterX, y: chartCenterY))
+                    path.addArc(withCenter: CGPoint(x: chartCenterX, y: chartCenterY),
+                              radius: radius,
+                              startAngle: startAngle,
+                              endAngle: endAngle,
+                              clockwise: true)
+                    path.close()
+                    
+                    colors[index % colors.count].setFill()
+                    path.fill()
+                    
+                    // Dibujar leyenda
+                    let legendX = chartCenterX + radius + 30
+                    let legendY = chartCenterY - radius + (CGFloat(index) * 20)
+                    
+                    colors[index % colors.count].setFill()
+                    let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
+                    UIBezierPath(rect: legendRect).fill()
+                    
+                    let legendText = "\(entry.key): \(entry.value.count)"
+                    let legendAttributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont.systemFont(ofSize: 10)
+                    ]
+                    (legendText as NSString).draw(
+                        at: CGPoint(x: legendX + 15, y: legendY),
+                        withAttributes: legendAttributes
+                    )
+                    
+                    startAngle = endAngle
+                }
+            }
         }
         
         return data
