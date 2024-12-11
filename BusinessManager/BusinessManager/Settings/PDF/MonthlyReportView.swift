@@ -196,6 +196,15 @@ class PDFGenerator {
         let data = renderer.pdfData { context in
             context.beginPage()
             
+            // Draw logo
+            if let logo = UIImage(named: "pdf_logo") {
+                let logoSize: CGFloat = 60
+                let logoX = pageWidth - margin - logoSize
+                let logoY = margin - 15
+                let logoRect = CGRect(x: logoX, y: logoY, width: logoSize, height: logoSize)
+                logo.draw(in: logoRect)
+            }
+            
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold)
             ]
@@ -208,29 +217,34 @@ class PDFGenerator {
             (title as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw reports summary
-            let reportsSummary = """
-            Reports Summary
+            let summaryTitleAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+            ]
+            let summaryTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 14)
+            ]
+            
+            ("Reports Summary" as NSString).draw(at: CGPoint(x: margin, y: margin + 50), withAttributes: summaryTitleAttributes)
+            
+            let reportDetails = """
             Total Reports: \(reports.count)
             Average Performance: \(String(format: "%.1f", averagePerformance()))
             Average Volume of Work: \(String(format: "%.1f", averageVolumeOfWork()))
             Total Tasks Completed: \(totalTasks())
             """
             
-            (reportsSummary as NSString).draw(at: CGPoint(x: margin, y: margin + 50), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 14)
-            ])
+            (reportDetails as NSString).draw(at: CGPoint(x: margin, y: margin + 70), withAttributes: summaryTextAttributes)
             
             // Draw goals summary
-            let goalsSummary = """
-            Goals Summary
+            ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: margin + 150), withAttributes: summaryTitleAttributes)
+            
+            let goalDetails = """
             Active Goals: \(goals.filter { $0.status == .inProgress }.count)
             Completed Goals: \(goals.filter { $0.status == .completed }.count)
             Failed Goals: \(goals.filter { $0.status == .failed }.count)
             """
             
-            (goalsSummary as NSString).draw(at: CGPoint(x: margin, y: margin + 150), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 14)
-            ])
+            (goalDetails as NSString).draw(at: CGPoint(x: margin, y: margin + 170), withAttributes: summaryTextAttributes)
         }
         
         return data
