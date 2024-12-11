@@ -302,19 +302,22 @@ struct AddReportSheet: View {
             return
         }
         
+        let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         let report = Report(
             date: date,
-            departmentName: departmentName,
+            departmentName: trimmedDepartmentName,
             performanceMark: performance,
             volumeOfWorkMark: volume,
             numberOfFinishedTasks: tasks,
-            annotations: annotations
+            annotations: trimmedAnnotations
         )
         
         context.insert(report)
         
         updateRelatedGoals(
-            department: departmentName,
+            department: trimmedDepartmentName,
             performance: performance,
             volume: volume,
             tasks: tasks
@@ -472,10 +475,11 @@ struct UpdateReportSheet: View {
         
         let oldTasks = report.numberOfFinishedTasks
         
+        report.departmentName = report.departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
+        report.annotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
         report.performanceMark = performance
         report.volumeOfWorkMark = volume
         report.numberOfFinishedTasks = tasks
-        report.annotations = annotations
         
         let departmentGoals = goals.filter { goal in
             goal.department == report.departmentName && 
