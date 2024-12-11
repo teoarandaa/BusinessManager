@@ -7,9 +7,10 @@ struct MonthlyReportView: View {
     @Environment(\.modelContext) private var context
     @Query private var reports: [Report]
     @Query private var goals: [Goal]
-    @State private var selectedMonth = Date()
+    @State private var selectedDate = Date()
     @State private var pdfData: Data?
     @State private var showShareSheet = false
+    @State private var showDatePicker = false
     
     private var monthFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -24,14 +25,10 @@ struct MonthlyReportView: View {
                     Image(systemName: "calendar")
                         .foregroundStyle(.accent)
                     
-                    Picker("Select Month", selection: $selectedMonth) {
-                        ForEach(getLastSixMonths(), id: \.self) { date in
-                            Text(monthFormatter.string(from: date))
-                        }
+                    Button(action: { showDatePicker = true }) {
+                        Text(monthFormatter.string(from: selectedDate))
+                            .foregroundStyle(.primary)
                     }
-                }
-                .onChange(of: selectedMonth) {
-                    generatePDFReport()
                 }
             } footer: {
                 Text("Select a month to generate the report")
@@ -53,6 +50,29 @@ struct MonthlyReportView: View {
         }
         .navigationTitle("Monthly Report")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showDatePicker) {
+            NavigationStack {
+                DatePicker(
+                    "Select Month",
+                    selection: $selectedDate,
+                    displayedComponents: [.date]
+                )
+                .datePickerStyle(.graphical)
+                .onChange(of: selectedDate) {
+                    generatePDFReport()
+                }
+                .navigationTitle("Select Month")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Done") {
+                            showDatePicker = false
+                        }
+                    }
+                }
+            }
+            .presentationDetents([.medium])
+        }
         .sheet(isPresented: $showShareSheet) {
             if let pdfData = pdfData {
                 ShareSheet(items: [pdfData])
@@ -63,23 +83,14 @@ struct MonthlyReportView: View {
         }
     }
     
-    private func getLastSixMonths() -> [Date] {
-        let calendar = Calendar.current
-        let current = calendar.startOfMonth(for: Date())
-        
-        return (0..<6).map { monthsAgo in
-            calendar.date(byAdding: .month, value: -monthsAgo, to: current) ?? current
-        }.reversed()
-    }
-    
     private func generatePDFReport() {
-        let pdfGenerator = PDFGenerator(date: selectedMonth, reports: reportsForSelectedMonth(), goals: goalsForSelectedMonth())
+        let pdfGenerator = PDFGenerator(date: selectedDate, reports: reportsForSelectedMonth(), goals: goalsForSelectedMonth())
         self.pdfData = pdfGenerator.generatePDF()
     }
     
     private func reportsForSelectedMonth() -> [Report] {
         let calendar = Calendar.current
-        let startOfMonth = calendar.startOfMonth(for: selectedMonth)
+        let startOfMonth = calendar.startOfMonth(for: selectedDate)
         let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth) ?? startOfMonth
         
         return reports.filter { report in
@@ -91,7 +102,7 @@ struct MonthlyReportView: View {
     
     private func goalsForSelectedMonth() -> [Goal] {
         let calendar = Calendar.current
-        let startOfMonth = calendar.startOfMonth(for: selectedMonth)
+        let startOfMonth = calendar.startOfMonth(for: selectedDate)
         let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth) ?? startOfMonth
         
         return goals.filter { goal in
