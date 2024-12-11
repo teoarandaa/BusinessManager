@@ -33,12 +33,7 @@ struct SettingsView: View {
                         }
                     }
                 }
-                // MARK: - Plans
-                Section("Pricing") {
-                    NavigationLink(destination: PlansView()) {
-                        Label("Subscription packages", systemImage: "creditcard")
-                    }
-                }
+                
                 // MARK: - Resources
                 Section("Resources") {
                     NavigationLink(destination: FaqView()) {
@@ -53,7 +48,6 @@ struct SettingsView: View {
                         Label("Business Manager support", systemImage: "envelope")
                     }
                 }
-                
                 // MARK: - Reports
                 Section("Reports") {
                     NavigationLink(destination: MonthlyReportView()) {
