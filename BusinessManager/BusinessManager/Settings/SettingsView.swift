@@ -53,6 +53,13 @@ struct SettingsView: View {
                         Label("Business Manager support", systemImage: "envelope")
                     }
                 }
+                
+                // MARK: - Reports
+                Section("Reports") {
+                    NavigationLink(destination: MonthlyReportView()) {
+                        Label("Monthly Summary (PDF)", systemImage: "text.document")
+                    }
+                }
             }
             .navigationTitle("Settings")
             .toolbar {
