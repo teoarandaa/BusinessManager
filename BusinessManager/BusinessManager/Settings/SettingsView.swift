@@ -55,6 +55,9 @@ struct SettingsView: View {
                     }
                 }
             }
+            Text("Version \(appVersion!)")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
             .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -77,6 +80,11 @@ struct SettingsView: View {
     func performHapticFeedback() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
+    }
+    
+    // MARK: - Shows the current version
+    var appVersion: String? {
+        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
 }
 
