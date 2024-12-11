@@ -252,63 +252,64 @@ class PDFGenerator {
             let radarRadius: CGFloat = 80
             let departmentReports = Dictionary(grouping: reports, by: { $0.departmentName })
             
-            if !departmentReports.isEmpty {
-                // Dibujar ejes del radar
-                let axes = 3
-                let angleStep = 2 * CGFloat.pi / CGFloat(axes)
-                
-                // Dibujar círculos de referencia (20%, 40%, 60%, 80%, 100%)
-                let referenceCircles = [0.2, 0.4, 0.6, 0.8, 1.0]
-                for reference in referenceCircles {
-                    let path = UIBezierPath()
-                    for i in 0...axes {
-                        let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
-                        let point = CGPoint(
-                            x: centerX + cos(angle) * (radarRadius * CGFloat(reference)),
-                            y: radarCenterY + sin(angle) * (radarRadius * CGFloat(reference))
-                        )
-                        if i == 0 {
-                            path.move(to: point)
-                        } else {
-                            path.addLine(to: point)
-                        }
-                    }
-                    path.close()
-                    UIColor.gray.withAlphaComponent(0.2).setStroke()
-                    path.stroke()
-                }
-                
-                // Dibujar líneas de los ejes
-                for i in 0..<axes {
-                    let path = UIBezierPath()
-                    let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
-                    path.move(to: CGPoint(x: centerX, y: radarCenterY))
-                    path.addLine(to: CGPoint(
-                        x: centerX + cos(angle) * radarRadius,
-                        y: radarCenterY + sin(angle) * radarRadius
-                    ))
-                    UIColor.gray.setStroke()
-                    path.stroke()
-                }
-                
-                // Dibujar etiquetas de los ejes
-                let axisLabels = ["Performance", "Volume", "Tasks"]
-                let labelAttributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 10)
-                ]
-                
-                for (i, label) in axisLabels.enumerated() {
+            // Dibujar ejes del radar (siempre)
+            let axes = 3
+            let angleStep = 2 * CGFloat.pi / CGFloat(axes)
+            
+            // Dibujar círculos de referencia (20%, 40%, 60%, 80%, 100%)
+            let referenceCircles = [0.2, 0.4, 0.6, 0.8, 1.0]
+            for reference in referenceCircles {
+                let path = UIBezierPath()
+                for i in 0...axes {
                     let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
                     let point = CGPoint(
-                        x: centerX + cos(angle) * (radarRadius + 15),
-                        y: radarCenterY + sin(angle) * (radarRadius + 15)
+                        x: centerX + cos(angle) * (radarRadius * CGFloat(reference)),
+                        y: radarCenterY + sin(angle) * (radarRadius * CGFloat(reference))
                     )
-                    (label as NSString).draw(
-                        at: point,
-                        withAttributes: labelAttributes
-                    )
+                    if i == 0 {
+                        path.move(to: point)
+                    } else {
+                        path.addLine(to: point)
+                    }
                 }
-                
+                path.close()
+                UIColor.gray.withAlphaComponent(0.2).setStroke()
+                path.stroke()
+            }
+            
+            // Dibujar líneas de los ejes
+            for i in 0..<axes {
+                let path = UIBezierPath()
+                let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                path.move(to: CGPoint(x: centerX, y: radarCenterY))
+                path.addLine(to: CGPoint(
+                    x: centerX + cos(angle) * radarRadius,
+                    y: radarCenterY + sin(angle) * radarRadius
+                ))
+                UIColor.gray.setStroke()
+                path.stroke()
+            }
+            
+            // Dibujar etiquetas de los ejes
+            let axisLabels = ["Performance", "Volume", "Tasks"]
+            let labelAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 10)
+            ]
+            
+            for (i, label) in axisLabels.enumerated() {
+                let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                let point = CGPoint(
+                    x: centerX + cos(angle) * (radarRadius + 15),
+                    y: radarCenterY + sin(angle) * (radarRadius + 15)
+                )
+                (label as NSString).draw(
+                    at: point,
+                    withAttributes: labelAttributes
+                )
+            }
+            
+            // Solo dibujamos los datos si existen
+            if !departmentReports.isEmpty {
                 // Dibujar datos por departamento
                 let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed,
                                        .systemOrange, .systemPurple, .systemTeal]
@@ -388,56 +389,67 @@ class PDFGenerator {
             
             (goalDetails as NSString).draw(at: CGPoint(x: margin, y: goalsY + 20), withAttributes: summaryTextAttributes)
             
-            // Draw pie chart
+            // Draw pie chart (siempre)
             let pieCenterY = goalsY + 95
             let chartCenterX = pageWidth - margin - 150
             let radius: CGFloat = 60
             
-            let departmentGoals = Dictionary(grouping: goals.filter { $0.status == .completed }, by: { $0.department })
-            let total = CGFloat(goals.filter { $0.status == .completed }.count)
-            
-            if total > 0 {
-                var startAngle: CGFloat = 0
+            // Dibujar círculo vacío si no hay datos
+            if goals.filter({ $0.status == .completed }).isEmpty {
+                let path = UIBezierPath(arcCenter: CGPoint(x: chartCenterX, y: pieCenterY),
+                                       radius: radius,
+                                       startAngle: 0,
+                                       endAngle: 2 * .pi,
+                                       clockwise: true)
+                UIColor.gray.withAlphaComponent(0.2).setStroke()
+                path.stroke()
+            } else {
+                let departmentGoals = Dictionary(grouping: goals.filter { $0.status == .completed }, by: { $0.department })
+                let total = CGFloat(goals.filter { $0.status == .completed }.count)
                 
-                // Colores para el gráfico
-                let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, 
-                                       .systemOrange, .systemPurple, .systemTeal]
-                
-                // Dibujar el gráfico circular
-                departmentGoals.enumerated().forEach { index, entry in
-                    let percentage = CGFloat(entry.value.count) / total
-                    let endAngle = startAngle + (percentage * 2 * .pi)
+                if total > 0 {
+                    var startAngle: CGFloat = 0
                     
-                    let path = UIBezierPath()
-                    path.move(to: CGPoint(x: chartCenterX, y: pieCenterY))
-                    path.addArc(withCenter: CGPoint(x: chartCenterX, y: pieCenterY),
-                              radius: radius,
-                              startAngle: startAngle,
-                              endAngle: endAngle,
-                              clockwise: true)
-                    path.close()
+                    // Colores para el gráfico
+                    let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, 
+                                           .systemOrange, .systemPurple, .systemTeal]
                     
-                    colors[index % colors.count].setFill()
-                    path.fill()
-                    
-                    // Dibujar leyenda
-                    let legendX = chartCenterX + radius + 30
-                    let legendY = pieCenterY - radius + (CGFloat(index) * 20)
-                    
-                    colors[index % colors.count].setFill()
-                    let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
-                    UIBezierPath(rect: legendRect).fill()
-                    
-                    let legendText = "\(entry.key): \(entry.value.count)"
-                    let legendAttributes: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.systemFont(ofSize: 10)
-                    ]
-                    (legendText as NSString).draw(
-                        at: CGPoint(x: legendX + 15, y: legendY),
-                        withAttributes: legendAttributes
-                    )
-                    
-                    startAngle = endAngle
+                    // Dibujar el gráfico circular
+                    departmentGoals.enumerated().forEach { index, entry in
+                        let percentage = CGFloat(entry.value.count) / total
+                        let endAngle = startAngle + (percentage * 2 * .pi)
+                        
+                        let path = UIBezierPath()
+                        path.move(to: CGPoint(x: chartCenterX, y: pieCenterY))
+                        path.addArc(withCenter: CGPoint(x: chartCenterX, y: pieCenterY),
+                                  radius: radius,
+                                  startAngle: startAngle,
+                                  endAngle: endAngle,
+                                  clockwise: true)
+                        path.close()
+                        
+                        colors[index % colors.count].setFill()
+                        path.fill()
+                        
+                        // Dibujar leyenda
+                        let legendX = chartCenterX + radius + 30
+                        let legendY = pieCenterY - radius + (CGFloat(index) * 20)
+                        
+                        colors[index % colors.count].setFill()
+                        let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
+                        UIBezierPath(rect: legendRect).fill()
+                        
+                        let legendText = "\(entry.key): \(entry.value.count)"
+                        let legendAttributes: [NSAttributedString.Key: Any] = [
+                            .font: UIFont.systemFont(ofSize: 10)
+                        ]
+                        (legendText as NSString).draw(
+                            at: CGPoint(x: legendX + 15, y: legendY),
+                            withAttributes: legendAttributes
+                        )
+                        
+                        startAngle = endAngle
+                    }
                 }
             }
         }
