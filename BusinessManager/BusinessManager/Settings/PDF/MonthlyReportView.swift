@@ -80,6 +80,8 @@ struct MonthlyReportView: View {
     @State private var showShareSheet = false
     @State private var showDatePicker = false
     
+    private let hapticFeedback = UINotificationFeedbackGenerator()
+    
     private var monthFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -121,7 +123,7 @@ struct MonthlyReportView: View {
         }
         .sheet(isPresented: $showShareSheet) {
             if let pdfData = pdfData {
-                ShareSheet(items: [pdfData])
+                ShareSheet(items: [pdfData], isPresented: $showShareSheet)
             }
         }
         .onAppear {
@@ -498,9 +500,18 @@ struct PDFKitView: UIViewRepresentable {
 // MARK: - Share Sheet
 struct ShareSheet: UIViewControllerRepresentable {
     let items: [Any]
+    @Binding var isPresented: Bool
+    let hapticFeedback = UINotificationFeedbackGenerator()
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        controller.completionWithItemsHandler = { _, completed, _, _ in
+            if completed {
+                hapticFeedback.notificationOccurred(.success)
+                isPresented = false
+            }
+        }
+        return controller
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
