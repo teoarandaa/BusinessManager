@@ -302,6 +302,20 @@ struct AddReportSheet: View {
             return
         }
         
+        // Validar rango de performance
+        guard (0...100).contains(performance) else {
+            showAlert = true
+            alertMessage = "Performance must be between 0 and 100"
+            return
+        }
+        
+        // Validar rango de volume
+        guard (0...100).contains(volume) else {
+            showAlert = true
+            alertMessage = "Volume of Work must be between 0 and 100"
+            return
+        }
+        
         let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -469,6 +483,20 @@ struct UpdateReportSheet: View {
               let volume = Int(volumeOfWorkMark),
               let tasks = Int(numberOfFinishedTasks) else {
             alertMessage = "Please enter valid numbers"
+            showAlert = true
+            return
+        }
+        
+        // Validar rango de performance
+        guard (0...100).contains(performance) else {
+            alertMessage = "Performance must be between 0 and 100"
+            showAlert = true
+            return
+        }
+        
+        // Validar rango de volume
+        guard (0...100).contains(volume) else {
+            alertMessage = "Volume of Work must be between 0 and 100"
             showAlert = true
             return
         }
