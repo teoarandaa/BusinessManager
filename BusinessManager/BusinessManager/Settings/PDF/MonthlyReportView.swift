@@ -3,6 +3,74 @@ import PDFKit
 import SwiftData
 import Charts
 
+struct MonthYearPicker: View {
+    @Binding var selectedDate: Date
+    @Environment(\.dismiss) private var dismiss
+    let onDateSelected: () -> Void
+    
+    @State private var selectedYear: Int
+    @State private var selectedMonth: Int
+    
+    private let years = Array((2020...Calendar.current.component(.year, from: Date())).reversed())
+    private let months = Calendar.current.monthSymbols
+    
+    init(selectedDate: Binding<Date>, onDateSelected: @escaping () -> Void) {
+        _selectedDate = selectedDate
+        self.onDateSelected = onDateSelected
+        
+        let calendar = Calendar.current
+        _selectedYear = State(initialValue: calendar.component(.year, from: selectedDate.wrappedValue))
+        _selectedMonth = State(initialValue: calendar.component(.month, from: selectedDate.wrappedValue) - 1)
+    }
+    
+    var body: some View {
+        NavigationStack {
+            HStack {
+                Picker("Month", selection: $selectedMonth) {
+                    ForEach(0..<months.count, id: \.self) { index in
+                        Text(months[index]).tag(index)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+                
+                Picker("Year", selection: $selectedYear) {
+                    ForEach(years, id: \.self) { year in
+                        Text(String(year)).tag(year)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+            }
+            .padding()
+            .onChange(of: selectedYear) { updateSelectedDate() }
+            .onChange(of: selectedMonth) { updateSelectedDate() }
+            .navigationTitle("Select Month")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.height(280)])
+    }
+    
+    private func updateSelectedDate() {
+        var dateComponents = DateComponents()
+        dateComponents.year = selectedYear
+        dateComponents.month = selectedMonth + 1
+        dateComponents.day = 1
+        
+        if let date = Calendar.current.date(from: dateComponents) {
+            selectedDate = date
+            onDateSelected()
+        }
+    }
+}
+
 struct MonthlyReportView: View {
     @Environment(\.modelContext) private var context
     @Query private var reports: [Report]
@@ -30,8 +98,6 @@ struct MonthlyReportView: View {
                             .foregroundStyle(.primary)
                     }
                 }
-            } footer: {
-                Text("Select a month to generate the report")
             }
             
             if let pdfData = pdfData {
@@ -43,35 +109,15 @@ struct MonthlyReportView: View {
                     
                     PDFKitView(data: pdfData)
                         .frame(height: 500)
-                } footer: {
-                    Text("Preview of your monthly report")
                 }
             }
         }
         .navigationTitle("Monthly Report")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showDatePicker) {
-            NavigationStack {
-                DatePicker(
-                    "Select Month",
-                    selection: $selectedDate,
-                    displayedComponents: [.date]
-                )
-                .datePickerStyle(.graphical)
-                .onChange(of: selectedDate) {
-                    generatePDFReport()
-                }
-                .navigationTitle("Select Month")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Done") {
-                            showDatePicker = false
-                        }
-                    }
-                }
+            MonthYearPicker(selectedDate: $selectedDate) {
+                generatePDFReport()
             }
-            .presentationDetents([.medium])
         }
         .sheet(isPresented: $showShareSheet) {
             if let pdfData = pdfData {
