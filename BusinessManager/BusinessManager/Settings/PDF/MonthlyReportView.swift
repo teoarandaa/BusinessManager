@@ -196,6 +196,19 @@ class PDFGenerator {
         let data = renderer.pdfData { context in
             context.beginPage()
             
+            // Draw logo
+            if let logo = UIImage(named: "pdf_logo") {
+                let logoSize: CGFloat = 80
+                let aspectRatio = logo.size.width / logo.size.height
+                let logoHeight = logoSize
+                let logoWidth = logoHeight * aspectRatio
+                
+                let logoX = pageWidth - margin - logoWidth
+                let logoY = margin - 25
+                let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
+                logo.draw(in: logoRect)
+            }
+            
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 24, weight: .bold)
             ]
@@ -208,29 +221,225 @@ class PDFGenerator {
             (title as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw reports summary
-            let reportsSummary = """
-            Reports Summary
+            let summaryTitleAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+            ]
+            let summaryTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 14)
+            ]
+            
+            let reportsY = margin + 50
+            ("Reports Summary" as NSString).draw(at: CGPoint(x: margin, y: reportsY), withAttributes: summaryTitleAttributes)
+            
+            ("Department Performance Overview" as NSString).draw(
+                at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            // Draw reports details
+            let reportDetails = """
             Total Reports: \(reports.count)
             Average Performance: \(String(format: "%.1f", averagePerformance()))
             Average Volume of Work: \(String(format: "%.1f", averageVolumeOfWork()))
             Total Tasks Completed: \(totalTasks())
             """
             
-            (reportsSummary as NSString).draw(at: CGPoint(x: margin, y: margin + 50), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 14)
-            ])
+            (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
             
-            // Draw goals summary
-            let goalsSummary = """
-            Goals Summary
+            // Draw radar chart
+            let radarCenterY = reportsY + 130
+            let centerX = pageWidth - margin - 150
+            let radarRadius: CGFloat = 80
+            let departmentReports = Dictionary(grouping: reports, by: { $0.departmentName })
+            
+            if !departmentReports.isEmpty {
+                // Dibujar ejes del radar
+                let axes = 3
+                let angleStep = 2 * CGFloat.pi / CGFloat(axes)
+                
+                // Dibujar círculos de referencia (20%, 40%, 60%, 80%, 100%)
+                let referenceCircles = [0.2, 0.4, 0.6, 0.8, 1.0]
+                for reference in referenceCircles {
+                    let path = UIBezierPath()
+                    for i in 0...axes {
+                        let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                        let point = CGPoint(
+                            x: centerX + cos(angle) * (radarRadius * CGFloat(reference)),
+                            y: radarCenterY + sin(angle) * (radarRadius * CGFloat(reference))
+                        )
+                        if i == 0 {
+                            path.move(to: point)
+                        } else {
+                            path.addLine(to: point)
+                        }
+                    }
+                    path.close()
+                    UIColor.gray.withAlphaComponent(0.2).setStroke()
+                    path.stroke()
+                }
+                
+                // Dibujar líneas de los ejes
+                for i in 0..<axes {
+                    let path = UIBezierPath()
+                    let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                    path.move(to: CGPoint(x: centerX, y: radarCenterY))
+                    path.addLine(to: CGPoint(
+                        x: centerX + cos(angle) * radarRadius,
+                        y: radarCenterY + sin(angle) * radarRadius
+                    ))
+                    UIColor.gray.setStroke()
+                    path.stroke()
+                }
+                
+                // Dibujar etiquetas de los ejes
+                let axisLabels = ["Performance", "Volume", "Tasks"]
+                let labelAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 10)
+                ]
+                
+                for (i, label) in axisLabels.enumerated() {
+                    let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                    let point = CGPoint(
+                        x: centerX + cos(angle) * (radarRadius + 15),
+                        y: radarCenterY + sin(angle) * (radarRadius + 15)
+                    )
+                    (label as NSString).draw(
+                        at: point,
+                        withAttributes: labelAttributes
+                    )
+                }
+                
+                // Dibujar datos por departamento
+                let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed,
+                                       .systemOrange, .systemPurple, .systemTeal]
+                
+                // Encontrar el máximo número de tareas entre todos los departamentos
+                let maxTasks = departmentReports.values.flatMap { reports in
+                    reports.map { $0.numberOfFinishedTasks }
+                }.max() ?? 1
+                
+                departmentReports.enumerated().forEach { index, entry in
+                    let reports = entry.value
+                    let avgPerformance = reports.reduce(0.0) { $0 + Double($1.performanceMark) } / Double(reports.count) / 100.0
+                    let avgVolume = reports.reduce(0.0) { $0 + Double($1.volumeOfWorkMark) } / Double(reports.count) / 100.0
+                    
+                    // Normalizar tareas usando el máximo real
+                    let avgTasks = Double(reports.reduce(0) { $0 + $1.numberOfFinishedTasks }) / Double(reports.count) / Double(maxTasks)
+                    
+                    let values = [avgPerformance, avgVolume, avgTasks]
+                    let path = UIBezierPath()
+                    
+                    for i in 0...axes {
+                        let idx = i % axes
+                        let angle = CGFloat(idx) * angleStep - CGFloat.pi / 2
+                        let value = CGFloat(values[idx])
+                        let point = CGPoint(
+                            x: centerX + cos(angle) * (radarRadius * value),
+                            y: radarCenterY + sin(angle) * (radarRadius * value)
+                        )
+                        
+                        if i == 0 {
+                            path.move(to: point)
+                        } else {
+                            path.addLine(to: point)
+                        }
+                    }
+                    
+                    path.close()
+                    colors[index % colors.count].withAlphaComponent(0.5).setFill()
+                    colors[index % colors.count].setStroke()
+                    path.fill()
+                    path.stroke()
+                    
+                    // Dibujar leyenda
+                    let legendX = centerX + radarRadius + 30
+                    let legendY = radarCenterY - radarRadius + (CGFloat(index) * 20)
+                    
+                    colors[index % colors.count].setFill()
+                    let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
+                    UIBezierPath(rect: legendRect).fill()
+                    
+                    let legendText = entry.key
+                    let legendAttributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont.systemFont(ofSize: 10)
+                    ]
+                    (legendText as NSString).draw(
+                        at: CGPoint(x: legendX + 15, y: legendY),
+                        withAttributes: legendAttributes
+                    )
+                }
+            }
+            
+            // Goals section
+            let goalsY = reportsY + 250
+            ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: goalsY), withAttributes: summaryTitleAttributes)
+            
+            ("Completed Goals by Department" as NSString).draw(
+                at: CGPoint(x: pageWidth - margin - 280, y: goalsY),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            // Draw goals details
+            let goalDetails = """
             Active Goals: \(goals.filter { $0.status == .inProgress }.count)
             Completed Goals: \(goals.filter { $0.status == .completed }.count)
             Failed Goals: \(goals.filter { $0.status == .failed }.count)
             """
             
-            (goalsSummary as NSString).draw(at: CGPoint(x: margin, y: margin + 150), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 14)
-            ])
+            (goalDetails as NSString).draw(at: CGPoint(x: margin, y: goalsY + 20), withAttributes: summaryTextAttributes)
+            
+            // Draw pie chart
+            let pieCenterY = goalsY + 95
+            let chartCenterX = pageWidth - margin - 150
+            let radius: CGFloat = 60
+            
+            let departmentGoals = Dictionary(grouping: goals.filter { $0.status == .completed }, by: { $0.department })
+            let total = CGFloat(goals.filter { $0.status == .completed }.count)
+            
+            if total > 0 {
+                var startAngle: CGFloat = 0
+                
+                // Colores para el gráfico
+                let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, 
+                                       .systemOrange, .systemPurple, .systemTeal]
+                
+                // Dibujar el gráfico circular
+                departmentGoals.enumerated().forEach { index, entry in
+                    let percentage = CGFloat(entry.value.count) / total
+                    let endAngle = startAngle + (percentage * 2 * .pi)
+                    
+                    let path = UIBezierPath()
+                    path.move(to: CGPoint(x: chartCenterX, y: pieCenterY))
+                    path.addArc(withCenter: CGPoint(x: chartCenterX, y: pieCenterY),
+                              radius: radius,
+                              startAngle: startAngle,
+                              endAngle: endAngle,
+                              clockwise: true)
+                    path.close()
+                    
+                    colors[index % colors.count].setFill()
+                    path.fill()
+                    
+                    // Dibujar leyenda
+                    let legendX = chartCenterX + radius + 30
+                    let legendY = pieCenterY - radius + (CGFloat(index) * 20)
+                    
+                    colors[index % colors.count].setFill()
+                    let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
+                    UIBezierPath(rect: legendRect).fill()
+                    
+                    let legendText = "\(entry.key): \(entry.value.count)"
+                    let legendAttributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont.systemFont(ofSize: 10)
+                    ]
+                    (legendText as NSString).draw(
+                        at: CGPoint(x: legendX + 15, y: legendY),
+                        withAttributes: legendAttributes
+                    )
+                    
+                    startAngle = endAngle
+                }
+            }
         }
         
         return data
