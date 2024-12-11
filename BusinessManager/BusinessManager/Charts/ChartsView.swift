@@ -27,8 +27,9 @@ struct ChartsView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            Group {
                 if reports.isEmpty {
+                    
                     ContentUnavailableView(label: {
                         Label("No Charts", systemImage: "chart.bar")
                             .font(.title2)
@@ -40,30 +41,33 @@ struct ChartsView: View {
                             selectedTab = 0
                         }
                     })
-                    .offset(y: -60)
+                    .padding(.bottom, 115)
                 } else {
-                    VStack(spacing: 35) {
-                        // Chart Content
-                        Group {
-                            switch chart {
-                            case "Productivity":
-                                ProductivityChartView()
-                                    .transition(.opacity)
-                                
-                            case "Efficiency":
-                                WorkloadChartView()
-                                    .transition(.opacity)
-                                
-                            case "Performance":
-                                PerformanceChartView()
-                                    .transition(.opacity)
-                                
-                            default:
-                                Text("Select a chart")
+                    ScrollView {
+                        VStack(spacing: 35) {
+                            // Chart Content
+                            Group {
+                                switch chart {
+                                case "Productivity":
+                                    ProductivityChartView()
+                                        .transition(.opacity)
+                                    
+                                case "Efficiency":
+                                    WorkloadChartView()
+                                        .transition(.opacity)
+                                    
+                                case "Performance":
+                                    PerformanceChartView()
+                                        .transition(.opacity)
+                                    
+                                default:
+                                    Text("Select a chart")
+                                }
                             }
+                            .padding()
                         }
-                        .padding()
                     }
+                    .searchable(text: .constant(""), prompt: "Search departments")
                 }
             }
             .navigationTitle("Charts & Analytics")
@@ -87,7 +91,9 @@ struct ChartsView: View {
                     Menu {
                         ForEach(chartOptions, id: \.self) { option in
                             Button(action: { 
-                                chart = option
+                                withAnimation {
+                                    chart = option
+                                }
                                 let generator = UISelectionFeedbackGenerator()
                                 generator.selectionChanged()
                             }) {
@@ -109,7 +115,6 @@ struct ChartsView: View {
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
             }
-            .animation(.easeInOut, value: chart)
         }
     }
     
