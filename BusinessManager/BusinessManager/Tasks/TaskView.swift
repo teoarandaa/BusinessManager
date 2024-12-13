@@ -103,7 +103,7 @@ struct TaskView: View {
                 }
             }
             .overlay {
-                if filteredTasks.isEmpty {
+                if tasks.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
                     }, description: {
@@ -112,6 +112,8 @@ struct TaskView: View {
                         Button("Add Task") { isShowingItemSheet1 = true }
                     })
                     .offset(y: -60)
+                } else if !searchText.isEmpty && filteredTasks.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
                 }
             }
         }

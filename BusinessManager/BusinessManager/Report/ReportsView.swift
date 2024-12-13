@@ -96,6 +96,8 @@ struct ReportsView: View {
                             Button("Add Report") { isShowingItemSheet1 = true }
                         })
                         .offset(y: -60)
+                    } else if !searchText.isEmpty && filteredReports.isEmpty {
+                        ContentUnavailableView.search(text: searchText)
                     }
                 }
             }
