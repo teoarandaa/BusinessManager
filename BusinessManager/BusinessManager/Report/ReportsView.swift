@@ -6,7 +6,8 @@ struct ReportsView: View {
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @Environment(\.modelContext) var context
-    @Query(sort: \Report.departmentName) var reports: [Report]
+    @Query(sort: [SortDescriptor(\Report.date, order: .reverse), 
+                  SortDescriptor(\Report.departmentName)]) var reports: [Report]
     @Query var goals: [Goal]
     @State private var reportToEdit: Report?
     @State private var showingBottomSheet: Bool = false
@@ -595,10 +596,11 @@ struct DepartmentCell: View {
     ]
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: currentIcon)
                 .foregroundStyle(.accent)
                 .font(.title3)
+                .frame(width: 30)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(departmentName)
@@ -607,6 +609,8 @@ struct DepartmentCell: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            
+            Spacer()
         }
         .contentShape(Rectangle())
         .padding(.vertical, 4)
