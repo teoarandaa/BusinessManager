@@ -4,7 +4,7 @@ struct PrivacyPolicyView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView(.vertical) {
                 VStack(alignment: .leading) {
                     // Privacy Icon

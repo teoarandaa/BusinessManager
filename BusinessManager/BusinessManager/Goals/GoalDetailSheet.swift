@@ -6,12 +6,6 @@ struct GoalDetailSheet: View {
     @Environment(\.modelContext) var context
     @Bindable var goal: Goal
     @State private var showingDeleteAlert = false
-    @State private var currentValueString: String
-    
-    init(goal: Goal) {
-        self.goal = goal
-        _currentValueString = State(initialValue: String(goal.currentValue))
-    }
     
     var progressValue: Double {
         let progress = Double(goal.currentValue) / Double(goal.targetValue)
@@ -36,14 +30,8 @@ struct GoalDetailSheet: View {
                     HStack {
                         Text("Current Value")
                         Spacer()
-                        TextField("Current", text: $currentValueString)
+                        Text("\(goal.currentValue)")
                             .multilineTextAlignment(.trailing)
-                            .keyboardType(.numberPad)
-                            .onChange(of: currentValueString) {
-                                if let value = Int(currentValueString) {
-                                    goal.currentValue = value
-                                }
-                            }
                     }
                 }
                 
