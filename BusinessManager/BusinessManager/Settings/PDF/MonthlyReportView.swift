@@ -377,11 +377,6 @@ class PDFGenerator {
             let goalsY = reportsY + 250
             ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: goalsY), withAttributes: summaryTitleAttributes)
             
-            ("Completed Goals by Department" as NSString).draw(
-                at: CGPoint(x: pageWidth - margin - 280, y: goalsY),
-                withAttributes: summaryTitleAttributes
-            )
-            
             // Draw goals details
             let goalDetails = """
             Active Goals: \(goals.filter { $0.status == .inProgress }.count)
@@ -391,39 +386,47 @@ class PDFGenerator {
             
             (goalDetails as NSString).draw(at: CGPoint(x: margin, y: goalsY + 20), withAttributes: summaryTextAttributes)
             
-            // Draw pie chart (siempre)
-            let pieCenterY = goalsY + 95
-            let chartCenterX = pageWidth - margin - 150
-            let radius: CGFloat = 60
+            // Añadir espacio después del resumen
+            let chartsY = goalsY + 80
             
-            // Dibujar círculo vacío si no hay datos
-            if goals.filter({ $0.status == .completed }).isEmpty {
-                let path = UIBezierPath(arcCenter: CGPoint(x: chartCenterX, y: pieCenterY),
-                                       radius: radius,
-                                       startAngle: 0,
-                                       endAngle: 2 * .pi,
-                                       clockwise: true)
-                UIColor.gray.withAlphaComponent(0.2).setStroke()
-                path.stroke()
-            } else {
-                let departmentGoals = Dictionary(grouping: goals.filter { $0.status == .completed }, by: { $0.department })
-                let total = CGFloat(goals.filter { $0.status == .completed }.count)
+            // Títulos de los pie charts alineados con el margen
+            ("Completed Goals by Department" as NSString).draw(
+                at: CGPoint(x: margin, y: chartsY),
+                withAttributes: summaryTitleAttributes
+            )
+            ("Failed Goals by Department" as NSString).draw(
+                at: CGPoint(x: pageWidth/2 + margin, y: chartsY),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            // Configuración común para los pie charts
+            let pieCenterY = chartsY + 100
+            let radius: CGFloat = 55
+            let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple, .systemTeal]
+            
+            // Función helper para dibujar pie chart
+            func drawPieChart(centerX: CGFloat, goals: [Goal], status: Goal.GoalStatus) {
+                let departmentGoals = Dictionary(grouping: goals.filter { $0.status == status }, by: { $0.department })
+                let total = CGFloat(goals.filter { $0.status == status }.count)
                 
-                if total > 0 {
+                if total == 0 {
+                    let path = UIBezierPath(arcCenter: CGPoint(x: centerX, y: pieCenterY),
+                                           radius: radius,
+                                           startAngle: 0,
+                                           endAngle: 2 * .pi,
+                                           clockwise: true)
+                    UIColor.gray.withAlphaComponent(0.2).setStroke()
+                    path.stroke()
+                } else {
                     var startAngle: CGFloat = 0
                     
-                    // Colores para el gráfico
-                    let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, 
-                                           .systemOrange, .systemPurple, .systemTeal]
-                    
-                    // Dibujar el gráfico circular
                     departmentGoals.enumerated().forEach { index, entry in
                         let percentage = CGFloat(entry.value.count) / total
                         let endAngle = startAngle + (percentage * 2 * .pi)
                         
                         let path = UIBezierPath()
-                        path.move(to: CGPoint(x: chartCenterX, y: pieCenterY))
-                        path.addArc(withCenter: CGPoint(x: chartCenterX, y: pieCenterY),
+                        path.move(to: CGPoint(x: centerX, y: pieCenterY))
+                        path.addArc(withCenter: CGPoint(x: centerX, y: pieCenterY),
                                   radius: radius,
                                   startAngle: startAngle,
                                   endAngle: endAngle,
@@ -433,20 +436,20 @@ class PDFGenerator {
                         colors[index % colors.count].setFill()
                         path.fill()
                         
-                        // Dibujar leyenda
-                        let legendX = chartCenterX + radius + 30
-                        let legendY = pieCenterY - radius + (CGFloat(index) * 20)
+                        // Leyenda - ajustada la posición
+                        let legendX = centerX - radius
+                        let legendY = pieCenterY + radius + 10 + (CGFloat(index) * 12)  // Reducido el espacio entre leyendas
                         
                         colors[index % colors.count].setFill()
-                        let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
+                        let legendRect = CGRect(x: legendX, y: legendY, width: 6, height: 6)  // Cuadrados más pequeños
                         UIBezierPath(rect: legendRect).fill()
                         
                         let legendText = "\(entry.key): \(entry.value.count)"
                         let legendAttributes: [NSAttributedString.Key: Any] = [
-                            .font: UIFont.systemFont(ofSize: 10)
+                            .font: UIFont.systemFont(ofSize: 7)  // Fuente más pequeña
                         ]
                         (legendText as NSString).draw(
-                            at: CGPoint(x: legendX + 15, y: legendY),
+                            at: CGPoint(x: legendX + 10, y: legendY),
                             withAttributes: legendAttributes
                         )
                         
@@ -454,6 +457,10 @@ class PDFGenerator {
                     }
                 }
             }
+            
+            // Dibujar los dos pie charts alineados con el margen
+            drawPieChart(centerX: margin + radius + 40, goals: goals, status: Goal.GoalStatus.completed)
+            drawPieChart(centerX: pageWidth/2 + margin + radius + 40, goals: goals, status: Goal.GoalStatus.failed)
         }
         
         return data
