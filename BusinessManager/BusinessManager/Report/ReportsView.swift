@@ -52,8 +52,13 @@ struct ReportsView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            let reportToDelete = filteredReports[index]
-                            deleteReport(reportToDelete)
+                            let departmentToDelete = Array(Dictionary(grouping: filteredReports, by: { $0.departmentName })
+                                .sorted(by: { $0.key < $1.key }))[index]
+                            
+                            // Eliminar todos los reports del departamento
+                            for report in reports where report.departmentName == departmentToDelete.key {
+                                deleteReport(report)
+                            }
                         }
                     }
                 }
