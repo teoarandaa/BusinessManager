@@ -655,6 +655,7 @@ struct DepartmentCell: View {
 struct EditDepartmentSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var context
+    @AppStorage("departmentIcons") private var iconStorage: String = "{}"
     let departmentName: String
     let reports: [Report]
     
@@ -679,6 +680,17 @@ struct EditDepartmentSheet: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
+                        // Actualizar el icono con el nuevo nombre del departamento
+                        var dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
+                        if let icon = dictionary[departmentName] {
+                            dictionary[newDepartmentName] = icon
+                            dictionary.removeValue(forKey: departmentName)
+                            if let encoded = try? JSONEncoder().encode(dictionary),
+                               let string = String(data: encoded, encoding: .utf8) {
+                                iconStorage = string
+                            }
+                        }
+                        
                         // Actualizar el nombre del departamento en todos los reports asociados
                         for report in reports where report.departmentName == departmentName {
                             report.departmentName = newDepartmentName
