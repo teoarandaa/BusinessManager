@@ -91,6 +91,15 @@ struct DepartmentReportsView: View {
         .sheet(isPresented: $showingFilters) {
             FilterSheet(filters: $filters)
         }
+        .overlay {
+            if filteredReports.isEmpty {
+                ContentUnavailableView {
+                    Label("No Results", systemImage: "doc.text.magnifyingglass")
+                } description: {
+                    Text("Try adjusting your filters to find what you're looking for.")
+                }
+            }
+        }
     }
 }
 

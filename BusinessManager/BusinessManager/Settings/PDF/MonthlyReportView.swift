@@ -420,7 +420,10 @@ class PDFGenerator {
                 } else {
                     var startAngle: CGFloat = 0
                     
-                    departmentGoals.enumerated().forEach { index, entry in
+                    // Ordenar los departamentos alfabéticamente
+                    let sortedDepartments = departmentGoals.sorted { $0.key < $1.key }
+                    
+                    sortedDepartments.enumerated().forEach { index, entry in
                         let percentage = CGFloat(entry.value.count) / total
                         let endAngle = startAngle + (percentage * 2 * .pi)
                         
@@ -436,17 +439,17 @@ class PDFGenerator {
                         colors[index % colors.count].setFill()
                         path.fill()
                         
-                        // Leyenda - ajustada la posición
+                        // Leyenda
                         let legendX = centerX - radius
-                        let legendY = pieCenterY + radius + 10 + (CGFloat(index) * 12)  // Reducido el espacio entre leyendas
+                        let legendY = pieCenterY + radius + 10 + (CGFloat(index) * 12)
                         
                         colors[index % colors.count].setFill()
-                        let legendRect = CGRect(x: legendX, y: legendY, width: 6, height: 6)  // Cuadrados más pequeños
+                        let legendRect = CGRect(x: legendX, y: legendY, width: 6, height: 6)
                         UIBezierPath(rect: legendRect).fill()
                         
                         let legendText = "\(entry.key): \(entry.value.count)"
                         let legendAttributes: [NSAttributedString.Key: Any] = [
-                            .font: UIFont.systemFont(ofSize: 7)  // Fuente más pequeña
+                            .font: UIFont.systemFont(ofSize: 7)
                         ]
                         (legendText as NSString).draw(
                             at: CGPoint(x: legendX + 10, y: legendY),
