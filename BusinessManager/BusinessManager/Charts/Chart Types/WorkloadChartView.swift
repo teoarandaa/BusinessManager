@@ -49,6 +49,10 @@ struct WorkloadChartView: View {
                         .aspectRatio(1.0, contentMode: .fit)
                         .padding()
                     }
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.horizontal)
                 }
             }
             .padding()

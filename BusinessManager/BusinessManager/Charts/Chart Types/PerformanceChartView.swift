@@ -82,6 +82,10 @@ struct PerformanceChartView: View {
                             .padding(.top, 5)
                         }
                     }
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.horizontal)
                 }
             }
             .padding()
