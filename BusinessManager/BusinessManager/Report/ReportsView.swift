@@ -162,26 +162,68 @@ struct AddReportSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Report Details")) {
-                    DatePicker("Date", selection: $date, displayedComponents: .date)
-                    
-                    TextField("Department Name", text: $departmentName)
-                    
-                    TextField("Total Tasks Created", text: $totalTasksCreated)
+                HStack {
+                    Image(systemName: "calendar")
+                    Text("Date")
+                        .bold()
+                    Spacer()
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
+                }
+                
+                HStack {
+                    Image(systemName: "building.2")
+                    Text("Department")
+                        .bold()
+                    Spacer()
+                    TextField("Name", text: $departmentName, axis: .vertical)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "plus.circle")
+                    Text("Tasks created")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $totalTasksCreated)
                         .keyboardType(.numberPad)
-                    
-                    TextField("Tasks Completed Without Delay", text: $tasksCompletedWithoutDelay)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.seal")
+                    Text("On-Time Tasks")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
-                    
-                    TextField("Number of Finished Tasks", text: $numberOfFinishedTasks)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.circle")
+                    Text("Finished Tasks")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $numberOfFinishedTasks)
                         .keyboardType(.numberPad)
-                    
-                    TextEditor(text: $annotations)
-                        .frame(height: 100)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                        )
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
+                }
+                
+                HStack(alignment: .top) {
+                    Image(systemName: "pencil")
+                    Text("Annotations")
+                        .bold()
+                    Spacer()
+                    TextField("Add note", text: $annotations, axis: .vertical)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
                 }
             }
             .navigationTitle("Add Report")
@@ -363,26 +405,68 @@ struct UpdateReportSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Update Report")) {
-                    DatePicker("Date", selection: $date, displayedComponents: .date)
-                    
-                    TextField("Department Name", text: $departmentName)
-                    
-                    TextField("Total Tasks Created", text: $totalTasksCreated)
+                HStack {
+                    Image(systemName: "calendar")
+                    Text("Date")
+                        .bold()
+                    Spacer()
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
+                }
+                
+                HStack {
+                    Image(systemName: "building.2")
+                    Text("Department")
+                        .bold()
+                    Spacer()
+                    TextField("Name", text: $departmentName, axis: .vertical)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "plus.circle")
+                    Text("Tasks created")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $totalTasksCreated)
                         .keyboardType(.numberPad)
-                    
-                    TextField("Tasks Completed Without Delay", text: $tasksCompletedWithoutDelay)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.seal")
+                    Text("On-Time Tasks")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
-                    
-                    TextField("Number of Finished Tasks", text: $numberOfFinishedTasks)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.circle")
+                    Text("Finished Tasks")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $numberOfFinishedTasks)
                         .keyboardType(.numberPad)
-                    
-                    TextEditor(text: $annotations)
-                        .frame(height: 100)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                        )
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
+                }
+                
+                HStack(alignment: .top) {
+                    Image(systemName: "pencil")
+                    Text("Annotations")
+                        .bold()
+                    Spacer()
+                    TextField("Add note", text: $annotations, axis: .vertical)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
                 }
             }
             .navigationTitle("Update Report")
