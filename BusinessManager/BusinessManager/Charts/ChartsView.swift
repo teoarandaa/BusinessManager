@@ -11,7 +11,6 @@ struct ChartsView: View {
     @Query(sort: \Report.departmentName) var reports: [Report]
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
-    @State private var searchText = ""
     
     var chartIcon: String {
         switch chart {
@@ -70,15 +69,6 @@ struct ChartsView: View {
                                 }
                             }
                             .padding()
-                        }
-                    }
-                    .searchable(text: $searchText, prompt: "Search departments")
-                    .searchSuggestions {
-                        if searchText.isEmpty {
-                            ForEach(uniqueDepartments.prefix(3), id: \.self) { department in
-                                Text(department)
-                                    .searchCompletion(department)
-                            }
                         }
                     }
                 }

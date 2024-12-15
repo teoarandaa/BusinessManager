@@ -32,35 +32,41 @@ struct ProductivityChartView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    if let departmentData = groupedReports[department], !departmentData.isEmpty {
-                        VStack(spacing: 35) {
-                            Text(department)
-                                .font(.title)
-                                .bold()
+        ZStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    ForEach(groupedReports.keys.sorted(), id: \.self) { department in
+                        if let departmentData = groupedReports[department], !departmentData.isEmpty {
+                            VStack(spacing: 35) {
+                                Text(department)
+                                    .font(.title)
+                                    .bold()
+                                    .padding()
+                                
+                                Chart(departmentData) { data in
+                                    LineMark(
+                                        x: .value("Date", data.date),
+                                        y: .value("Performance", data.performanceMark)
+                                    )
+                                    .foregroundStyle(Color.accentColor)
+                                    .symbol(by: .value("Department", data.departmentName))
+                                }
+                                .chartXAxis {
+                                    AxisMarks(values: .stride(by: .month))
+                                }
+                                .chartYAxis {
+                                    AxisMarks()
+                                }
+                                .aspectRatio(1.0, contentMode: .fit)
                                 .padding()
-                            
-                            Chart(departmentData) { data in
-                                LineMark(
-                                    x: .value("Date", data.date),
-                                    y: .value("Performance", data.performanceMark)
-                                )
-                                .foregroundStyle(Color.accentColor)
-                                .symbol(by: .value("Department", data.departmentName))
                             }
-                            .chartXAxis {
-                                AxisMarks(values: .stride(by: .month))
-                            }
-                            .chartYAxis {
-                                AxisMarks()
-                            }
-                            .aspectRatio(1.0, contentMode: .fit)
-                            .padding()
                         }
                     }
                 }
+            }
+            
+            if !searchText.isEmpty && groupedReports.isEmpty {
+                ContentUnavailableView.search(text: searchText)
             }
         }
         .searchable(text: $searchText, prompt: "Search departments")

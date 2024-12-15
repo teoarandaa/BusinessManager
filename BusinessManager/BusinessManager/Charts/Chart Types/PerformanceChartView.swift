@@ -31,66 +31,72 @@ struct PerformanceChartView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    VStack(spacing: 35) {
-                        Text(department)
-                            .font(.title)
-                            .bold()
-                            .padding()
-                        
-                        if let departmentData = groupedReports[department] {
-                            // Calculate average volume of work
-                            let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
-                            let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
+        ZStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    ForEach(groupedReports.keys.sorted(), id: \.self) { department in
+                        VStack(spacing: 35) {
+                            Text(department)
+                                .font(.title)
+                                .bold()
+                                .padding()
                             
-                            Chart {
-                                BarMark(
-                                    x: .value("Month", departmentData.first?.date ?? Date(), unit: .month),
-                                    y: .value("Volume of Work", averageVolume)
-                                )
-                                .foregroundStyle(Color.accentColor)
-                                .position(by: .value("Category", "Volume of Work"))
+                            if let departmentData = groupedReports[department] {
+                                // Calculate average volume of work
+                                let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
+                                let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
                                 
-                                ForEach(departmentData) { data in
+                                Chart {
                                     BarMark(
-                                        x: .value("Month", data.date, unit: .month),
-                                        y: .value("Tasks Completed", data.numberOfFinishedTasks)
+                                        x: .value("Month", departmentData.first?.date ?? Date(), unit: .month),
+                                        y: .value("Volume of Work", averageVolume)
                                     )
-                                    .foregroundStyle(Color.blue)
-                                    .position(by: .value("Category", "Tasks Completed"))
+                                    .foregroundStyle(Color.accentColor)
+                                    .position(by: .value("Category", "Volume of Work"))
+                                    
+                                    ForEach(departmentData) { data in
+                                        BarMark(
+                                            x: .value("Month", data.date, unit: .month),
+                                            y: .value("Tasks Completed", data.numberOfFinishedTasks)
+                                        )
+                                        .foregroundStyle(Color.blue)
+                                        .position(by: .value("Category", "Tasks Completed"))
+                                    }
                                 }
-                            }
-                            .chartXAxis {
-                                AxisMarks(values: .stride(by: .month)) {
-                                    AxisValueLabel(format: .dateTime.month(.abbreviated))
+                                .chartXAxis {
+                                    AxisMarks(values: .stride(by: .month)) {
+                                        AxisValueLabel(format: .dateTime.month(.abbreviated))
+                                    }
                                 }
-                            }
-                            .chartYAxis {
-                                AxisMarks()
-                            }
-                            .aspectRatio(1.0, contentMode: .fit)
-                            .padding()
-                            
-                            // Leyenda
-                            HStack {
-                                Circle()
-                                    .fill(Color.accentColor)
-                                    .frame(width: 10, height: 10)
-                                Text("Volume of Work")
-                                    .font(.caption)
+                                .chartYAxis {
+                                    AxisMarks()
+                                }
+                                .aspectRatio(1.0, contentMode: .fit)
+                                .padding()
                                 
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 10, height: 10)
-                                Text("Tasks Completed")
-                                    .font(.caption)
+                                // Leyenda
+                                HStack {
+                                    Circle()
+                                        .fill(Color.accentColor)
+                                        .frame(width: 10, height: 10)
+                                    Text("Volume of Work")
+                                        .font(.caption)
+                                    
+                                    Circle()
+                                        .fill(Color.blue)
+                                        .frame(width: 10, height: 10)
+                                    Text("Tasks Completed")
+                                        .font(.caption)
+                                }
+                                .padding(.top, 5)
                             }
-                            .padding(.top, 5)
                         }
                     }
                 }
+            }
+            
+            if !searchText.isEmpty && groupedReports.isEmpty {
+                ContentUnavailableView.search(text: searchText)
             }
         }
         .searchable(text: $searchText, prompt: "Search departments") // Añadir la barra de búsqueda
