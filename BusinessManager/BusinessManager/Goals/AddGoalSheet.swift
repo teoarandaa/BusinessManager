@@ -21,7 +21,11 @@ struct AddGoalSheet: View {
                     TextField("Goal Title", text: $title)
                     TextField("Target Value", text: $targetValue)
                         .keyboardType(.numberPad)
-                    DatePicker("Deadline", selection: $deadline, displayedComponents: .date)
+                    DatePicker(
+                        "Deadline",
+                        selection: $deadline,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
                 }
                 
                 Section {

@@ -67,7 +67,7 @@ struct ReportsView: View {
                         .searchSuggestions {
                             if searchText.isEmpty {
                                 ForEach(reports.prefix(3)) { report in
-                                    Text(report.departmentName)
+                                    Label(report.departmentName, systemImage: "magnifyingglass")
                                         .searchCompletion(report.departmentName)
                                 }
                             }

@@ -52,7 +52,6 @@ struct GoalsView: View {
                 if currentMonthGoals.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Goals for This Month", systemImage: "target")
-                            .foregroundStyle(Color.accentColor)
                     }, description: {
                         Text("Start by adding goals for the current month")
                     }, actions: {
@@ -71,9 +70,11 @@ struct GoalsView: View {
                         isShowingSettings = true
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add Goal", systemImage: "plus") {
-                        showingAddGoal = true
+                if !currentMonthGoals.isEmpty {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Add Goal", systemImage: "plus") {
+                            showingAddGoal = true
+                        }
                     }
                 }
             }
@@ -206,7 +207,7 @@ struct GoalCell: View {
                 Text(progressText)
                     .font(.caption)
                 Spacer()
-                Text(goal.deadline, style: .date)
+                Text(goal.deadline.formatted(date: .abbreviated, time: .shortened))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

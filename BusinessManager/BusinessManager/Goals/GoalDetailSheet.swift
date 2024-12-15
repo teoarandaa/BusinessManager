@@ -46,7 +46,7 @@ struct GoalDetailSheet: View {
                         Text(goal.department)
                     }
                     LabeledContent("Deadline") {
-                        Text(goal.deadline.formatted(date: .long, time: .omitted))
+                        Text(goal.deadline.formatted(date: .long, time: .shortened))
                     }
                 }
                 

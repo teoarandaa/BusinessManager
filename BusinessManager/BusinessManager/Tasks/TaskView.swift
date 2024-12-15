@@ -116,7 +116,7 @@ struct TaskView: View {
                     .searchSuggestions {
                         if searchText.isEmpty {
                             ForEach(tasks.prefix(3)) { task in
-                                Text(task.title)
+                                Label(task.title, systemImage: "magnifyingglass")
                                     .searchCompletion(task.title)
                             }
                         }
