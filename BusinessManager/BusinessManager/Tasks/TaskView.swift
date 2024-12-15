@@ -139,11 +139,11 @@ struct TaskView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Information", systemImage: "info.circle") {
-                        isShowingItemSheet2 = true
-                    }
                     Button("Settings", systemImage: "gear") {
                         isShowingSettings = true
+                    }
+                    Button("Information", systemImage: "info.circle") {
+                        isShowingItemSheet2 = true
                     }
                 }
                 if !tasks.isEmpty {
