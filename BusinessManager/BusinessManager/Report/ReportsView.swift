@@ -62,14 +62,16 @@ struct ReportsView: View {
                         }
                     }
                 }
-                .searchable(text: $searchText, prompt: "Search departments")
-                .searchSuggestions {
-                    if searchText.isEmpty {
-                        ForEach(reports.prefix(3)) { report in
-                            Label(report.departmentName, systemImage: "magnifyingglass")
-                                .searchCompletion(report.departmentName)
+                .if(!reports.isEmpty) { view in
+                    view.searchable(text: $searchText, prompt: "Search departments")
+                        .searchSuggestions {
+                            if searchText.isEmpty {
+                                ForEach(reports.prefix(3)) { report in
+                                    Label(report.departmentName, systemImage: "magnifyingglass")
+                                        .searchCompletion(report.departmentName)
+                                }
+                            }
                         }
-                    }
                 }
                 .navigationTitle("Departments")
                 .navigationBarTitleDisplayMode(.large)
@@ -225,7 +227,6 @@ struct AddReportSheet: View {
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
-                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack(alignment: .top) {
@@ -304,6 +305,17 @@ struct AddReportSheet: View {
             alertMessage = "Failed to save the report: \(error.localizedDescription)"
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)
+        }
+    }
+}
+
+// Extensión para el modificador condicional
+extension View {
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
         }
     }
 }

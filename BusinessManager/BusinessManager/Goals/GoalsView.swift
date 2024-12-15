@@ -63,11 +63,11 @@ struct GoalsView: View {
             .navigationTitle("Goals & Metrics")
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Information", systemImage: "info.circle") {
-                        isShowingInfoSheet = true
-                    }
                     Button("Settings", systemImage: "gear") {
                         isShowingSettings = true
+                    }
+                    Button("Information", systemImage: "info.circle") {
+                        isShowingInfoSheet = true
                     }
                 }
                 if !currentMonthGoals.isEmpty {
