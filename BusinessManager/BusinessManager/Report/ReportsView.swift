@@ -75,11 +75,23 @@ struct ReportsView: View {
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                        Button("Settings") { isShowingSettings = true }
-                        Button("Info") { isShowingInfoSheet = true }
+                        Button {
+                            isShowingSettings = true
+                        } label: {
+                            Label("Settings", systemImage: "gear")
+                        }
+                        Button {
+                            isShowingInfoSheet = true
+                        } label: {
+                            Label("Info", systemImage: "info.circle")
+                        }
                     }
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Button("Add Report") { isShowingAddReportSheet = true }
+                        Button {
+                            isShowingAddReportSheet = true
+                        } label: {
+                            Label("Add Report", systemImage: "plus")
+                        }
                     }
                 }
                 .sheet(isPresented: $isShowingAddReportSheet) {
