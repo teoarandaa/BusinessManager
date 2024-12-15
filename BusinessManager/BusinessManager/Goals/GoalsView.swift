@@ -27,18 +27,23 @@ struct GoalsView: View {
         NavigationStack {
             List {
                 if !currentMonthGoals.isEmpty {
-                    GoalsOverviewSection(goals: currentMonthGoals)
+                    if let department = selectedDepartment {
+                        // Mostrar métricas filtradas por departamento
+                        let departmentGoals = currentMonthGoals.filter { $0.department == department }
+                        GoalsOverviewSection(goals: departmentGoals)
+                    } else {
+                        // Mostrar todas las métricas
+                        GoalsOverviewSection(goals: currentMonthGoals)
+                    }
                     
                     if !departments.isEmpty {
                         GoalsByDepartmentSection(goals: currentMonthGoals, selectedDepartment: $selectedDepartment)
                     }
                     
                     if let department = selectedDepartment {
-                        // Mostrar solo los objetivos del departamento seleccionado para el mes actual
                         let departmentGoals = currentMonthGoals.filter { $0.department == department }
                         GoalsSections(goals: departmentGoals)
                     } else {
-                        // Mostrar todos los objetivos del mes actual
                         GoalsSections(goals: currentMonthGoals)
                     }
                 }
