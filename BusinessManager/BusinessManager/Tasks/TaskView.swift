@@ -111,16 +111,14 @@ struct TaskView: View {
                     }
                 }
             }
-            .if(!tasks.isEmpty) { view in
-                view.searchable(text: $searchText, prompt: "Search tasks")
-                    .searchSuggestions {
-                        if searchText.isEmpty {
-                            ForEach(tasks.prefix(3)) { task in
-                                Label(task.title, systemImage: "magnifyingglass")
-                                    .searchCompletion(task.title)
-                            }
-                        }
+            .searchable(text: tasks.isEmpty ? .constant("") : $searchText, prompt: "Search tasks")
+            .searchSuggestions {
+                if !tasks.isEmpty && searchText.isEmpty {
+                    ForEach(tasks.prefix(3)) { task in
+                        Label(task.title, systemImage: "magnifyingglass")
+                            .searchCompletion(task.title)
                     }
+                }
             }
             .navigationTitle("Tasks")
             .navigationBarTitleDisplayMode(.large)
