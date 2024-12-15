@@ -9,6 +9,7 @@ final class Task: Identifiable {
     var content: String
     var comments: String
     var priority: String
+    var isCompleted: Bool
     
     init(date: Date, title: String, content: String, comments: String, priority: String) {
         self.id = UUID().uuidString
@@ -17,6 +18,7 @@ final class Task: Identifiable {
         self.content = content
         self.comments = comments
         self.priority = priority
+        self.isCompleted = false
     }
 }
 

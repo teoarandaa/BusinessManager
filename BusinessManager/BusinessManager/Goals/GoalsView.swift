@@ -4,43 +4,52 @@ import Charts
 
 struct GoalsView: View {
     @Environment(\.modelContext) var context
-    @Query(sort: \Goal.deadline) var goals: [Goal]
+    @Query var goals: [Goal]
     @State private var showingAddGoal = false
     @State private var selectedDepartment: String?
     @State private var isShowingSettings = false
     @State private var isShowingInfoSheet = false
     
-    var activeGoals: [Goal] { goals.filter { $0.status == .inProgress } }
-    var completedGoals: [Goal] { goals.filter { $0.status == .completed } }
-    var failedGoals: [Goal] { goals.filter { $0.status == .failed } }
+    // Filtro para el mes actual
+    var currentMonthGoals: [Goal] {
+        let calendar = Calendar.current
+        let now = Date()
+        return goals.filter { goal in
+            calendar.isDate(goal.deadline, equalTo: now, toGranularity: .month)
+        }
+    }
+    
+    var activeGoals: [Goal] { currentMonthGoals.filter { $0.status == .inProgress } }
+    var completedGoals: [Goal] { currentMonthGoals.filter { $0.status == .completed } }
+    var failedGoals: [Goal] { currentMonthGoals.filter { $0.status == .failed } }
     
     var body: some View {
         NavigationStack {
             List {
-                if !goals.isEmpty {
-                    GoalsOverviewSection(goals: goals)
+                if !currentMonthGoals.isEmpty {
+                    GoalsOverviewSection(goals: currentMonthGoals)
                     
                     if !departments.isEmpty {
-                        GoalsByDepartmentSection(goals: goals, selectedDepartment: $selectedDepartment)
+                        GoalsByDepartmentSection(goals: currentMonthGoals, selectedDepartment: $selectedDepartment)
                     }
                     
                     if let department = selectedDepartment {
-                        // Mostrar solo los objetivos del departamento seleccionado
-                        let departmentGoals = goals.filter { $0.department == department }
+                        // Mostrar solo los objetivos del departamento seleccionado para el mes actual
+                        let departmentGoals = currentMonthGoals.filter { $0.department == department }
                         GoalsSections(goals: departmentGoals)
                     } else {
-                        // Mostrar todos los objetivos
-                        GoalsSections(goals: goals)
+                        // Mostrar todos los objetivos del mes actual
+                        GoalsSections(goals: currentMonthGoals)
                     }
                 }
             }
             .overlay {
-                if goals.isEmpty {
+                if currentMonthGoals.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Goals", systemImage: "target")
+                        Label("No Goals for This Month", systemImage: "target")
                             .foregroundStyle(Color.accentColor)
                     }, description: {
-                        Text("Start by adding goals for your departments")
+                        Text("Start by adding goals for the current month")
                     }, actions: {
                         Button("Add Goal") { showingAddGoal = true }
                     })
@@ -76,7 +85,7 @@ struct GoalsView: View {
     }
     
     var departments: [String] {
-        Array(Set(goals.map { $0.department })).sorted()
+        Array(Set(currentMonthGoals.map { $0.department })).sorted()
     }
 }
 
