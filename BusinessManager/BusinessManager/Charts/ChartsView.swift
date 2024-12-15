@@ -81,12 +81,12 @@ struct ChartsView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button(action: { isShowingItemSheet2 = true }) {
-                        Label("Information", systemImage: "info.circle")
-                            .symbolRenderingMode(.hierarchical)
-                    }
                     Button(action: { isShowingSettings = true }) {
                         Label("Settings", systemImage: "gear")
+                            .symbolRenderingMode(.hierarchical)
+                    }
+                    Button(action: { isShowingItemSheet2 = true }) {
+                        Label("Information", systemImage: "info.circle")
                             .symbolRenderingMode(.hierarchical)
                     }
                 }
