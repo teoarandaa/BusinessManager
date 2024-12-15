@@ -11,6 +11,7 @@ struct ChartsView: View {
     @Query(sort: \Report.departmentName) var reports: [Report]
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
+    @State private var searchText = ""
     
     var chartIcon: String {
         switch chart {
@@ -23,6 +24,10 @@ struct ChartsView: View {
         default:
             return "chart.line.uptrend.xyaxis"
         }
+    }
+    
+    var uniqueDepartments: [String] {
+        Array(Set(reports.map { $0.departmentName })).sorted()
     }
     
     var body: some View {
@@ -67,7 +72,15 @@ struct ChartsView: View {
                             .padding()
                         }
                     }
-                    .searchable(text: .constant(""), prompt: "Search departments")
+                    .searchable(text: $searchText, prompt: "Search departments")
+                    .searchSuggestions {
+                        if searchText.isEmpty {
+                            ForEach(uniqueDepartments.prefix(3), id: \.self) { department in
+                                Text(department)
+                                    .searchCompletion(department)
+                            }
+                        }
+                    }
                 }
             }
             .navigationTitle("Charts & Analytics")

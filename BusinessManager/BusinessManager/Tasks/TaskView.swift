@@ -113,6 +113,14 @@ struct TaskView: View {
             }
             .if(!tasks.isEmpty) { view in
                 view.searchable(text: $searchText, prompt: "Search tasks")
+                    .searchSuggestions {
+                        if searchText.isEmpty {
+                            ForEach(tasks.prefix(3)) { task in
+                                Text(task.title)
+                                    .searchCompletion(task.title)
+                            }
+                        }
+                    }
             }
             .navigationTitle("Tasks")
             .navigationBarTitleDisplayMode(.large)
@@ -418,7 +426,11 @@ struct UpdateTaskSheet: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button("Done") {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                        dismiss()
+                    }
                 }
             }
         }
