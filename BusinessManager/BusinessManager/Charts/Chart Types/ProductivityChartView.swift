@@ -31,6 +31,7 @@ struct ProductivityChartView: View {
                             Text(department)
                                 .font(.title)
                                 .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                             
                             Chart(departmentData) { data in

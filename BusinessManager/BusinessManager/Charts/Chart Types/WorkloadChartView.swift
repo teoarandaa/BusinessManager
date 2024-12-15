@@ -29,6 +29,7 @@ struct WorkloadChartView: View {
                         Text(department)
                             .font(.title)
                             .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         
                         Chart(groupedReports[department]!) { data in
