@@ -12,7 +12,7 @@ struct FAQView: View {
     // MARK: - FAQs content
     let faqItems: [FAQItem] = [
         FAQItem(question: "What is Business Manager", answer: "Business Manager is the tool for managing and optimizing internal business processes effectively. If you are interested in learning more about it, please visit our website: https://www.example.app/"),
-        FAQItem(question: "Is Business Manager free to use?", answer: "There is an initial trial period, and afterward, you can choose from several plans: \n\n- Self-employed: Free.\n\n- Startup: €4.99/month or €46.99/year.\n\n- SME: €9.99/month or €94.99/year.\n\n- Corporation: €14.99/month or €142.99/year.\n\n- Enterprise: €19.99/month or €190.99/year.\n\nTo access the plans, please go to Settings > Subscription Packages, where you can review what each plan includes."),
+        FAQItem(question: "Is Business Manager free to use?", answer: "There is an initial trial period, and afterward, you can choose from several plans: \n\n- Demo: Free.\n\n- Growth: €4.99/month or €46.99/year.\n\n- Elite: €9.99/month or €94.99/year.\n\nTo access the plans, please go to Settings > Subscription Packages, where you can review what each plan includes."),
         FAQItem(question: "How often do you add new features to the app?", answer: "Each update comes with new features and improvements. Exciting, isn't it?"),
         FAQItem(question: "Are there frequent updates to the app?", answer: "We ensure a minimum of one major update per year, introducing new features, enhancements, and resolving bugs."),
         FAQItem(question: "How do I enable push notifications?", answer: "To enable push notifications, navigate to Settings > Notifications and switch them on for the app."),
