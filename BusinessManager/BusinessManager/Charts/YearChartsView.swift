@@ -147,6 +147,7 @@ struct YearChartsView: View {
             }
         }
         .navigationTitle("Charts for \(String(year))")
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 

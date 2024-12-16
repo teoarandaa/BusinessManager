@@ -11,7 +11,7 @@ struct YearlyChartsView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack{
             List {
                 ForEach(yearlyData.keys.sorted(by: >), id: \.self) { year in
                     let reportsForYear = reports.filter { Calendar.current.component(.year, from: $0.date) == year }
