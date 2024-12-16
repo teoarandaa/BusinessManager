@@ -24,26 +24,30 @@ struct ProductivityChartView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 35) {
                 ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    if let departmentData = groupedReports[department], !departmentData.isEmpty {
-                        VStack(spacing: 35) {
-                            Text(department)
-                                .font(.title)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                            
-                            Chart(departmentData) { data in
-                                LineMark(
-                                    x: .value("Date", data.date),
-                                    y: .value("Performance", data.performanceMark)
-                                )
-                                .foregroundStyle(Color.accentColor)
-                                .symbol(by: .value("Department", data.departmentName))
+                    VStack(spacing: 20) {
+                        Text(department)
+                            .font(.title)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                        
+                        if let departmentData = groupedReports[department] {
+                            Chart {
+                                ForEach(departmentData) { data in
+                                    LineMark(
+                                        x: .value("Date", data.date),
+                                        y: .value("Performance", data.performanceMark)
+                                    )
+                                    .foregroundStyle(Color.accentColor)
+                                    .symbol(by: .value("Department", data.departmentName))
+                                }
                             }
                             .chartXAxis {
-                                AxisMarks(values: .stride(by: .month))
+                                AxisMarks(values: .stride(by: .month)) {
+                                    AxisValueLabel(format: .dateTime.month(.abbreviated))
+                                }
                             }
                             .chartYAxis {
                                 AxisMarks()
@@ -51,14 +55,13 @@ struct ProductivityChartView: View {
                             .aspectRatio(1.0, contentMode: .fit)
                             .padding()
                         }
-                        .frame(maxWidth: .infinity)
-                        .background(Color(.systemGray6))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .padding(.horizontal)
                     }
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.horizontal)
                 }
             }
-            .padding()
         }
     }
 }
