@@ -20,7 +20,7 @@ struct MainTabView: View {
             
             ChartsView(selectedTab: $selectedTab)
                 .tabItem {
-                    Label("Charts", systemImage: "chart.bar")
+                    Label("Analytics", systemImage: "chart.bar")
                 }
                 .tag(2)
             

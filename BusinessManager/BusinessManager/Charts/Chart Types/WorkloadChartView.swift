@@ -23,9 +23,9 @@ struct WorkloadChartView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 35) {
                 ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    VStack(spacing: 35) {
+                    VStack(spacing: 20) {
                         Text(department)
                             .font(.title)
                             .bold()
