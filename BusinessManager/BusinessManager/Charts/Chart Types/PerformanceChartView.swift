@@ -23,9 +23,9 @@ struct PerformanceChartView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 35) {
                 ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    VStack(spacing: 35) {
+                    VStack(spacing: 20) {
                         Text(department)
                             .font(.title)
                             .bold()
@@ -33,14 +33,25 @@ struct PerformanceChartView: View {
                             .padding()
                         
                         if let departmentData = groupedReports[department] {
-                            // Calculate average volume of work
-                            let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
-                            let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
+                            // Leyenda
+                            HStack {
+                                Circle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: 10, height: 10)
+                                Text("Volume of Work")
+                                    .font(.caption)
+                                
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: 10, height: 10)
+                                Text("Tasks Completed")
+                                    .font(.caption)
+                            }
                             
                             Chart {
                                 BarMark(
                                     x: .value("Month", departmentData.first?.date ?? Date(), unit: .month),
-                                    y: .value("Volume of Work", averageVolume)
+                                    y: .value("Volume of Work", departmentData.first?.volumeOfWorkMark ?? 0)
                                 )
                                 .foregroundStyle(Color.accentColor)
                                 .position(by: .value("Category", "Volume of Work"))
@@ -64,22 +75,6 @@ struct PerformanceChartView: View {
                             }
                             .aspectRatio(1.0, contentMode: .fit)
                             .padding()
-                            
-                            // Leyenda
-                            HStack {
-                                Circle()
-                                    .fill(Color.accentColor)
-                                    .frame(width: 10, height: 10)
-                                Text("Volume of Work")
-                                    .font(.caption)
-                                
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 10, height: 10)
-                                Text("Tasks Completed")
-                                    .font(.caption)
-                            }
-                            .padding(.top, 5)
                         }
                     }
                     .frame(maxWidth: .infinity)

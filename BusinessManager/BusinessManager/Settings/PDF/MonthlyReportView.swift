@@ -3,6 +3,22 @@ import PDFKit
 import SwiftData
 import Charts
 
+// MARK: - Report Period Enum
+enum ReportPeriod: String, CaseIterable {
+    case month = "Monthly"
+    case quarter = "Quarterly"
+    case year = "Yearly"
+    
+    var systemImage: String {
+        switch self {
+        case .month: return "calendar"
+        case .quarter: return "calendar.badge.clock"
+        case .year: return "calendar.badge.exclamationmark"
+        }
+    }
+}
+
+// MARK: - Month Year Picker
 struct MonthYearPicker: View {
     @Binding var selectedDate: Date
     @Environment(\.dismiss) private var dismiss
@@ -71,6 +87,130 @@ struct MonthYearPicker: View {
     }
 }
 
+// MARK: - Quarter Year Picker
+struct QuarterYearPicker: View {
+    @Binding var selectedDate: Date
+    @Environment(\.dismiss) private var dismiss
+    let onDateSelected: () -> Void
+    
+    @State private var selectedYear: Int
+    @State private var selectedQuarter: Int
+    
+    private let years = Array((2020...Calendar.current.component(.year, from: Date())).reversed())
+    private let quarters = ["Q1 (Jan-Mar)", "Q2 (Apr-Jun)", "Q3 (Jul-Sep)", "Q4 (Oct-Dec)"]
+    
+    init(selectedDate: Binding<Date>, onDateSelected: @escaping () -> Void) {
+        _selectedDate = selectedDate
+        self.onDateSelected = onDateSelected
+        
+        let calendar = Calendar.current
+        _selectedYear = State(initialValue: calendar.component(.year, from: selectedDate.wrappedValue))
+        _selectedQuarter = State(initialValue: (calendar.component(.month, from: selectedDate.wrappedValue) - 1) / 3)
+    }
+    
+    var body: some View {
+        NavigationStack {
+            HStack {
+                Picker("Quarter", selection: $selectedQuarter) {
+                    ForEach(0..<quarters.count, id: \.self) { index in
+                        Text(quarters[index]).tag(index)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+                
+                Picker("Year", selection: $selectedYear) {
+                    ForEach(years, id: \.self) { year in
+                        Text(String(year)).tag(year)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+            }
+            .padding()
+            .onChange(of: selectedYear) { updateSelectedDate() }
+            .onChange(of: selectedQuarter) { updateSelectedDate() }
+            .navigationTitle("Select Quarter")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.height(280)])
+    }
+    
+    private func updateSelectedDate() {
+        var dateComponents = DateComponents()
+        dateComponents.year = selectedYear
+        dateComponents.month = (selectedQuarter * 3) + 1
+        dateComponents.day = 1
+        
+        if let date = Calendar.current.date(from: dateComponents) {
+            selectedDate = date
+            onDateSelected()
+        }
+    }
+}
+
+// MARK: - Year Picker
+struct YearPicker: View {
+    @Binding var selectedDate: Date
+    @Environment(\.dismiss) private var dismiss
+    let onDateSelected: () -> Void
+    
+    @State private var selectedYear: Int
+    
+    private let years = Array((2020...Calendar.current.component(.year, from: Date())).reversed())
+    
+    init(selectedDate: Binding<Date>, onDateSelected: @escaping () -> Void) {
+        _selectedDate = selectedDate
+        self.onDateSelected = onDateSelected
+        
+        let calendar = Calendar.current
+        _selectedYear = State(initialValue: calendar.component(.year, from: selectedDate.wrappedValue))
+    }
+    
+    var body: some View {
+        NavigationStack {
+            Picker("Year", selection: $selectedYear) {
+                ForEach(years, id: \.self) { year in
+                    Text(String(year)).tag(year)
+                }
+            }
+            .pickerStyle(.wheel)
+            .padding()
+            .onChange(of: selectedYear) { updateSelectedDate() }
+            .navigationTitle("Select Year")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.height(280)])
+    }
+    
+    private func updateSelectedDate() {
+        var dateComponents = DateComponents()
+        dateComponents.year = selectedYear
+        dateComponents.month = 1
+        dateComponents.day = 1
+        
+        if let date = Calendar.current.date(from: dateComponents) {
+            selectedDate = date
+            onDateSelected()
+        }
+    }
+}
+
+// MARK: - Monthly Report View
 struct MonthlyReportView: View {
     @Environment(\.modelContext) private var context
     @Query private var reports: [Report]
@@ -79,24 +219,56 @@ struct MonthlyReportView: View {
     @State private var pdfData: Data?
     @State private var showShareSheet = false
     @State private var showDatePicker = false
+    @State private var selectedPeriod: ReportPeriod = .month
     
     private let hapticFeedback = UINotificationFeedbackGenerator()
     
-    private var monthFormatter: DateFormatter = {
+    private var periodFormatter: DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
+        switch selectedPeriod {
+        case .month:
+            formatter.dateFormat = "MMMM yyyy"
+        case .quarter:
+            let month = Calendar.current.component(.month, from: selectedDate)
+            let quarter = (month - 1) / 3 + 1
+            formatter.dateFormat = "'Q'\(quarter) yyyy"
+        case .year:
+            formatter.dateFormat = "yyyy"
+        }
         return formatter
-    }()
+    }
+    
+    private var reportTitle: String {
+        switch selectedPeriod {
+        case .month:
+            return "Monthly Report - \(periodFormatter.string(from: selectedDate))"
+        case .quarter:
+            let month = Calendar.current.component(.month, from: selectedDate)
+            let quarter = (month - 1) / 3 + 1
+            return "Quarterly Report - Q\(quarter) \(Calendar.current.component(.year, from: selectedDate))"
+        case .year:
+            return "Yearly Report - \(Calendar.current.component(.year, from: selectedDate))"
+        }
+    }
     
     var body: some View {
         List {
             Section {
+                Picker("Report Period", selection: $selectedPeriod) {
+                    ForEach(ReportPeriod.allCases, id: \.self) { period in
+                        Text(period.rawValue)
+                    }
+                }
+                .onChange(of: selectedPeriod) {
+                    generatePDFReport()
+                }
+                
                 HStack {
-                    Image(systemName: "calendar")
+                    Image(systemName: selectedPeriod.systemImage)
                         .foregroundStyle(.accent)
                     
                     Button(action: { showDatePicker = true }) {
-                        Text(monthFormatter.string(from: selectedDate))
+                        Text(periodFormatter.string(from: selectedDate))
                             .foregroundStyle(.primary)
                     }
                 }
@@ -114,11 +286,22 @@ struct MonthlyReportView: View {
                 }
             }
         }
-        .navigationTitle("Monthly Report")
+        .navigationTitle(reportTitle)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showDatePicker) {
-            MonthYearPicker(selectedDate: $selectedDate) {
-                generatePDFReport()
+            switch selectedPeriod {
+            case .month:
+                MonthYearPicker(selectedDate: $selectedDate) {
+                    generatePDFReport()
+                }
+            case .quarter:
+                QuarterYearPicker(selectedDate: $selectedDate) {
+                    generatePDFReport()
+                }
+            case .year:
+                YearPicker(selectedDate: $selectedDate) {
+                    generatePDFReport()
+                }
             }
         }
         .sheet(isPresented: $showShareSheet) {
@@ -132,32 +315,54 @@ struct MonthlyReportView: View {
     }
     
     private func generatePDFReport() {
-        let pdfGenerator = PDFGenerator(date: selectedDate, reports: reportsForSelectedMonth(), goals: goalsForSelectedMonth())
+        let calendar = Calendar.current
+        var startDate: Date
+        var endDate: Date
+        
+        switch selectedPeriod {
+        case .month:
+            startDate = calendar.startOfMonth(for: selectedDate)
+            endDate = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startDate) ?? startDate
+            
+        case .quarter:
+            let month = calendar.component(.month, from: selectedDate)
+            let quarterStartMonth = ((month - 1) / 3) * 3 + 1
+            var components = DateComponents()
+            components.year = calendar.component(.year, from: selectedDate)
+            components.month = quarterStartMonth
+            components.day = 1
+            startDate = calendar.date(from: components) ?? selectedDate
+            endDate = calendar.date(byAdding: DateComponents(month: 3, day: -1), to: startDate) ?? startDate
+            
+        case .year:
+            var components = DateComponents()
+            components.year = calendar.component(.year, from: selectedDate)
+            components.month = 1
+            components.day = 1
+            startDate = calendar.date(from: components) ?? selectedDate
+            endDate = calendar.date(byAdding: DateComponents(year: 1, day: -1), to: startDate) ?? startDate
+        }
+        
+        let filteredReports = reports.filter { report in
+            let isAfterStart = calendar.compare(report.date, to: startDate, toGranularity: .day) != .orderedAscending
+            let isBeforeEnd = calendar.compare(report.date, to: endDate, toGranularity: .day) != .orderedDescending
+            return isAfterStart && isBeforeEnd
+        }
+        
+        let filteredGoals = goals.filter { goal in
+            let isAfterStart = calendar.compare(goal.deadline, to: startDate, toGranularity: .day) != .orderedAscending
+            let isBeforeEnd = calendar.compare(goal.deadline, to: endDate, toGranularity: .day) != .orderedDescending
+            return isAfterStart && isBeforeEnd
+        }
+        
+        let pdfGenerator = PDFGenerator(
+            date: selectedDate,
+            reports: filteredReports,
+            goals: filteredGoals,
+            reportTitle: reportTitle,
+            period: selectedPeriod
+        )
         self.pdfData = pdfGenerator.generatePDF()
-    }
-    
-    private func reportsForSelectedMonth() -> [Report] {
-        let calendar = Calendar.current
-        let startOfMonth = calendar.startOfMonth(for: selectedDate)
-        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth) ?? startOfMonth
-        
-        return reports.filter { report in
-            let isAfterStart = calendar.compare(report.date, to: startOfMonth, toGranularity: .day) != .orderedAscending
-            let isBeforeEnd = calendar.compare(report.date, to: endOfMonth, toGranularity: .day) != .orderedDescending
-            return isAfterStart && isBeforeEnd
-        }
-    }
-    
-    private func goalsForSelectedMonth() -> [Goal] {
-        let calendar = Calendar.current
-        let startOfMonth = calendar.startOfMonth(for: selectedDate)
-        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth) ?? startOfMonth
-        
-        return goals.filter { goal in
-            let isAfterStart = calendar.compare(goal.deadline, to: startOfMonth, toGranularity: .day) != .orderedAscending
-            let isBeforeEnd = calendar.compare(goal.deadline, to: endOfMonth, toGranularity: .day) != .orderedDescending
-            return isAfterStart && isBeforeEnd
-        }
     }
 }
 
@@ -177,11 +382,32 @@ class PDFGenerator {
     private let pageWidth: CGFloat = 612
     private let pageHeight: CGFloat = 792
     private let margin: CGFloat = 50
+    private let reportTitle: String
+    private let period: ReportPeriod
     
-    init(date: Date, reports: [Report], goals: [Goal]) {
+    init(date: Date, reports: [Report], goals: [Goal], reportTitle: String, period: ReportPeriod) {
         self.date = date
         self.reports = reports
         self.goals = goals
+        self.reportTitle = reportTitle
+        self.period = period
+    }
+    
+    private var generatedTitle: String {
+        switch period {
+        case .month:
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            return "Monthly Report - \(formatter.string(from: date))"
+        case .quarter:
+            let month = Calendar.current.component(.month, from: date)
+            let quarter = (month - 1) / 3 + 1
+            let year = Calendar.current.component(.year, from: date)
+            return "Quarterly Report - Q\(quarter) \(year)"
+        case .year:
+            let year = Calendar.current.component(.year, from: date)
+            return "Yearly Report - \(year)"
+        }
     }
     
     func generatePDF() -> Data {
@@ -198,6 +424,13 @@ class PDFGenerator {
         let data = renderer.pdfData { context in
             context.beginPage()
             
+            let titleAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 24, weight: .bold)
+            ]
+            
+            // Usar el título generado dinámicamente
+            (generatedTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
+            
             // Draw logo
             if let logo = UIImage(named: "pdf_logo") {
                 let logoSize: CGFloat = 80
@@ -210,17 +443,6 @@ class PDFGenerator {
                 let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
                 logo.draw(in: logoRect)
             }
-            
-            let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 24, weight: .bold)
-            ]
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMMM yyyy"
-            let title = "Monthly Report - \(dateFormatter.string(from: date))"
-            
-            // Draw title
-            (title as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw reports summary
             let summaryTitleAttributes: [NSAttributedString.Key: Any] = [

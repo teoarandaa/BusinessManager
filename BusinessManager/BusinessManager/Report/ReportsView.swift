@@ -27,17 +27,6 @@ struct ReportsView: View {
         NavigationStack {
             VStack {
                 List {
-                    Section {
-                        if !filteredReports.isEmpty {
-                            Button("Monthly Summary") {
-                                isShowingMonthlySummary = true
-                            }
-                            .buttonStyle(.plain)
-                            .foregroundStyle(Color.accentColor)
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
-                    
                     ForEach(
                         Dictionary(grouping: filteredReports, by: { $0.departmentName })
                             .sorted(by: { $0.key < $1.key }),
@@ -88,8 +77,16 @@ struct ReportsView: View {
                             Label("Info", systemImage: "info.circle")
                         }
                     }
+                    
                     if !reports.isEmpty {
                         ToolbarItemGroup(placement: .navigationBarTrailing) {
+                            Button {
+                                isShowingMonthlySummary = true
+                            } label: {
+                                Label("Monthly Summary", systemImage: "calendar.badge.clock")
+                            }
+                            .tint(.red)
+                            
                             Button {
                                 isShowingAddReportSheet = true
                             } label: {
@@ -245,11 +242,19 @@ struct AddReportSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss()
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") { saveReport() }
-                        .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
+                    Button("Save") {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                        saveReport()
+                    }
+                    .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
                 }
             }
             .alert("Invalid Input", isPresented: $showAlert) {
@@ -261,6 +266,13 @@ struct AddReportSheet: View {
     }
     
     private func saveReport() {
+        // Validar que la fecha no sea futura
+        guard date <= Date() else {
+            showAlert = true
+            alertMessage = "Cannot create reports for future dates."
+            return
+        }
+
         // Convertir Strings a Ints
         guard let totalTasks = Int(totalTasksCreated),
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
@@ -280,6 +292,13 @@ struct AddReportSheet: View {
         guard finishedTasks <= totalTasks else {
             showAlert = true
             alertMessage = "Finished tasks cannot exceed total tasks created."
+            return
+        }
+        
+        // Nueva validación sin haptic feedback
+        guard finishedTasks >= tasksWithoutDelay else {
+            showAlert = true
+            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
             return
         }
         
@@ -515,6 +534,13 @@ struct UpdateReportSheet: View {
     }
     
     private func updateReport() {
+        // Validar que la fecha no sea futura
+        guard date <= Date() else {
+            showAlert = true
+            alertMessage = "Cannot create reports for future dates."
+            return
+        }
+
         // Convertir Strings a Ints
         guard let totalTasks = Int(totalTasksCreated),
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
@@ -534,6 +560,13 @@ struct UpdateReportSheet: View {
         guard finishedTasks <= totalTasks else {
             showAlert = true
             alertMessage = "Finished tasks cannot exceed total tasks created."
+            return
+        }
+        
+        // Nueva validación sin haptic feedback
+        guard finishedTasks >= tasksWithoutDelay else {
+            showAlert = true
+            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
             return
         }
         

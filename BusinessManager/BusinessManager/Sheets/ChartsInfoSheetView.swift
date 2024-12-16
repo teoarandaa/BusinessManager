@@ -9,12 +9,12 @@ struct ChartsInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
-                        Text("Charts Overview")
+                        Text("Analytics Overview")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Charts visualize key metrics: the Productivity Chart tracks performance trends, the Workload Chart compares performance with workload using a scatter plot to highlight efficiency, and the Performance Chart displays average workload versus completed tasks in a bar chart, measuring efficiency.")
+                        Text("Analytics visualize key metrics: the Productivity Chart tracks performance trends, the Workload Chart compares performance with workload using a scatter plot to highlight efficiency, and the Performance Chart displays average workload versus completed tasks in a bar chart, measuring efficiency.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
