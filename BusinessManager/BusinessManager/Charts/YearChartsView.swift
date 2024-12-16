@@ -39,6 +39,21 @@ struct YearChartsView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     
+                    // Leyenda (añadida aquí)
+                    HStack {
+                        Circle()
+                            .fill(Color.accentColor)
+                            .frame(width: 10, height: 10)
+                        Text("Volume of Work")
+                            .font(.caption)
+                        
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 10, height: 10)
+                        Text("Tasks Completed")
+                            .font(.caption)
+                    }
+                    
                     Chart {
                         let groupedData = Dictionary(grouping: data, by: { $0.departmentName })
                         
@@ -161,7 +176,7 @@ struct YearChartsView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    .padding(.top, 5)
+                    .padding(.vertical)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color(.systemGray6))
