@@ -19,18 +19,6 @@ struct YearChartsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 35) {
-                // Yearly Summary Button
-                Button("Yearly Summary") {
-                    isShowingYearlySummary = true
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(Color.accentColor)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .sheet(isPresented: $isShowingYearlySummary) {
-                    YearlySummaryView(year: year, reports: reports)
-                }
-
                 // Performance Chart
                 VStack(spacing: 20) {
                     Text("Performance")
@@ -187,6 +175,19 @@ struct YearChartsView: View {
         }
         .navigationTitle("Charts for \(String(year))")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    isShowingYearlySummary = true
+                } label: {
+                    Label("Yearly Summary", systemImage: "calendar.badge.clock")
+                }
+                .tint(.red)
+            }
+        }
+        .sheet(isPresented: $isShowingYearlySummary) {
+            YearlySummaryView(year: year, reports: reports)
+        }
     }
 }
 
