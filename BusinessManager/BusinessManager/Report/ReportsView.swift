@@ -269,6 +269,13 @@ struct AddReportSheet: View {
     }
     
     private func saveReport() {
+        // Validar que la fecha no sea futura
+        guard date <= Date() else {
+            showAlert = true
+            alertMessage = "Cannot create reports for future dates."
+            return
+        }
+
         // Convertir Strings a Ints
         guard let totalTasks = Int(totalTasksCreated),
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
@@ -288,6 +295,13 @@ struct AddReportSheet: View {
         guard finishedTasks <= totalTasks else {
             showAlert = true
             alertMessage = "Finished tasks cannot exceed total tasks created."
+            return
+        }
+        
+        // Nueva validación sin haptic feedback
+        guard finishedTasks >= tasksWithoutDelay else {
+            showAlert = true
+            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
             return
         }
         
@@ -523,6 +537,13 @@ struct UpdateReportSheet: View {
     }
     
     private func updateReport() {
+        // Validar que la fecha no sea futura
+        guard date <= Date() else {
+            showAlert = true
+            alertMessage = "Cannot create reports for future dates."
+            return
+        }
+
         // Convertir Strings a Ints
         guard let totalTasks = Int(totalTasksCreated),
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
@@ -542,6 +563,13 @@ struct UpdateReportSheet: View {
         guard finishedTasks <= totalTasks else {
             showAlert = true
             alertMessage = "Finished tasks cannot exceed total tasks created."
+            return
+        }
+        
+        // Nueva validación sin haptic feedback
+        guard finishedTasks >= tasksWithoutDelay else {
+            showAlert = true
+            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
             return
         }
         

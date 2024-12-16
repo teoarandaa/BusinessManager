@@ -25,7 +25,7 @@ struct PerformanceChartView: View {
         ScrollView {
             VStack(spacing: 20) {
                 ForEach(groupedReports.keys.sorted(), id: \.self) { department in
-                    VStack(spacing: 35) {
+                    VStack(spacing: 20) {
                         Text(department)
                             .font(.title)
                             .bold()
@@ -36,6 +36,21 @@ struct PerformanceChartView: View {
                             // Calculate average volume of work
                             let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
                             let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
+                            
+                            // Leyenda (movida arriba del gráfico)
+                            HStack {
+                                Circle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: 10, height: 10)
+                                Text("Volume of Work")
+                                    .font(.caption)
+                                
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: 10, height: 10)
+                                Text("Tasks Completed")
+                                    .font(.caption)
+                            }
                             
                             Chart {
                                 BarMark(
@@ -64,22 +79,6 @@ struct PerformanceChartView: View {
                             }
                             .aspectRatio(1.0, contentMode: .fit)
                             .padding()
-                            
-                            // Leyenda
-                            HStack {
-                                Circle()
-                                    .fill(Color.accentColor)
-                                    .frame(width: 10, height: 10)
-                                Text("Volume of Work")
-                                    .font(.caption)
-                                
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 10, height: 10)
-                                Text("Tasks Completed")
-                                    .font(.caption)
-                            }
-                            .padding(.top, 5)
                         }
                     }
                     .frame(maxWidth: .infinity)

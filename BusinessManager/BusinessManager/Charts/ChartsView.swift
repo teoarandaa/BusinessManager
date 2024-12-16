@@ -35,7 +35,7 @@ struct ChartsView: View {
                 if reports.isEmpty {
                     
                     ContentUnavailableView(label: {
-                        Label("No Charts", systemImage: "chart.bar")
+                        Label("No Analytics", systemImage: "chart.bar")
                             .font(.title2)
                     }, description: {
                         Text("Start adding reports to see your charts.")
@@ -73,7 +73,7 @@ struct ChartsView: View {
                     }
                 }
             }
-            .navigationTitle("Charts & Analytics")
+            .navigationTitle("Analytics")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet2) {
                 ChartsInfoSheetView()
