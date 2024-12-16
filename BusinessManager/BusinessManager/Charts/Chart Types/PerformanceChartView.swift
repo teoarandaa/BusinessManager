@@ -3,8 +3,7 @@ import SwiftData
 import Charts
 
 struct PerformanceChartView: View {
-    @Query var reports: [Report] // Recupera los datos almacenados en SwiftData
-    @State private var searchText = "" // Añadir propiedad de estado para el texto de búsqueda
+    @Query var reports: [Report]
     
     var chartData: [ChartData] {
         let currentYear = Calendar.current.component(.year, from: Date())
@@ -18,16 +17,8 @@ struct PerformanceChartView: View {
             .map { ChartData(from: $0) }
     }
     
-    var filteredChartData: [ChartData] {
-        if searchText.isEmpty {
-            return chartData
-        } else {
-            return chartData.filter { $0.departmentName.localizedCaseInsensitiveContains(searchText) }
-        }
-    }
-    
     var groupedReports: [String: [ChartData]] {
-        Dictionary(grouping: filteredChartData, by: { $0.departmentName })
+        Dictionary(grouping: chartData, by: { $0.departmentName })
     }
     
     var body: some View {
@@ -38,6 +29,7 @@ struct PerformanceChartView: View {
                         Text(department)
                             .font(.title)
                             .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         
                         if let departmentData = groupedReports[department] {
@@ -90,10 +82,14 @@ struct PerformanceChartView: View {
                             .padding(.top, 5)
                         }
                     }
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.horizontal)
                 }
             }
+            .padding()
         }
-        .searchable(text: $searchText, prompt: "Search departments") // Añadir la barra de búsqueda
     }
 }
 

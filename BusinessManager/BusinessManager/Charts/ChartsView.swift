@@ -25,6 +25,10 @@ struct ChartsView: View {
         }
     }
     
+    var uniqueDepartments: [String] {
+        Array(Set(reports.map { $0.departmentName })).sorted()
+    }
+    
     var body: some View {
         NavigationStack {
             Group {
@@ -67,7 +71,6 @@ struct ChartsView: View {
                             .padding()
                         }
                     }
-                    .searchable(text: .constant(""), prompt: "Search departments")
                 }
             }
             .navigationTitle("Charts & Analytics")
@@ -78,38 +81,39 @@ struct ChartsView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button(action: { isShowingItemSheet2 = true }) {
-                        Label("Information", systemImage: "info.circle")
-                            .symbolRenderingMode(.hierarchical)
-                    }
                     Button(action: { isShowingSettings = true }) {
                         Label("Settings", systemImage: "gear")
                             .symbolRenderingMode(.hierarchical)
                     }
+                    Button(action: { isShowingItemSheet2 = true }) {
+                        Label("Information", systemImage: "info.circle")
+                            .symbolRenderingMode(.hierarchical)
+                    }
                 }
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Menu {
-                        ForEach(chartOptions, id: \.self) { option in
-                            Button(action: { 
-                                withAnimation {
-                                    chart = option
+                if !reports.isEmpty {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Menu {
+                            ForEach(chartOptions, id: \.self) { option in
+                                Button(action: { 
+                                    withAnimation {
+                                        chart = option
+                                    }
+                                    let generator = UISelectionFeedbackGenerator()
+                                    generator.selectionChanged()
+                                }) {
+                                    Label(option, systemImage: getChartIcon(for: option))
                                 }
-                                let generator = UISelectionFeedbackGenerator()
-                                generator.selectionChanged()
-                            }) {
-                                Label(option, systemImage: getChartIcon(for: option))
                             }
+                        } label: {
+                            Label("Chart Type", systemImage: chartIcon)
+                                .symbolRenderingMode(.hierarchical)
                         }
-                    } label: {
-                        Label("Chart Type", systemImage: chartIcon)
-                            .symbolRenderingMode(.hierarchical)
+                        
+                        NavigationLink(destination: YearlyChartsView()) {
+                            Label("Yearly", systemImage: "calendar")
+                                .symbolRenderingMode(.hierarchical)
+                        }
                     }
-                    
-                    NavigationLink(destination: YearlyChartsView()) {
-                        Label("Yearly", systemImage: "calendar")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    .disabled(reports.isEmpty)
                 }
             }
             .sheet(isPresented: $isShowingSettings) {

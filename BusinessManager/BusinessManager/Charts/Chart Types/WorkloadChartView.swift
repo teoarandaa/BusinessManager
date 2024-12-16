@@ -4,7 +4,6 @@ import Charts
 
 struct WorkloadChartView: View {
     @Query var reports: [Report]
-    @State private var searchText = ""
     
     var chartData: [ChartData] {
         let currentYear = Calendar.current.component(.year, from: Date())
@@ -18,16 +17,8 @@ struct WorkloadChartView: View {
             .map { ChartData(from: $0) }
     }
     
-    var filteredChartData: [ChartData] {
-        if searchText.isEmpty {
-            return chartData
-        } else {
-            return chartData.filter { $0.departmentName.localizedCaseInsensitiveContains(searchText) }
-        }
-    }
-    
     var groupedReports: [String: [ChartData]] {
-        Dictionary(grouping: filteredChartData, by: { $0.departmentName })
+        Dictionary(grouping: chartData, by: { $0.departmentName })
     }
 
     var body: some View {
@@ -38,6 +29,7 @@ struct WorkloadChartView: View {
                         Text(department)
                             .font(.title)
                             .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         
                         Chart(groupedReports[department]!) { data in
@@ -57,10 +49,14 @@ struct WorkloadChartView: View {
                         .aspectRatio(1.0, contentMode: .fit)
                         .padding()
                     }
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.horizontal)
                 }
             }
+            .padding()
         }
-        .searchable(text: $searchText, prompt: "Search departments")
     }
 }
 

@@ -11,7 +11,15 @@ struct TaskView: View {
     @State private var taskToEdit: Task?
     @State private var searchText = ""
     @State private var sortOption: SortOption = .date
-
+    
+    var activeTasks: [Task] {
+        sortedTasks.filter { !$0.isCompleted }
+    }
+    
+    var completedTasks: [Task] {
+        sortedTasks.filter { $0.isCompleted }
+    }
+    
     enum SortOption: String, CaseIterable, Identifiable {
         case date = "Date"
         case priority = "Priority"
@@ -43,22 +51,76 @@ struct TaskView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(sortedTasks) { task in
-                    TasksCell(task: task)
-                        .onTapGesture {
-                            taskToEdit = task
+                if !activeTasks.isEmpty {
+                    Section("Active Tasks") {
+                        ForEach(activeTasks) { task in
+                            TasksCell(task: task)
+                                .onTapGesture {
+                                    taskToEdit = task
+                                }
+                                .swipeActions {
+                                    Button {
+                                        withAnimation {
+                                            task.isCompleted = true
+                                            let generator = UINotificationFeedbackGenerator()
+                                            generator.notificationOccurred(.success)
+                                        }
+                                    } label: {
+                                        Label("Complete", systemImage: "checkmark.circle.fill")
+                                    }
+                                    .tint(.green)
+                                }
                         }
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                context.delete(activeTasks[index])
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.success)
+                            }
+                        }
+                    }
                 }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        context.delete(sortedTasks[index])
-                        let generator = UINotificationFeedbackGenerator()
-                        generator.notificationOccurred(.success)
+                
+                if !completedTasks.isEmpty {
+                    Section("Completed Tasks") {
+                        ForEach(completedTasks) { task in
+                            TasksCell(task: task)
+                                .onTapGesture {
+                                    taskToEdit = task
+                                }
+                                .swipeActions {
+                                    Button {
+                                        withAnimation {
+                                            task.isCompleted = false
+                                            let generator = UINotificationFeedbackGenerator()
+                                            generator.notificationOccurred(.success)
+                                        }
+                                    } label: {
+                                        Label("Reactivate", systemImage: "arrow.uturn.left.circle.fill")
+                                    }
+                                    .tint(.blue)
+                                }
+                        }
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                context.delete(completedTasks[index])
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.success)
+                            }
+                        }
                     }
                 }
             }
             .if(!tasks.isEmpty) { view in
                 view.searchable(text: $searchText, prompt: "Search tasks")
+                    .searchSuggestions {
+                        if searchText.isEmpty {
+                            ForEach(tasks.prefix(3)) { task in
+                                Label(task.title, systemImage: "magnifyingglass")
+                                    .searchCompletion(task.title)
+                            }
+                        }
+                    }
             }
             .navigationTitle("Tasks")
             .navigationBarTitleDisplayMode(.large)
@@ -70,18 +132,18 @@ struct TaskView: View {
                     .presentationDetents([.height(700)])
             }
             .sheet(item: $taskToEdit) { task in
-                UpdateTaskSheet(task: task)
+                TaskDetailSheet(task: task, context: context)
             }
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Information", systemImage: "info.circle") {
-                        isShowingItemSheet2 = true
-                    }
                     Button("Settings", systemImage: "gear") {
                         isShowingSettings = true
+                    }
+                    Button("Information", systemImage: "info.circle") {
+                        isShowingItemSheet2 = true
                     }
                 }
                 if !tasks.isEmpty {
@@ -103,7 +165,7 @@ struct TaskView: View {
                 }
             }
             .overlay {
-                if filteredTasks.isEmpty {
+                if tasks.isEmpty {
                     ContentUnavailableView(label: {
                         Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
                     }, description: {
@@ -112,6 +174,8 @@ struct TaskView: View {
                         Button("Add Task") { isShowingItemSheet1 = true }
                     })
                     .offset(y: -60)
+                } else if !searchText.isEmpty && filteredTasks.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
                 }
             }
         }
@@ -132,6 +196,7 @@ struct TasksCell: View {
             Spacer()
             Text(task.title)
                 .bold()
+                .foregroundStyle(task.isCompleted ? .secondary : .primary)
             Spacer()
             Text(task.priority)
                 .padding(8)
@@ -353,9 +418,127 @@ struct UpdateTaskSheet: View {
             .navigationTitle("Update Task")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Done") { dismiss() }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss()
+                    }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct TaskDetailSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    let task: Task
+    let context: ModelContext
+    @State private var showingDeleteAlert = false
+    @State private var showingEditSheet = false
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        Text("Date")
+                        Spacer()
+                        Text(task.date, format: .dateTime.year().month(.abbreviated).day())
+                    }
+                    
+                    HStack {
+                        Text("Title")
+                        Spacer()
+                        Text(task.title)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                        Text(task.content)
+                            .multilineTextAlignment(.trailing)
+                    }
+                    
+                    if !task.comments.isEmpty {
+                        HStack {
+                            Text("Comments")
+                            Spacer()
+                            Text(task.comments)
+                                .multilineTextAlignment(.trailing)
+                        }
+                    }
+                    
+                    HStack {
+                        Text("Priority")
+                        Spacer()
+                        Text(task.priority)
+                            .padding(8)
+                            .foregroundStyle(
+                                task.priority == "P1" ? Color.red :
+                                task.priority == "P2" ? Color.yellow :
+                                Color.green
+                            )
+                            .background(
+                                (task.priority == "P1" ? Color.red :
+                                task.priority == "P2" ? Color.yellow :
+                                Color.green)
+                                .opacity(0.2)
+                                .cornerRadius(8)
+                            )
+                    }
+                    
+                    HStack {
+                        Text("Status")
+                        Spacer()
+                        Text(task.isCompleted ? "Completed" : "Active")
+                            .foregroundStyle(task.isCompleted ? .green : .blue)
+                    }
+                }
+                
+                Section {
+                    Button("Delete Task", role: .destructive) {
+                        showingDeleteAlert = true
+                    }
+                }
+            }
+            .navigationTitle("Task Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Edit") {
+                        showingEditSheet = true
+                    }
+                }
+            }
+            .sheet(isPresented: $showingEditSheet) {
+                UpdateTaskSheet(task: task)
+            }
+            .alert("Delete Task", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    context.delete(task)
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.notificationOccurred(.success)
+                    dismiss()
+                }
+            } message: {
+                Text("Are you sure you want to delete this task?")
             }
         }
     }

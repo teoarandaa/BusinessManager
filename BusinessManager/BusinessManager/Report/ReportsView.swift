@@ -3,13 +3,14 @@ import SwiftData
 
 struct ReportsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @State private var isShowingItemSheet1 = false
-    @State private var isShowingItemSheet2 = false
+    @State private var isShowingAddReportSheet = false
+    @State private var isShowingInfoSheet = false
     @Environment(\.modelContext) var context
-    @Query(sort: \Report.departmentName) var reports: [Report]
-    @Query var goals: [Goal]
+
+    @Query(sort: \Report.date, animation: .default) private var reports: [Report]
+    @Query(sort: \Goal.deadline, animation: .default) private var goals: [Goal]
+    
     @State private var reportToEdit: Report?
-    @State private var showingBottomSheet: Bool = false
     @State private var isShowingMonthlySummary = false
     @State private var searchText = ""
     @State private var isShowingSettings = false
@@ -51,8 +52,13 @@ struct ReportsView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            let reportToDelete = filteredReports[index]
-                            deleteReport(reportToDelete)
+                            let departmentToDelete = Array(Dictionary(grouping: filteredReports, by: { $0.departmentName })
+                                .sorted(by: { $0.key < $1.key }))[index]
+                            
+                            // Eliminar todos los reports del departamento
+                            for report in reports where report.departmentName == departmentToDelete.key {
+                                deleteReport(report)
+                            }
                         }
                     }
                 }
@@ -61,7 +67,7 @@ struct ReportsView: View {
                         .searchSuggestions {
                             if searchText.isEmpty {
                                 ForEach(reports.prefix(3)) { report in
-                                    Text(report.departmentName)
+                                    Label(report.departmentName, systemImage: "magnifyingglass")
                                         .searchCompletion(report.departmentName)
                                 }
                             }
@@ -69,10 +75,33 @@ struct ReportsView: View {
                 }
                 .navigationTitle("Departments")
                 .navigationBarTitleDisplayMode(.large)
-                .sheet(isPresented: $isShowingItemSheet1) {
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                        Button {
+                            isShowingSettings = true
+                        } label: {
+                            Label("Settings", systemImage: "gear")
+                        }
+                        Button {
+                            isShowingInfoSheet = true
+                        } label: {
+                            Label("Info", systemImage: "info.circle")
+                        }
+                    }
+                    if !reports.isEmpty {
+                        ToolbarItemGroup(placement: .navigationBarTrailing) {
+                            Button {
+                                isShowingAddReportSheet = true
+                            } label: {
+                                Label("Add Report", systemImage: "plus")
+                            }
+                        }
+                    }
+                }
+                .sheet(isPresented: $isShowingAddReportSheet) {
                     AddReportSheet()
                 }
-                .sheet(isPresented: $isShowingItemSheet2) {
+                .sheet(isPresented: $isShowingInfoSheet) {
                     ReportsInfoSheetView()
                         .presentationDetents([.height(700)])
                 }
@@ -92,32 +121,18 @@ struct ReportsView: View {
                         }, description: {
                             Text("Start adding reports to see your list.")
                         }, actions: {
-                            Button("Add Report") { isShowingItemSheet1 = true }
+                            Button("Add Report") { isShowingAddReportSheet = true }
                         })
                         .offset(y: -60)
-                    }
-                }
-            }
-            .toolbar {
-                if !reports.isEmpty {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        Button("Add Task", systemImage: "plus") {
-                            isShowingItemSheet1 = true
-                        }
-                    }
-                }
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Information", systemImage: "info.circle") {
-                        isShowingItemSheet2 = true
-                    }
-                    Button("Settings", systemImage: "gear") {
-                        isShowingSettings = true
+                    } else if !searchText.isEmpty && filteredReports.isEmpty {
+                        ContentUnavailableView.search(text: searchText)
                     }
                 }
             }
         }
     }
     
+    // Función para eliminar un reporte
     private func deleteReport(_ report: Report) {
         context.delete(report)
         
@@ -125,41 +140,6 @@ struct ReportsView: View {
             try context.save()
         } catch {
             print("Error deleting report: \(error)")
-            return
-        }
-        
-        let departmentGoals = goals.filter { goal in
-            goal.department == report.departmentName && 
-            goal.status == .inProgress
-        }
-        
-        let remainingReports = reports.filter { 
-            $0.departmentName == report.departmentName && 
-            !$0.isDeleted
-        }
-        
-        for goal in departmentGoals {
-            switch goal.type {
-            case .tasks:
-                goal.currentValue -= report.numberOfFinishedTasks
-                if goal.currentValue < 0 { goal.currentValue = 0 }
-                
-            case .performance:
-                goal.currentValue = remainingReports.isEmpty ? 0 : (remainingReports.map(\.performanceMark).max() ?? 0)
-                
-            case .volume:
-                goal.currentValue = remainingReports.isEmpty ? 0 : (remainingReports.map(\.volumeOfWorkMark).max() ?? 0)
-            }
-        }
-        
-        do {
-            try context.save()
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
-        } catch {
-            print("Error saving goals after report deletion: \(error)")
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
         }
     }
 }
@@ -186,12 +166,10 @@ struct ReportCell: View {
 struct AddReportSheet: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
-    @Query var goals: [Goal]
-    
     @State private var date: Date = .now
     @State private var departmentName: String = ""
-    @State private var performanceMark: String = ""
-    @State private var volumeOfWorkMark: String = ""
+    @State private var totalTasksCreated: String = ""
+    @State private var tasksCompletedWithoutDelay: String = ""
     @State private var numberOfFinishedTasks: String = ""
     @State private var annotations: String = ""
     @State private var showAlert: Bool = false
@@ -212,36 +190,34 @@ struct AddReportSheet: View {
                 
                 HStack {
                     Image(systemName: "building.2")
-                    Text("Department name")
+                    Text("Department")
                         .bold()
                     Spacer()
-                    TextField("", text: $departmentName, axis: .vertical)
+                    TextField("Name", text: $departmentName, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                    Text("Performance")
+                    Image(systemName: "plus.circle")
+                    Text("Tasks created")
                         .bold()
                     Spacer()
-                    TextField("0-100", text: $performanceMark)
+                    TextField("Number", text: $totalTasksCreated)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
-                        .foregroundStyle(performanceMark.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack {
-                    Image(systemName: "doc.on.doc")
-                    Text("Volume of Work")
+                    Image(systemName: "checkmark.seal")
+                    Text("On-Time Tasks")
                         .bold()
                     Spacer()
-                    TextField("0-100", text: $volumeOfWorkMark)
+                    TextField("Number", text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
-                        .foregroundStyle(volumeOfWorkMark.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack {
@@ -253,7 +229,6 @@ struct AddReportSheet: View {
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
-                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack(alignment: .top) {
@@ -261,32 +236,24 @@ struct AddReportSheet: View {
                     Text("Annotations")
                         .bold()
                     Spacer()
-                    TextField("", text: $annotations, axis: .vertical)
+                    TextField("Add note", text: $annotations, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
             }
-            .navigationTitle("New Report")
+            .navigationTitle("Add Report")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") { 
-                        let generator = UIImpactFeedbackGenerator(style: .light)
-                        generator.impactOccurred()
-                        dismiss() 
-                    }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") { dismiss() }
                 }
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button("Save") {
-                        saveReport()
-                    }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") { saveReport() }
+                        .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
                 }
             }
-            .alert("Invalid Date", isPresented: $showAlert) {
-                Button("OK", role: .cancel) { 
-                    let generator = UIImpactFeedbackGenerator(style: .light)
-                    generator.impactOccurred()
-                }
+            .alert("Invalid Input", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
             } message: {
                 Text(alertMessage)
             }
@@ -294,25 +261,25 @@ struct AddReportSheet: View {
     }
     
     private func saveReport() {
-        guard let performance = Int(performanceMark),
-              let volume = Int(volumeOfWorkMark),
-              let tasks = Int(numberOfFinishedTasks) else {
+        // Convertir Strings a Ints
+        guard let totalTasks = Int(totalTasksCreated),
+              let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
+              let finishedTasks = Int(numberOfFinishedTasks) else {
             showAlert = true
-            alertMessage = "Please enter valid numbers"
+            alertMessage = "Please enter valid numbers for tasks."
             return
         }
         
-        // Validar rango de performance
-        guard (0...100).contains(performance) else {
+        // Validaciones
+        guard tasksWithoutDelay <= totalTasks else {
             showAlert = true
-            alertMessage = "Performance must be between 0 and 100"
+            alertMessage = "Tasks completed without delay cannot exceed total tasks created."
             return
         }
         
-        // Validar rango de volume
-        guard (0...100).contains(volume) else {
+        guard finishedTasks <= totalTasks else {
             showAlert = true
-            alertMessage = "Volume of Work must be between 0 and 100"
+            alertMessage = "Finished tasks cannot exceed total tasks created."
             return
         }
         
@@ -322,229 +289,22 @@ struct AddReportSheet: View {
         let report = Report(
             date: date,
             departmentName: trimmedDepartmentName,
-            performanceMark: performance,
-            volumeOfWorkMark: volume,
-            numberOfFinishedTasks: tasks,
+            totalTasksCreated: totalTasks,
+            tasksCompletedWithoutDelay: tasksWithoutDelay,
+            numberOfFinishedTasks: finishedTasks,
             annotations: trimmedAnnotations
         )
         
         context.insert(report)
         
-        updateRelatedGoals(
-            department: trimmedDepartmentName,
-            performance: performance,
-            volume: volume,
-            tasks: tasks
-        )
-        
         do {
             try context.save()
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
             dismiss()
         } catch {
-            print("Error saving report: \(error)")
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
-        }
-    }
-    
-    private func updateRelatedGoals(department: String, performance: Int, volume: Int, tasks: Int) {
-        let activeGoals = goals.filter { goal in
-            goal.status == .inProgress && goal.department == department
-        }
-        
-        for goal in activeGoals {
-            switch goal.type {
-            case .performance:
-                goal.currentValue = max(goal.currentValue, performance)
-            case .volume:
-                goal.currentValue = max(goal.currentValue, volume)
-            case .tasks:
-                goal.currentValue += tasks
-            }
-        }
-    }
-}
-
-struct UpdateReportSheet: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) var context
-    @Query var goals: [Goal]
-    @Query var reports: [Report]
-    @Bindable var report: Report
-    
-    @State private var performanceMark: String
-    @State private var volumeOfWorkMark: String
-    @State private var numberOfFinishedTasks: String
-    @State private var annotations: String
-    @State private var showAlert = false
-    @State private var alertMessage = ""
-    
-    init(report: Report) {
-        self.report = report
-        _performanceMark = State(initialValue: String(report.performanceMark))
-        _volumeOfWorkMark = State(initialValue: String(report.volumeOfWorkMark))
-        _numberOfFinishedTasks = State(initialValue: String(report.numberOfFinishedTasks))
-        _annotations = State(initialValue: report.annotations)
-    }
-    
-    var body: some View {
-        NavigationStack {
-            Form {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("Date")
-                        .bold()
-                    Spacer()
-                    DatePicker("", selection: $report.date, displayedComponents: .date)
-                        .labelsHidden()
-                        .frame(maxWidth: 120)
-                }
-                
-                HStack {
-                    Image(systemName: "building.2")
-                    Text("Department name")
-                        .bold()
-                    Spacer()
-                    TextField("Name", text: $report.departmentName, axis: .vertical)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.trailing)
-                }
-                
-                HStack {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                    Text("Performance")
-                        .bold()
-                    Spacer()
-                    TextField("0-100", text: $performanceMark)
-                        .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
-                        .multilineTextAlignment(.trailing)
-                        .foregroundStyle(performanceMark.isEmpty ? .secondary : .primary)
-                }
-                
-                HStack {
-                    Image(systemName: "doc.on.doc")
-                    Text("Volume of Work")
-                        .bold()
-                    Spacer()
-                    TextField("0-100", text: $volumeOfWorkMark)
-                        .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
-                        .multilineTextAlignment(.trailing)
-                        .foregroundStyle(volumeOfWorkMark.isEmpty ? .secondary : .primary)
-                }
-                
-                HStack {
-                    Image(systemName: "checkmark.circle")
-                    Text("Finished Tasks")
-                        .bold()
-                    Spacer()
-                    TextField("Quantity", text: $numberOfFinishedTasks)
-                        .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
-                        .multilineTextAlignment(.trailing)
-                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
-                }
-                
-                HStack(alignment: .top) {
-                    Image(systemName: "pencil")
-                    Text("Annotations")
-                        .bold()
-                    Spacer()
-                    TextField("Extra info...", text: $report.annotations, axis: .vertical)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.trailing)
-                }
-            }
-            .navigationTitle("Update Report")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
-                        updateReport()
-                    }
-                }
-            }
-            .alert("Error", isPresented: $showAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(alertMessage)
-            }
-        }
-    }
-    
-    private func updateReport() {
-        guard let performance = Int(performanceMark),
-              let volume = Int(volumeOfWorkMark),
-              let tasks = Int(numberOfFinishedTasks) else {
-            alertMessage = "Please enter valid numbers"
             showAlert = true
-            return
-        }
-        
-        // Validar rango de performance
-        guard (0...100).contains(performance) else {
-            alertMessage = "Performance must be between 0 and 100"
-            showAlert = true
-            return
-        }
-        
-        // Validar rango de volume
-        guard (0...100).contains(volume) else {
-            alertMessage = "Volume of Work must be between 0 and 100"
-            showAlert = true
-            return
-        }
-        
-        let oldTasks = report.numberOfFinishedTasks
-        
-        report.departmentName = report.departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
-        report.annotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
-        report.performanceMark = performance
-        report.volumeOfWorkMark = volume
-        report.numberOfFinishedTasks = tasks
-        
-        let departmentGoals = goals.filter { goal in
-            goal.department == report.departmentName && 
-            goal.status == .inProgress
-        }
-        
-        for goal in departmentGoals {
-            switch goal.type {
-            case .tasks:
-                goal.currentValue -= oldTasks
-                goal.currentValue += tasks
-                if goal.currentValue < 0 { goal.currentValue = 0 }
-                
-            case .performance:
-                let maxPerformance = reports
-                    .filter { $0.departmentName == report.departmentName }
-                    .map(\.performanceMark)
-                    .max() ?? 0
-                goal.currentValue = maxPerformance
-                
-            case .volume:
-                let maxVolume = reports
-                    .filter { $0.departmentName == report.departmentName }
-                    .map(\.volumeOfWorkMark)
-                    .max() ?? 0
-                goal.currentValue = maxVolume
-            }
-        }
-        
-        do {
-            try context.save()
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
-            dismiss()
-        } catch {
-            alertMessage = "Error saving changes: \(error.localizedDescription)"
-            showAlert = true
+            alertMessage = "Failed to save the report: \(error.localizedDescription)"
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)
         }
@@ -595,10 +355,11 @@ struct DepartmentCell: View {
     ]
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: currentIcon)
                 .foregroundStyle(.accent)
                 .font(.title3)
+                .frame(width: 30)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(departmentName)
@@ -607,6 +368,8 @@ struct DepartmentCell: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            
+            Spacer()
         }
         .contentShape(Rectangle())
         .padding(.vertical, 4)
@@ -641,9 +404,168 @@ struct DepartmentCell: View {
     }
 }
 
+struct UpdateReportSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) var context
+    @Bindable var report: Report
+    
+    @State private var date: Date
+    @State private var departmentName: String
+    @State private var totalTasksCreated: String
+    @State private var tasksCompletedWithoutDelay: String
+    @State private var numberOfFinishedTasks: String
+    @State private var annotations: String
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    
+    init(report: Report) {
+        self.report = report
+        _date = State(initialValue: report.date)
+        _departmentName = State(initialValue: report.departmentName)
+        _totalTasksCreated = State(initialValue: String(report.totalTasksCreated))
+        _tasksCompletedWithoutDelay = State(initialValue: String(report.tasksCompletedWithoutDelay))
+        _numberOfFinishedTasks = State(initialValue: String(report.numberOfFinishedTasks))
+        _annotations = State(initialValue: report.annotations)
+    }
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                HStack {
+                    Image(systemName: "calendar")
+                    Text("Date")
+                        .bold()
+                    Spacer()
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                        .labelsHidden()
+                        .frame(maxWidth: 120)
+                }
+                
+                HStack {
+                    Image(systemName: "building.2")
+                    Text("Department")
+                        .bold()
+                    Spacer()
+                    TextField("Name", text: $departmentName, axis: .vertical)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "plus.circle")
+                    Text("Tasks created")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $totalTasksCreated)
+                        .keyboardType(.numberPad)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.seal")
+                    Text("On-Time Tasks")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $tasksCompletedWithoutDelay)
+                        .keyboardType(.numberPad)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack {
+                    Image(systemName: "checkmark.circle")
+                    Text("Finished Tasks")
+                        .bold()
+                    Spacer()
+                    TextField("Number", text: $numberOfFinishedTasks)
+                        .keyboardType(.numberPad)
+                        .frame(maxWidth: 120)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
+                }
+                
+                HStack(alignment: .top) {
+                    Image(systemName: "pencil")
+                    Text("Annotations")
+                        .bold()
+                    Spacer()
+                    TextField("Add note", text: $annotations, axis: .vertical)
+                        .frame(maxWidth: 200)
+                        .multilineTextAlignment(.trailing)
+                }
+            }
+            .navigationTitle("Update Report")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") { updateReport() }
+                        .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
+                }
+            }
+            .alert("Invalid Input", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(alertMessage)
+            }
+        }
+    }
+    
+    private func updateReport() {
+        // Convertir Strings a Ints
+        guard let totalTasks = Int(totalTasksCreated),
+              let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
+              let finishedTasks = Int(numberOfFinishedTasks) else {
+            showAlert = true
+            alertMessage = "Please enter valid numbers for tasks."
+            return
+        }
+        
+        // Validaciones
+        guard tasksWithoutDelay <= totalTasks else {
+            showAlert = true
+            alertMessage = "Tasks completed without delay cannot exceed total tasks created."
+            return
+        }
+        
+        guard finishedTasks <= totalTasks else {
+            showAlert = true
+            alertMessage = "Finished tasks cannot exceed total tasks created."
+            return
+        }
+        
+        let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Actualizar report
+        report.date = date
+        report.departmentName = trimmedDepartmentName
+        report.totalTasksCreated = totalTasks
+        report.tasksCompletedWithoutDelay = tasksWithoutDelay
+        report.numberOfFinishedTasks = finishedTasks
+        report.annotations = trimmedAnnotations
+        
+        do {
+            try context.save()
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            showAlert = true
+            alertMessage = "Failed to save changes: \(error.localizedDescription)"
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+        }
+    }
+}
+
 struct EditDepartmentSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var context
+    @AppStorage("departmentIcons") private var iconStorage: String = "{}"
     let departmentName: String
     let reports: [Report]
     
@@ -668,6 +590,17 @@ struct EditDepartmentSheet: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
+                        // Actualizar el icono con el nuevo nombre del departamento
+                        var dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
+                        if let icon = dictionary[departmentName] {
+                            dictionary[newDepartmentName] = icon
+                            dictionary.removeValue(forKey: departmentName)
+                            if let encoded = try? JSONEncoder().encode(dictionary),
+                               let string = String(data: encoded, encoding: .utf8) {
+                                iconStorage = string
+                            }
+                        }
+                        
                         // Actualizar el nombre del departamento en todos los reports asociados
                         for report in reports where report.departmentName == departmentName {
                             report.departmentName = newDepartmentName

@@ -4,43 +4,56 @@ import Charts
 
 struct GoalsView: View {
     @Environment(\.modelContext) var context
-    @Query(sort: \Goal.deadline) var goals: [Goal]
+    @Query var goals: [Goal]
     @State private var showingAddGoal = false
     @State private var selectedDepartment: String?
     @State private var isShowingSettings = false
     @State private var isShowingInfoSheet = false
     
-    var activeGoals: [Goal] { goals.filter { $0.status == .inProgress } }
-    var completedGoals: [Goal] { goals.filter { $0.status == .completed } }
-    var failedGoals: [Goal] { goals.filter { $0.status == .failed } }
+    // Filtro para el mes actual
+    var currentMonthGoals: [Goal] {
+        let calendar = Calendar.current
+        let now = Date()
+        return goals.filter { goal in
+            calendar.isDate(goal.deadline, equalTo: now, toGranularity: .month)
+        }
+    }
+    
+    var activeGoals: [Goal] { currentMonthGoals.filter { $0.status == .inProgress } }
+    var completedGoals: [Goal] { currentMonthGoals.filter { $0.status == .completed } }
+    var failedGoals: [Goal] { currentMonthGoals.filter { $0.status == .failed } }
     
     var body: some View {
         NavigationStack {
             List {
-                if !goals.isEmpty {
-                    GoalsOverviewSection(goals: goals)
+                if !currentMonthGoals.isEmpty {
+                    if let department = selectedDepartment {
+                        // Mostrar métricas filtradas por departamento
+                        let departmentGoals = currentMonthGoals.filter { $0.department == department }
+                        GoalsOverviewSection(goals: departmentGoals)
+                    } else {
+                        // Mostrar todas las métricas
+                        GoalsOverviewSection(goals: currentMonthGoals)
+                    }
                     
                     if !departments.isEmpty {
-                        GoalsByDepartmentSection(goals: goals, selectedDepartment: $selectedDepartment)
+                        GoalsByDepartmentSection(goals: currentMonthGoals, selectedDepartment: $selectedDepartment)
                     }
                     
                     if let department = selectedDepartment {
-                        // Mostrar solo los objetivos del departamento seleccionado
-                        let departmentGoals = goals.filter { $0.department == department }
+                        let departmentGoals = currentMonthGoals.filter { $0.department == department }
                         GoalsSections(goals: departmentGoals)
                     } else {
-                        // Mostrar todos los objetivos
-                        GoalsSections(goals: goals)
+                        GoalsSections(goals: currentMonthGoals)
                     }
                 }
             }
             .overlay {
-                if goals.isEmpty {
+                if currentMonthGoals.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Goals", systemImage: "target")
-                            .foregroundStyle(Color.accentColor)
+                        Label("No Goals for This Month", systemImage: "target")
                     }, description: {
-                        Text("Start by adding goals for your departments")
+                        Text("Start by adding goals for the current month")
                     }, actions: {
                         Button("Add Goal") { showingAddGoal = true }
                     })
@@ -50,16 +63,18 @@ struct GoalsView: View {
             .navigationTitle("Goals & Metrics")
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Information", systemImage: "info.circle") {
-                        isShowingInfoSheet = true
-                    }
                     Button("Settings", systemImage: "gear") {
                         isShowingSettings = true
                     }
+                    Button("Information", systemImage: "info.circle") {
+                        isShowingInfoSheet = true
+                    }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add Goal", systemImage: "plus") {
-                        showingAddGoal = true
+                if !currentMonthGoals.isEmpty {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Add Goal", systemImage: "plus") {
+                            showingAddGoal = true
+                        }
                     }
                 }
             }
@@ -76,7 +91,7 @@ struct GoalsView: View {
     }
     
     var departments: [String] {
-        Array(Set(goals.map { $0.department })).sorted()
+        Array(Set(currentMonthGoals.map { $0.department })).sorted()
     }
 }
 
@@ -192,7 +207,7 @@ struct GoalCell: View {
                 Text(progressText)
                     .font(.caption)
                 Spacer()
-                Text(goal.deadline, style: .date)
+                Text(goal.deadline.formatted(date: .abbreviated, time: .shortened))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
