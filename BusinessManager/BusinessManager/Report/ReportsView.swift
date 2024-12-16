@@ -88,11 +88,13 @@ struct ReportsView: View {
                             Label("Info", systemImage: "info.circle")
                         }
                     }
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Button {
-                            isShowingAddReportSheet = true
-                        } label: {
-                            Label("Add Report", systemImage: "plus")
+                    if !reports.isEmpty {
+                        ToolbarItemGroup(placement: .navigationBarTrailing) {
+                            Button {
+                                isShowingAddReportSheet = true
+                            } label: {
+                                Label("Add Report", systemImage: "plus")
+                            }
                         }
                     }
                 }

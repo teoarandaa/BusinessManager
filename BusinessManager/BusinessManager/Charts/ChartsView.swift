@@ -90,29 +90,30 @@ struct ChartsView: View {
                             .symbolRenderingMode(.hierarchical)
                     }
                 }
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Menu {
-                        ForEach(chartOptions, id: \.self) { option in
-                            Button(action: { 
-                                withAnimation {
-                                    chart = option
+                if !reports.isEmpty {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Menu {
+                            ForEach(chartOptions, id: \.self) { option in
+                                Button(action: { 
+                                    withAnimation {
+                                        chart = option
+                                    }
+                                    let generator = UISelectionFeedbackGenerator()
+                                    generator.selectionChanged()
+                                }) {
+                                    Label(option, systemImage: getChartIcon(for: option))
                                 }
-                                let generator = UISelectionFeedbackGenerator()
-                                generator.selectionChanged()
-                            }) {
-                                Label(option, systemImage: getChartIcon(for: option))
                             }
+                        } label: {
+                            Label("Chart Type", systemImage: chartIcon)
+                                .symbolRenderingMode(.hierarchical)
                         }
-                    } label: {
-                        Label("Chart Type", systemImage: chartIcon)
-                            .symbolRenderingMode(.hierarchical)
+                        
+                        NavigationLink(destination: YearlyChartsView()) {
+                            Label("Yearly", systemImage: "calendar")
+                                .symbolRenderingMode(.hierarchical)
+                        }
                     }
-                    
-                    NavigationLink(destination: YearlyChartsView()) {
-                        Label("Yearly", systemImage: "calendar")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    .disabled(reports.isEmpty)
                 }
             }
             .sheet(isPresented: $isShowingSettings) {
