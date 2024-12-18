@@ -18,7 +18,7 @@ struct MainTabView: View {
                 }
                 .tag(1)
             
-            QualityAnalysisView()
+            QualityAnalysisView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Quality", systemImage: "checkmark.seal")
                 }

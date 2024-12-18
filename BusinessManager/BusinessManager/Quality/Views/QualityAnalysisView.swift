@@ -15,6 +15,15 @@ struct QualityAnalysisView: View {
     
     @State private var selectedTimeFrame: TimeFrame = .month
     @State private var selectedDepartment: String?
+    @State private var showingThresholds = false
+    @State private var showingInfo = false
+    @State private var showingSettings = false
+    
+    @AppStorage("minPerformance") private var minPerformance: Double = 70
+    @AppStorage("minTaskCompletion") private var minTaskCompletion: Double = 75
+    @AppStorage("minVolumeOfWork") private var minVolumeOfWork: Double = 65
+    
+    @Binding var selectedTab: Int
     
     private var filteredReports: [Report] {
         reports.filter { report in
@@ -27,64 +36,142 @@ struct QualityAnalysisView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Filtros
-                    QualityAnalysisFilterMenu(
-                        selectedTimeFrame: $selectedTimeFrame,
-                        selectedDepartment: $selectedDepartment,
-                        departments: Array(Set(reports.map(\.departmentName)))
-                    )
-                    .padding(.horizontal)
-                    
-                    // Métricas
-                    VStack(spacing: 16) {
-                        Text("Key Metrics")
+            Group {
+                if reports.isEmpty {
+                    ContentUnavailableView(label: {
+                        Label("No Quality Data", systemImage: "chart.bar.doc.horizontal")
                             .font(.title2)
-                            .bold()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Grid(horizontalSpacing: 16, verticalSpacing: 16) {
-                            GridRow {
-                                MetricView(
-                                    title: "Performance",
-                                    value: averagePerformance,
-                                    trend: performanceTrend
-                                )
-                                MetricView(
-                                    title: "Volume",
-                                    value: averageVolume,
-                                    trend: volumeTrend
-                                )
-                            }
-                            
-                            GridRow {
-                                MetricView(
-                                    title: "Task Completion",
-                                    value: averageCompletion,
-                                    trend: completionTrend
-                                )
-                                .gridCellColumns(2)
-                            }
+                    }, description: {
+                        Text("Start adding reports to see quality analysis.")
+                            .foregroundStyle(.secondary)
+                    }, actions: {
+                        Button("Go to Reports") {
+                            // Asumiendo que Reports está en el tab 0
+                            // Necesitarás añadir esta binding property
+                            selectedTab = 0
                         }
+                    })
+                    .padding(.bottom, 115)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            // Métricas
+                            VStack(spacing: 16) {
+                                Text("Key Metrics")
+                                    .font(.title2)
+                                    .bold()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                Grid(horizontalSpacing: 16, verticalSpacing: 16) {
+                                    GridRow {
+                                        MetricView(
+                                            title: "Performance",
+                                            value: averagePerformance,
+                                            trend: performanceTrend,
+                                            threshold: minPerformance
+                                        )
+                                        MetricView(
+                                            title: "Volume",
+                                            value: averageVolume,
+                                            trend: volumeTrend,
+                                            threshold: minVolumeOfWork
+                                        )
+                                    }
+                                    
+                                    GridRow {
+                                        MetricView(
+                                            title: "Task Completion",
+                                            value: averageCompletion,
+                                            trend: completionTrend,
+                                            threshold: minTaskCompletion
+                                        )
+                                        .gridCellColumns(2)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                            
+                            // Analytics
+                            VStack(spacing: 16) {
+                                Text("Analytics")
+                                    .font(.title2)
+                                    .bold()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                ErrorDistributionChart(reports: filteredReports)
+                                DelayPatternView(reports: filteredReports)
+                            }
+                            .padding(.horizontal)
+                        }
+                        .padding(.vertical)
                     }
-                    .padding(.horizontal)
-                    
-                    // Analytics
-                    VStack(spacing: 16) {
-                        Text("Analytics")
-                            .font(.title2)
-                            .bold()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        ErrorDistributionChart(reports: filteredReports)
-                        DelayPatternView(reports: filteredReports)
-                    }
-                    .padding(.horizontal)
                 }
-                .padding(.vertical)
             }
             .navigationTitle("Quality Analysis")
+            .toolbar {
+                // Leading Items (Left side)
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button {
+                        showingInfo.toggle()
+                    } label: {
+                        Label("Information", systemImage: "info.circle")
+                    }
+                    
+                    Button {
+                        showingSettings.toggle()
+                    } label: {
+                        Label("Settings", systemImage: "gear")
+                    }
+                }
+                
+                // Trailing Items (Right side)
+                if !reports.isEmpty {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Menu {
+                            // Time Frame Picker
+                            Picker("Time Frame", selection: $selectedTimeFrame) {
+                                ForEach(TimeFrame.allCases, id: \.self) { timeFrame in
+                                    Label(timeFrame.rawValue, systemImage: timeFrame.systemImage)
+                                        .tag(timeFrame)
+                                }
+                            }
+                            
+                            Divider()
+                            
+                            // Department Picker
+                            Menu("Department") {
+                                Button("All Departments") {
+                                    selectedDepartment = nil
+                                }
+                                
+                                Divider()
+                                
+                                ForEach(Array(Set(reports.map(\.departmentName))).sorted(), id: \.self) { department in
+                                    Button(department) {
+                                        selectedDepartment = department
+                                    }
+                                    .foregroundStyle(selectedDepartment == department ? .blue : .primary)
+                                }
+                            }
+                        } label: {
+                            Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                        }
+                        
+                        Button {
+                            showingThresholds.toggle()
+                        } label: {
+                            Label("Thresholds", systemImage: "slider.horizontal.3")
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showingThresholds) {
+                ThresholdsSettingsView(
+                    minPerformance: $minPerformance,
+                    minTaskCompletion: $minTaskCompletion,
+                    minVolumeOfWork: $minVolumeOfWork
+                )
+            }
         }
     }
     
@@ -172,11 +259,57 @@ struct QualityAnalysisView: View {
     }
 }
 
+// MARK: - ThresholdsSettingsView
+private struct ThresholdsSettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var minPerformance: Double
+    @Binding var minTaskCompletion: Double
+    @Binding var minVolumeOfWork: Double
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Minimum Thresholds") {
+                    VStack(alignment: .leading) {
+                        Text("Performance: \(Int(minPerformance))%")
+                        Slider(value: $minPerformance, in: 0...100, step: 5)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Task Completion: \(Int(minTaskCompletion))%")
+                        Slider(value: $minTaskCompletion, in: 0...100, step: 5)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Volume of Work: \(Int(minVolumeOfWork))%")
+                        Slider(value: $minVolumeOfWork, in: 0...100, step: 5)
+                    }
+                }
+            }
+            .navigationTitle("Thresholds Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium])
+    }
+}
+
 // MARK: - MetricView
 private struct MetricView: View {
     let title: String
     let value: Double
     let trend: QualityMetric.MetricTrend
+    let threshold: Double
+    
+    private var valueColor: Color {
+        value >= threshold ? .green : .red
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -186,10 +319,15 @@ private struct MetricView: View {
             Text("\(Int(value))%")
                 .font(.title)
                 .bold()
+                .foregroundStyle(valueColor)
             
             Label(trendText, systemImage: trendIcon)
                 .font(.caption)
                 .foregroundStyle(trendColor)
+            
+            Text("Min: \(Int(threshold))%")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
