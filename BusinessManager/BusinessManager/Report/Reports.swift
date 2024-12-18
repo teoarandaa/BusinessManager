@@ -13,15 +13,13 @@ class Report {
     
     // Propiedades calculadas
     var performanceMark: Int {
-        guard totalTasksCreated > 0 else { return 0 }
-        let performance = Double(tasksCompletedWithoutDelay) / Double(totalTasksCreated)
-        return Int(performance * 100)
+        let baseNumber = totalTasksCreated == 0 ? tasksCompletedWithoutDelay : totalTasksCreated
+        return Int((Double(tasksCompletedWithoutDelay) / Double(baseNumber)) * 100)
     }
     
     var volumeOfWorkMark: Int {
-        guard totalTasksCreated > 0 else { return 0 }
-        let volume = Double(numberOfFinishedTasks) / Double(totalTasksCreated)
-        return Int(volume * 100)
+        let baseNumber = totalTasksCreated == 0 ? numberOfFinishedTasks : totalTasksCreated
+        return Int((Double(numberOfFinishedTasks) / Double(baseNumber)) * 100)
     }
     
     init(

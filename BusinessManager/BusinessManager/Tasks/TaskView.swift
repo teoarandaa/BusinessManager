@@ -167,7 +167,7 @@ struct TaskView: View {
             .overlay {
                 if tasks.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
+                        Label("No Tasks", systemImage: "list.bullet.clipboard")
                     }, description: {
                         Text("Start adding tasks to see your list.")
                     }, actions: {
@@ -189,17 +189,56 @@ struct TaskView: View {
 struct TasksCell: View {
     let task: Task
     
+    var dateColor: Color {
+        let calendar = Calendar.current
+        let today = Date()
+        let daysUntilDue = calendar.dateComponents([.day], from: today, to: task.date).day ?? 0
+        
+        if task.isCompleted {
+            return .secondary
+        } else if task.date < today {
+            return .red
+        } else if daysUntilDue <= 1 {
+            return .red
+        } else if daysUntilDue <= 3 {
+            return .orange
+        } else if daysUntilDue <= 7 {
+            return .yellow
+        } else {
+            return .primary
+        }
+    }
+    
+    var daysOverdue: Int? {
+        let calendar = Calendar.current
+        let today = Date()
+        if task.date < today && !task.isCompleted {
+            let days = calendar.dateComponents([.day], from: task.date, to: today).day ?? 0
+            return days
+        }
+        return nil
+    }
+    
     var body: some View {
         HStack {
-            Text(task.date, format: .dateTime.year().month(.abbreviated).day())
-                .frame(width: 100, alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(task.date, format: .dateTime.year().month(.abbreviated).day())
+                    .foregroundStyle(dateColor)
+                if let overdue = daysOverdue {
+                    Text("\(overdue) days overdue")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+            .frame(width: 100, alignment: .leading)
+            
             Spacer()
             Text(task.title)
                 .bold()
                 .foregroundStyle(task.isCompleted ? .secondary : .primary)
             Spacer()
             Text(task.priority)
-                .padding(8)
+                .padding(4)
                 .foregroundStyle(
                     task.priority == "P1" ? Color.red :
                     task.priority == "P2" ? Color.yellow :
@@ -210,10 +249,11 @@ struct TasksCell: View {
                     task.priority == "P2" ? Color.yellow :
                     Color.green)
                     .opacity(0.2)
-                    .cornerRadius(8)
+                    .cornerRadius(6)
                 )
                 .bold()
         }
+        .padding(.vertical, 4)
         .contentShape(Rectangle())
     }
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ReportsInfoSheetView: View {
+struct QualityInfoSheetView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -9,16 +9,16 @@ struct ReportsInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
-                        Text("Reports Overview")
+                        Text("Quality Overview")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Reports offer insights into performance, productivity, and progress.\n\nSecurely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
+                        Text("Quality Analysis provides comprehensive insights into department performance, volume of work, and task completion rates. Key metrics are tracked and analyzed to identify trends, helping you maintain high standards and improve efficiency.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports1")
+                        Image("quality1")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
@@ -32,16 +32,16 @@ struct ReportsInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
-                        Text("How to Create Reports")
+                        Text("How to create Metrics")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("To create accurate reports, we need the current date, department name, tasks created, tasks completed on-time, and tasks completed (tasks completed on-time is included in this group).\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
+                        Text("To create quality metrics, start by tracking task completion times and setting deadlines. Record the number of tasks assigned and completed. Calculate performance based on timely completions, volume of work from task ratios, and overall completion rates. Monitor these metrics regularly to identify trends and areas for improvement.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports2")
+                        Image("quality2")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
@@ -49,22 +49,22 @@ struct ReportsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Creating Reports")
+                    Text("Metrics")
                 }
                 
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Report Controls")
+                        Text("Quality Controls")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The plus button in the toolbar creates new reports. Use the calendar to select dates and the department picker to choose the relevant team. The save button stores your report data securely.")
+                        Text("Use the plus button to add new quality insights. The date picker helps track metrics over time, while the department selector ensures you're analyzing the right team. Set minimum thresholds for performance, volume, and completion rates to maintain quality standards.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports3")
+                        Image("quality3")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
@@ -78,16 +78,16 @@ struct ReportsInfoSheetView: View {
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Report Actions")
+                        Text("Quality Actions")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Use the edit button to modify existing reports, the share button to export reports as PDFs, and the delete button to remove outdated reports. The filter button helps organize reports by department or date.")
+                        Text("The refresh button updates metrics with the latest data. Use filters to focus on specific quality aspects or departments. The share button exports quality reports, while the analysis button provides detailed insights into performance trends.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports4")
+                        Image("quality4")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
@@ -108,8 +108,8 @@ struct ReportsInfoSheetView: View {
             }
         }
     }
-}
+} 
 
 #Preview {
-    ReportsInfoSheetView()
+    QualityInfoSheetView()
 }

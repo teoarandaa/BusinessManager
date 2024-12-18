@@ -78,7 +78,6 @@ struct DepartmentReportsView: View {
             }
         }
         .navigationTitle("Reports by Year")
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -275,7 +274,6 @@ struct YearReportsView: View {
             }
         }
         .navigationTitle("Reports for \(String(year))")
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {

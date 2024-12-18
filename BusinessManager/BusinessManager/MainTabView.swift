@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @State private var selectedTab = 2
+    @State private var selectedTab = 1
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -12,15 +12,15 @@ struct MainTabView: View {
                 }
                 .tag(0)
             
-            GoalsView()
-                .tabItem {
-                    Label("Goals", systemImage: "target")
-                }
-                .tag(1)
-            
             ChartsView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Analytics", systemImage: "chart.bar")
+                }
+                .tag(1)
+            
+            QualityAnalysisView(selectedTab: $selectedTab)
+                .tabItem {
+                    Label("Quality", systemImage: "checkmark.seal")
                 }
                 .tag(2)
             

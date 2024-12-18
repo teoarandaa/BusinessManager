@@ -214,12 +214,14 @@ struct YearPicker: View {
 struct MonthlyReportView: View {
     @Environment(\.modelContext) private var context
     @Query private var reports: [Report]
-    @Query private var goals: [Goal]
     @State private var selectedDate = Date()
     @State private var pdfData: Data?
     @State private var showShareSheet = false
     @State private var showDatePicker = false
     @State private var selectedPeriod: ReportPeriod = .month
+    @AppStorage("minPerformance") private var minPerformance = 70.0
+    @AppStorage("minVolumeOfWork") private var minVolumeOfWork = 70.0
+    @AppStorage("minTaskCompletion") private var minTaskCompletion = 70.0
     
     private let hapticFeedback = UINotificationFeedbackGenerator()
     
@@ -260,7 +262,7 @@ struct MonthlyReportView: View {
                     }
                 }
                 .onChange(of: selectedPeriod) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
                 
                 HStack {
@@ -292,15 +294,15 @@ struct MonthlyReportView: View {
             switch selectedPeriod {
             case .month:
                 MonthYearPicker(selectedDate: $selectedDate) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
             case .quarter:
                 QuarterYearPicker(selectedDate: $selectedDate) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
             case .year:
                 YearPicker(selectedDate: $selectedDate) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
             }
         }
@@ -310,11 +312,11 @@ struct MonthlyReportView: View {
             }
         }
         .onAppear {
-            generatePDFReport()
+            generateAndSharePDF()
         }
     }
     
-    private func generatePDFReport() {
+    private func generateAndSharePDF() {
         let calendar = Calendar.current
         var startDate: Date
         var endDate: Date
@@ -349,18 +351,14 @@ struct MonthlyReportView: View {
             return isAfterStart && isBeforeEnd
         }
         
-        let filteredGoals = goals.filter { goal in
-            let isAfterStart = calendar.compare(goal.deadline, to: startDate, toGranularity: .day) != .orderedAscending
-            let isBeforeEnd = calendar.compare(goal.deadline, to: endDate, toGranularity: .day) != .orderedDescending
-            return isAfterStart && isBeforeEnd
-        }
-        
         let pdfGenerator = PDFGenerator(
             date: selectedDate,
             reports: filteredReports,
-            goals: filteredGoals,
-            reportTitle: reportTitle,
-            period: selectedPeriod
+            reportTitle: "Monthly Performance Report",
+            period: selectedPeriod,
+            minPerformance: minPerformance,
+            minVolumeOfWork: minVolumeOfWork,
+            minTaskCompletion: minTaskCompletion
         )
         self.pdfData = pdfGenerator.generatePDF()
     }
@@ -378,36 +376,85 @@ extension Calendar {
 class PDFGenerator {
     private let date: Date
     private let reports: [Report]
-    private let goals: [Goal]
     private let pageWidth: CGFloat = 612
     private let pageHeight: CGFloat = 792
     private let margin: CGFloat = 50
     private let reportTitle: String
     private let period: ReportPeriod
+    private let minPerformance: Double
+    private let minVolumeOfWork: Double
+    private let minTaskCompletion: Double
     
-    init(date: Date, reports: [Report], goals: [Goal], reportTitle: String, period: ReportPeriod) {
-        self.date = date
-        self.reports = reports
-        self.goals = goals
-        self.reportTitle = reportTitle
-        self.period = period
+    private let chartColors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple]
+    
+    private var departmentData: [String: [Report]] {
+        Dictionary(grouping: reports) { $0.departmentName }
     }
     
-    private var generatedTitle: String {
-        switch period {
-        case .month:
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMMM yyyy"
-            return "Monthly Report - \(formatter.string(from: date))"
-        case .quarter:
-            let month = Calendar.current.component(.month, from: date)
-            let quarter = (month - 1) / 3 + 1
-            let year = Calendar.current.component(.year, from: date)
-            return "Quarterly Report - Q\(quarter) \(year)"
-        case .year:
-            let year = Calendar.current.component(.year, from: date)
-            return "Yearly Report - \(year)"
+    private lazy var departmentColorMap: [String: UIColor] = {
+        var colorMap: [String: UIColor] = [:]
+        let departments = Array(departmentData.keys).sorted()
+        
+        for (index, department) in departments.enumerated() {
+            colorMap[department] = chartColors[index % chartColors.count]
         }
+        return colorMap
+    }()
+    
+    private func getColorForDepartment(_ department: String) -> UIColor {
+        return departmentColorMap[department] ?? chartColors[0]
+    }
+    
+    init(
+        date: Date,
+        reports: [Report],
+        reportTitle: String,
+        period: ReportPeriod,
+        minPerformance: Double,
+        minVolumeOfWork: Double,
+        minTaskCompletion: Double
+    ) {
+        self.date = date
+        self.reports = reports
+        self.reportTitle = reportTitle
+        self.period = period
+        self.minPerformance = minPerformance
+        self.minVolumeOfWork = minVolumeOfWork
+        self.minTaskCompletion = minTaskCompletion
+    }
+    
+    private func averagePerformance() -> Double {
+        guard !reports.isEmpty else { return 0 }
+        return reports.map(\.performanceMark).average
+    }
+    
+    private func averageVolumeOfWork() -> Double {
+        guard !reports.isEmpty else { return 0 }
+        return reports.map(\.volumeOfWorkMark).average
+    }
+    
+    private func averageCompletion() -> Double {
+        let completed = Double(reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay })
+        let total = Double(reports.reduce(0) { $0 + $1.totalTasksCreated })
+        guard total > 0 else { return 0 }
+        return (completed / total) * 100
+    }
+    
+    private func calculateTrend(values: [Double]) -> String {
+        guard values.count >= 2 else { return "Stable" }
+        
+        let firstHalf = Array(values.prefix(values.count / 2))
+        let secondHalf = Array(values.suffix(values.count / 2))
+        
+        let firstAvg = firstHalf.reduce(0.0, +) / Double(firstHalf.count)
+        let secondAvg = secondHalf.reduce(0.0, +) / Double(secondHalf.count)
+        
+        if secondAvg > firstAvg * 1.05 {
+            return "Improving"
+        } else if secondAvg < firstAvg * 0.95 {
+            return "Declining"
+        }
+        return "Stable"
     }
     
     func generatePDF() -> Data {
@@ -429,7 +476,7 @@ class PDFGenerator {
             ]
             
             // Usar el título generado dinámicamente
-            (generatedTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
+            (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw logo
             if let logo = UIImage(named: "pdf_logo") {
@@ -595,116 +642,231 @@ class PDFGenerator {
                 }
             }
             
-            // Goals section
-            let goalsY = reportsY + 250
-            ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: goalsY), withAttributes: summaryTitleAttributes)
-            
-            // Draw goals details
-            let goalDetails = """
-            Active Goals: \(goals.filter { $0.status == .inProgress }.count)
-            Completed Goals: \(goals.filter { $0.status == .completed }.count)
-            Failed Goals: \(goals.filter { $0.status == .failed }.count)
-            """
-            
-            (goalDetails as NSString).draw(at: CGPoint(x: margin, y: goalsY + 20), withAttributes: summaryTextAttributes)
-            
-            // Añadir espacio después del resumen
-            let chartsY = goalsY + 80
-            
-            // Títulos de los pie charts alineados con el margen
-            ("Completed Goals by Department" as NSString).draw(
-                at: CGPoint(x: margin, y: chartsY),
-                withAttributes: summaryTitleAttributes
-            )
-            ("Failed Goals by Department" as NSString).draw(
-                at: CGPoint(x: pageWidth/2 + margin, y: chartsY),
+            // Draw quality metrics with less spacing from reports
+            let metricsY = reportsY + 200
+            ("Quality Metrics" as NSString).draw(
+                at: CGPoint(x: margin, y: metricsY),
                 withAttributes: summaryTitleAttributes
             )
             
-            // Configuración común para los pie charts
-            let pieCenterY = chartsY + 100
-            let radius: CGFloat = 55
-            let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple, .systemTeal]
+            let metrics = [
+                ("Performance", averagePerformance(), minPerformance),
+                ("Volume of Work", averageVolumeOfWork(), minVolumeOfWork),
+                ("Task Completion", averageCompletion(), minTaskCompletion)
+            ]
             
-            // Función helper para dibujar pie chart
-            func drawPieChart(centerX: CGFloat, goals: [Goal], status: Goal.GoalStatus) {
-                let departmentGoals = Dictionary(grouping: goals.filter { $0.status == status }, by: { $0.department })
-                let total = CGFloat(goals.filter { $0.status == status }.count)
+            let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
+            
+            metrics.enumerated().forEach { index, metric in
+                let metricX = margin + (CGFloat(index) * (metricWidth + 20))
+                let metricY = metricsY + 40
                 
-                if total == 0 {
-                    let path = UIBezierPath(arcCenter: CGPoint(x: centerX, y: pieCenterY),
-                                           radius: radius,
-                                           startAngle: 0,
-                                           endAngle: 2 * .pi,
-                                           clockwise: true)
-                    UIColor.gray.withAlphaComponent(0.2).setStroke()
-                    path.stroke()
-                } else {
-                    var startAngle: CGFloat = 0
-                    
-                    // Ordenar los departamentos alfabéticamente
-                    let sortedDepartments = departmentGoals.sorted { $0.key < $1.key }
-                    
-                    sortedDepartments.enumerated().forEach { index, entry in
-                        let percentage = CGFloat(entry.value.count) / total
-                        let endAngle = startAngle + (percentage * 2 * .pi)
-                        
-                        let path = UIBezierPath()
-                        path.move(to: CGPoint(x: centerX, y: pieCenterY))
-                        path.addArc(withCenter: CGPoint(x: centerX, y: pieCenterY),
-                                  radius: radius,
-                                  startAngle: startAngle,
-                                  endAngle: endAngle,
-                                  clockwise: true)
-                        path.close()
-                        
-                        colors[index % colors.count].setFill()
-                        path.fill()
-                        
-                        // Leyenda
-                        let legendX = centerX - radius
-                        let legendY = pieCenterY + radius + 10 + (CGFloat(index) * 12)
-                        
-                        colors[index % colors.count].setFill()
-                        let legendRect = CGRect(x: legendX, y: legendY, width: 6, height: 6)
-                        UIBezierPath(rect: legendRect).fill()
-                        
-                        let legendText = "\(entry.key): \(entry.value.count)"
-                        let legendAttributes: [NSAttributedString.Key: Any] = [
-                            .font: UIFont.systemFont(ofSize: 7)
-                        ]
-                        (legendText as NSString).draw(
-                            at: CGPoint(x: legendX + 10, y: legendY),
-                            withAttributes: legendAttributes
-                        )
-                        
-                        startAngle = endAngle
-                    }
-                }
+                // Draw metric title
+                (metric.0 as NSString).draw(
+                    at: CGPoint(x: metricX, y: metricY),
+                    withAttributes: [
+                        .font: UIFont.boldSystemFont(ofSize: 14)
+                    ]
+                )
+                
+                // Draw metric value with color based on threshold
+                let isAboveMinimum = metric.1 >= metric.2
+                ("\(Int(metric.1))%" as NSString).draw(
+                    at: CGPoint(x: metricX, y: metricY + 25),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+                        .foregroundColor: isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed
+                    ]
+                )
+                
+                // Draw progress bar
+                let barHeight: CGFloat = 8
+                let barWidth = metricWidth - 20
+                let barY = metricY + 60
+                
+                // Background bar
+                let backgroundBar = UIBezierPath(
+                    roundedRect: CGRect(x: metricX, y: barY, width: barWidth, height: barHeight),
+                    cornerRadius: 4
+                )
+                UIColor.systemGray5.setFill()
+                backgroundBar.fill()
+                
+                // Progress bar with color based on threshold
+                let progressWidth = barWidth * CGFloat(metric.1 / 100)
+                let progressBar = UIBezierPath(
+                    roundedRect: CGRect(x: metricX, y: barY, width: progressWidth, height: barHeight),
+                    cornerRadius: 4
+                )
+                (isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed).setFill()
+                progressBar.fill()
             }
             
-            // Dibujar los dos pie charts alineados con el margen
-            drawPieChart(centerX: margin + radius + 40, goals: goals, status: Goal.GoalStatus.completed)
-            drawPieChart(centerX: pageWidth/2 + margin + radius + 40, goals: goals, status: Goal.GoalStatus.failed)
+            // Charts section with title much higher up
+            let chartsY = metricsY + 350
+            
+            ("Analytics Charts" as NSString).draw(
+                at: CGPoint(x: margin, y: chartsY - 180),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            let chartWidth = (pageWidth - (2 * margin) - 40) / 3
+            let chartHeight: CGFloat = 150
+            
+            // Draw all three charts side by side
+            drawProductivityChart(
+                at: CGPoint(x: margin, y: chartsY),
+                size: CGSize(width: chartWidth, height: chartHeight),
+                title: "Productivity Trends"
+            )
+            
+            drawEfficiencyChart(
+                at: CGPoint(x: margin + chartWidth + 20, y: chartsY),
+                size: CGSize(width: chartWidth, height: chartHeight),
+                title: "Efficiency Analysis"
+            )
+            
+            drawPerformanceChart(
+                at: CGPoint(x: margin + (chartWidth + 20) * 2, y: chartsY),
+                size: CGSize(width: chartWidth, height: chartHeight),
+                title: "Performance Overview"
+            )
         }
         
         return data
     }
     
-    private func averagePerformance() -> Double {
-        guard !reports.isEmpty else { return 0 }
-        let total = reports.reduce(into: 0.0) { result, report in
-            result += Double(report.performanceMark)
+    private func drawProductivityChart(at point: CGPoint, size: CGSize, title: String) {
+        // Draw chart content first
+        let path = UIBezierPath()
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
+        UIColor.gray.setStroke()
+        path.stroke()
+        
+        departmentData.forEach { department, reports in
+            let sortedReports = reports.sorted { $0.date < $1.date }
+            let path = UIBezierPath()
+            let step = size.width / CGFloat(max(sortedReports.count - 1, 1))
+            
+            for (i, report) in sortedReports.enumerated() {
+                let x = point.x + (CGFloat(i) * step)
+                let y = point.y - (CGFloat(report.performanceMark) / 100.0 * size.height)
+                
+                if i == 0 {
+                    path.move(to: CGPoint(x: x, y: y))
+                } else {
+                    path.addLine(to: CGPoint(x: x, y: y))
+                }
+            }
+            
+            getColorForDepartment(department).setStroke()
+            path.lineWidth = 1.5
+            path.stroke()
         }
-        return total / Double(reports.count)
+        
+        // Draw legend
+        let sortedDepartments = Array(departmentData.keys).sorted()
+        sortedDepartments.enumerated().forEach { index, department in
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            getColorForDepartment(department).setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (department as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
     }
     
-    private func averageVolumeOfWork() -> Double {
-        guard !reports.isEmpty else { return 0 }
-        let total = reports.reduce(into: 0.0) { result, report in
-            result += Double(report.volumeOfWorkMark)
+    private func drawEfficiencyChart(at point: CGPoint, size: CGSize, title: String) {
+        // Draw chart content first
+        let path = UIBezierPath()
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
+        UIColor.gray.setStroke()
+        path.stroke()
+        
+        departmentData.forEach { department, reports in
+            let color = getColorForDepartment(department)
+            
+            reports.forEach { report in
+                let x = point.x + (CGFloat(report.volumeOfWorkMark) / 100.0 * size.width)
+                let y = point.y - (CGFloat(report.performanceMark) / 100.0 * size.height)
+                
+                let dotPath = UIBezierPath(ovalIn: CGRect(x: x - 2, y: y - 2, width: 4, height: 4))
+                color.setFill()
+                dotPath.fill()
+            }
         }
-        return total / Double(reports.count)
+        
+        // Draw legend
+        let sortedDepartments = Array(departmentData.keys).sorted()
+        sortedDepartments.enumerated().forEach { index, department in
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            getColorForDepartment(department).setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (department as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
+    }
+    
+    private func drawPerformanceChart(at point: CGPoint, size: CGSize, title: String) {
+        // Draw chart content first
+        let path = UIBezierPath()
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
+        UIColor.gray.setStroke()
+        path.stroke()
+        
+        let barSpacing: CGFloat = 5
+        let sortedDepartments = Array(departmentData.keys).sorted()
+        let barWidth = (size.width - (barSpacing * CGFloat(departmentData.count - 1))) / CGFloat(departmentData.count)
+        
+        sortedDepartments.enumerated().forEach { index, department in
+            let reports = departmentData[department] ?? []
+            let avgPerformance = reports.map(\.performanceMark).average
+            let x = point.x + (CGFloat(index) * (barWidth + barSpacing))
+            let height = CGFloat(avgPerformance) / 100.0 * size.height
+            
+            let barRect = CGRect(x: x, y: point.y - height, width: barWidth, height: height)
+            getColorForDepartment(department).setFill()
+            UIBezierPath(rect: barRect).fill()
+            
+            // Legend
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            getColorForDepartment(department).setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (department as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+            
+            // Performance value
+            ("\(Int(avgPerformance))%" as NSString).draw(
+                at: CGPoint(x: x, y: point.y - height - 10),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
     }
     
     private func totalTasks() -> Int {

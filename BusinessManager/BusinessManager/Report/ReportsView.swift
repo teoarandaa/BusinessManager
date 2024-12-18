@@ -8,7 +8,6 @@ struct ReportsView: View {
     @Environment(\.modelContext) var context
 
     @Query(sort: \Report.date, animation: .default) private var reports: [Report]
-    @Query(sort: \Goal.deadline, animation: .default) private var goals: [Goal]
     
     @State private var reportToEdit: Report?
     @State private var isShowingMonthlySummary = false
@@ -283,15 +282,9 @@ struct AddReportSheet: View {
         }
         
         // Validaciones
-        guard tasksWithoutDelay <= totalTasks else {
+        guard totalTasks >= 0 else {
             showAlert = true
-            alertMessage = "Tasks completed without delay cannot exceed total tasks created."
-            return
-        }
-        
-        guard finishedTasks <= totalTasks else {
-            showAlert = true
-            alertMessage = "Finished tasks cannot exceed total tasks created."
+            alertMessage = "Total tasks cannot be negative."
             return
         }
         
@@ -344,82 +337,29 @@ extension View {
 struct DepartmentCell: View {
     let departmentName: String
     let reportsCount: Int
-    @State private var isEditingDepartment = false
     @AppStorage("departmentIcons") private var iconStorage: String = "{}"
-    @Environment(\.modelContext) var context
-    @Query(sort: \Report.date) var reports: [Report]
     
-    var currentIcon: String {
-        let dictionary = (try? JSONDecoder().decode([String: String].self, 
-            from: Data(iconStorage.utf8))) ?? [:]
+    var departmentIcon: String {
+        let dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
         return dictionary[departmentName] ?? "building.2"
     }
     
-    let icons = [
-        ("person.2.wave.2", "Human Resources"),
-        ("chart.pie", "Analytics"),
-        ("megaphone", "Marketing"),
-        ("cart", "Sales"),
-        ("wrench.and.screwdriver", "Maintenance"),
-        ("desktopcomputer", "IT"),
-        ("text.page.badge.magnifyingglass", "Research"),
-        ("gearshape", "Operations"),
-        ("lightbulb", "Innovation"),
-        ("bubble.left.and.bubble.right", "Communication"),
-        ("pencil.and.outline", "Design"),
-        ("shield.checkerboard", "Security"),
-        ("truck.box", "Logistics"),
-        ("checkmark.seal", "Quality"),
-        ("target", "Strategy")
-    ]
-    
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: currentIcon)
+        HStack {
+            Image(systemName: departmentIcon)
+                .font(.system(size: 16))
                 .foregroundStyle(.accent)
-                .font(.title3)
-                .frame(width: 30)
+                .frame(width: 24, height: 24)
             
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(departmentName)
-                    .font(.headline)
+                    .font(.system(size: 16))
                 Text("\(reportsCount) reports")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
-            Spacer()
         }
-        .contentShape(Rectangle())
         .padding(.vertical, 4)
-        .contextMenu {
-            Button {
-                isEditingDepartment = true
-            } label: {
-                Label("Change Department Name", systemImage: "pencil")
-            }
-            
-            Menu("Change Icon") {
-                ForEach(icons, id: \.0) { icon in
-                    Button {
-                        var dictionary = (try? JSONDecoder().decode([String: String].self, 
-                            from: Data(iconStorage.utf8))) ?? [:]
-                        dictionary[departmentName] = icon.0
-                        if let encoded = try? JSONEncoder().encode(dictionary),
-                           let string = String(data: encoded, encoding: .utf8) {
-                            iconStorage = string
-                        }
-                        let generator = UISelectionFeedbackGenerator()
-                        generator.selectionChanged()
-                    } label: {
-                        Label(icon.1, systemImage: icon.0)
-                    }
-                }
-            }
-        }
-        .sheet(isPresented: $isEditingDepartment) {
-            EditDepartmentSheet(departmentName: departmentName, reports: reports)
-        }
     }
 }
 
@@ -550,23 +490,10 @@ struct UpdateReportSheet: View {
             return
         }
         
-        // Validaciones
-        guard tasksWithoutDelay <= totalTasks else {
+        // Validaciones básicas
+        guard totalTasks >= 0 else {
             showAlert = true
-            alertMessage = "Tasks completed without delay cannot exceed total tasks created."
-            return
-        }
-        
-        guard finishedTasks <= totalTasks else {
-            showAlert = true
-            alertMessage = "Finished tasks cannot exceed total tasks created."
-            return
-        }
-        
-        // Nueva validación sin haptic feedback
-        guard finishedTasks >= tasksWithoutDelay else {
-            showAlert = true
-            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
+            alertMessage = "Total tasks cannot be negative."
             return
         }
         
