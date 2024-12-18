@@ -10,6 +10,7 @@ struct QualityAnalysisView: View {
     
     @State private var selectedTimeFrame: TimeFrame = .month
     @State private var selectedDepartment: String?
+    @State private var needsRefresh: Bool = false
     
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -82,20 +83,32 @@ struct QualityAnalysisView: View {
                 .padding(.vertical)
             }
             .navigationTitle("Quality Analysis")
-            .onChange(of: reports) { oldReports, newReports in
-                // Primero eliminamos las métricas y insights antiguos
+            .onChange(of: reports.count) { _, _ in
+                print("Reports changed, count: \(reports.count)")
                 cleanupOldData()
-                // Luego generamos las nuevas métricas
                 generateMetricsIfNeeded()
+                needsRefresh.toggle()
             }
+            .onChange(of: metrics.count) { _, _ in
+                print("Metrics changed, count: \(metrics.count)")
+                withAnimation {
+                    generateInsightsIfNeeded()
+                    needsRefresh.toggle()
+                }
+            }
+            .onChange(of: insights.count) { _, _ in
+                print("Insights changed, count: \(insights.count)")
+                withAnimation {
+                    needsRefresh.toggle()
+                }
+            }
+            .id(needsRefresh)
         }
     }
     
     private func cleanupOldData() {
-        // Obtener los IDs de reportes actuales
+        print("Cleaning up old data...")
         let currentReportIds = Set(reports.map(\.id))
-        
-        // Obtener los departamentos actuales
         let currentDepartments = Set(reports.map(\.departmentName))
         
         // Eliminar métricas huérfanas
@@ -104,8 +117,11 @@ struct QualityAnalysisView: View {
             return !currentReportIds.contains(report.id)
         }
         
-        for metric in orphanedMetrics {
-            context.delete(metric)
+        if !orphanedMetrics.isEmpty {
+            print("Deleting \(orphanedMetrics.count) orphaned metrics")
+            for metric in orphanedMetrics {
+                context.delete(metric)
+            }
         }
         
         // Eliminar insights de departamentos eliminados
@@ -113,29 +129,30 @@ struct QualityAnalysisView: View {
             !currentDepartments.contains(insight.department)
         }
         
-        for insight in orphanedInsights {
-            context.delete(insight)
+        if !orphanedInsights.isEmpty {
+            print("Deleting \(orphanedInsights.count) orphaned insights")
+            for insight in orphanedInsights {
+                context.delete(insight)
+            }
         }
         
         // Resetear el departamento seleccionado si ya no existe
         if let selectedDepartment = selectedDepartment,
            !currentDepartments.contains(selectedDepartment) {
+            print("Resetting selected department")
             self.selectedDepartment = nil
         }
-        
-        try? context.save()
     }
     
     private func generateMetricsIfNeeded() {
-        let reportsWithoutMetrics = reports.filter { report in
+        let validReports = reports.filter { report in
             !metrics.contains { metric in
                 Calendar.current.isDate(metric.date, equalTo: report.date, toGranularity: .day) &&
                 metric.report?.id == report.id
             }
         }
         
-        for report in reportsWithoutMetrics {
-            // Performance Metric
+        for report in validReports {
             let performanceMetric = QualityMetric(
                 date: report.date,
                 name: "Performance",
@@ -145,8 +162,8 @@ struct QualityAnalysisView: View {
                 impact: .high,
                 report: report
             )
+            context.insert(performanceMetric)
             
-            // Volume Metric
             let volumeMetric = QualityMetric(
                 date: report.date,
                 name: "Volume",
@@ -156,8 +173,8 @@ struct QualityAnalysisView: View {
                 impact: .medium,
                 report: report
             )
+            context.insert(volumeMetric)
             
-            // Task Completion Metric
             let completionRate = report.tasksCompletedWithoutDelay > 0 
                 ? (Double(report.tasksCompletedWithoutDelay) / Double(report.totalTasksCreated)) * 100 
                 : 0
@@ -170,13 +187,8 @@ struct QualityAnalysisView: View {
                 impact: .high,
                 report: report
             )
-            
-            context.insert(performanceMetric)
-            context.insert(volumeMetric)
             context.insert(completionMetric)
         }
-        
-        try? context.save()
     }
     
     private func generateInsightsIfNeeded() {
