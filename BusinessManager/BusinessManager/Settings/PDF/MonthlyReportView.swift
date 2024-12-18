@@ -376,6 +376,12 @@ class PDFGenerator {
     private let reportTitle: String
     private let period: ReportPeriod
     
+    private let chartColors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple]
+    
+    private var departmentData: [String: [Report]] {
+        Dictionary(grouping: reports) { $0.departmentName }
+    }
+    
     init(date: Date, reports: [Report], reportTitle: String, period: ReportPeriod) {
         self.date = date
         self.reports = reports
@@ -602,7 +608,7 @@ class PDFGenerator {
                 }
             }
             
-            // Draw quality metrics
+            // Draw quality metrics with less spacing from reports
             let metricsY = reportsY + 200
             ("Quality Metrics" as NSString).draw(
                 at: CGPoint(x: margin, y: metricsY),
@@ -658,9 +664,234 @@ class PDFGenerator {
                 (metric.1 >= 70 ? UIColor.systemGreen : UIColor.systemRed).setFill()
                 progressBar.fill()
             }
+            
+            // Charts section with title much higher up
+            let chartsY = metricsY + 350
+            
+            ("Analytics Charts" as NSString).draw(
+                at: CGPoint(x: margin, y: chartsY - 180),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            let chartWidth = (pageWidth - (2 * margin) - 40) / 3
+            let chartHeight: CGFloat = 150
+            
+            // Draw all three charts side by side
+            drawProductivityChart(
+                at: CGPoint(x: margin, y: chartsY),
+                size: CGSize(width: chartWidth, height: chartHeight),
+                title: "Productivity Trends"
+            )
+            
+            drawEfficiencyChart(
+                at: CGPoint(x: margin + chartWidth + 20, y: chartsY),
+                size: CGSize(width: chartWidth, height: chartHeight),
+                title: "Efficiency Analysis"
+            )
+            
+            drawPerformanceChart(
+                at: CGPoint(x: margin + (chartWidth + 20) * 2, y: chartsY),
+                size: CGSize(width: chartWidth, height: chartHeight),
+                title: "Performance Overview"
+            )
         }
         
         return data
+    }
+    
+    private func drawProductivityChart(at point: CGPoint, size: CGSize, title: String) {
+        // Draw chart content first
+        let path = UIBezierPath()
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
+        UIColor.gray.setStroke()
+        path.stroke()
+        
+        // Plot lines for each department
+        let departmentData = Dictionary(grouping: reports) { $0.departmentName }
+        
+        departmentData.enumerated().forEach { index, entry in
+            let sortedReports = entry.value.sorted { $0.date < $1.date }
+            let path = UIBezierPath()
+            let step = size.width / CGFloat(max(sortedReports.count - 1, 1))
+            
+            for (i, report) in sortedReports.enumerated() {
+                let x = point.x + (CGFloat(i) * step)
+                let y = point.y - (CGFloat(report.performanceMark) / 100.0 * size.height)
+                
+                if i == 0 {
+                    path.move(to: CGPoint(x: x, y: y))
+                } else {
+                    path.addLine(to: CGPoint(x: x, y: y))
+                }
+            }
+            
+            chartColors[index % chartColors.count].setStroke()
+            path.lineWidth = 1.5
+            path.stroke()
+            
+            // Legend
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            chartColors[index % chartColors.count].setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (entry.key as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
+        
+        // Draw title below chart
+        (title as NSString).draw(
+            at: CGPoint(x: point.x + (size.width / 2) - 40, y: point.y + 15),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+        )
+        
+        // Draw legend below title
+        departmentData.enumerated().forEach { index, entry in
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            chartColors[index % chartColors.count].setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (entry.key as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
+    }
+    
+    private func drawEfficiencyChart(at point: CGPoint, size: CGSize, title: String) {
+        // Draw chart content first
+        let path = UIBezierPath()
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
+        UIColor.gray.setStroke()
+        path.stroke()
+        
+        let departmentData = Dictionary(grouping: reports) { $0.departmentName }
+        
+        departmentData.enumerated().forEach { index, entry in
+            let color = chartColors[index % chartColors.count]
+            
+            entry.value.forEach { report in
+                let x = point.x + (CGFloat(report.volumeOfWorkMark) / 100.0 * size.width)
+                let y = point.y - (CGFloat(report.performanceMark) / 100.0 * size.height)
+                
+                let dotPath = UIBezierPath(ovalIn: CGRect(x: x - 2, y: y - 2, width: 4, height: 4))
+                color.setFill()
+                dotPath.fill()
+            }
+            
+            // Legend
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            color.setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (entry.key as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
+        
+        // Draw title below chart
+        (title as NSString).draw(
+            at: CGPoint(x: point.x + (size.width / 2) - 40, y: point.y + 15),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+        )
+        
+        // Draw legend below title
+        departmentData.enumerated().forEach { index, entry in
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            chartColors[index % chartColors.count].setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (entry.key as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
+    }
+    
+    private func drawPerformanceChart(at point: CGPoint, size: CGSize, title: String) {
+        // Draw chart content first
+        let path = UIBezierPath()
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
+        path.move(to: point)
+        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
+        UIColor.gray.setStroke()
+        path.stroke()
+        
+        let departmentData = Dictionary(grouping: reports) { $0.departmentName }
+        let barSpacing: CGFloat = 5
+        let barWidth = (size.width - (barSpacing * CGFloat(departmentData.count - 1))) / CGFloat(departmentData.count)
+        
+        departmentData.enumerated().forEach { index, entry in
+            let avgPerformance = entry.value.map(\.performanceMark).average
+            let x = point.x + (CGFloat(index) * (barWidth + barSpacing))
+            let height = CGFloat(avgPerformance) / 100.0 * size.height
+            
+            let barRect = CGRect(x: x, y: point.y - height, width: barWidth, height: height)
+            let color = chartColors[index % chartColors.count] // Usar el color del departamento
+            color.setFill()
+            UIBezierPath(rect: barRect).fill()
+            
+            // Legend
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            color.setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (entry.key as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+            
+            // Performance value
+            ("\(Int(avgPerformance))%" as NSString).draw(
+                at: CGPoint(x: x, y: point.y - height - 10),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
+        
+        // Draw title below chart
+        (title as NSString).draw(
+            at: CGPoint(x: point.x + (size.width / 2) - 40, y: point.y + 15),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+        )
+        
+        // Draw legend below title
+        departmentData.enumerated().forEach { index, entry in
+            let legendX = point.x + (CGFloat(index) * 80)
+            let legendY = point.y + 35
+            
+            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
+            chartColors[index % chartColors.count].setFill()
+            UIBezierPath(rect: legendRect).fill()
+            
+            (entry.key as NSString).draw(
+                at: CGPoint(x: legendX + 12, y: legendY),
+                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
+            )
+        }
     }
     
     private func totalTasks() -> Int {
