@@ -282,15 +282,9 @@ struct AddReportSheet: View {
         }
         
         // Validaciones
-        guard tasksWithoutDelay <= totalTasks else {
+        guard totalTasks >= 0 else {
             showAlert = true
-            alertMessage = "Tasks completed without delay cannot exceed total tasks created."
-            return
-        }
-        
-        guard finishedTasks <= totalTasks else {
-            showAlert = true
-            alertMessage = "Finished tasks cannot exceed total tasks created."
+            alertMessage = "Total tasks cannot be negative."
             return
         }
         
@@ -550,23 +544,10 @@ struct UpdateReportSheet: View {
             return
         }
         
-        // Validaciones
-        guard tasksWithoutDelay <= totalTasks else {
+        // Validaciones básicas
+        guard totalTasks >= 0 else {
             showAlert = true
-            alertMessage = "Tasks completed without delay cannot exceed total tasks created."
-            return
-        }
-        
-        guard finishedTasks <= totalTasks else {
-            showAlert = true
-            alertMessage = "Finished tasks cannot exceed total tasks created."
-            return
-        }
-        
-        // Nueva validación sin haptic feedback
-        guard finishedTasks >= tasksWithoutDelay else {
-            showAlert = true
-            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
+            alertMessage = "Total tasks cannot be negative."
             return
         }
         
