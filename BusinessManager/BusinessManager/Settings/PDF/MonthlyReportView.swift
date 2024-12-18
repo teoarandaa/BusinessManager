@@ -219,6 +219,9 @@ struct MonthlyReportView: View {
     @State private var showShareSheet = false
     @State private var showDatePicker = false
     @State private var selectedPeriod: ReportPeriod = .month
+    @AppStorage("minPerformance") private var minPerformance = 70.0
+    @AppStorage("minVolumeOfWork") private var minVolumeOfWork = 70.0
+    @AppStorage("minTaskCompletion") private var minTaskCompletion = 70.0
     
     private let hapticFeedback = UINotificationFeedbackGenerator()
     
@@ -259,7 +262,7 @@ struct MonthlyReportView: View {
                     }
                 }
                 .onChange(of: selectedPeriod) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
                 
                 HStack {
@@ -291,15 +294,15 @@ struct MonthlyReportView: View {
             switch selectedPeriod {
             case .month:
                 MonthYearPicker(selectedDate: $selectedDate) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
             case .quarter:
                 QuarterYearPicker(selectedDate: $selectedDate) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
             case .year:
                 YearPicker(selectedDate: $selectedDate) {
-                    generatePDFReport()
+                    generateAndSharePDF()
                 }
             }
         }
@@ -309,11 +312,11 @@ struct MonthlyReportView: View {
             }
         }
         .onAppear {
-            generatePDFReport()
+            generateAndSharePDF()
         }
     }
     
-    private func generatePDFReport() {
+    private func generateAndSharePDF() {
         let calendar = Calendar.current
         var startDate: Date
         var endDate: Date
@@ -351,8 +354,11 @@ struct MonthlyReportView: View {
         let pdfGenerator = PDFGenerator(
             date: selectedDate,
             reports: filteredReports,
-            reportTitle: reportTitle,
-            period: selectedPeriod
+            reportTitle: "Monthly Performance Report",
+            period: selectedPeriod,
+            minPerformance: minPerformance,
+            minVolumeOfWork: minVolumeOfWork,
+            minTaskCompletion: minTaskCompletion
         )
         self.pdfData = pdfGenerator.generatePDF()
     }
@@ -375,6 +381,9 @@ class PDFGenerator {
     private let margin: CGFloat = 50
     private let reportTitle: String
     private let period: ReportPeriod
+    private let minPerformance: Double
+    private let minVolumeOfWork: Double
+    private let minTaskCompletion: Double
     
     private let chartColors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple]
     
@@ -382,11 +391,36 @@ class PDFGenerator {
         Dictionary(grouping: reports) { $0.departmentName }
     }
     
-    init(date: Date, reports: [Report], reportTitle: String, period: ReportPeriod) {
+    private lazy var departmentColorMap: [String: UIColor] = {
+        var colorMap: [String: UIColor] = [:]
+        let departments = Array(departmentData.keys).sorted()
+        
+        for (index, department) in departments.enumerated() {
+            colorMap[department] = chartColors[index % chartColors.count]
+        }
+        return colorMap
+    }()
+    
+    private func getColorForDepartment(_ department: String) -> UIColor {
+        return departmentColorMap[department] ?? chartColors[0]
+    }
+    
+    init(
+        date: Date,
+        reports: [Report],
+        reportTitle: String,
+        period: ReportPeriod,
+        minPerformance: Double,
+        minVolumeOfWork: Double,
+        minTaskCompletion: Double
+    ) {
         self.date = date
         self.reports = reports
         self.reportTitle = reportTitle
         self.period = period
+        self.minPerformance = minPerformance
+        self.minVolumeOfWork = minVolumeOfWork
+        self.minTaskCompletion = minTaskCompletion
     }
     
     private func averagePerformance() -> Double {
@@ -616,38 +650,41 @@ class PDFGenerator {
             )
             
             let metrics = [
-                ("Performance", averagePerformance()),
-                ("Volume of Work", averageVolumeOfWork()),
-                ("Task Completion", averageCompletion())
+                ("Performance", averagePerformance(), minPerformance),
+                ("Volume of Work", averageVolumeOfWork(), minVolumeOfWork),
+                ("Task Completion", averageCompletion(), minTaskCompletion)
             ]
             
             let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
             
-            for (index, metric) in metrics.enumerated() {
-                let metricX = margin + (metricWidth + 20) * CGFloat(index)
-                let metricY = metricsY + 30
+            metrics.enumerated().forEach { index, metric in
+                let metricX = margin + (CGFloat(index) * (metricWidth + 20))
+                let metricY = metricsY + 40
                 
-                // Dibujar título de la métrica
+                // Draw metric title
                 (metric.0 as NSString).draw(
                     at: CGPoint(x: metricX, y: metricY),
-                    withAttributes: summaryTextAttributes
-                )
-                
-                // Dibujar valor
-                ("\(String(format: "%.1f", metric.1))%" as NSString).draw(
-                    at: CGPoint(x: metricX, y: metricY + 25),
                     withAttributes: [
-                        .font: UIFont.systemFont(ofSize: 24, weight: .bold),
-                        .foregroundColor: metric.1 >= 70 ? UIColor.systemGreen : UIColor.systemRed
+                        .font: UIFont.boldSystemFont(ofSize: 14)
                     ]
                 )
                 
-                // Dibujar gráfico de barras simple
+                // Draw metric value with color based on threshold
+                let isAboveMinimum = metric.1 >= metric.2
+                ("\(Int(metric.1))%" as NSString).draw(
+                    at: CGPoint(x: metricX, y: metricY + 25),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+                        .foregroundColor: isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed
+                    ]
+                )
+                
+                // Draw progress bar
                 let barHeight: CGFloat = 8
                 let barWidth = metricWidth - 20
                 let barY = metricY + 60
                 
-                // Barra de fondo
+                // Background bar
                 let backgroundBar = UIBezierPath(
                     roundedRect: CGRect(x: metricX, y: barY, width: barWidth, height: barHeight),
                     cornerRadius: 4
@@ -655,13 +692,13 @@ class PDFGenerator {
                 UIColor.systemGray5.setFill()
                 backgroundBar.fill()
                 
-                // Barra de progreso
+                // Progress bar with color based on threshold
                 let progressWidth = barWidth * CGFloat(metric.1 / 100)
                 let progressBar = UIBezierPath(
                     roundedRect: CGRect(x: metricX, y: barY, width: progressWidth, height: barHeight),
                     cornerRadius: 4
                 )
-                (metric.1 >= 70 ? UIColor.systemGreen : UIColor.systemRed).setFill()
+                (isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed).setFill()
                 progressBar.fill()
             }
             
@@ -709,11 +746,8 @@ class PDFGenerator {
         UIColor.gray.setStroke()
         path.stroke()
         
-        // Plot lines for each department
-        let departmentData = Dictionary(grouping: reports) { $0.departmentName }
-        
-        departmentData.enumerated().forEach { index, entry in
-            let sortedReports = entry.value.sorted { $0.date < $1.date }
+        departmentData.forEach { department, reports in
+            let sortedReports = reports.sorted { $0.date < $1.date }
             let path = UIBezierPath()
             let step = size.width / CGFloat(max(sortedReports.count - 1, 1))
             
@@ -728,40 +762,22 @@ class PDFGenerator {
                 }
             }
             
-            chartColors[index % chartColors.count].setStroke()
+            getColorForDepartment(department).setStroke()
             path.lineWidth = 1.5
             path.stroke()
-            
-            // Legend
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            chartColors[index % chartColors.count].setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (entry.key as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
         }
         
-        // Draw title below chart
-        (title as NSString).draw(
-            at: CGPoint(x: point.x + (size.width / 2) - 40, y: point.y + 15),
-            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
-        )
-        
-        // Draw legend below title
-        departmentData.enumerated().forEach { index, entry in
+        // Draw legend
+        let sortedDepartments = Array(departmentData.keys).sorted()
+        sortedDepartments.enumerated().forEach { index, department in
             let legendX = point.x + (CGFloat(index) * 80)
             let legendY = point.y + 35
             
             let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            chartColors[index % chartColors.count].setFill()
+            getColorForDepartment(department).setFill()
             UIBezierPath(rect: legendRect).fill()
             
-            (entry.key as NSString).draw(
+            (department as NSString).draw(
                 at: CGPoint(x: legendX + 12, y: legendY),
                 withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
             )
@@ -778,12 +794,10 @@ class PDFGenerator {
         UIColor.gray.setStroke()
         path.stroke()
         
-        let departmentData = Dictionary(grouping: reports) { $0.departmentName }
-        
-        departmentData.enumerated().forEach { index, entry in
-            let color = chartColors[index % chartColors.count]
+        departmentData.forEach { department, reports in
+            let color = getColorForDepartment(department)
             
-            entry.value.forEach { report in
+            reports.forEach { report in
                 let x = point.x + (CGFloat(report.volumeOfWorkMark) / 100.0 * size.width)
                 let y = point.y - (CGFloat(report.performanceMark) / 100.0 * size.height)
                 
@@ -791,37 +805,19 @@ class PDFGenerator {
                 color.setFill()
                 dotPath.fill()
             }
-            
-            // Legend
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            color.setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (entry.key as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
         }
         
-        // Draw title below chart
-        (title as NSString).draw(
-            at: CGPoint(x: point.x + (size.width / 2) - 40, y: point.y + 15),
-            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
-        )
-        
-        // Draw legend below title
-        departmentData.enumerated().forEach { index, entry in
+        // Draw legend
+        let sortedDepartments = Array(departmentData.keys).sorted()
+        sortedDepartments.enumerated().forEach { index, department in
             let legendX = point.x + (CGFloat(index) * 80)
             let legendY = point.y + 35
             
             let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            chartColors[index % chartColors.count].setFill()
+            getColorForDepartment(department).setFill()
             UIBezierPath(rect: legendRect).fill()
             
-            (entry.key as NSString).draw(
+            (department as NSString).draw(
                 at: CGPoint(x: legendX + 12, y: legendY),
                 withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
             )
@@ -838,18 +834,18 @@ class PDFGenerator {
         UIColor.gray.setStroke()
         path.stroke()
         
-        let departmentData = Dictionary(grouping: reports) { $0.departmentName }
         let barSpacing: CGFloat = 5
+        let sortedDepartments = Array(departmentData.keys).sorted()
         let barWidth = (size.width - (barSpacing * CGFloat(departmentData.count - 1))) / CGFloat(departmentData.count)
         
-        departmentData.enumerated().forEach { index, entry in
-            let avgPerformance = entry.value.map(\.performanceMark).average
+        sortedDepartments.enumerated().forEach { index, department in
+            let reports = departmentData[department] ?? []
+            let avgPerformance = reports.map(\.performanceMark).average
             let x = point.x + (CGFloat(index) * (barWidth + barSpacing))
             let height = CGFloat(avgPerformance) / 100.0 * size.height
             
             let barRect = CGRect(x: x, y: point.y - height, width: barWidth, height: height)
-            let color = chartColors[index % chartColors.count] // Usar el color del departamento
-            color.setFill()
+            getColorForDepartment(department).setFill()
             UIBezierPath(rect: barRect).fill()
             
             // Legend
@@ -857,10 +853,10 @@ class PDFGenerator {
             let legendY = point.y + 35
             
             let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            color.setFill()
+            getColorForDepartment(department).setFill()
             UIBezierPath(rect: legendRect).fill()
             
-            (entry.key as NSString).draw(
+            (department as NSString).draw(
                 at: CGPoint(x: legendX + 12, y: legendY),
                 withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
             )
@@ -868,27 +864,6 @@ class PDFGenerator {
             // Performance value
             ("\(Int(avgPerformance))%" as NSString).draw(
                 at: CGPoint(x: x, y: point.y - height - 10),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
-        }
-        
-        // Draw title below chart
-        (title as NSString).draw(
-            at: CGPoint(x: point.x + (size.width / 2) - 40, y: point.y + 15),
-            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
-        )
-        
-        // Draw legend below title
-        departmentData.enumerated().forEach { index, entry in
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            chartColors[index % chartColors.count].setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (entry.key as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
                 withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
             )
         }
