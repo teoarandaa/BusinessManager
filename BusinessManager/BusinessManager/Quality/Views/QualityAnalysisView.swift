@@ -109,16 +109,15 @@ struct QualityAnalysisView: View {
             }
             .navigationTitle("Quality Analysis")
             .toolbar {
-                // Leading Items (Left side)
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button {
-                        showingInfo.toggle()
+                        showingInfo = true
                     } label: {
                         Label("Information", systemImage: "info.circle")
                     }
                     
                     Button {
-                        showingSettings.toggle()
+                        showingSettings = true
                     } label: {
                         Label("Settings", systemImage: "gear")
                     }
@@ -164,6 +163,13 @@ struct QualityAnalysisView: View {
                         }
                     }
                 }
+            }
+            .sheet(isPresented: $showingInfo) {
+                QualityInfoSheetView()
+                    .presentationDetents([.height(700)])
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
             .sheet(isPresented: $showingThresholds) {
                 ThresholdsSettingsView(

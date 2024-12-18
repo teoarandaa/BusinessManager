@@ -383,6 +383,40 @@ class PDFGenerator {
         self.period = period
     }
     
+    private func averagePerformance() -> Double {
+        guard !reports.isEmpty else { return 0 }
+        return reports.map(\.performanceMark).average
+    }
+    
+    private func averageVolumeOfWork() -> Double {
+        guard !reports.isEmpty else { return 0 }
+        return reports.map(\.volumeOfWorkMark).average
+    }
+    
+    private func averageCompletion() -> Double {
+        let completed = Double(reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay })
+        let total = Double(reports.reduce(0) { $0 + $1.totalTasksCreated })
+        guard total > 0 else { return 0 }
+        return (completed / total) * 100
+    }
+    
+    private func calculateTrend(values: [Double]) -> String {
+        guard values.count >= 2 else { return "Stable" }
+        
+        let firstHalf = Array(values.prefix(values.count / 2))
+        let secondHalf = Array(values.suffix(values.count / 2))
+        
+        let firstAvg = firstHalf.reduce(0.0, +) / Double(firstHalf.count)
+        let secondAvg = secondHalf.reduce(0.0, +) / Double(secondHalf.count)
+        
+        if secondAvg > firstAvg * 1.05 {
+            return "Improving"
+        } else if secondAvg < firstAvg * 0.95 {
+            return "Declining"
+        }
+        return "Stable"
+    }
+    
     func generatePDF() -> Data {
         let pdfMetaData = [
             kCGPDFContextCreator: "Business Manager",
@@ -567,25 +601,66 @@ class PDFGenerator {
                     )
                 }
             }
+            
+            // Draw quality metrics
+            let metricsY = reportsY + 200
+            ("Quality Metrics" as NSString).draw(
+                at: CGPoint(x: margin, y: metricsY),
+                withAttributes: summaryTitleAttributes
+            )
+            
+            let metrics = [
+                ("Performance", averagePerformance()),
+                ("Volume of Work", averageVolumeOfWork()),
+                ("Task Completion", averageCompletion())
+            ]
+            
+            let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
+            
+            for (index, metric) in metrics.enumerated() {
+                let metricX = margin + (metricWidth + 20) * CGFloat(index)
+                let metricY = metricsY + 30
+                
+                // Dibujar título de la métrica
+                (metric.0 as NSString).draw(
+                    at: CGPoint(x: metricX, y: metricY),
+                    withAttributes: summaryTextAttributes
+                )
+                
+                // Dibujar valor
+                ("\(String(format: "%.1f", metric.1))%" as NSString).draw(
+                    at: CGPoint(x: metricX, y: metricY + 25),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+                        .foregroundColor: metric.1 >= 70 ? UIColor.systemGreen : UIColor.systemRed
+                    ]
+                )
+                
+                // Dibujar gráfico de barras simple
+                let barHeight: CGFloat = 8
+                let barWidth = metricWidth - 20
+                let barY = metricY + 60
+                
+                // Barra de fondo
+                let backgroundBar = UIBezierPath(
+                    roundedRect: CGRect(x: metricX, y: barY, width: barWidth, height: barHeight),
+                    cornerRadius: 4
+                )
+                UIColor.systemGray5.setFill()
+                backgroundBar.fill()
+                
+                // Barra de progreso
+                let progressWidth = barWidth * CGFloat(metric.1 / 100)
+                let progressBar = UIBezierPath(
+                    roundedRect: CGRect(x: metricX, y: barY, width: progressWidth, height: barHeight),
+                    cornerRadius: 4
+                )
+                (metric.1 >= 70 ? UIColor.systemGreen : UIColor.systemRed).setFill()
+                progressBar.fill()
+            }
         }
         
         return data
-    }
-    
-    private func averagePerformance() -> Double {
-        guard !reports.isEmpty else { return 0 }
-        let total = reports.reduce(into: 0.0) { result, report in
-            result += Double(report.performanceMark)
-        }
-        return total / Double(reports.count)
-    }
-    
-    private func averageVolumeOfWork() -> Double {
-        guard !reports.isEmpty else { return 0 }
-        let total = reports.reduce(into: 0.0) { result, report in
-            result += Double(report.volumeOfWorkMark)
-        }
-        return total / Double(reports.count)
     }
     
     private func totalTasks() -> Int {
