@@ -214,7 +214,6 @@ struct YearPicker: View {
 struct MonthlyReportView: View {
     @Environment(\.modelContext) private var context
     @Query private var reports: [Report]
-    @Query private var goals: [Goal]
     @State private var selectedDate = Date()
     @State private var pdfData: Data?
     @State private var showShareSheet = false
@@ -349,16 +348,9 @@ struct MonthlyReportView: View {
             return isAfterStart && isBeforeEnd
         }
         
-        let filteredGoals = goals.filter { goal in
-            let isAfterStart = calendar.compare(goal.deadline, to: startDate, toGranularity: .day) != .orderedAscending
-            let isBeforeEnd = calendar.compare(goal.deadline, to: endDate, toGranularity: .day) != .orderedDescending
-            return isAfterStart && isBeforeEnd
-        }
-        
         let pdfGenerator = PDFGenerator(
             date: selectedDate,
             reports: filteredReports,
-            goals: filteredGoals,
             reportTitle: reportTitle,
             period: selectedPeriod
         )
@@ -378,36 +370,17 @@ extension Calendar {
 class PDFGenerator {
     private let date: Date
     private let reports: [Report]
-    private let goals: [Goal]
     private let pageWidth: CGFloat = 612
     private let pageHeight: CGFloat = 792
     private let margin: CGFloat = 50
     private let reportTitle: String
     private let period: ReportPeriod
     
-    init(date: Date, reports: [Report], goals: [Goal], reportTitle: String, period: ReportPeriod) {
+    init(date: Date, reports: [Report], reportTitle: String, period: ReportPeriod) {
         self.date = date
         self.reports = reports
-        self.goals = goals
         self.reportTitle = reportTitle
         self.period = period
-    }
-    
-    private var generatedTitle: String {
-        switch period {
-        case .month:
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMMM yyyy"
-            return "Monthly Report - \(formatter.string(from: date))"
-        case .quarter:
-            let month = Calendar.current.component(.month, from: date)
-            let quarter = (month - 1) / 3 + 1
-            let year = Calendar.current.component(.year, from: date)
-            return "Quarterly Report - Q\(quarter) \(year)"
-        case .year:
-            let year = Calendar.current.component(.year, from: date)
-            return "Yearly Report - \(year)"
-        }
     }
     
     func generatePDF() -> Data {
@@ -429,7 +402,7 @@ class PDFGenerator {
             ]
             
             // Usar el título generado dinámicamente
-            (generatedTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
+            (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw logo
             if let logo = UIImage(named: "pdf_logo") {
@@ -594,98 +567,6 @@ class PDFGenerator {
                     )
                 }
             }
-            
-            // Goals section
-            let goalsY = reportsY + 250
-            ("Goals Summary" as NSString).draw(at: CGPoint(x: margin, y: goalsY), withAttributes: summaryTitleAttributes)
-            
-            // Draw goals details
-            let goalDetails = """
-            Active Goals: \(goals.filter { $0.status == .inProgress }.count)
-            Completed Goals: \(goals.filter { $0.status == .completed }.count)
-            Failed Goals: \(goals.filter { $0.status == .failed }.count)
-            """
-            
-            (goalDetails as NSString).draw(at: CGPoint(x: margin, y: goalsY + 20), withAttributes: summaryTextAttributes)
-            
-            // Añadir espacio después del resumen
-            let chartsY = goalsY + 80
-            
-            // Títulos de los pie charts alineados con el margen
-            ("Completed Goals by Department" as NSString).draw(
-                at: CGPoint(x: margin, y: chartsY),
-                withAttributes: summaryTitleAttributes
-            )
-            ("Failed Goals by Department" as NSString).draw(
-                at: CGPoint(x: pageWidth/2 + margin, y: chartsY),
-                withAttributes: summaryTitleAttributes
-            )
-            
-            // Configuración común para los pie charts
-            let pieCenterY = chartsY + 100
-            let radius: CGFloat = 55
-            let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple, .systemTeal]
-            
-            // Función helper para dibujar pie chart
-            func drawPieChart(centerX: CGFloat, goals: [Goal], status: Goal.GoalStatus) {
-                let departmentGoals = Dictionary(grouping: goals.filter { $0.status == status }, by: { $0.department })
-                let total = CGFloat(goals.filter { $0.status == status }.count)
-                
-                if total == 0 {
-                    let path = UIBezierPath(arcCenter: CGPoint(x: centerX, y: pieCenterY),
-                                           radius: radius,
-                                           startAngle: 0,
-                                           endAngle: 2 * .pi,
-                                           clockwise: true)
-                    UIColor.gray.withAlphaComponent(0.2).setStroke()
-                    path.stroke()
-                } else {
-                    var startAngle: CGFloat = 0
-                    
-                    // Ordenar los departamentos alfabéticamente
-                    let sortedDepartments = departmentGoals.sorted { $0.key < $1.key }
-                    
-                    sortedDepartments.enumerated().forEach { index, entry in
-                        let percentage = CGFloat(entry.value.count) / total
-                        let endAngle = startAngle + (percentage * 2 * .pi)
-                        
-                        let path = UIBezierPath()
-                        path.move(to: CGPoint(x: centerX, y: pieCenterY))
-                        path.addArc(withCenter: CGPoint(x: centerX, y: pieCenterY),
-                                  radius: radius,
-                                  startAngle: startAngle,
-                                  endAngle: endAngle,
-                                  clockwise: true)
-                        path.close()
-                        
-                        colors[index % colors.count].setFill()
-                        path.fill()
-                        
-                        // Leyenda
-                        let legendX = centerX - radius
-                        let legendY = pieCenterY + radius + 10 + (CGFloat(index) * 12)
-                        
-                        colors[index % colors.count].setFill()
-                        let legendRect = CGRect(x: legendX, y: legendY, width: 6, height: 6)
-                        UIBezierPath(rect: legendRect).fill()
-                        
-                        let legendText = "\(entry.key): \(entry.value.count)"
-                        let legendAttributes: [NSAttributedString.Key: Any] = [
-                            .font: UIFont.systemFont(ofSize: 7)
-                        ]
-                        (legendText as NSString).draw(
-                            at: CGPoint(x: legendX + 10, y: legendY),
-                            withAttributes: legendAttributes
-                        )
-                        
-                        startAngle = endAngle
-                    }
-                }
-            }
-            
-            // Dibujar los dos pie charts alineados con el margen
-            drawPieChart(centerX: margin + radius + 40, goals: goals, status: Goal.GoalStatus.completed)
-            drawPieChart(centerX: pageWidth/2 + margin + radius + 40, goals: goals, status: Goal.GoalStatus.failed)
         }
         
         return data

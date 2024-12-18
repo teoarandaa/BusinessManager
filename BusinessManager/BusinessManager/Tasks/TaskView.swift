@@ -214,6 +214,7 @@ struct TasksCell: View {
                 )
                 .bold()
         }
+        .padding()
         .contentShape(Rectangle())
     }
 }

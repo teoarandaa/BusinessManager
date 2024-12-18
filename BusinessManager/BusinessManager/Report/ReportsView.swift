@@ -8,7 +8,6 @@ struct ReportsView: View {
     @Environment(\.modelContext) var context
 
     @Query(sort: \Report.date, animation: .default) private var reports: [Report]
-    @Query(sort: \Goal.deadline, animation: .default) private var goals: [Goal]
     
     @State private var reportToEdit: Report?
     @State private var isShowingMonthlySummary = false
@@ -390,6 +389,7 @@ struct DepartmentCell: View {
             
             Spacer()
         }
+        .padding()
         .contentShape(Rectangle())
         .padding(.vertical, 4)
         .contextMenu {

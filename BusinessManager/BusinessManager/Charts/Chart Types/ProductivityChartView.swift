@@ -56,9 +56,8 @@ struct ProductivityChartView: View {
                             .padding()
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal)
                 }
             }
