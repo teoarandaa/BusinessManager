@@ -39,7 +39,7 @@ struct QualityAnalysisView: View {
             Group {
                 if reports.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Quality Data", systemImage: "chart.bar.doc.horizontal")
+                        Label("No Quality Data", systemImage: "checkmark.seal")
                             .font(.title2)
                     }, description: {
                         Text("Start adding reports to see quality analysis.")
@@ -257,6 +257,10 @@ struct QualityAnalysisView: View {
             return date >= yearStart && date < yearEnd
         }
     }
+}
+
+#Preview {
+    QualityAnalysisView(selectedTab: .constant(0))
 }
 
 // MARK: - ThresholdsSettingsView

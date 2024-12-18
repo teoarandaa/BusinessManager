@@ -37,7 +37,7 @@ struct ReportsInfoSheetView: View {
                             .bold()
                             .padding()
                         
-                        Text("To create accurate reports, we need the current date, department name, performance, volume of work, and tasks completed.\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
+                        Text("To create accurate reports, we need the current date, department name, tasks created, tasks completed on-time, and tasks completed (tasks completed on-time is included in this group).\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
                             .padding()
                             .multilineTextAlignment(.center)
                         

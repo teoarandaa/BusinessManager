@@ -82,7 +82,6 @@ struct PerformanceChartView: View {
                     .padding(.horizontal)
                 }
             }
-            .padding()
         }
     }
 }

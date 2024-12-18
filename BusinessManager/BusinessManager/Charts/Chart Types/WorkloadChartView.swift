@@ -32,29 +32,30 @@ struct WorkloadChartView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         
-                        Chart(groupedReports[department]!) { data in
-                            PointMark(
-                                x: .value("Volume of Work", data.volumeOfWorkMark),
-                                y: .value("Performance", data.performanceMark)
-                            )
-                            .foregroundStyle(Color.accentColor)
-                            .symbol(by: .value("Department", data.departmentName))
+                        if let departmentData = groupedReports[department] {
+                            Chart(departmentData) { data in
+                                PointMark(
+                                    x: .value("Volume of Work", data.volumeOfWorkMark),
+                                    y: .value("Performance", data.performanceMark)
+                                )
+                                .foregroundStyle(Color.accentColor)
+                                .symbol(by: .value("Department", data.departmentName))
+                            }
+                            .chartXAxis {
+                                AxisMarks()
+                            }
+                            .chartYAxis {
+                                AxisMarks()
+                            }
+                            .aspectRatio(1.0, contentMode: .fit)
+                            .padding()
                         }
-                        .chartXAxis {
-                            AxisMarks()
-                        }
-                        .chartYAxis {
-                            AxisMarks()
-                        }
-                        .aspectRatio(1.0, contentMode: .fit)
-                        .padding()
                     }
                     .background(Color(.secondarySystemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal)
                 }
             }
-            .padding()
         }
     }
 }

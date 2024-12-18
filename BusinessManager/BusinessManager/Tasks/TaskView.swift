@@ -167,7 +167,7 @@ struct TaskView: View {
             .overlay {
                 if tasks.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Tasks", systemImage: "list.bullet.rectangle.portrait")
+                        Label("No Tasks", systemImage: "list.bullet.clipboard")
                     }, description: {
                         Text("Start adding tasks to see your list.")
                     }, actions: {
