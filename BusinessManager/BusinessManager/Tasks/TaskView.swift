@@ -189,10 +189,49 @@ struct TaskView: View {
 struct TasksCell: View {
     let task: Task
     
+    var dateColor: Color {
+        let calendar = Calendar.current
+        let today = Date()
+        let daysUntilDue = calendar.dateComponents([.day], from: today, to: task.date).day ?? 0
+        
+        if task.isCompleted {
+            return .secondary
+        } else if task.date < today {
+            return .red
+        } else if daysUntilDue <= 1 {
+            return .red
+        } else if daysUntilDue <= 3 {
+            return .orange
+        } else if daysUntilDue <= 7 {
+            return .yellow
+        } else {
+            return .primary
+        }
+    }
+    
+    var daysOverdue: Int? {
+        let calendar = Calendar.current
+        let today = Date()
+        if task.date < today && !task.isCompleted {
+            let days = calendar.dateComponents([.day], from: task.date, to: today).day ?? 0
+            return days
+        }
+        return nil
+    }
+    
     var body: some View {
         HStack {
-            Text(task.date, format: .dateTime.year().month(.abbreviated).day())
-                .frame(width: 100, alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(task.date, format: .dateTime.year().month(.abbreviated).day())
+                    .foregroundStyle(dateColor)
+                if let overdue = daysOverdue {
+                    Text("\(overdue) days overdue")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+            .frame(width: 100, alignment: .leading)
+            
             Spacer()
             Text(task.title)
                 .bold()
