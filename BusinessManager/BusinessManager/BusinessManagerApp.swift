@@ -4,7 +4,7 @@ import SwiftData
 @main
 struct BusinessManagerApp: App {
     let container: ModelContainer
-    @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     
     init() {
         do {
@@ -24,8 +24,19 @@ struct BusinessManagerApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .preferredColorScheme(isDarkMode ? .dark : .light)
+                .preferredColorScheme(colorSchemeValue)
         }
         .modelContainer(container)
+    }
+    
+    private var colorSchemeValue: ColorScheme? {
+        switch colorScheme {
+        case 1:
+            return .light
+        case 2:
+            return .dark
+        default:
+            return nil // System default
+        }
     }
 }

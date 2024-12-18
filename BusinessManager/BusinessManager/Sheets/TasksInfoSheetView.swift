@@ -51,6 +51,52 @@ struct TasksInfoSheetView: View {
                 .tabItem {
                     Text("Managing Tasks")
                 }
+                
+                // Third Page
+                ScrollView {
+                    VStack {
+                        Text("Task Controls")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("The plus button creates new tasks. Use the calendar to set due dates and the priority selector to mark task urgency. The department picker assigns tasks to specific teams.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("tasks3")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Controls")
+                }
+                
+                // Fourth Page
+                ScrollView {
+                    VStack {
+                        Text("Task Actions")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("Mark tasks as complete using the checkmark button. The edit button modifies task details, while the delete button removes tasks. Use filters to sort tasks by status, priority, or department.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("tasks4")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Actions")
+                }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {

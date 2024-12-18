@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     @AppStorage("isPushEnabled") private var isPushEnabled = false
     @Environment(\.dismiss) private var dismiss
     
@@ -23,15 +23,15 @@ struct SettingsView: View {
                 }
                 // MARK: - Appearance
                 Section("Appearance") {
-                    Toggle(isOn: $isDarkMode) {
-                        Label {
-                            Text(isDarkMode ? "Dark mode" : "Light mode")
-                        } icon: {
-                            Image(systemName: isDarkMode ? "lightbulb.slash" : "lightbulb")
-                                .symbolEffect(.bounce, value: isDarkMode)
-                                .contentTransition(.symbolEffect(.replace))
-                        }
+                    Picker("Theme", selection: $colorScheme) {
+                        Label("System", systemImage: "iphone")
+                            .tag(0)
+                        Label("Light", systemImage: "sun.max")
+                            .tag(1)
+                        Label("Dark", systemImage: "moon")
+                            .tag(2)
                     }
+                    .pickerStyle(.navigationLink)
                 }
                 // MARK: - Plans
                 Section("Pricing") {
@@ -72,7 +72,18 @@ struct SettingsView: View {
                 }
             }
         }
-        .preferredColorScheme(isDarkMode ? .dark : .light)
+        .preferredColorScheme(colorSchemeValue)
+    }
+    
+    private var colorSchemeValue: ColorScheme? {
+        switch colorScheme {
+        case 1:
+            return .light
+        case 2:
+            return .dark
+        default:
+            return nil // System default
+        }
     }
     
     func sendEmail(to address: String) {

@@ -199,7 +199,7 @@ struct TasksCell: View {
                 .foregroundStyle(task.isCompleted ? .secondary : .primary)
             Spacer()
             Text(task.priority)
-                .padding(8)
+                .padding(4)
                 .foregroundStyle(
                     task.priority == "P1" ? Color.red :
                     task.priority == "P2" ? Color.yellow :
@@ -210,11 +210,11 @@ struct TasksCell: View {
                     task.priority == "P2" ? Color.yellow :
                     Color.green)
                     .opacity(0.2)
-                    .cornerRadius(8)
+                    .cornerRadius(6)
                 )
                 .bold()
         }
-        .padding()
+        .padding(.vertical, 4)
         .contentShape(Rectangle())
     }
 }

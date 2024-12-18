@@ -18,7 +18,7 @@ struct QualityInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("quality1") // Necesitarás añadir esta imagen
+                        Image("quality1")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
@@ -32,16 +32,16 @@ struct QualityInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
-                        Text("Understanding Metrics")
+                        Text("How to create Metrics")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Performance shows the percentage of tasks completed on time. Volume of Work indicates the ratio of finished tasks to total tasks. Task Completion Rate measures overall efficiency by comparing completed tasks to created tasks. Trends help identify patterns and areas for improvement.")
+                        Text("To create quality metrics, start by tracking task completion times and setting deadlines. Record the number of tasks assigned and completed. Calculate performance based on timely completions, volume of work from task ratios, and overall completion rates. Monitor these metrics regularly to identify trends and areas for improvement.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("quality2") // Necesitarás añadir esta imagen
+                        Image("quality2")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
@@ -50,6 +50,52 @@ struct QualityInfoSheetView: View {
                 }
                 .tabItem {
                     Text("Metrics")
+                }
+                
+                // Third Page
+                ScrollView {
+                    VStack {
+                        Text("Quality Controls")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("Use the plus button to add new quality insights. The date picker helps track metrics over time, while the department selector ensures you're analyzing the right team. Set minimum thresholds for performance, volume, and completion rates to maintain quality standards.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("quality3")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Controls")
+                }
+                
+                // Fourth Page
+                ScrollView {
+                    VStack {
+                        Text("Quality Actions")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("The refresh button updates metrics with the latest data. Use filters to focus on specific quality aspects or departments. The share button exports quality reports, while the analysis button provides detailed insights into performance trends.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("quality4")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Actions")
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
@@ -63,3 +109,7 @@ struct QualityInfoSheetView: View {
         }
     }
 } 
+
+#Preview {
+    QualityInfoSheetView()
+}

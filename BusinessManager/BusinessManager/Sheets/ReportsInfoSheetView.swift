@@ -51,6 +51,52 @@ struct ReportsInfoSheetView: View {
                 .tabItem {
                     Text("Creating Reports")
                 }
+                
+                // Third Page
+                ScrollView {
+                    VStack {
+                        Text("Report Controls")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("The plus button in the toolbar creates new reports. Use the calendar to select dates and the department picker to choose the relevant team. The save button stores your report data securely.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("reports3")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Controls")
+                }
+                
+                // Fourth Page
+                ScrollView {
+                    VStack {
+                        Text("Report Actions")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("Use the edit button to modify existing reports, the share button to export reports as PDFs, and the delete button to remove outdated reports. The filter button helps organize reports by department or date.")
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("reports4")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("Actions")
+                }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {

@@ -111,15 +111,14 @@ struct QualityAnalysisView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button {
-                        showingInfo = true
-                    } label: {
-                        Label("Information", systemImage: "info.circle")
-                    }
-                    
-                    Button {
                         showingSettings = true
                     } label: {
                         Label("Settings", systemImage: "gear")
+                    }
+                    Button {
+                        showingInfo = true
+                    } label: {
+                        Label("Information", systemImage: "info.circle")
                     }
                 }
                 
