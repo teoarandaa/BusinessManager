@@ -208,6 +208,10 @@ struct FilterSheet: View {
         filters = .default
         initializeFields()
         useDateFilter = false
+        
+        // Añadir feedback háptico
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
     
     private func applyFilters() {
@@ -231,6 +235,10 @@ struct FilterSheet: View {
             min: Int(minTasks) ?? 0,
             max: Int(maxTasks) ?? 1000
         )
+        
+        // Añadir feedback háptico
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
 }
 
