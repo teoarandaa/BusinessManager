@@ -5,7 +5,6 @@ struct SettingsView: View {
     @AppStorage("isPushEnabled") private var isPushEnabled = false
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var systemColorScheme
-    @State private var forceUpdate = false
     
     private var effectiveColorScheme: ColorScheme {
         switch colorScheme {
@@ -52,9 +51,6 @@ struct SettingsView: View {
                             Image(systemName: "paintbrush")
                         }
                     }
-                    .onChange(of: colorScheme) { oldValue, newValue in
-                        forceUpdate.toggle()
-                    }
                 }
                 // MARK: - Plans
                 Section("Pricing") {
@@ -95,8 +91,7 @@ struct SettingsView: View {
                 }
             }
         }
-        .environment(\.colorScheme, effectiveColorScheme)
-        .id(forceUpdate)
+        .preferredColorScheme(colorSchemeValue)
     }
     
     private var colorSchemeValue: ColorScheme? {
@@ -124,24 +119,51 @@ struct SettingsView: View {
 struct ThemePickerView: View {
     @Binding var selection: Int
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         List {
-            Label("System", systemImage: "iphone")
-                .onTapGesture { 
-                    selection = 0
-                    dismiss()
+            Button {
+                selection = 0
+                dismiss()
+            } label: {
+                Label {
+                    Text("System")
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
+                } icon: {
+                    Image(systemName: "iphone")
+                        .foregroundStyle(.accent)
                 }
-            Label("Light", systemImage: "sun.max")
-                .onTapGesture { 
-                    selection = 1
-                    dismiss()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            Button {
+                selection = 1
+                dismiss()
+            } label: {
+                Label {
+                    Text("Light")
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
+                } icon: {
+                    Image(systemName: "sun.max")
+                        .foregroundStyle(.accent)
                 }
-            Label("Dark", systemImage: "moon")
-                .onTapGesture { 
-                    selection = 2
-                    dismiss()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            Button {
+                selection = 2
+                dismiss()
+            } label: {
+                Label {
+                    Text("Dark")
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
+                } icon: {
+                    Image(systemName: "moon")
+                        .foregroundStyle(.accent)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
         .navigationTitle("Theme")
     }
