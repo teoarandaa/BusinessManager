@@ -9,7 +9,7 @@ struct QualityAnalysisFilterMenu: View {
         HStack {
             Menu {
                 // Time Frame Picker
-                Picker("Time Frame", selection: $selectedTimeFrame) {
+                Picker("time_frame".localized(), selection: $selectedTimeFrame) {
                     ForEach(TimeFrame.allCases, id: \.self) { timeFrame in
                         Label(timeFrame.rawValue, systemImage: timeFrame.systemImage)
                             .tag(timeFrame)
@@ -19,8 +19,8 @@ struct QualityAnalysisFilterMenu: View {
                 Divider()
                 
                 // Department Picker
-                Menu("Department") {
-                    Button("All Departments") {
+                Menu("department".localized()) {
+                    Button("all_departments".localized()) {
                         selectedDepartment = nil
                     }
                     

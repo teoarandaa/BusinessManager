@@ -21,9 +21,9 @@ struct QualityMetricCard: View {
     
     private var trendText: String {
         switch metric.trend {
-        case .improving: return "Improving"
-        case .stable: return "Stable"
-        case .declining: return "Declining"
+        case .improving: return "improving".localized()
+        case .stable: return "stable".localized()
+        case .declining: return "declining".localized()
         }
     }
     
@@ -59,7 +59,7 @@ struct QualityMetricCard: View {
             .tint(progressColor)
             
             HStack {
-                Text("Target: \(Int(metric.target))%")
+                Text(String(format: "target".localized(), Int(metric.target)))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()

@@ -37,11 +37,11 @@ struct ProductivityChartView: View {
                             Chart {
                                 ForEach(departmentData) { data in
                                     LineMark(
-                                        x: .value("Date", data.date),
-                                        y: .value("Performance", data.performanceMark)
+                                        x: .value("date".localized(), data.date),
+                                        y: .value("performance".localized(), data.performanceMark)
                                     )
                                     .foregroundStyle(Color.accentColor)
-                                    .symbol(by: .value("Department", data.departmentName))
+                                    .symbol(by: .value("department".localized(), data.departmentName))
                                 }
                             }
                             .chartXAxis {

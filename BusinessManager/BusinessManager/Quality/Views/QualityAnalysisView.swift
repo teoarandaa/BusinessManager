@@ -39,15 +39,13 @@ struct QualityAnalysisView: View {
             Group {
                 if reports.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Quality Data", systemImage: "checkmark.seal")
+                        Label("no_quality_data".localized(), systemImage: "checkmark.seal")
                             .font(.title2)
                     }, description: {
-                        Text("Start adding reports to see quality analysis.")
+                        Text("start_adding_reports_quality".localized())
                             .foregroundStyle(.secondary)
                     }, actions: {
-                        Button("Go to Reports") {
-                            // Asumiendo que Reports está en el tab 0
-                            // Necesitarás añadir esta binding property
+                        Button("reports".localized()) {
                             selectedTab = 0
                         }
                     })
@@ -57,7 +55,7 @@ struct QualityAnalysisView: View {
                         VStack(spacing: 24) {
                             // Métricas
                             VStack(spacing: 16) {
-                                Text("Key Metrics")
+                                Text("key_metrics".localized())
                                     .font(.title2)
                                     .bold()
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,13 +63,13 @@ struct QualityAnalysisView: View {
                                 Grid(horizontalSpacing: 16, verticalSpacing: 16) {
                                     GridRow {
                                         MetricView(
-                                            title: "Performance",
+                                            title: "performance".localized(),
                                             value: averagePerformance,
                                             trend: performanceTrend,
                                             threshold: minPerformance
                                         )
                                         MetricView(
-                                            title: "Volume",
+                                            title: "volume".localized(),
                                             value: averageVolume,
                                             trend: volumeTrend,
                                             threshold: minVolumeOfWork
@@ -80,7 +78,7 @@ struct QualityAnalysisView: View {
                                     
                                     GridRow {
                                         MetricView(
-                                            title: "Task Completion",
+                                            title: "task_completion".localized(),
                                             value: averageCompletion,
                                             trend: completionTrend,
                                             threshold: minTaskCompletion
@@ -93,7 +91,7 @@ struct QualityAnalysisView: View {
                             
                             // Analytics
                             VStack(spacing: 16) {
-                                Text("Analytics")
+                                Text("analytics".localized())
                                     .font(.title2)
                                     .bold()
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -107,18 +105,18 @@ struct QualityAnalysisView: View {
                     }
                 }
             }
-            .navigationTitle("Quality Analysis")
+            .navigationTitle("quality_analysis".localized())
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button {
                         showingSettings = true
                     } label: {
-                        Label("Settings", systemImage: "gear")
+                        Label("settings".localized(), systemImage: "gear")
                     }
                     Button {
                         showingInfo = true
                     } label: {
-                        Label("Information", systemImage: "info.circle")
+                        Label("information".localized(), systemImage: "info.circle")
                     }
                 }
                 
@@ -127,7 +125,7 @@ struct QualityAnalysisView: View {
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Menu {
                             // Time Frame Picker
-                            Picker("Time Frame", selection: $selectedTimeFrame) {
+                            Picker("time_frame".localized(), selection: $selectedTimeFrame) {
                                 ForEach(TimeFrame.allCases, id: \.self) { timeFrame in
                                     Label(timeFrame.rawValue, systemImage: timeFrame.systemImage)
                                         .tag(timeFrame)
@@ -137,8 +135,8 @@ struct QualityAnalysisView: View {
                             Divider()
                             
                             // Department Picker
-                            Menu("Department") {
-                                Button("All Departments") {
+                            Menu("department".localized()) {
+                                Button("all_departments".localized()) {
                                     selectedDepartment = nil
                                 }
                                 
@@ -152,13 +150,13 @@ struct QualityAnalysisView: View {
                                 }
                             }
                         } label: {
-                            Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                            Label("filter".localized(), systemImage: "line.3.horizontal.decrease.circle")
                         }
                         
                         Button {
                             showingThresholds.toggle()
                         } label: {
-                            Label("Thresholds", systemImage: "slider.horizontal.3")
+                            Label("thresholds".localized(), systemImage: "slider.horizontal.3")
                         }
                     }
                 }
@@ -278,28 +276,28 @@ private struct ThresholdsSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Minimum Thresholds") {
+                Section("minimum_thresholds".localized()) {
                     VStack(alignment: .leading) {
-                        Text("Performance: \(Int(minPerformance))%")
+                        Text(String(format: "performance_value".localized(), Int(minPerformance)))
                         Slider(value: $minPerformance, in: 0...100, step: 5)
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Task Completion: \(Int(minTaskCompletion))%")
+                        Text(String(format: "task_completion_value".localized(), Int(minTaskCompletion)))
                         Slider(value: $minTaskCompletion, in: 0...100, step: 5)
                     }
                     
                     VStack(alignment: .leading) {
-                        Text("Volume of Work: \(Int(minVolumeOfWork))%")
+                        Text(String(format: "volume_work_value".localized(), Int(minVolumeOfWork)))
                         Slider(value: $minVolumeOfWork, in: 0...100, step: 5)
                     }
                 }
             }
-            .navigationTitle("Thresholds Settings")
+            .navigationTitle("thresholds_settings".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
@@ -334,7 +332,7 @@ private struct MetricView: View {
                 .font(.caption)
                 .foregroundStyle(trendColor)
             
-            Text("Min: \(Int(threshold))%")
+            Text(String(format: "min_value".localized(), Int(threshold)))
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }
@@ -362,9 +360,9 @@ private struct MetricView: View {
     
     private var trendText: String {
         switch trend {
-        case .improving: return "Improving"
-        case .stable: return "Stable"
-        case .declining: return "Declining"
+        case .improving: return "improving".localized()
+        case .stable: return "stable".localized()
+        case .declining: return "declining".localized()
         }
     }
 } 

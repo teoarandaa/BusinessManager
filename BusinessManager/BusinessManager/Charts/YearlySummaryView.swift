@@ -11,7 +11,7 @@ struct YearlySummaryView: View {
         NavigationStack {
             VStack {
                 if isLoading {
-                    ProgressView("Loading Yearly Summary...")
+                    ProgressView("loading_yearly_summary".localized())
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
                 } else {
@@ -28,15 +28,15 @@ struct YearlySummaryView: View {
                                     .padding(.bottom, 10)
                                 
                                 HStack {
-                                    CircularProgressBar(percentage: averagePerformance, title: "Efficiency")
+                                    CircularProgressBar(percentage: averagePerformance, title: "efficiency".localized())
                                     Spacer()
-                                    CircularProgressBar(percentage: averageVolumeOfWork, title: "Workload")
+                                    CircularProgressBar(percentage: averageVolumeOfWork, title: "workload".localized())
                                     Spacer()
                                     VStack {
                                         Text("\(summary.finishedTasks)")
                                             .font(.title)
                                             .bold()
-                                        Text("Finished Tasks")
+                                        Text("finished_tasks".localized())
                                             .font(.caption2)
                                     }
                                 }
@@ -47,7 +47,7 @@ struct YearlySummaryView: View {
                     }
                 }
             }
-            .navigationTitle("Yearly Summary for \(String(year))")
+            .navigationTitle(String(format: "yearly_summary_for".localized(), String(year)))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 loadYearlySummary()

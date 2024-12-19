@@ -21,7 +21,7 @@ struct YearChartsView: View {
             VStack(spacing: 35) {
                 // Performance Chart
                 VStack(spacing: 20) {
-                    Text("Performance")
+                    Text("performance".localized())
                         .font(.title)
                         .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -32,13 +32,13 @@ struct YearChartsView: View {
                         Circle()
                             .fill(Color.accentColor)
                             .frame(width: 10, height: 10)
-                        Text("Volume of Work")
+                        Text("volume_of_work".localized())
                             .font(.caption)
                         
                         Circle()
                             .fill(Color.blue)
                             .frame(width: 10, height: 10)
-                        Text("Tasks Completed")
+                        Text("tasks_completed".localized())
                             .font(.caption)
                     }
                     
@@ -51,8 +51,8 @@ struct YearChartsView: View {
                                 let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
                                 
                                 BarMark(
-                                    x: .value("Department", department),
-                                    y: .value("Average Volume of Work", averageVolume)
+                                    x: .value("department".localized(), department),
+                                    y: .value("average_volume_work".localized(), averageVolume)
                                 )
                                 .foregroundStyle(Color.accentColor)
                                 .position(by: .value("Category", "Average Volume of Work"))
@@ -61,11 +61,11 @@ struct YearChartsView: View {
                         
                         ForEach(data) { data in
                             BarMark(
-                                x: .value("Department", data.departmentName),
-                                y: .value("Tasks Completed", data.numberOfFinishedTasks)
+                                x: .value("department".localized(), data.departmentName),
+                                y: .value("tasks_completed".localized(), data.numberOfFinishedTasks)
                             )
                             .foregroundStyle(Color.blue)
-                            .position(by: .value("Category", "Tasks Completed"))
+                            .position(by: .value("category".localized(), "tasks_completed".localized()))
                         }
                     }
                     .chartXAxis {
@@ -84,7 +84,7 @@ struct YearChartsView: View {
 
                 // Productivity Chart
                 VStack(spacing: 20) {
-                    Text("Productivity")
+                    Text("productivity".localized())
                         .font(.title)
                         .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -95,17 +95,17 @@ struct YearChartsView: View {
                         
                         ForEach(sortedData) { data in
                             LineMark(
-                                x: .value("Date", data.date),
-                                y: .value("Performance", data.performanceMark)
+                                x: .value("date".localized(), data.date),
+                                y: .value("performance".localized(), data.performanceMark)
                             )
-                            .foregroundStyle(by: .value("Department", data.departmentName))
-                            .symbol(by: .value("Department", data.departmentName))
+                            .foregroundStyle(by: .value("department".localized(), data.departmentName))
+                            .symbol(by: .value("department".localized(), data.departmentName))
                             
                             PointMark(
-                                x: .value("Date", data.date),
-                                y: .value("Performance", data.performanceMark)
+                                x: .value("date".localized(), data.date),
+                                y: .value("performance".localized(), data.performanceMark)
                             )
-                            .foregroundStyle(by: .value("Department", data.departmentName))
+                            .foregroundStyle(by: .value("department".localized(), data.departmentName))
                         }
                     }
                     .chartXAxis {
@@ -126,7 +126,7 @@ struct YearChartsView: View {
 
                 // Workload Chart
                 VStack(spacing: 20) {
-                    Text("Workload")
+                    Text("workload".localized())
                         .font(.title)
                         .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -134,11 +134,11 @@ struct YearChartsView: View {
                     
                     Chart(data) { data in
                         PointMark(
-                            x: .value("Volume of work", data.volumeOfWorkMark),
-                            y: .value("Performance", data.performanceMark)
+                            x: .value("volume_of_work".localized(), data.volumeOfWorkMark),
+                            y: .value("performance".localized(), data.performanceMark)
                         )
                         .foregroundStyle(monthColors[Calendar.current.component(.month, from: data.date)] ?? .black)
-                        .symbol(by: .value("Department", data.departmentName))
+                        .symbol(by: .value("department".localized(), data.departmentName))
                     }
                     .chartXAxis {
                         AxisMarks()
@@ -173,14 +173,14 @@ struct YearChartsView: View {
             }
             .padding()
         }
-        .navigationTitle("Charts for \(String(year))")
+        .navigationTitle(String(format: "charts_for".localized(), String(year)))
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     isShowingYearlySummary = true
                 } label: {
-                    Label("Yearly Summary", systemImage: "calendar.badge.clock")
+                    Label("yearly_summary".localized(), systemImage: "calendar.badge.clock")
                 }
                 .tint(.red)
             }

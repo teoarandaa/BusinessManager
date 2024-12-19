@@ -15,13 +15,13 @@ struct DelayPatternView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Delay Pattern")
+            Text("delay_pattern".localized())
                 .font(.headline)
             
             Chart(chartData, id: \.date) { item in
                 LineMark(
-                    x: .value("Date", item.date),
-                    y: .value("Delays", item.delays)
+                    x: .value("date".localized(), item.date),
+                    y: .value("delayed_tasks".localized(), item.delays)
                 )
                 .foregroundStyle(.red)
                 

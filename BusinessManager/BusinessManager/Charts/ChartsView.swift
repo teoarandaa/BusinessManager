@@ -3,8 +3,8 @@ import SwiftData
 
 struct ChartsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @State private var chart: String = "Productivity"
-    let chartOptions = ["Productivity", "Efficiency", "Performance"]
+    @State private var chart: String = "productivity".localized()
+    let chartOptions = ["productivity".localized(), "efficiency".localized(), "performance".localized()]
     @Environment(\.modelContext) var context
     @State private var isShowingItemSheet2 = false
     @State private var showingBottomSheet: Bool = false
@@ -35,13 +35,13 @@ struct ChartsView: View {
                 if reports.isEmpty {
                     
                     ContentUnavailableView(label: {
-                        Label("No Analytics", systemImage: "chart.bar")
+                        Label("no_quality_data".localized(), systemImage: "chart.bar")
                             .font(.title2)
                     }, description: {
-                        Text("Start adding reports to see your charts.")
+                        Text("start_adding_reports_quality".localized())
                             .foregroundStyle(.secondary)
                     }, actions: {
-                        Button("Go to Reports") {
+                        Button("reports".localized()) {
                             selectedTab = 0
                         }
                     })
@@ -73,7 +73,7 @@ struct ChartsView: View {
                     }
                 }
             }
-            .navigationTitle("Analytics")
+            .navigationTitle("analytics".localized())
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet2) {
                 ChartsInfoSheetView()
@@ -82,11 +82,11 @@ struct ChartsView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
                     Button(action: { isShowingSettings = true }) {
-                        Label("Settings", systemImage: "gear")
+                        Label("settings".localized(), systemImage: "gear")
                             .symbolRenderingMode(.hierarchical)
                     }
                     Button(action: { isShowingItemSheet2 = true }) {
-                        Label("Information", systemImage: "info.circle")
+                        Label("information".localized(), systemImage: "info.circle")
                             .symbolRenderingMode(.hierarchical)
                     }
                 }

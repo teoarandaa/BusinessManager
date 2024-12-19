@@ -15,13 +15,13 @@ struct ErrorDistributionChart: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Task Delays by Department")
+            Text("task_delays_by_department".localized())
                 .font(.headline)
             
             Chart(chartData, id: \.department) { item in
                 BarMark(
-                    x: .value("Department", item.department),
-                    y: .value("Delayed Tasks", item.delays)
+                    x: .value("department".localized(), item.department),
+                    y: .value("delayed_tasks".localized(), item.delays)
                 )
                 .foregroundStyle(.red.opacity(0.8))
             }

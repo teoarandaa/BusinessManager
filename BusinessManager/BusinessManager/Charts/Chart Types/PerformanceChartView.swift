@@ -38,20 +38,20 @@ struct PerformanceChartView: View {
                                 Circle()
                                     .fill(Color.accentColor)
                                     .frame(width: 10, height: 10)
-                                Text("Volume of Work")
+                                Text("volume_of_work".localized())
                                     .font(.caption)
                                 
                                 Circle()
                                     .fill(Color.blue)
                                     .frame(width: 10, height: 10)
-                                Text("Tasks Completed")
+                                Text("tasks_completed".localized())
                                     .font(.caption)
                             }
                             
                             Chart {
                                 BarMark(
-                                    x: .value("Month", departmentData.first?.date ?? Date(), unit: .month),
-                                    y: .value("Volume of Work", departmentData.first?.volumeOfWorkMark ?? 0)
+                                    x: .value("date".localized(), departmentData.first?.date ?? Date(), unit: .month),
+                                    y: .value("volume_of_work".localized(), departmentData.first?.volumeOfWorkMark ?? 0)
                                 )
                                 .foregroundStyle(Color.accentColor)
                                 .position(by: .value("Category", "Volume of Work"))

@@ -35,11 +35,11 @@ struct WorkloadChartView: View {
                         if let departmentData = groupedReports[department] {
                             Chart(departmentData) { data in
                                 PointMark(
-                                    x: .value("Volume of Work", data.volumeOfWorkMark),
-                                    y: .value("Performance", data.performanceMark)
+                                    x: .value("volume_of_work".localized(), data.volumeOfWorkMark),
+                                    y: .value("performance".localized(), data.performanceMark)
                                 )
                                 .foregroundStyle(Color.accentColor)
-                                .symbol(by: .value("Department", data.departmentName))
+                                .symbol(by: .value("department".localized(), data.departmentName))
                             }
                             .chartXAxis {
                                 AxisMarks()

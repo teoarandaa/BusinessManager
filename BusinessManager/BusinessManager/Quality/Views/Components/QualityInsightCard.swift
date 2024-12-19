@@ -53,7 +53,7 @@ struct QualityInsightCard: View {
                     insight.isResolved.toggle()
                     try? context.save()
                 } label: {
-                    Label("Mark as Resolved", systemImage: "checkmark.circle")
+                    Label("mark_as_resolved".localized(), systemImage: "checkmark.circle")
                         .font(.caption)
                 }
                 .buttonStyle(.bordered)

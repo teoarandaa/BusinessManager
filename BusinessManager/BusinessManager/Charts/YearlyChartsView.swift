@@ -21,7 +21,7 @@ struct YearlyChartsView: View {
                     }
                 }
             }
-            .navigationTitle("Yearly Charts")
+            .navigationTitle("yearly_charts".localized())
         }
     }
 }
