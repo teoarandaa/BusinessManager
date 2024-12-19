@@ -9,12 +9,12 @@ struct QualityInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
-                        Text("Quality Overview")
+                        Text("quality_overview".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Quality Analysis provides comprehensive insights into department performance, volume of work, and task completion rates. Key metrics are tracked and analyzed to identify trends, helping you maintain high standards and improve efficiency.")
+                        Text("quality_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -26,7 +26,7 @@ struct QualityInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Overview")
+                    Text("overview".localized())
                 }
                 
                 // Second Page
@@ -101,7 +101,7 @@ struct QualityInfoSheetView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Ok") {
+                    Button("ok".localized()) {
                         dismiss()
                     }
                 }

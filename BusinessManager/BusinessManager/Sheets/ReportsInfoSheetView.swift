@@ -9,12 +9,12 @@ struct ReportsInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
-                        Text("Reports Overview")
+                        Text("reports_overview".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Reports offer insights into performance, productivity, and progress.\n\nSecurely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.")
+                        Text("reports_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -26,7 +26,7 @@ struct ReportsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Overview")
+                    Text("overview".localized())
                 }
                 
                 // Second Page
@@ -101,7 +101,7 @@ struct ReportsInfoSheetView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Ok") {
+                    Button("ok".localized()) {
                         dismiss()
                     }
                 }

@@ -9,12 +9,12 @@ struct ChartsInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
-                        Text("Analytics Overview")
+                        Text("analytics_overview".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Analytics visualize key metrics: the Productivity Chart tracks performance trends, the Workload Chart compares performance with workload using a scatter plot to highlight efficiency, and the Performance Chart displays average workload versus completed tasks in a bar chart, measuring efficiency.")
+                        Text("analytics_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -26,18 +26,18 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Overview")
+                    Text("overview".localized())
                 }
                 
                 // Second Page
                 ScrollView {
                     VStack {
-                        Text("How to Create Charts")
+                        Text("how_create_charts".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Charts are generated from report data, processing performance, workload, and completed tasks to create visual insights. They highlight trends, efficiency, and productivity by transforming raw data into actionable information for each department.")
+                        Text("charts_creation_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -49,7 +49,7 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Creating Reports")
+                    Text("creating_reports".localized())
                 }
                 
                 // Third Page
@@ -101,7 +101,7 @@ struct ChartsInfoSheetView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Ok") {
+                    Button("ok".localized()) {
                         dismiss()
                     }
                 }

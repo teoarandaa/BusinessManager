@@ -5,6 +5,7 @@ import SwiftData
 struct BusinessManagerApp: App {
     let container: ModelContainer
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
+    @AppStorage("appLanguage") private var appLanguage = "es"
     
     init() {
         do {
@@ -19,6 +20,10 @@ struct BusinessManagerApp: App {
         } catch {
             fatalError("Could not initialize ModelContainer: \(error)")
         }
+        
+        // Configurar el idioma al iniciar la app
+        UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
+        UserDefaults.standard.synchronize()
     }
     
     var body: some Scene {

@@ -29,6 +29,12 @@
 "privacy" = "Privacidad";
 "support" = "Soporte de Business Manager";
 "version" = "Versión";
+"language" = "Idioma";
+"select_language" = "Seleccionar idioma";
+"language_change_title" = "Cambio de idioma";
+"language_change_message" = "Para aplicar el nuevo idioma, es necesario reiniciar la aplicación.";
+"restart_now" = "Reiniciar ahora";
+"later" = "Más tarde";
 
 // MARK: - Reports
 "reports" = "Informes";
@@ -228,7 +234,7 @@
 "intellectual_property" = "4. Propiedad Intelectual";
 "limitation_liability" = "5. Limitación de Responsabilidad";
 "changes_terms" = "6. Cambios en los Términos de Uso";
-"termination" = "7. Terminación";
+"termination" = "7. Terminaci��n";
 "governing_law" = "8. Ley Aplicable";
 "contact_information" = "9. Información de Contacto";
 
@@ -288,3 +294,5 @@
 "quality" = "Calidad";
 "tasks" = "Tareas";
   
+"language" = "Idioma";
+"select_language" = "Seleccionar idioma";

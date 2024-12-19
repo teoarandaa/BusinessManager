@@ -30,6 +30,12 @@
 "support" = "Business Manager support";
 "version" = "Version";
 "faq" = "FAQ";
+"language" = "Language";
+"select_language" = "Select language";
+"language_change_title" = "Language Change";
+"language_change_message" = "To apply the new language, the app needs to restart.";
+"restart_now" = "Restart now";
+"later" = "Later";
 
 // MARK: - Reports
 "add_report" = "Add Report";

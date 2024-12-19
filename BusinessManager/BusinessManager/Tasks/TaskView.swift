@@ -21,10 +21,14 @@ struct TaskView: View {
     }
     
     enum SortOption: String, CaseIterable, Identifiable {
-        case date = "Date"
-        case priority = "Priority"
+        case date = "date"
+        case priority = "priority"
         
         var id: String { self.rawValue }
+        
+        var localizedName: String {
+            rawValue.localized()
+        }
     }
     
     var sortedTasks: [Task] {
@@ -52,7 +56,7 @@ struct TaskView: View {
         NavigationStack {
             List {
                 if !activeTasks.isEmpty {
-                    Section("Active Tasks") {
+                    Section("active_tasks".localized()) {
                         ForEach(activeTasks) { task in
                             TasksCell(task: task)
                                 .onTapGesture {
@@ -66,7 +70,7 @@ struct TaskView: View {
                                             generator.notificationOccurred(.success)
                                         }
                                     } label: {
-                                        Label("Complete", systemImage: "checkmark.circle.fill")
+                                        Label("complete".localized(), systemImage: "checkmark.circle.fill")
                                     }
                                     .tint(.green)
                                 }
@@ -82,7 +86,7 @@ struct TaskView: View {
                 }
                 
                 if !completedTasks.isEmpty {
-                    Section("Completed Tasks") {
+                    Section("completed_tasks".localized()) {
                         ForEach(completedTasks) { task in
                             TasksCell(task: task)
                                 .onTapGesture {
@@ -96,7 +100,7 @@ struct TaskView: View {
                                             generator.notificationOccurred(.success)
                                         }
                                     } label: {
-                                        Label("Reactivate", systemImage: "arrow.uturn.left.circle.fill")
+                                        Label("reactivate".localized(), systemImage: "arrow.uturn.left.circle.fill")
                                     }
                                     .tint(.blue)
                                 }
@@ -112,7 +116,7 @@ struct TaskView: View {
                 }
             }
             .if(!tasks.isEmpty) { view in
-                view.searchable(text: $searchText, prompt: "Search tasks")
+                view.searchable(text: $searchText, prompt: "search_tasks".localized())
                     .searchSuggestions {
                         if searchText.isEmpty {
                             ForEach(tasks.prefix(3)) { task in
@@ -122,7 +126,7 @@ struct TaskView: View {
                         }
                     }
             }
-            .navigationTitle("Tasks")
+            .navigationTitle("tasks".localized())
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet1) {
                 AddTaskSheet()
@@ -139,26 +143,26 @@ struct TaskView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Settings", systemImage: "gear") {
+                    Button("settings".localized(), systemImage: "gear") {
                         isShowingSettings = true
                     }
-                    Button("Information", systemImage: "info.circle") {
+                    Button("information".localized(), systemImage: "info.circle") {
                         isShowingItemSheet2 = true
                     }
                 }
                 if !tasks.isEmpty {
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Menu {
-                            Picker("Sort by", selection: $sortOption) {
+                            Picker("sort_by".localized(), selection: $sortOption) {
                                 ForEach(SortOption.allCases) { option in
-                                    Text(option.rawValue).tag(option)
+                                    Text(option.localizedName).tag(option)
                                 }
                             }
                         } label: {
-                            Label("Sort", systemImage: "arrow.up.arrow.down")
+                            Label("sort".localized(), systemImage: "arrow.up.arrow.down")
                         }
                         
-                        Button("Add Task", systemImage: "plus") {
+                        Button("add_task".localized(), systemImage: "plus") {
                             isShowingItemSheet1 = true
                         }
                     }
@@ -167,11 +171,11 @@ struct TaskView: View {
             .overlay {
                 if tasks.isEmpty {
                     ContentUnavailableView(label: {
-                        Label("No Tasks", systemImage: "list.bullet.clipboard")
+                        Label("no_tasks".localized(), systemImage: "list.bullet.clipboard")
                     }, description: {
-                        Text("Start adding tasks to see your list.")
+                        Text("start_adding_tasks".localized())
                     }, actions: {
-                        Button("Add Task") { isShowingItemSheet1 = true }
+                        Button("add_task".localized()) { isShowingItemSheet1 = true }
                     })
                     .offset(y: -60)
                 } else if !searchText.isEmpty && filteredTasks.isEmpty {
@@ -225,7 +229,7 @@ struct TasksCell: View {
                 Text(task.date, format: .dateTime.year().month(.abbreviated).day())
                     .foregroundStyle(dateColor)
                 if let overdue = daysOverdue {
-                    Text("\(overdue) days overdue")
+                    Text(String(format: "days_overdue".localized(), overdue))
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
@@ -300,7 +304,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "calendar")
-                        Text("Expiring date")
+                        Text("expiring_date".localized())
                             .bold()
                     }
                     Spacer()
@@ -361,18 +365,18 @@ struct AddTaskSheet: View {
                     .frame(maxWidth: 120)
                 }
             }
-            .navigationTitle("New Task")
+            .navigationTitle("new_task".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button("cancel".localized()) {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
                         dismiss()
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button("save".localized()) {
                         saveTask()
                     }
                     .disabled(title.isEmpty)

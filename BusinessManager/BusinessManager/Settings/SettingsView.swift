@@ -3,8 +3,15 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     @AppStorage("isPushEnabled") private var isPushEnabled = false
+    @AppStorage("appLanguage") private var appLanguage = "es" // Nuevo AppStorage para el idioma
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var systemColorScheme
+    
+    // Definir los idiomas disponibles
+    private let availableLanguages = [
+        ("es", "Español 🇪🇸"),
+        ("en", "English 🇺🇸")
+    ]
     
     private var effectiveColorScheme: ColorScheme {
         switch colorScheme {
@@ -20,6 +27,22 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
+                // MARK: - Language
+                Section("language".localized()) {
+                    Picker("select_language".localized(), selection: $appLanguage) {
+                        ForEach(availableLanguages, id: \.0) { language in
+                            Text(language.1).tag(language.0)
+                        }
+                    }
+                    .onChange(of: appLanguage) { oldValue, newValue in
+                        // Aquí puedes añadir lógica adicional cuando cambie el idioma
+                        UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
+                        UserDefaults.standard.synchronize()
+                        // Opcional: Mostrar alerta para reiniciar la app
+                        // para que los cambios surtan efecto
+                    }
+                }
+                
                 // MARK: - Notifications
                 Section("notifications".localized()) {
                     Toggle(isOn: $isPushEnabled) {

@@ -8,25 +8,25 @@ struct MainTabView: View {
         TabView(selection: $selectedTab) {
             ReportsView()
                 .tabItem {
-                    Label("Reports", systemImage: "text.document")
+                    Label("reports".localized(), systemImage: "text.document")
                 }
                 .tag(0)
             
             ChartsView(selectedTab: $selectedTab)
                 .tabItem {
-                    Label("Analytics", systemImage: "chart.bar")
+                    Label("analytics".localized(), systemImage: "chart.bar")
                 }
                 .tag(1)
             
             QualityAnalysisView(selectedTab: $selectedTab)
                 .tabItem {
-                    Label("Quality", systemImage: "checkmark.seal")
+                    Label("quality".localized(), systemImage: "checkmark.seal")
                 }
                 .tag(2)
             
             TaskView()
                 .tabItem {
-                    Label("Tasks", systemImage: "list.bullet.clipboard")
+                    Label("tasks".localized(), systemImage: "list.bullet.clipboard")
                 }
                 .tag(3)
         }
