@@ -78,10 +78,15 @@ struct SettingsView: View {
                         Label("Monthly Summary (PDF)", systemImage: "text.document")
                     }
                 }
+                Section {
+                    Text("Version \(appVersion!)")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .listRowBackground(Color(.systemGroupedBackground))
+                }
             }
-            Text("Version \(appVersion!)")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+            .listStyle(.insetGrouped)
             .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
