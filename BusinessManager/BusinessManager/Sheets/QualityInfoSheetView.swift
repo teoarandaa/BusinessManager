@@ -55,12 +55,12 @@ struct QualityInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Quality Controls")
+                        Text("Department Filter")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Use the plus button to add new quality insights. The date picker helps track metrics over time, while the department selector ensures you're analyzing the right team. Set minimum thresholds for performance, volume, and completion rates to maintain quality standards.")
+                        Text("The Department Filter enhances your analysis capabilities by allowing you to focus on specific time periods and departments. This targeted approach helps identify strengths and areas for improvement, supporting better decision-making about resources and processes.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -72,18 +72,18 @@ struct QualityInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Controls")
+                    Text("Filters")
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Quality Actions")
+                        Text("Threshold Settings")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The refresh button updates metrics with the latest data. Use filters to focus on specific quality aspects or departments. The share button exports quality reports, while the analysis button provides detailed insights into performance trends.")
+                        Text("Threshold Settings help establish and maintain quality standards across your organization. By setting minimum performance levels and benchmarks, you create clear targets and early warning indicators, enabling proactive management of your quality standards.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,7 +95,7 @@ struct QualityInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Actions")
+                    Text("Thresholds")
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))

@@ -55,12 +55,12 @@ struct ChartsInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Chart Controls")
+                        Text("Chart Types")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Use the date picker in the toolbar to select different time periods. The calendar icon lets you switch between monthly, quarterly, and yearly views. This helps you analyze trends across different time frames.")
+                        Text("The Chart Type selector offers different ways to visualize your data. Switch between Productivity trends, Efficiency distribution, and Performance metrics to get the most relevant view of your team's progress. Each chart type provides unique insights into different aspects of department performance.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -72,18 +72,18 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Controls")
+                    Text("Chart Types")
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Chart Actions")
+                        Text("Yearly Analysis")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The share button allows you to export and share charts. Use the filter button to focus on specific departments or metrics. The refresh button updates the charts with the latest data.")
+                        Text("The Yearly Analysis view offers a broader perspective on organizational performance. By examining annual data, you can spot seasonal patterns and long-term trends, making it an essential tool for strategic planning and year-over-year performance assessment.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,7 +95,7 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Actions")
+                    Text("Yearly Analysis")
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))

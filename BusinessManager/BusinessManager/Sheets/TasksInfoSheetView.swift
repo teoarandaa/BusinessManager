@@ -55,12 +55,12 @@ struct TasksInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Task Controls")
+                        Text("Sort Tasks")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The plus button creates new tasks. Use the calendar to set due dates and the priority selector to mark task urgency. The department picker assigns tasks to specific teams.")
+                        Text("The Sort functionality organizes your tasks effectively. Sort by date for a chronological view of deadlines, or by priority to focus on critical tasks first. This flexibility helps you manage your workflow according to your current needs.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -72,18 +72,18 @@ struct TasksInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Controls")
+                    Text("Sort")
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Task Actions")
+                        Text("Add Task")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Mark tasks as complete using the checkmark button. The edit button modifies task details, while the delete button removes tasks. Use filters to sort tasks by status, priority, or department.")
+                        Text("Creating a new task is an intuitive process where you can specify deadlines, set priorities, and add detailed descriptions. Additional comments provide context and improve task tracking, ensuring clear communication throughout the process.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,7 +95,7 @@ struct TasksInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Actions")
+                    Text("Add Task")
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))

@@ -55,12 +55,12 @@ struct ReportsInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Report Controls")
+                        Text("Monthly Summary")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The plus button in the toolbar creates new reports. Use the calendar to select dates and the department picker to choose the relevant team. The save button stores your report data securely.")
+                        Text("The Monthly Summary feature generates a comprehensive PDF report comparing department performances and trends. This report format makes it easy to review and share key metrics, making it invaluable for management reviews and team evaluations.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -72,18 +72,18 @@ struct ReportsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Controls")
+                    Text("Monthly Summary")
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Report Actions")
+                        Text("Add Report")
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Use the edit button to modify existing reports, the share button to export reports as PDFs, and the delete button to remove outdated reports. The filter button helps organize reports by department or date.")
+                        Text("Adding a new report is a straightforward process for tracking your department's progress. You can input task completion rates, performance metrics, and specific notes about achievements or challenges, building a clear picture of your team's performance over time.")
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,7 +95,7 @@ struct ReportsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Actions")
+                    Text("Add Report")
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
