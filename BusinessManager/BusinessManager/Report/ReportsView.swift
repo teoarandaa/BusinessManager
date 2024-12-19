@@ -34,7 +34,8 @@ struct ReportsView: View {
                         NavigationLink(destination: DepartmentReportsView(departmentReports: departmentReports)) {
                             DepartmentCell(
                                 departmentName: department,
-                                reportsCount: departmentReports.count
+                                reportsCount: departmentReports.count,
+                                reports: departmentReports
                             )
                         }
                     }
@@ -338,6 +339,10 @@ struct DepartmentCell: View {
     let departmentName: String
     let reportsCount: Int
     @AppStorage("departmentIcons") private var iconStorage: String = "{}"
+    @State private var isShowingEditSheet = false
+    @State private var isShowingIconPicker = false
+    @Environment(\.modelContext) private var context
+    let reports: [Report]
     
     var departmentIcon: String {
         let dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
@@ -360,6 +365,291 @@ struct DepartmentCell: View {
             }
         }
         .padding(.vertical, 4)
+        .contextMenu {
+            Button {
+                isShowingEditSheet = true
+            } label: {
+                Label("Edit Name", systemImage: "pencil")
+            }
+            
+            Button {
+                isShowingIconPicker = true
+            } label: {
+                Label("Change Icon", systemImage: "photo")
+            }
+        }
+        .sheet(isPresented: $isShowingEditSheet) {
+            EditDepartmentSheet(departmentName: departmentName, reports: reports)
+        }
+        .sheet(isPresented: $isShowingIconPicker) {
+            IconPickerView(departmentName: departmentName)
+        }
+    }
+}
+
+// Añadir esta nueva vista para seleccionar iconos
+struct IconPickerView: View {
+    @Environment(\.dismiss) private var dismiss
+    @AppStorage("departmentIcons") private var iconStorage: String = "{}"
+    let departmentName: String
+    @State private var selectedIcon: String = "building.2"
+    @State private var selectedCategory: String = "All"
+    
+    struct DepartmentIcon: Identifiable {
+        let id = UUID()
+        let icon: String
+    }
+    
+    struct BusinessSection: Identifiable {
+        let id = UUID()
+        let title: String
+        let icons: [DepartmentIcon]
+    }
+    
+    let categories = ["All", "Health", "Technology", "Education", "Tourism", 
+                     "Food", "Energy", "Fashion", "Entertainment", 
+                     "Transport", "Real Estate", "Finance", "E-Commerce", 
+                     "Consulting"]
+    
+    let sections = [
+        BusinessSection(title: "Health", icons: [
+            "heart", "waveform.path.ecg", "stethoscope", "cross", "pills", 
+            "bandage", "staroflife", "thermometer", "bed.double", "lungs", 
+            "ear", "eye", "brain.head.profile", "hand.raised", "figure.walk", 
+            "drop", "allergens", "bolt.heart", "person.crop.circle.badge.checkmark", 
+            "plus.circle"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Technology", icons: [
+            "desktopcomputer", "laptopcomputer", "iphone", "ipad", "cpu", 
+            "server.rack", "network", "antenna.radiowaves.left.and.right", "wifi", "gear",
+            "cloud", "bolt.circle", "battery.100", "keyboard", "printer", 
+            "camera", "mic", "speaker.wave.2", "cpu", "arrow.up.bin"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Education", icons: [
+            "book", "graduationcap", "applelogo", "pencil", "folder",
+            "text.book.closed", "calendar", "magnifyingglass", "square.and.pencil", "bookmark",
+            "doc", "person.crop.rectangle", "ruler", "paintbrush", "brain",
+            "character.book.closed", "brain.head.profile", "list.bullet.rectangle", "quote.bubble", "highlighter"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Tourism", icons: [
+            "airplane", "suitcase", "globe", "map", "tent",
+            "binoculars", "camera", "sun.max", "mountain.2", "beach.umbrella",
+            "leaf", "train.side.front.car", "car", "bus", "signpost.right",
+            "house", "star", "creditcard", "location.circle", "location"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Food", icons: [
+            "fork.knife", "cup.and.saucer", "leaf", "cart", "bag",
+            "takeoutbag.and.cup.and.straw", "basket", "fork.knife.circle", "wineglass", "birthday.cake",
+            "carrot", "tortoise", "leaf.circle", "leaf.circle", "fork.knife.circle",
+            "cup.and.saucer", "fish", "fork.knife.circle", "fork.knife.circle", "flame"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Energy", icons: [
+            "bolt", "leaf", "flame", "drop", "wind",
+            "globe", "sun.max", "fuelpump", "mountain.2", "tree",
+            "car.2", "battery.100", "lightbulb", "fanblades", "trash",
+            "arrow.3.trianglepath", "bolt.shield", "hammer", "building.columns", "gearshape"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Fashion", icons: [
+            "scissors", "hanger", "tag", "bag", "tshirt",
+            "tshirt", "bag", "circle.grid.cross", "clock", "rectangle.split.3x3",
+            "arrow.2.squarepath", "scissors.circle", "circle.grid.2x2", "circle.grid.cross", "wand.and.stars",
+            "cube.box", "sparkles", "star.circle", "basket", "globe"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Entertainment", icons: [
+            "play.circle", "film", "music.note", "gamecontroller", "mic",
+            "headphones", "tv", "camera", "film", "video",
+            "speaker.wave.2", "theatermasks", "lightbulb", "paintpalette", "book",
+            "star", "bolt", "record.circle", "play.rectangle", "popcorn"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Transport", icons: [
+            "car", "car.2", "bicycle", "airplane", "ferry",
+            "train.side.front.car", "tram", "bus", "location", "globe",
+            "arrow.up.doc", "square.and.arrow.up", "wrench.and.screwdriver", "fuelpump", "gear",
+            "map", "house.circle", "calendar", "person.crop.rectangle", "arrow.triangle.turn.up.right.diamond"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Real Estate", icons: [
+            "house", "building.2", "magnifyingglass", "lock", "key",
+            "calendar", "dollarsign.circle", "pencil", "folder", "gear",
+            "location", "creditcard", "person.crop.circle.badge.checkmark", "lightbulb", "list.bullet",
+            "map", "signpost.right", "doc.text", "bookmark", "hand.raised"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Finance", icons: [
+            "chart.bar", "dollarsign.circle", "creditcard", "lock", "key",
+            "banknote", "building.columns", "doc.text", "checkmark", "wallet.pass",
+            "list.bullet.rectangle", "arrow.triangle.2.circlepath.circle", "shield", "magnifyingglass", "tag",
+            "calendar", "chart.pie", "lock.doc", "person.crop.circle.badge.checkmark", "text.badge.checkmark"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "E-Commerce", icons: [
+            "cart", "bag", "creditcard", "house", "car.2",
+            "globe", "tag", "barcode", "barcode.viewfinder", "phone.arrow.down.left",
+            "arrow.triangle.2.circlepath", "clock.arrow.circlepath", "wallet.pass", "gift", "bookmark",
+            "cube.box", "calendar", "magnifyingglass", "bell", "bolt"
+        ].map { DepartmentIcon(icon: $0) }),
+        
+        BusinessSection(title: "Consulting", icons: [
+            "briefcase", "doc.text.magnifyingglass", "chart.bar", "calendar", "lightbulb",
+            "network", "person.crop.rectangle", "gear", "arrow.3.trianglepath", "quote.bubble",
+            "list.bullet.rectangle", "building.2", "key", "lock", "hand.raised",
+            "arrow.uturn.forward.circle", "brain", "checkmark", "chart.pie", "doc"
+        ].map { DepartmentIcon(icon: $0) })
+    ]
+    
+    var filteredSections: [BusinessSection] {
+        if selectedCategory == "All" {
+            return sections
+        }
+        return sections.filter { $0.title == selectedCategory }
+    }
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                // Filtro horizontal
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(categories, id: \.self) { category in
+                            Text(category)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(
+                                    Capsule()
+                                        .fill(selectedCategory == category ? 
+                                             Color.accentColor : Color.gray.opacity(0.2))
+                                )
+                                .foregroundStyle(selectedCategory == category ? .white : .primary)
+                                .onTapGesture {
+                                    withAnimation {
+                                        selectedCategory = category
+                                    }
+                                }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.vertical, 8)
+                .background(Color(UIColor.systemBackground))
+                
+                // Contenido principal
+                ScrollView {
+                    LazyVStack(spacing: 16, pinnedViews: .sectionHeaders) {
+                        ForEach(filteredSections) { section in
+                            Section {
+                                LazyVGrid(
+                                    columns: [
+                                        GridItem(.adaptive(minimum: 80, maximum: 100), spacing: 16)
+                                    ],
+                                    spacing: 16
+                                ) {
+                                    ForEach(section.icons) { item in
+                                        IconCell(
+                                            icon: item.icon,
+                                            isSelected: selectedIcon == item.icon,
+                                            action: {
+                                                let generator = UIImpactFeedbackGenerator(style: .light)
+                                                generator.impactOccurred()
+                                                selectedIcon = item.icon
+                                            }
+                                        )
+                                    }
+                                }
+                                .padding(.horizontal)
+                                .padding(.bottom, 16)
+                            } header: {
+                                HStack {
+                                    Text(section.title)
+                                        .font(.headline)
+                                        .padding(.leading)
+                                    Spacer()
+                                }
+                                .padding(.vertical, 8)
+                                .background(Color(UIColor.systemBackground))
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Select Icon")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                        updateIcon(to: selectedIcon)
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+    
+    private func getCurrentIcon() -> String {
+        let dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
+        return dictionary[departmentName] ?? "building.2"
+    }
+    
+    private func updateIcon(to newIcon: String) {
+        var dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
+        dictionary[departmentName] = newIcon
+        if let encoded = try? JSONEncoder().encode(dictionary),
+           let string = String(data: encoded, encoding: .utf8) {
+            iconStorage = string
+        }
+    }
+}
+
+// Componente separado para la celda del icono
+struct IconCell: View {
+    let icon: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
+                    .frame(width: 60, height: 60)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 24))
+                    .foregroundStyle(isSelected ? .accent : .primary)
+                
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.accentColor, lineWidth: 2)
+                        .frame(width: 60, height: 60)
+                }
+            }
+            
+            Text(icon)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
+                .frame(height: 32)
+        }
+        .frame(width: 80, height: 100)
+        .contentShape(Rectangle())
+        .onTapGesture(perform: action)
     }
 }
 
