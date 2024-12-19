@@ -3,8 +3,6 @@ import SwiftData
 
 struct ChartsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @State private var chart: String = "productivity".localized()
-    let chartOptions = ["productivity".localized(), "efficiency".localized(), "performance".localized()]
     @Environment(\.modelContext) var context
     @State private var isShowingItemSheet2 = false
     @State private var showingBottomSheet: Bool = false
@@ -12,17 +10,32 @@ struct ChartsView: View {
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
     
-    var chartIcon: String {
-        switch chart {
-        case "Productivity":
-            return "chart.line.uptrend.xyaxis"
-        case "Efficiency":
-            return "gauge.medium"
-        case "Performance":
-            return "chart.bar.fill"
-        default:
-            return "chart.line.uptrend.xyaxis"
+    // Definir las opciones como enum para mejor control
+    enum ChartType: String, CaseIterable {
+        case productivity = "productivity"
+        case efficiency = "efficiency"
+        case performance = "performance"
+        
+        var localizedName: String {
+            rawValue.localized()
         }
+        
+        var icon: String {
+            switch self {
+            case .productivity:
+                return "chart.line.uptrend.xyaxis"
+            case .efficiency:
+                return "gauge.medium"
+            case .performance:
+                return "chart.bar.fill"
+            }
+        }
+    }
+    
+    @State private var selectedChart: ChartType = .productivity
+    
+    var chartIcon: String {
+        selectedChart.icon
     }
     
     var uniqueDepartments: [String] {
@@ -51,21 +64,18 @@ struct ChartsView: View {
                         VStack(spacing: 35) {
                             // Chart Content
                             Group {
-                                switch chart {
-                                case "Productivity":
+                                switch selectedChart {
+                                case .productivity:
                                     ProductivityChartView()
                                         .transition(.opacity)
                                     
-                                case "Efficiency":
+                                case .efficiency:
                                     WorkloadChartView()
                                         .transition(.opacity)
                                     
-                                case "Performance":
+                                case .performance:
                                     PerformanceChartView()
                                         .transition(.opacity)
-                                    
-                                default:
-                                    Text("Select a chart")
                                 }
                             }
                             .padding()
@@ -93,24 +103,24 @@ struct ChartsView: View {
                 if !reports.isEmpty {
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Menu {
-                            ForEach(chartOptions, id: \.self) { option in
+                            ForEach(ChartType.allCases, id: \.self) { option in
                                 Button(action: { 
                                     withAnimation {
-                                        chart = option
+                                        selectedChart = option
                                     }
                                     let generator = UISelectionFeedbackGenerator()
                                     generator.selectionChanged()
                                 }) {
-                                    Label(option, systemImage: getChartIcon(for: option))
+                                    Label(option.localizedName, systemImage: option.icon)
                                 }
                             }
                         } label: {
-                            Label("Chart Type", systemImage: chartIcon)
+                            Label("chart_type".localized(), systemImage: chartIcon)
                                 .symbolRenderingMode(.hierarchical)
                         }
                         
                         NavigationLink(destination: YearlyChartsView()) {
-                            Label("Yearly", systemImage: "calendar")
+                            Label("yearly".localized(), systemImage: "calendar")
                                 .symbolRenderingMode(.hierarchical)
                         }
                     }

@@ -109,9 +109,11 @@
 "loading_yearly_summary" = "Cargando Resumen Anual...";
 
 // Chart Titles
-"performance" = "Rendimiento";
 "productivity" = "Productividad";
-"workload" = "Carga de Trabajo";
+"efficiency" = "Eficiencia";
+"performance" = "Rendimiento";
+"chart_type" = "Tipo de gráfico";
+"yearly" = "Anual";
 
 // Chart Labels
 "volume_of_work" = "Volumen de Trabajo";
@@ -234,7 +236,7 @@
 "intellectual_property" = "4. Propiedad Intelectual";
 "limitation_liability" = "5. Limitación de Responsabilidad";
 "changes_terms" = "6. Cambios en los Términos de Uso";
-"termination" = "7. Terminaci��n";
+"termination" = "7. Terminación";
 "governing_law" = "8. Ley Aplicable";
 "contact_information" = "9. Información de Contacto";
 

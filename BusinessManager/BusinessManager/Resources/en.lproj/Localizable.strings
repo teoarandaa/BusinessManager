@@ -120,9 +120,11 @@
 "loading_yearly_summary" = "Loading Yearly Summary...";
 
 // Chart Titles
-"performance" = "Performance";
 "productivity" = "Productivity";
-"workload" = "Workload";
+"efficiency" = "Efficiency";
+"performance" = "Performance";
+"chart_type" = "Chart Type";
+"yearly" = "Yearly";
 
 // Chart Labels
 "volume_of_work" = "Volume of Work";

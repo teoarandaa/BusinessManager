@@ -49,14 +49,14 @@ struct PerformanceChartView: View {
                             }
                             
                             Chart {
-                                BarMark(
-                                    x: .value("date".localized(), departmentData.first?.date ?? Date(), unit: .month),
-                                    y: .value("volume_of_work".localized(), departmentData.first?.volumeOfWorkMark ?? 0)
-                                )
-                                .foregroundStyle(Color.accentColor)
-                                .position(by: .value("Category", "Volume of Work"))
-                                
                                 ForEach(departmentData) { data in
+                                    BarMark(
+                                        x: .value("date".localized(), data.date, unit: .month),
+                                        y: .value("volume_of_work".localized(), data.volumeOfWorkMark)
+                                    )
+                                    .foregroundStyle(Color.accentColor)
+                                    .position(by: .value("Category", "Volume of Work"))
+                                    
                                     BarMark(
                                         x: .value("Month", data.date, unit: .month),
                                         y: .value("Tasks Completed", data.numberOfFinishedTasks)
