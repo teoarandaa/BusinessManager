@@ -11,15 +11,15 @@ struct MonthlySummaryView: View {
         NavigationStack {
             VStack {
                 if isLoading {
-                    ProgressView("Loading Monthly Summary...")
+                    ProgressView("loading_monthly_summary".localized())
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding()
                 } else {
                     if monthlySummary.isEmpty {
                         ContentUnavailableView(label: {
-                            Label("No Monthly Reports", systemImage: "calendar.badge.exclamationmark")
+                            Label("no_monthly_reports".localized(), systemImage: "calendar.badge.exclamationmark")
                         }, description: {
-                            Text("There are no reports for the current month.")
+                            Text("no_reports_current_month".localized())
                         })
                         .offset(y: -60)
                     } else {
@@ -36,15 +36,15 @@ struct MonthlySummaryView: View {
                                         .padding(.bottom, 10)
                                     
                                     HStack {
-                                        CircularProgressBar(percentage: averagePerformance, title: "Efficiency")
+                                        CircularProgressBar(percentage: averagePerformance, title: "efficiency".localized())
                                         Spacer()
-                                        CircularProgressBar(percentage: averageVolumeOfWork, title: "Workload")
+                                        CircularProgressBar(percentage: averageVolumeOfWork, title: "workload".localized())
                                         Spacer()
                                         VStack {
                                             Text("\(summary.finishedTasks)")
                                                 .font(.title)
                                                 .bold()
-                                            Text("Finished Tasks")
+                                            Text("finished_tasks".localized())
                                                 .font(.caption2)
                                         }
                                     }
@@ -56,14 +56,14 @@ struct MonthlySummaryView: View {
                     }
                 }
             }
-            .navigationTitle("Monthly Summary")
+            .navigationTitle("monthly_summary".localized())
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 loadMonthlySummary()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Close") {
+                    Button("close".localized()) {
                         dismiss()
                     }
                 }

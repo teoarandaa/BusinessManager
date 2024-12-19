@@ -77,13 +77,13 @@ struct DepartmentReportsView: View {
                 }
             }
         }
-        .navigationTitle("Reports by Year")
+        .navigationTitle("reports_by_year".localized())
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     showingFilters = true
                 } label: {
-                    Label("Filters", systemImage: "line.3.horizontal.decrease.circle")
+                    Label("filters".localized(), systemImage: "line.3.horizontal.decrease.circle")
                 }
             }
         }
@@ -93,9 +93,9 @@ struct DepartmentReportsView: View {
         .overlay {
             if filteredReports.isEmpty {
                 ContentUnavailableView {
-                    Label("No Results", systemImage: "doc.text.magnifyingglass")
+                    Label("no_results".localized(), systemImage: "doc.text.magnifyingglass")
                 } description: {
-                    Text("Try adjusting your filters to find what you're looking for.")
+                    Text("try_adjusting_filters".localized())
                 }
             }
         }
@@ -120,22 +120,22 @@ struct FilterSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Date Range") {
-                    Toggle("Filter by Date", isOn: $useDateFilter)
+                Section("filter_by_date".localized()) {
+                    Toggle("date_range".localized(), isOn: $useDateFilter)
                     
                     if useDateFilter {
-                        DatePicker("From", selection: $startDate, displayedComponents: .date)
-                        DatePicker("To", selection: $endDate, displayedComponents: .date)
+                        DatePicker("from".localized(), selection: $startDate, displayedComponents: .date)
+                        DatePicker("to".localized(), selection: $endDate, displayedComponents: .date)
                     }
                 }
                 
-                Section("Performance (%)") {
+                Section("performance_percentage".localized()) {
                     HStack {
-                        Text("Min:")
+                        Text("min".localized())
                         TextField("0", text: $minPerformance)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
-                        Text("Max:")
+                        Text("max".localized())
                         TextField("100", text: $maxPerformance)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
@@ -168,16 +168,16 @@ struct FilterSheet: View {
                     }
                 }
             }
-            .navigationTitle("Filters")
+            .navigationTitle("filters".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Reset") {
+                    Button("reset".localized()) {
                         resetFilters()
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Apply") {
+                    Button("apply".localized()) {
                         applyFilters()
                         dismiss()
                     }

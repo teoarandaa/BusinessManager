@@ -62,19 +62,19 @@ struct ReportsView: View {
                             }
                         }
                 }
-                .navigationTitle("Departments")
+                .navigationTitle("departments".localized())
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
                         Button {
                             isShowingSettings = true
                         } label: {
-                            Label("Settings", systemImage: "gear")
+                            Label("settings".localized(), systemImage: "gear")
                         }
                         Button {
                             isShowingInfoSheet = true
                         } label: {
-                            Label("Info", systemImage: "info.circle")
+                            Label("information".localized(), systemImage: "info.circle")
                         }
                     }
                     
@@ -83,14 +83,14 @@ struct ReportsView: View {
                             Button {
                                 isShowingMonthlySummary = true
                             } label: {
-                                Label("Monthly Summary", systemImage: "calendar.badge.clock")
+                                Label("monthly_summary".localized(), systemImage: "calendar.badge.clock")
                             }
                             .tint(.red)
                             
                             Button {
                                 isShowingAddReportSheet = true
                             } label: {
-                                Label("Add Report", systemImage: "plus")
+                                Label("add_report".localized(), systemImage: "plus")
                             }
                         }
                     }
@@ -114,11 +114,15 @@ struct ReportsView: View {
                 .overlay {
                     if reports.isEmpty {
                         ContentUnavailableView(label: {
-                            Label("No Reports", systemImage: "text.document")
+                            Label("no_reports".localized(), systemImage: "text.document")
                         }, description: {
-                            Text("Start adding reports to see your list.")
+                            Text("start_adding_reports".localized())
                         }, actions: {
-                            Button("Add Report") { isShowingAddReportSheet = true }
+                            Button {
+                                isShowingAddReportSheet = true
+                            } label: {
+                                Label("add_report".localized(), systemImage: "plus")
+                            }
                         })
                         .offset(y: -60)
                     } else if !searchText.isEmpty && filteredReports.isEmpty {
@@ -177,7 +181,7 @@ struct AddReportSheet: View {
             Form {
                 HStack {
                     Image(systemName: "calendar")
-                    Text("Date")
+                    Text("date".localized())
                         .bold()
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
@@ -187,7 +191,7 @@ struct AddReportSheet: View {
                 
                 HStack {
                     Image(systemName: "building.2")
-                    Text("Department")
+                    Text("department".localized())
                         .bold()
                     Spacer()
                     TextField("Name", text: $departmentName, axis: .vertical)
@@ -238,18 +242,18 @@ struct AddReportSheet: View {
                         .multilineTextAlignment(.trailing)
                 }
             }
-            .navigationTitle("Add Report")
+            .navigationTitle("add_report".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button("cancel".localized()) {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button("save".localized()) {
                         let generator = UINotificationFeedbackGenerator()
                         generator.notificationOccurred(.success)
                         saveReport()
