@@ -421,14 +421,14 @@ struct IconPickerView: View {
         ].map { DepartmentIcon(icon: $0) }),
         
         BusinessSection(title: "Technology", icons: [
-            "desktopcomputer", "laptopcomputer", "iphone", "ipad", "cpu", 
+            "desktopcomputer", "laptopcomputer", "smartphone", "cpu",
             "server.rack", "network", "antenna.radiowaves.left.and.right", "wifi", "gear",
             "cloud", "bolt.circle", "battery.100", "keyboard", "printer", 
-            "camera", "mic", "speaker.wave.2", "cpu", "arrow.up.bin"
+            "camera", "mic", "speaker.wave.2", "arrow.up.bin"
         ].map { DepartmentIcon(icon: $0) }),
         
         BusinessSection(title: "Education", icons: [
-            "book", "graduationcap", "applelogo", "pencil", "folder",
+            "book", "graduationcap", "pencil", "folder",
             "text.book.closed", "calendar", "magnifyingglass", "square.and.pencil", "bookmark",
             "doc", "person.crop.rectangle", "ruler", "paintbrush", "brain",
             "character.book.closed", "brain.head.profile", "list.bullet.rectangle", "quote.bubble", "highlighter"
@@ -438,7 +438,7 @@ struct IconPickerView: View {
             "airplane", "suitcase", "globe", "map", "tent",
             "binoculars", "camera", "sun.max", "mountain.2", "beach.umbrella",
             "leaf", "train.side.front.car", "car", "bus", "signpost.right",
-            "house", "star", "creditcard", "location.circle", "location"
+            "house", "star", "creditcard", "location.circle"
         ].map { DepartmentIcon(icon: $0) }),
         
         BusinessSection(title: "Food", icons: [
@@ -623,31 +623,22 @@ struct IconCell: View {
     let action: () -> Void
     
     var body: some View {
-        VStack(spacing: 8) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
-                    .frame(width: 60, height: 60)
-                
-                Image(systemName: icon)
-                    .font(.system(size: 24))
-                    .foregroundStyle(isSelected ? .accent : .primary)
-                
-                if isSelected {
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.accentColor, lineWidth: 2)
-                        .frame(width: 60, height: 60)
-                }
-            }
+        ZStack {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.clear)
+                .frame(width: 60, height: 60)
             
-            Text(icon)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
-                .frame(height: 32)
+            Image(systemName: icon)
+                .font(.system(size: 24))
+                .foregroundStyle(isSelected ? .accent : .primary)
+            
+            if isSelected {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.accentColor, lineWidth: 2)
+                    .frame(width: 60, height: 60)
+            }
         }
-        .frame(width: 80, height: 100)
+        .frame(width: 80, height: 80)
         .contentShape(Rectangle())
         .onTapGesture(perform: action)
     }
