@@ -219,9 +219,14 @@ struct MonthlyReportView: View {
     @State private var showShareSheet = false
     @State private var showDatePicker = false
     @State private var selectedPeriod: ReportPeriod = .month
+    @State private var selectedDepartment: String = "All Departments"
     @AppStorage("minPerformance") private var minPerformance = 70.0
     @AppStorage("minVolumeOfWork") private var minVolumeOfWork = 70.0
     @AppStorage("minTaskCompletion") private var minTaskCompletion = 70.0
+    
+    private var departments: [String] {
+        ["All Departments"] + Array(Set(reports.map { $0.departmentName })).sorted()
+    }
     
     private let hapticFeedback = UINotificationFeedbackGenerator()
     
@@ -262,6 +267,15 @@ struct MonthlyReportView: View {
                     }
                 }
                 .onChange(of: selectedPeriod) {
+                    generateAndSharePDF()
+                }
+                
+                Picker("Department", selection: $selectedDepartment) {
+                    ForEach(departments, id: \.self) { department in
+                        Text(department)
+                    }
+                }
+                .onChange(of: selectedDepartment) {
                     generateAndSharePDF()
                 }
                 
@@ -345,22 +359,45 @@ struct MonthlyReportView: View {
             endDate = calendar.date(byAdding: DateComponents(year: 1, day: -1), to: startDate) ?? startDate
         }
         
-        let filteredReports = reports.filter { report in
+        var filteredReports = reports.filter { report in
             let isAfterStart = calendar.compare(report.date, to: startDate, toGranularity: .day) != .orderedAscending
             let isBeforeEnd = calendar.compare(report.date, to: endDate, toGranularity: .day) != .orderedDescending
             return isAfterStart && isBeforeEnd
         }
         
+        if selectedDepartment != "All Departments" {
+            filteredReports = filteredReports.filter { $0.departmentName == selectedDepartment }
+        }
+        
         let pdfGenerator = PDFGenerator(
             date: selectedDate,
             reports: filteredReports,
-            reportTitle: "Monthly Performance Report",
+            reportTitle: generateReportTitle(),
             period: selectedPeriod,
             minPerformance: minPerformance,
             minVolumeOfWork: minVolumeOfWork,
             minTaskCompletion: minTaskCompletion
         )
         self.pdfData = pdfGenerator.generatePDF()
+    }
+    
+    private func generateReportTitle() -> String {
+        let periodTitle: String
+        switch selectedPeriod {
+        case .month:
+            periodTitle = "Monthly Report"
+        case .quarter:
+            let month = Calendar.current.component(.month, from: selectedDate)
+            let quarter = (month - 1) / 3 + 1
+            periodTitle = "Q\(quarter) Report"
+        case .year:
+            periodTitle = "Yearly Report"
+        }
+        
+        let departmentTitle = selectedDepartment == "All Departments" ? 
+            "All Departments" : selectedDepartment
+        
+        return "\(periodTitle) - \(departmentTitle) - \(periodFormatter.string(from: selectedDate))"
     }
 }
 
@@ -472,13 +509,13 @@ class PDFGenerator {
             context.beginPage()
             
             let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 24, weight: .bold)
+                .font: UIFont.systemFont(ofSize: 20, weight: .bold)
             ]
             
             // Usar el título generado dinámicamente
             (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
-            // Draw logo
+            // Draw logo en la esquina inferior derecha
             if let logo = UIImage(named: "pdf_logo") {
                 let logoSize: CGFloat = 80
                 let aspectRatio = logo.size.width / logo.size.height
@@ -486,7 +523,7 @@ class PDFGenerator {
                 let logoWidth = logoHeight * aspectRatio
                 
                 let logoX = pageWidth - margin - logoWidth
-                let logoY = margin - 25
+                let logoY = pageHeight - (margin / 4) - logoHeight
                 let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
                 logo.draw(in: logoRect)
             }
