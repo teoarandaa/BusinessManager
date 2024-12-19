@@ -11,16 +11,46 @@ struct FAQView: View {
     @State private var expandedItem: UUID?
     // MARK: - FAQs content
     let faqItems: [FAQItem] = [
-        FAQItem(question: "What is Business Manager", answer: "Business Manager is the tool for managing and optimizing internal business processes effectively. If you are interested in learning more about it, please visit our website: https://www.example.app/"),
-        FAQItem(question: "Is Business Manager free to use?", answer: "There is an initial trial period, and afterward, you can choose from several plans: \n\n- Demo: Free.\n\n- Growth: €4.99/month or €46.99/year.\n\n- Elite: €9.99/month or €94.99/year.\n\nTo access the plans, please go to Settings > Subscription Packages, where you can review what each plan includes."),
-        FAQItem(question: "How often do you add new features to the app?", answer: "Each update comes with new features and improvements. Exciting, isn't it?"),
-        FAQItem(question: "Are there frequent updates to the app?", answer: "We ensure a minimum of one major update per year, introducing new features, enhancements, and resolving bugs."),
-        FAQItem(question: "How do I enable push notifications?", answer: "To enable push notifications, navigate to Settings > Notifications and switch them on for the app."),
-        FAQItem(question: "Is the app available in multiple languages?", answer: "Currently, the app is available only in English, but we are working on introducing more languages soon."),
-        FAQItem(question: "What payment methods do you accept?", answer: "We accept all major credit cards and Apple Pay for premium subscriptions and features."),
-        FAQItem(question: "Where can I find the privacy policy?", answer: "You can access the privacy policy by navigating to Settings > Privacy > Privacy Policy."),
-        FAQItem(question: "What should I do if I encounter technical issues?", answer: "For any technical issues, please email us at help.businessmanager@gmail.com, and we'll assist you as quickly as possible."),
-        FAQItem(question: "How can I contact support?", answer: "Reach out to our support team by sending an email to help.businessmanager@gmail.com."),
+        FAQItem(
+            question: "what_is_business_manager".localized(),
+            answer: "business_manager_description".localized()
+        ),
+        FAQItem(
+            question: "is_business_manager_free".localized(),
+            answer: "business_manager_pricing".localized()
+        ),
+        FAQItem(
+            question: "how_often_new_features".localized(),
+            answer: "new_features_frequency".localized()
+        ),
+        FAQItem(
+            question: "frequent_updates".localized(),
+            answer: "updates_frequency".localized()
+        ),
+        FAQItem(
+            question: "enable_push_notifications".localized(),
+            answer: "push_notifications_instructions".localized()
+        ),
+        FAQItem(
+            question: "multiple_languages".localized(),
+            answer: "available_languages".localized()
+        ),
+        FAQItem(
+            question: "payment_methods".localized(),
+            answer: "accepted_payments".localized()
+        ),
+        FAQItem(
+            question: "privacy_policy_location".localized(),
+            answer: "find_privacy_policy".localized()
+        ),
+        FAQItem(
+            question: "technical_issues".localized(),
+            answer: "technical_support".localized()
+        ),
+        FAQItem(
+            question: "contact_support".localized(),
+            answer: "support_contact".localized()
+        )
     ]
     
     // MARK: - Expanding buttons to show answers when tapped
@@ -38,7 +68,7 @@ struct FAQView: View {
                     .font(.headline)
             }
         }
-        .navigationTitle("FAQ")
+        .navigationTitle("faq".localized())
     }
 }
 

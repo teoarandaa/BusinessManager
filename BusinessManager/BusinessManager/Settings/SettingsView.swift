@@ -21,10 +21,10 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 // MARK: - Notifications
-                Section("Notifications") {
+                Section("notifications".localized()) {
                     Toggle(isOn: $isPushEnabled) {
                         Label {
-                            Text("Push notifications")
+                            Text("push_notifications".localized())
                         } icon: {
                             Image(systemName: isPushEnabled ? "bell" : "bell.slash")
                                 .symbolEffect(.bounce, value: isPushEnabled)
@@ -33,17 +33,17 @@ struct SettingsView: View {
                     }
                 }
                 // MARK: - Appearance
-                Section("Appearance") {
+                Section("appearance".localized()) {
                     HStack {
                         Label {
                             NavigationLink {
                                 ThemePickerView(selection: $colorScheme)
                             } label: {
                                 HStack {
-                                    Text("Theme")
+                                    Text("theme".localized())
                                     Spacer()
-                                    Text(colorScheme == 0 ? "System" : 
-                                         colorScheme == 1 ? "Light" : "Dark")
+                                    Text(colorScheme == 0 ? "system".localized() : 
+                                         colorScheme == 1 ? "light".localized() : "dark".localized())
                                         .foregroundStyle(.secondary)
                                 }
                             }
@@ -53,33 +53,33 @@ struct SettingsView: View {
                     }
                 }
                 // MARK: - Plans
-                Section("Pricing") {
+                Section("pricing".localized()) {
                     NavigationLink(destination: PlansView()) {
-                        Label("Subscription packages", systemImage: "creditcard")
+                        Label("subscription_packages".localized(), systemImage: "creditcard")
                     }
                 }
                 // MARK: - Resources
-                Section("Resources") {
+                Section("resources".localized()) {
                     NavigationLink(destination: FaqView()) {
-                        Label("FAQ", systemImage: "questionmark.circle")
+                        Label("faq".localized(), systemImage: "questionmark.circle")
                     }
                     NavigationLink(destination: PrivacyView()) {
-                        Label("Privacy", systemImage: "lock")
+                        Label("privacy".localized(), systemImage: "lock")
                     }
                     Button(action: {
                         sendEmail(to: "help.businessmanager@gmail.com")
                     }) {
-                        Label("Business Manager support", systemImage: "envelope")
+                        Label("support".localized(), systemImage: "envelope")
                     }
                 }
                 // MARK: - Reports
-                Section("Reports") {
+                Section("reports".localized()) {
                     NavigationLink(destination: MonthlyReportView()) {
-                        Label("Monthly Summary (PDF)", systemImage: "text.document")
+                        Label("monthly_summary_pdf".localized(), systemImage: "text.document")
                     }
                 }
                 Section {
-                    Text("Version \(appVersion!)")
+                    Text("version".localized() + " \(appVersion!)")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -87,10 +87,10 @@ struct SettingsView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Settings")
+            .navigationTitle("settings".localized())
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
@@ -133,7 +133,7 @@ struct ThemePickerView: View {
                 dismiss()
             } label: {
                 Label {
-                    Text("System")
+                    Text("system".localized())
                         .foregroundStyle(colorScheme == .dark ? .white : .black)
                 } icon: {
                     Image(systemName: "iphone")
@@ -147,7 +147,7 @@ struct ThemePickerView: View {
                 dismiss()
             } label: {
                 Label {
-                    Text("Light")
+                    Text("light".localized())
                         .foregroundStyle(colorScheme == .dark ? .white : .black)
                 } icon: {
                     Image(systemName: "sun.max")
@@ -161,7 +161,7 @@ struct ThemePickerView: View {
                 dismiss()
             } label: {
                 Label {
-                    Text("Dark")
+                    Text("dark".localized())
                         .foregroundStyle(colorScheme == .dark ? .white : .black)
                 } icon: {
                     Image(systemName: "moon")
@@ -170,7 +170,7 @@ struct ThemePickerView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .navigationTitle("Theme")
+        .navigationTitle("theme".localized())
     }
 }
 

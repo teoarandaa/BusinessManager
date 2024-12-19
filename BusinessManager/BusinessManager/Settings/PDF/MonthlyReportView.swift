@@ -5,9 +5,9 @@ import Charts
 
 // MARK: - Report Period Enum
 enum ReportPeriod: String, CaseIterable {
-    case month = "Monthly"
-    case quarter = "Quarterly"
-    case year = "Yearly"
+    case month = "monthly"
+    case quarter = "quarterly"
+    case year = "yearly"
     
     var systemImage: String {
         switch self {
@@ -15,6 +15,10 @@ enum ReportPeriod: String, CaseIterable {
         case .quarter: return "calendar.badge.clock"
         case .year: return "calendar.badge.exclamationmark"
         }
+    }
+    
+    var localizedName: String {
+        rawValue.localized()
     }
 }
 
@@ -261,16 +265,16 @@ struct MonthlyReportView: View {
     var body: some View {
         List {
             Section {
-                Picker("Report Period", selection: $selectedPeriod) {
+                Picker("report_period".localized(), selection: $selectedPeriod) {
                     ForEach(ReportPeriod.allCases, id: \.self) { period in
-                        Text(period.rawValue)
+                        Text(period.localizedName)
                     }
                 }
                 .onChange(of: selectedPeriod) {
                     generateAndSharePDF()
                 }
                 
-                Picker("Department", selection: $selectedDepartment) {
+                Picker("department".localized(), selection: $selectedDepartment) {
                     ForEach(departments, id: \.self) { department in
                         Text(department)
                     }
@@ -293,7 +297,7 @@ struct MonthlyReportView: View {
             if let pdfData = pdfData {
                 Section {
                     Button(action: { showShareSheet = true }) {
-                        Label("Share PDF Report", systemImage: "square.and.arrow.up")
+                        Label("share_pdf_report".localized(), systemImage: "square.and.arrow.up")
                             .foregroundStyle(.accent)
                     }
                     
@@ -302,7 +306,7 @@ struct MonthlyReportView: View {
                 }
             }
         }
-        .navigationTitle(reportTitle)
+        .navigationTitle("monthly_report".localized())
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showDatePicker) {
             switch selectedPeriod {
@@ -537,19 +541,19 @@ class PDFGenerator {
             ]
             
             let reportsY = margin + 50
-            ("Reports Summary" as NSString).draw(at: CGPoint(x: margin, y: reportsY), withAttributes: summaryTitleAttributes)
+            ("reports_summary".localized() as NSString).draw(at: CGPoint(x: margin, y: reportsY), withAttributes: summaryTitleAttributes)
             
-            ("Department Performance Overview" as NSString).draw(
+            ("department_performance_overview".localized() as NSString).draw(
                 at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
                 withAttributes: summaryTitleAttributes
             )
             
             // Draw reports details
             let reportDetails = """
-            Total Reports: \(reports.count)
-            Average Performance: \(String(format: "%.1f", averagePerformance()))
-            Average Volume of Work: \(String(format: "%.1f", averageVolumeOfWork()))
-            Total Tasks Completed: \(totalTasks())
+            \("total_reports".localized()): \(reports.count)
+            \("average_performance".localized()): \(String(format: "%.1f", averagePerformance()))
+            \("average_volume".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
+            \("total_tasks_completed".localized()): \(totalTasks())
             """
             
             (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
@@ -632,7 +636,7 @@ class PDFGenerator {
                     let avgPerformance = reports.reduce(0.0) { $0 + Double($1.performanceMark) } / Double(reports.count) / 100.0
                     let avgVolume = reports.reduce(0.0) { $0 + Double($1.volumeOfWorkMark) } / Double(reports.count) / 100.0
                     
-                    // Normalizar tareas usando el máximo real
+                    // Normalizar tareas usando el m��ximo real
                     let avgTasks = Double(reports.reduce(0) { $0 + $1.numberOfFinishedTasks }) / Double(reports.count) / Double(maxTasks)
                     
                     let values = [avgPerformance, avgVolume, avgTasks]

@@ -3,19 +3,18 @@ import SwiftUI
 struct PrivacyView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     
-    // MARK: - Display for privacy items
     var body: some View {
         List {
-            Section("General Policies") {
+            Section("general_policies".localized()) {
                 NavigationLink(destination: TermsOfUseView()) {
-                    Text("Terms of Use")
+                    Text("terms_of_use".localized())
                 }
                 NavigationLink(destination: PrivacyPolicyView()) {
-                    Text("Privacy Policy")
+                    Text("privacy_policy".localized())
                 }
             }
         }
-        .navigationTitle("Privacy")
+        .navigationTitle("privacy".localized())
     }
 }
 

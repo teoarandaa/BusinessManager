@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct PrivacyPolicyView: View {
-    @AppStorage("isDarkMode") private var isDarkMode = false
-    
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
@@ -20,27 +18,27 @@ struct PrivacyPolicyView: View {
                         )
                         .padding(.bottom, 20)
                     
-                    Text("Last updated: December 06, 2024\n")
+                    Text("last_updated".localized())
                         .font(.footnote)
                     
-                    Text("Business Manager for SwiftUI does not collect any data about you.\n")
+                    Text("privacy_policy_main".localized())
                         .font(.title2)
                         .bold()
                     
-                    Text("All data will be securely stored on your device. If at any time we change our Privacy Policy, we will notify you with a notification.\n")
+                    Text("privacy_policy_details".localized())
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         
-                    Text("Contact Us\n")
+                    Text("contact_us".localized())
                         .font(.title2)
                         .bold()
                         
-                    Text("If you have questions about this Privacy Policy, please contact us at help.businessmanager@gmail.com.")
+                    Text("privacy_contact_info".localized())
                 }
             }
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
-            .navigationTitle("Privacy Policy")
+            .navigationTitle("privacy_policy".localized())
         }
     }
 }
