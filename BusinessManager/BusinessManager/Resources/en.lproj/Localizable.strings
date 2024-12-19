@@ -1,0 +1,300 @@
+// MARK: - General
+"ok" = "OK";
+"cancel" = "Cancel";
+"done" = "Done";
+"save" = "Save";
+"delete" = "Delete";
+"edit" = "Edit";
+"add" = "Add";
+
+// MARK: - Navigation
+"settings" = "Settings";
+"departments" = "Departments";
+"reports" = "Reports";
+"tasks" = "Tasks";
+"charts" = "Charts";
+"quality" = "Quality";
+
+// MARK: - Settings
+"appearance" = "Appearance";
+"notifications" = "Notifications";
+"push_notifications" = "Push notifications";
+"theme" = "Theme";
+"system" = "System";
+"light" = "Light";
+"dark" = "Dark";
+"resources" = "Resources";
+"pricing" = "Pricing";
+"subscription_packages" = "Subscription packages";
+"privacy" = "Privacy";
+"support" = "Business Manager support";
+"version" = "Version";
+"faq" = "FAQ";
+
+// MARK: - Reports
+"add_report" = "Add Report";
+"update_report" = "Update Report";
+"monthly_summary" = "Monthly Summary";
+"date" = "Date";
+"department" = "Department";
+"tasks_created" = "Tasks created";
+"on_time_tasks" = "On-Time Tasks";
+"finished_tasks" = "Finished Tasks";
+"annotations" = "Annotations";
+"add_note" = "Add note";
+"use_existing_department" = "Use Existing Department";
+"add_new" = "Add New";
+"reports" = "Reports";
+"no_reports" = "No Reports";
+"start_adding_reports" = "Start adding reports to track your team's performance.";
+"edit_report" = "Edit Report";
+"new_report" = "New Report";
+"report_details" = "Report Details";
+"department_name" = "Department Name";
+"select_department" = "Select Department";
+"tasks" = "Tasks";
+"total_tasks" = "Total Tasks";
+"completed_tasks" = "Completed Tasks";
+"completed_on_time" = "Completed On Time";
+"performance_mark" = "Performance Mark";
+"volume_of_work" = "Volume of Work";
+"save_report" = "Save Report";
+"delete_report" = "Delete Report";
+"delete_confirmation" = "Are you sure you want to delete this report?";
+"delete" = "Delete";
+"cancel" = "Cancel";
+"invalid_input" = "Invalid Input";
+"future_date_error" = "Cannot create reports for future dates.";
+"invalid_numbers" = "Please enter valid numbers for tasks.";
+"negative_tasks_error" = "Total tasks cannot be negative.";
+
+// MARK: - Tasks
+"add_task" = "Add Task";
+"update_task" = "Update Task";
+"active_tasks" = "Active Tasks";
+"completed_tasks" = "Completed Tasks";
+"priority" = "Priority";
+"status" = "Status";
+"completed" = "Completed";
+"active" = "Active";
+"no_tasks" = "No Tasks";
+"no_tasks_description" = "Start adding tasks to see your list.";
+"new_task" = "New Task";
+"task_details" = "Task Details";
+"search_tasks" = "Search tasks";
+"sort_by" = "Sort by";
+"sort" = "Sort";
+"date" = "Date";
+"priority" = "Priority";
+"title" = "Title";
+"content" = "Content";
+"comments" = "Comments";
+"status" = "Status";
+"expiring_date" = "Expiring date";
+"complete" = "Complete";
+"reactivate" = "Reactivate";
+"delete_task" = "Delete Task";
+"delete_task_confirmation" = "Are you sure you want to delete this task?";
+"days_overdue" = "%d days overdue";
+"active" = "Active";
+"completed" = "Completed";
+"cancel" = "Cancel";
+"save" = "Save";
+"done" = "Done";
+"edit" = "Edit";
+"delete" = "Delete";
+"settings" = "Settings";
+"information" = "Information";
+
+// MARK: - Charts
+"charts_for" = "Charts for %@";
+"yearly_charts" = "Yearly Charts";
+"yearly_summary" = "Yearly Summary";
+"yearly_summary_for" = "Yearly Summary for %@";
+"loading_yearly_summary" = "Loading Yearly Summary...";
+
+// Chart Titles
+"performance" = "Performance";
+"productivity" = "Productivity";
+"workload" = "Workload";
+
+// Chart Labels
+"volume_of_work" = "Volume of Work";
+"tasks_completed" = "Tasks Completed";
+"average_volume_work" = "Average Volume of Work";
+"department" = "Department";
+"date" = "Date";
+"efficiency" = "Efficiency";
+"finished_tasks" = "Finished Tasks";
+
+// MARK: - Quality
+"quality_analysis" = "Quality Analysis";
+"key_metrics" = "Key Metrics";
+"thresholds" = "Thresholds";
+"min_performance" = "Minimum Performance";
+"min_completion" = "Minimum Completion";
+"min_volume" = "Minimum Volume";
+"time_frame" = "Time Frame";
+"department" = "Department";
+"all_departments" = "All Departments";
+"filter" = "Filter";
+"delay_pattern" = "Delay Pattern";
+"task_delays_by_department" = "Task Delays by Department";
+"delayed_tasks" = "Delayed Tasks";
+"mark_as_resolved" = "Mark as Resolved";
+"target" = "Target: %d%%";
+"improving" = "Improving";
+"stable" = "Stable";
+"declining" = "Declining";
+
+// Time Frames
+"week" = "Week";
+"month" = "Month";
+"quarter" = "Quarter";
+"year" = "Year";
+
+// Insight Types
+"performance" = "Performance";
+"volume" = "Volume";
+"delay" = "Delay";
+
+// MARK: - Alerts
+"invalid_input" = "Invalid Input";
+"future_date_error" = "Cannot create reports for future dates.";
+"invalid_numbers" = "Please enter valid numbers for tasks.";
+"negative_tasks_error" = "Total tasks cannot be negative.";
+"delete_confirmation" = "Are you sure you want to delete this?"; 
+
+// MARK: - Chart Types
+"performance_mark" = "Performance Mark";
+"volume_of_work" = "Volume of Work";
+"tasks_completed" = "Tasks Completed"; 
+
+// MARK: - Quality Analysis
+"no_quality_data" = "No Quality Data";
+"start_adding_reports_quality" = "Start adding reports to see quality analysis.";
+"quality_analysis" = "Quality Analysis";
+"key_metrics" = "Key Metrics";
+"analytics" = "Analytics";
+"minimum_thresholds" = "Minimum Thresholds";
+"thresholds_settings" = "Thresholds Settings";
+"performance_value" = "Performance: %d%%";
+"task_completion_value" = "Task Completion: %d%%";
+"volume_work_value" = "Volume of Work: %d%%";
+"min_value" = "Min: %d%%";
+"delay_pattern" = "Delay Pattern";
+"delayed_tasks" = "Delayed Tasks";
+"date" = "Date";
+
+// MARK: - Department Reports
+"reports_by_year" = "Reports by Year";
+"filters" = "Filters";
+"no_results" = "No Results";
+"try_adjusting_filters" = "Try adjusting your filters to find what you're looking for.";
+"filter_by_date" = "Filter by Date";
+"date_range" = "Date Range";
+"from" = "From";
+"to" = "To";
+"performance_percentage" = "Performance (%)";
+"volume_work_percentage" = "Volume of Work (%)";
+"min" = "Min:";
+"max" = "Max:";
+"reset" = "Reset";
+"apply" = "Apply";
+"reports_for_year" = "Reports for %@";
+"all" = "All";
+"report_details" = "Report Details";
+"done" = "Done";
+"annotations" = "Annotations";
+
+// MARK: - FAQ
+"what_is_business_manager" = "What is Business Manager";
+"is_business_manager_free" = "Is Business Manager free to use?";
+"how_often_new_features" = "How often do you add new features to the app?";
+"frequent_updates" = "Are there frequent updates to the app?";
+"enable_push_notifications" = "How do I enable push notifications?";
+"multiple_languages" = "Is the app available in multiple languages?";
+"payment_methods" = "What payment methods do you accept?";
+"find_privacy_policy" = "Where can I find the privacy policy?";
+"technical_issues" = "What should I do if I encounter technical issues?";
+"contact_support" = "How can I contact support?";
+
+// MARK: - Privacy
+"general_policies" = "General Policies";
+"terms_of_use" = "Terms of Use";
+"privacy_policy" = "Privacy Policy";
+"last_updated" = "Last updated: %@";
+"privacy_description" = "Business Manager for SwiftUI does not collect any data about you.";
+"data_storage" = "All data will be securely stored on your device. If at any time we change our Privacy Policy, we will notify you with a notification.";
+"contact_us" = "Contact Us";
+"contact_privacy" = "If you have questions about this Privacy Policy, please contact us at help.businessmanager@gmail.com.";
+
+// MARK: - Terms of Use
+"acceptance_terms" = "1. Acceptance of Terms";
+"description_service" = "2. Description of Service";
+"in_app_purchases" = "3. In-App Purchases";
+"payment_billing" = "a. Payment and Billing";
+"refunds" = "b. Refunds";
+"price_changes" = "c. Price Changes";
+"intellectual_property" = "4. Intellectual Property";
+"limitation_liability" = "5. Limitation of Liability";
+"changes_terms" = "6. Changes to Terms of Use";
+"termination" = "7. Termination";
+"governing_law" = "8. Governing Law";
+"contact_information" = "9. Contact Information";
+
+// MARK: - Info Sheets
+"ok" = "Ok";
+"overview" = "Overview";
+
+// Charts Info
+"analytics_overview" = "Analytics Overview";
+"analytics_description" = "Analytics visualize key metrics: the Productivity Chart tracks performance trends, the Workload Chart compares performance with workload using a scatter plot to highlight efficiency, and the Performance Chart displays average workload versus completed tasks in a bar chart, measuring efficiency.";
+"how_create_charts" = "How to Create Charts";
+"charts_generation" = "Charts are generated from report data, processing performance, workload, and completed tasks to create visual insights. They highlight trends, efficiency, and productivity by transforming raw data into actionable information for each department.";
+"chart_types" = "Chart Types";
+"chart_types_description" = "The Chart Type selector offers different ways to visualize your data. Switch between Productivity trends, Efficiency distribution, and Performance metrics to get the most relevant view of your team's progress. Each chart type provides unique insights into different aspects of department performance.";
+"yearly_analysis" = "Yearly Analysis";
+"yearly_analysis_description" = "The Yearly Analysis view offers a broader perspective on organizational performance. By examining annual data, you can spot seasonal patterns and long-term trends, making it an essential tool for strategic planning and year-over-year performance assessment.";
+"creating_reports" = "Creating Reports";
+
+// Quality Info
+"quality_overview" = "Quality Overview";
+"quality_description" = "Quality Analysis provides comprehensive insights into department performance, volume of work, and task completion rates. Key metrics are tracked and analyzed to identify trends, helping you maintain high standards and improve efficiency.";
+"how_create_metrics" = "How to create Metrics";
+"metrics_description" = "To create quality metrics, start by tracking task completion times and setting deadlines. Record the number of tasks assigned and completed. Calculate performance based on timely completions, volume of work from task ratios, and overall completion rates. Monitor these metrics regularly to identify trends and areas for improvement.";
+"department_filter" = "Department Filter";
+"filter_description" = "The Department Filter enhances your analysis capabilities by allowing you to focus on specific time periods and departments. This targeted approach helps identify strengths and areas for improvement, supporting better decision-making about resources and processes.";
+"threshold_settings" = "Threshold Settings";
+"threshold_description" = "Threshold Settings help establish and maintain quality standards across your organization. By setting minimum performance levels and benchmarks, you create clear targets and early warning indicators, enabling proactive management of your quality standards.";
+"metrics" = "Metrics";
+"filters" = "Filters";
+"thresholds" = "Thresholds";
+
+// Reports Info
+"reports_overview" = "Reports Overview";
+"reports_description" = "Reports offer insights into performance, productivity, and progress.\n\nSecurely stored and organized by type and date, they help you track and share results, ensuring quick access for smarter decisions.";
+"how_create_reports" = "How to Create Reports";
+"reports_creation_description" = "To create accurate reports, we need the current date, department name, tasks created, tasks completed on-time, and tasks completed (tasks completed on-time is included in this group).\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.";
+"monthly_summary" = "Monthly Summary";
+"monthly_summary_description" = "The Monthly Summary feature generates a comprehensive PDF report comparing department performances and trends. This report format makes it easy to review and share key metrics, making it invaluable for management reviews and team evaluations.";
+"add_report" = "Add Report";
+"add_report_description" = "Adding a new report is a straightforward process for tracking your department's progress. You can input task completion rates, performance metrics, and specific notes about achievements or challenges, building a clear picture of your team's performance over time.";
+
+// Tasks Info
+"tasks_overview" = "Tasks Overview";
+"tasks_description" = "Tasks help you organize, prioritize, and track your work efficiently. With a clear structure and real-time updates, you can manage deadlines, monitor progress, and keep your workflow optimized, all in one place.";
+"how_create_tasks" = "How to Create Tasks";
+"tasks_creation_description" = "Tasks are created with the following information: expiring date to set deadlines, title for the task name, content for task details, comments for additional notes, and priority to indicate urgency. This data ensures tasks are well-organized and managed effectively.";
+"sort_tasks" = "Sort Tasks";
+"sort_description" = "The Sort functionality organizes your tasks effectively. Sort by date for a chronological view of deadlines, or by priority to focus on critical tasks first. This flexibility helps you manage your workflow according to your current needs.";
+"add_task" = "Add Task";
+"add_task_description" = "Creating a new task is an intuitive process where you can specify deadlines, set priorities, and add detailed descriptions. Additional comments provide context and improve task tracking, ensuring clear communication throughout the process.";
+"managing_tasks" = "Managing Tasks";
+"sort" = "Sort";
+
+// MARK: - Main Tab
+"reports" = "Reports";
+"analytics" = "Analytics";
+"quality" = "Quality";
+"tasks" = "Tasks";
