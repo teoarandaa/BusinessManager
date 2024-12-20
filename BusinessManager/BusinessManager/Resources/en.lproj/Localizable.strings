@@ -62,6 +62,7 @@
 "total_tasks" = "Total Tasks";
 "completed_tasks" = "Completed Tasks";
 "completed_on_time" = "Completed On Time";
+"tasks_created" = "Tasks Created";
 "performance_mark" = "Performance Mark";
 "volume_of_work" = "Volume of Work";
 "save_report" = "Save Report";
@@ -73,6 +74,14 @@
 "future_date_error" = "Cannot create reports for future dates.";
 "invalid_numbers" = "Please enter valid numbers for tasks.";
 "negative_tasks_error" = "Total tasks cannot be negative.";
+"number" = "Number";
+"name" = "Name";
+"add_note" = "Add note";
+"invalid_input" = "Invalid Input";
+"err_reports_dates" = "Cannot create reports for future dates.";
+"err_valid_num" = "Please enter valid numbers for tasks.";
+"err_negative_totalTasks" = "Total tasks cannot be negative.";
+"edit_department" = "Edit Name";
 
 // MARK: - Tasks
 "add_task" = "Add Task";
@@ -306,3 +315,23 @@
 "analytics" = "Analytics";
 "quality" = "Quality";
 "tasks" = "Tasks";
+
+// MARK: - Reports
+"search_departments" = "Search departments";
+"reports_count" = "reports";
+"edit_name" = "Edit Name";
+"change_icon" = "Change Icon";
+"select_icon" = "Select Icon";
+"reports_for_year" = "Reports for %@";
+"how_to_create_reports" = "How to Create Reports";
+"create_reports_description" = "To create accurate reports, we need the current date, department name, tasks created, tasks completed on-time, and tasks completed (tasks completed on-time is included in this group).\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.";
+"monthly_summary_title" = "Monthly Summary";
+"monthly_summary_description" = "The Monthly Summary feature generates a comprehensive PDF report comparing department performances and trends. This report format makes it easy to review and share key metrics, making it invaluable for management reviews and team evaluations.";
+"add_report_title" = "Add Report";
+"add_report_description" = "Adding a new report is a straightforward process for tracking your department's progress. You can input task completion rates, performance metrics, and specific notes about achievements or challenges, building a clear picture of your team's performance over time.";
+"close" = "Close";
+"workload" = "Workload";
+
+// MARK: - Charts
+"no_charts_data" = "No Charts Data";
+"start_adding_reports_charts" = "Start adding reports to see analytics charts.";

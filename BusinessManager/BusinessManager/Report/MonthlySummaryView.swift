@@ -62,7 +62,7 @@ struct MonthlySummaryView: View {
                 loadMonthlySummary()
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("close".localized()) {
                         dismiss()
                     }

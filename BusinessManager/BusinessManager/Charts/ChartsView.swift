@@ -46,12 +46,11 @@ struct ChartsView: View {
         NavigationStack {
             Group {
                 if reports.isEmpty {
-                    
                     ContentUnavailableView(label: {
-                        Label("no_quality_data".localized(), systemImage: "chart.bar")
+                        Label("no_charts_data".localized(), systemImage: "chart.bar")
                             .font(.title2)
                     }, description: {
-                        Text("start_adding_reports_quality".localized())
+                        Text("start_adding_reports_charts".localized())
                             .foregroundStyle(.secondary)
                     }, actions: {
                         Button("reports".localized()) {

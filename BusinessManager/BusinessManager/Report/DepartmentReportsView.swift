@@ -281,11 +281,11 @@ struct YearReportsView: View {
                 }
             }
         }
-        .navigationTitle("Reports for \(String(year))")
+        .navigationTitle("reports_for_year".localized(with: String(year)))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Button("All") {
+                    Button("all".localized()) {
                         selectedMonth = nil
                     }
                     ForEach(months, id: \.self) { month in
@@ -294,7 +294,7 @@ struct YearReportsView: View {
                         }
                     }
                 } label: {
-                    Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                    Label("filters".localized(), systemImage: "line.3.horizontal.decrease.circle")
                 }
             }
         }
@@ -321,7 +321,7 @@ struct YearReportsView: View {
     private func monthName(for month: Int) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
-        return dateFormatter.monthSymbols[month - 1]
+        return dateFormatter.monthSymbols[month - 1].capitalized
     }
 }
 
@@ -336,9 +336,9 @@ struct ReportDetailView: View {
                     HStack {
                         HStack {
                             Image(systemName: "calendar")
-                            Text("Date")
+                            Text("date".localized())
                         }
-                            .bold()
+                        .bold()
                         Spacer()
                         Text(report.date, format: .dateTime.year().month(.abbreviated).day())
                     }
@@ -346,9 +346,9 @@ struct ReportDetailView: View {
                     HStack {
                         HStack {
                             Image(systemName: "building")
-                            Text("Department")
+                            Text("department".localized())
                         }
-                            .bold()
+                        .bold()
                         Spacer()
                         Text(report.departmentName)
                     }
@@ -356,9 +356,9 @@ struct ReportDetailView: View {
                     HStack {
                         HStack {
                             Image(systemName: "chart.line.uptrend.xyaxis")
-                            Text("Performance")
+                            Text("performance".localized())
                         }
-                            .bold()
+                        .bold()
                         Spacer()
                         Text("\(report.performanceMark)%")
                     }
@@ -366,9 +366,9 @@ struct ReportDetailView: View {
                     HStack {
                         HStack {
                             Image(systemName: "document.on.document")
-                            Text("Volume of Work")
+                            Text("volume_of_work".localized())
                         }
-                            .bold()
+                        .bold()
                         Spacer()
                         Text("\(report.volumeOfWorkMark)%")
                     }
@@ -376,9 +376,9 @@ struct ReportDetailView: View {
                     HStack {
                         HStack {
                             Image(systemName: "checkmark.circle")
-                            Text("Finished Tasks")
+                            Text("finished_tasks".localized())
                         }
-                            .bold()
+                        .bold()
                         Spacer()
                         Text("\(report.numberOfFinishedTasks)")
                     }
@@ -387,9 +387,9 @@ struct ReportDetailView: View {
                         HStack {
                             HStack {
                                 Image(systemName: "pencil")
-                                Text("Annotations")
+                                Text("annotations".localized())
                             }
-                                .bold()
+                            .bold()
                             Spacer()
                             Text(report.annotations)
                         }
@@ -397,11 +397,11 @@ struct ReportDetailView: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
-            .navigationTitle("Report Details")
+            .navigationTitle("report_details".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button("done".localized()) { dismiss() }
                 }
             }
         }

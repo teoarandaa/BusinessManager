@@ -51,6 +51,7 @@
 "total_tasks" = "Total de Tareas";
 "completed_tasks" = "Tareas Completadas";
 "completed_on_time" = "Completadas a Tiempo";
+"tasks_created" = "Tareas creadas";
 "performance_mark" = "Marca de Rendimiento";
 "volume_of_work" = "Volumen de Trabajo";
 "save_report" = "Guardar Informe";
@@ -62,6 +63,15 @@
 "future_date_error" = "No se pueden crear informes para fechas futuras.";
 "invalid_numbers" = "Por favor, introduce números válidos para las tareas.";
 "negative_tasks_error" = "El total de tareas no puede ser negativo.";
+"number" = "Número";
+"name" = "Nombre";
+"add_note" = "Añadir nota";
+"invalid_input" = "Entrada Incorrecta";
+"err_reports_dates" = "No se pueden crear informes para fechas futuras.";
+"err_valid_num" = "Por favor, ingrese números válidos para las tareas.";
+"err_negative_totalTasks" = "El total de tareas no puede ser negativo.";
+"edit_department" = "Editar Nombre";
+
 
 // MARK: - Tasks
 "add_task" = "Añadir Tarea";
@@ -122,7 +132,7 @@
 "department" = "Departamento";
 "date" = "Fecha";
 "efficiency" = "Eficiencia";
-"finished_tasks" = "Tareas Finalizadas";
+"finished_tasks" = "Tareas finalizadas";
 
 // MARK: - Quality
 "quality_analysis" = "Análisis de Calidad";
@@ -298,3 +308,21 @@
   
 "language" = "Idioma";
 "select_language" = "Seleccionar idioma";
+
+"search_departments" = "Buscar departamentos";
+"reports_count" = "informes";
+"edit_name" = "Editar nombre";
+"change_icon" = "Cambiar icono";
+"select_icon" = "Seleccionar icono";
+"reports_for_year" = "Informes de %@";
+"how_to_create_reports" = "Cómo crear informes";
+"create_reports_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas, tareas completadas a tiempo y tareas completadas (las tareas completadas a tiempo están incluidas en este grupo).\nEstos datos se muestran en gráficos, proporcionando información clara sobre productividad, carga de trabajo y rendimiento, ayudándote a tomar decisiones informadas basadas en datos.";
+"monthly_summary_title" = "Resumen mensual";
+"monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo que compara el rendimiento y las tendencias de los departamentos. Este formato de informe facilita la revisión y el intercambio de métricas clave, haciéndolo invaluable para las revisiones de gestión y las evaluaciones de equipo.";
+"add_report_title" = "Añadir informe";
+"add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
+"close" = "Cerrar";
+"workload" = "Carga de trabajo";
+
+"no_charts_data" = "Sin datos para gráficos";
+"start_adding_reports_charts" = "Empieza a añadir informes para ver los gráficos de análisis.";

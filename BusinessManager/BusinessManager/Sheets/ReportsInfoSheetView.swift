@@ -32,12 +32,12 @@ struct ReportsInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
-                        Text("How to Create Reports")
+                        Text("how_to_create_reports".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("To create accurate reports, we need the current date, department name, tasks created, tasks completed on-time, and tasks completed (tasks completed on-time is included in this group).\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.")
+                        Text("create_reports_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -55,12 +55,12 @@ struct ReportsInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Monthly Summary")
+                        Text("monthly_summary_title".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The Monthly Summary feature generates a comprehensive PDF report comparing department performances and trends. This report format makes it easy to review and share key metrics, making it invaluable for management reviews and team evaluations.")
+                        Text("monthly_summary_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -78,12 +78,12 @@ struct ReportsInfoSheetView: View {
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Add Report")
+                        Text("add_report_title".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Adding a new report is a straightforward process for tracking your department's progress. You can input task completion rates, performance metrics, and specific notes about achievements or challenges, building a clear picture of your team's performance over time.")
+                        Text("add_report_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         

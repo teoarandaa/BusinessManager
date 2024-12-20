@@ -52,7 +52,7 @@ struct ReportsView: View {
                     }
                 }
                 .if(!reports.isEmpty) { view in
-                    view.searchable(text: $searchText, prompt: "Search departments")
+                    view.searchable(text: $searchText, prompt: "search_departments".localized())
                         .searchSuggestions {
                             if searchText.isEmpty {
                                 ForEach(reports.prefix(3)) { report in
@@ -194,17 +194,17 @@ struct AddReportSheet: View {
                     Text("department".localized())
                         .bold()
                     Spacer()
-                    TextField("Name", text: $departmentName, axis: .vertical)
+                    TextField("name".localized(), text: $departmentName, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "plus.circle")
-                    Text("Tasks created")
+                    Text("tasks_created".localized())
                         .bold()
                     Spacer()
-                    TextField("Number", text: $totalTasksCreated)
+                    TextField("number".localized(), text: $totalTasksCreated)
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
@@ -212,10 +212,10 @@ struct AddReportSheet: View {
                 
                 HStack {
                     Image(systemName: "checkmark.seal")
-                    Text("On-Time Tasks")
+                    Text("completed_on_time".localized())
                         .bold()
                     Spacer()
-                    TextField("Number", text: $tasksCompletedWithoutDelay)
+                    TextField("number".localized(), text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
@@ -223,10 +223,10 @@ struct AddReportSheet: View {
                 
                 HStack {
                     Image(systemName: "checkmark.circle")
-                    Text("Finished Tasks")
+                    Text("completed_tasks".localized())
                         .bold()
                     Spacer()
-                    TextField("Number", text: $numberOfFinishedTasks)
+                    TextField("number".localized(), text: $numberOfFinishedTasks)
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
@@ -234,10 +234,10 @@ struct AddReportSheet: View {
                 
                 HStack(alignment: .top) {
                     Image(systemName: "pencil")
-                    Text("Annotations")
+                    Text("annotations".localized())
                         .bold()
                     Spacer()
-                    TextField("Add note", text: $annotations, axis: .vertical)
+                    TextField("add_note".localized(), text: $annotations, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
@@ -348,14 +348,26 @@ struct DepartmentCell: View {
     @Environment(\.modelContext) private var context
     let reports: [Report]
     
-    var departmentIcon: String {
-        let dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
-        return dictionary[departmentName] ?? "building.2"
+    @State private var currentIcon: String = "building.2"
+    
+    private func updateCurrentIcon() {
+        if let data = iconStorage.data(using: .utf8),
+           let dictionary = try? JSONDecoder().decode([String: String].self, from: data) {
+            print("DepartmentCell - Icons dictionary: \(dictionary)")
+            print("DepartmentCell - Looking for department: \(departmentName)")
+            if let icon = dictionary[departmentName] {
+                currentIcon = icon
+                print("DepartmentCell - Found icon: \(icon)")
+            } else {
+                currentIcon = "building.2"
+                print("DepartmentCell - Using default icon")
+            }
+        }
     }
     
     var body: some View {
         HStack {
-            Image(systemName: departmentIcon)
+            Image(systemName: currentIcon)
                 .font(.system(size: 16))
                 .foregroundStyle(.accent)
                 .frame(width: 24, height: 24)
@@ -363,7 +375,7 @@ struct DepartmentCell: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(departmentName)
                     .font(.system(size: 16))
-                Text("\(reportsCount) reports")
+                Text("\(reportsCount) " + "reports_count".localized())
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -373,13 +385,13 @@ struct DepartmentCell: View {
             Button {
                 isShowingEditSheet = true
             } label: {
-                Label("Edit Name", systemImage: "pencil")
+                Label("edit_name".localized(), systemImage: "pencil")
             }
             
             Button {
                 isShowingIconPicker = true
             } label: {
-                Label("Change Icon", systemImage: "photo")
+                Label("change_icon".localized(), systemImage: "photo")
             }
         }
         .sheet(isPresented: $isShowingEditSheet) {
@@ -388,10 +400,92 @@ struct DepartmentCell: View {
         .sheet(isPresented: $isShowingIconPicker) {
             IconPickerView(departmentName: departmentName)
         }
+        .onAppear {
+            updateCurrentIcon()
+            setupNotificationObserver()
+        }
+        .onChange(of: iconStorage) {
+            updateCurrentIcon()
+        }
+    }
+    
+    private func setupNotificationObserver() {
+        NotificationCenter.default.addObserver(
+            forName: .departmentIconDidChange,
+            object: nil,
+            queue: .main
+        ) { _ in
+            updateCurrentIcon()
+        }
     }
 }
 
-// Añadir esta nueva vista para seleccionar iconos
+// Primero definimos las estructuras necesarias
+struct IconItem: Identifiable {
+    let id = UUID()
+    let icon: String
+}
+
+struct IconSection: Identifiable {
+    let id = UUID()
+    let title: String
+    let icons: [IconItem]
+}
+
+// Luego las variables y datos necesarios
+let categories = ["All", "General", "Tech", "Business", "Communication"]
+
+let sections = [
+    IconSection(title: "General", icons: [
+        IconItem(icon: "building.2"),
+        IconItem(icon: "building.columns"),
+        IconItem(icon: "building"),
+        IconItem(icon: "house"),
+        IconItem(icon: "briefcase"),
+        IconItem(icon: "folder"),
+        IconItem(icon: "doc"),
+        IconItem(icon: "chart.bar"),
+        IconItem(icon: "chart.pie"),
+        IconItem(icon: "chart.line.uptrend.xyaxis")
+    ]),
+    IconSection(title: "Tech", icons: [
+        IconItem(icon: "desktopcomputer"),
+        IconItem(icon: "laptopcomputer"),
+        IconItem(icon: "keyboard"),
+        IconItem(icon: "printer"),
+        IconItem(icon: "network"),
+        IconItem(icon: "server.rack"),
+        IconItem(icon: "cpu"),
+        IconItem(icon: "memorychip"),
+        IconItem(icon: "display"),
+        IconItem(icon: "pc")
+    ]),
+    IconSection(title: "Business", icons: [
+        IconItem(icon: "creditcard"),
+        IconItem(icon: "banknote"),
+        IconItem(icon: "dollarsign.circle"),
+        IconItem(icon: "chart.bar.doc.horizontal"),
+        IconItem(icon: "newspaper"),
+        IconItem(icon: "case"),
+        IconItem(icon: "case.fill"),
+        IconItem(icon: "signature"),
+        IconItem(icon: "pencil.and.outline"),
+        IconItem(icon: "list.clipboard")
+    ]),
+    IconSection(title: "Communication", icons: [
+        IconItem(icon: "message"),
+        IconItem(icon: "phone"),
+        IconItem(icon: "envelope"),
+        IconItem(icon: "bell"),
+        IconItem(icon: "megaphone"),
+        IconItem(icon: "bubble.left"),
+        IconItem(icon: "bubble.right"),
+        IconItem(icon: "mail.stack"),
+        IconItem(icon: "text.bubble"),
+        IconItem(icon: "phone.circle")
+    ])
+]
+
 struct IconPickerView: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage("departmentIcons") private var iconStorage: String = "{}"
@@ -399,121 +493,8 @@ struct IconPickerView: View {
     @State private var selectedIcon: String = "building.2"
     @State private var selectedCategory: String = "All"
     
-    struct DepartmentIcon: Identifiable {
-        let id = UUID()
-        let icon: String
-    }
-    
-    struct BusinessSection: Identifiable {
-        let id = UUID()
-        let title: String
-        let icons: [DepartmentIcon]
-    }
-    
-    let categories = ["All", "Health", "Technology", "Education", "Tourism", 
-                     "Food", "Energy", "Fashion", "Entertainment", 
-                     "Transport", "Real Estate", "Finance", "E-Commerce", 
-                     "Consulting"]
-    
-    let sections = [
-        BusinessSection(title: "Health", icons: [
-            "heart", "waveform.path.ecg", "stethoscope", "cross", "pills", 
-            "bandage", "staroflife", "thermometer", "bed.double", "lungs", 
-            "ear", "eye", "brain.head.profile", "hand.raised", "figure.walk", 
-            "drop", "allergens", "bolt.heart", "person.crop.circle.badge.checkmark", 
-            "plus.circle"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Technology", icons: [
-            "desktopcomputer", "laptopcomputer", "smartphone", "cpu",
-            "server.rack", "network", "antenna.radiowaves.left.and.right", "wifi", "gear",
-            "cloud", "bolt.circle", "battery.100", "keyboard", "printer", 
-            "camera", "mic", "speaker.wave.2", "arrow.up.bin"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Education", icons: [
-            "book", "graduationcap", "pencil", "folder",
-            "text.book.closed", "calendar", "magnifyingglass", "square.and.pencil", "bookmark",
-            "doc", "person.crop.rectangle", "ruler", "paintbrush", "brain",
-            "character.book.closed", "brain.head.profile", "list.bullet.rectangle", "quote.bubble", "highlighter"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Tourism", icons: [
-            "airplane", "suitcase", "globe", "map", "tent",
-            "binoculars", "camera", "sun.max", "mountain.2", "beach.umbrella",
-            "leaf", "train.side.front.car", "car", "bus", "signpost.right",
-            "house", "star", "creditcard", "location.circle"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Food", icons: [
-            "fork.knife", "cup.and.saucer", "leaf", "cart", "bag",
-            "takeoutbag.and.cup.and.straw", "basket", "fork.knife.circle", "wineglass", "birthday.cake",
-            "carrot", "tortoise", "leaf.circle", "leaf.circle", "fork.knife.circle",
-            "cup.and.saucer", "fish", "fork.knife.circle", "fork.knife.circle", "flame"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Energy", icons: [
-            "bolt", "leaf", "flame", "drop", "wind",
-            "globe", "sun.max", "fuelpump", "mountain.2", "tree",
-            "car.2", "battery.100", "lightbulb", "fanblades", "trash",
-            "arrow.3.trianglepath", "bolt.shield", "hammer", "building.columns", "gearshape"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Fashion", icons: [
-            "scissors", "hanger", "tag", "bag", "tshirt",
-            "tshirt", "bag", "circle.grid.cross", "clock", "rectangle.split.3x3",
-            "arrow.2.squarepath", "scissors.circle", "circle.grid.2x2", "circle.grid.cross", "wand.and.stars",
-            "cube.box", "sparkles", "star.circle", "basket", "globe"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Entertainment", icons: [
-            "play.circle", "film", "music.note", "gamecontroller", "mic",
-            "headphones", "tv", "camera", "film", "video",
-            "speaker.wave.2", "theatermasks", "lightbulb", "paintpalette", "book",
-            "star", "bolt", "record.circle", "play.rectangle", "popcorn"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Transport", icons: [
-            "car", "car.2", "bicycle", "airplane", "ferry",
-            "train.side.front.car", "tram", "bus", "location", "globe",
-            "arrow.up.doc", "square.and.arrow.up", "wrench.and.screwdriver", "fuelpump", "gear",
-            "map", "house.circle", "calendar", "person.crop.rectangle", "arrow.triangle.turn.up.right.diamond"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Real Estate", icons: [
-            "house", "building.2", "magnifyingglass", "lock", "key",
-            "calendar", "dollarsign.circle", "pencil", "folder", "gear",
-            "location", "creditcard", "person.crop.circle.badge.checkmark", "lightbulb", "list.bullet",
-            "map", "signpost.right", "doc.text", "bookmark", "hand.raised"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Finance", icons: [
-            "chart.bar", "dollarsign.circle", "creditcard", "lock", "key",
-            "banknote", "building.columns", "doc.text", "checkmark", "wallet.pass",
-            "list.bullet.rectangle", "arrow.triangle.2.circlepath.circle", "shield", "magnifyingglass", "tag",
-            "calendar", "chart.pie", "lock.doc", "person.crop.circle.badge.checkmark", "text.badge.checkmark"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "E-Commerce", icons: [
-            "cart", "bag", "creditcard", "house", "car.2",
-            "globe", "tag", "barcode", "barcode.viewfinder", "phone.arrow.down.left",
-            "arrow.triangle.2.circlepath", "clock.arrow.circlepath", "wallet.pass", "gift", "bookmark",
-            "cube.box", "calendar", "magnifyingglass", "bell", "bolt"
-        ].map { DepartmentIcon(icon: $0) }),
-        
-        BusinessSection(title: "Consulting", icons: [
-            "briefcase", "doc.text.magnifyingglass", "chart.bar", "calendar", "lightbulb",
-            "network", "person.crop.rectangle", "gear", "arrow.3.trianglepath", "quote.bubble",
-            "list.bullet.rectangle", "building.2", "key", "lock", "hand.raised",
-            "arrow.uturn.forward.circle", "brain", "checkmark", "chart.pie", "doc"
-        ].map { DepartmentIcon(icon: $0) })
-    ]
-    
-    var filteredSections: [BusinessSection] {
-        if selectedCategory == "All" {
-            return sections
-        }
-        return sections.filter { $0.title == selectedCategory }
+    var filteredSections: [IconSection] {
+        selectedCategory == "All" ? sections : sections.filter { $0.title == selectedCategory }
     }
     
     var body: some View {
@@ -542,81 +523,76 @@ struct IconPickerView: View {
                     .padding(.horizontal)
                 }
                 .padding(.vertical, 8)
-                .background(Color(UIColor.systemBackground))
                 
                 // Contenido principal
-                ScrollView {
-                    LazyVStack(spacing: 16, pinnedViews: .sectionHeaders) {
-                        ForEach(filteredSections) { section in
-                            Section {
-                                LazyVGrid(
-                                    columns: [
-                                        GridItem(.adaptive(minimum: 80, maximum: 100), spacing: 16)
-                                    ],
-                                    spacing: 16
-                                ) {
-                                    ForEach(section.icons) { item in
-                                        IconCell(
-                                            icon: item.icon,
-                                            isSelected: selectedIcon == item.icon,
-                                            action: {
-                                                let generator = UIImpactFeedbackGenerator(style: .light)
-                                                generator.impactOccurred()
-                                                selectedIcon = item.icon
-                                            }
-                                        )
-                                    }
+                List {
+                    ForEach(filteredSections) { section in
+                        Section(header: Text(section.title)) {
+                            LazyVGrid(columns: [
+                                GridItem(.adaptive(minimum: 44))
+                            ], spacing: 10) {
+                                ForEach(section.icons) { icon in
+                                    Image(systemName: icon.icon)
+                                        .font(.title2)
+                                        .frame(width: 44, height: 44)
+                                        .background(selectedIcon == icon.icon ? Color.accentColor.opacity(0.2) : Color.clear)
+                                        .cornerRadius(8)
+                                        .onTapGesture {
+                                            selectedIcon = icon.icon
+                                            let generator = UISelectionFeedbackGenerator()
+                                            generator.selectionChanged()
+                                        }
                                 }
-                                .padding(.horizontal)
-                                .padding(.bottom, 16)
-                            } header: {
-                                HStack {
-                                    Text(section.title)
-                                        .font(.headline)
-                                        .padding(.leading)
-                                    Spacer()
-                                }
-                                .padding(.vertical, 8)
-                                .background(Color(UIColor.systemBackground))
                             }
                         }
                     }
                 }
             }
-            .navigationTitle("Select Icon")
+            .navigationTitle("select_icon".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
-                        let generator = UIImpactFeedbackGenerator(style: .light)
-                        generator.impactOccurred()
-                        dismiss()
-                    }
-                }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
-                        let generator = UINotificationFeedbackGenerator()
-                        generator.notificationOccurred(.success)
+                    Button("done".localized()) {
                         updateIcon(to: selectedIcon)
                         dismiss()
                     }
                 }
             }
         }
+        .onAppear {
+            selectedIcon = getCurrentIcon()
+            print("IconPicker - Opened with current icon: \(selectedIcon)")
+        }
     }
     
     private func getCurrentIcon() -> String {
-        let dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
-        return dictionary[departmentName] ?? "building.2"
+        if let data = iconStorage.data(using: .utf8),
+           let dictionary = try? JSONDecoder().decode([String: String].self, from: data),
+           let icon = dictionary[departmentName] {
+            return icon
+        }
+        return "building.2"
     }
     
-    private func updateIcon(to newIcon: String) {
-        var dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
-        dictionary[departmentName] = newIcon
-        if let encoded = try? JSONEncoder().encode(dictionary),
-           let string = String(data: encoded, encoding: .utf8) {
-            iconStorage = string
+    private func updateIcon(to icon: String) {
+        var dictionary: [String: String] = [:]
+        
+        if let data = iconStorage.data(using: .utf8),
+           let existingDictionary = try? JSONDecoder().decode([String: String].self, from: data) {
+            dictionary = existingDictionary
         }
+        
+        print("IconPicker - Before update: \(dictionary)")
+        dictionary[departmentName] = icon
+        print("IconPicker - After update: \(dictionary)")
+        
+        if let encodedData = try? JSONEncoder().encode(dictionary),
+           let encodedString = String(data: encodedData, encoding: .utf8) {
+            iconStorage = encodedString
+            print("IconPicker - Saved to storage: \(iconStorage)")
+        }
+        
+        NotificationCenter.default.post(name: .departmentIconDidChange, object: nil)
     }
 }
 
@@ -677,7 +653,7 @@ struct UpdateReportSheet: View {
             Form {
                 HStack {
                     Image(systemName: "calendar")
-                    Text("Date")
+                    Text("date".localized())
                         .bold()
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
@@ -687,20 +663,20 @@ struct UpdateReportSheet: View {
                 
                 HStack {
                     Image(systemName: "building.2")
-                    Text("Department")
+                    Text("department".localized())
                         .bold()
                     Spacer()
-                    TextField("Name", text: $departmentName, axis: .vertical)
+                    TextField("name".localized(), text: $departmentName, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
                     Image(systemName: "plus.circle")
-                    Text("Tasks created")
+                    Text("tasks_created".localized())
                         .bold()
                     Spacer()
-                    TextField("Number", text: $totalTasksCreated)
+                    TextField("number".localized(), text: $totalTasksCreated)
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
@@ -708,10 +684,10 @@ struct UpdateReportSheet: View {
                 
                 HStack {
                     Image(systemName: "checkmark.seal")
-                    Text("On-Time Tasks")
+                    Text("completed_on_time".localized())
                         .bold()
                     Spacer()
-                    TextField("Number", text: $tasksCompletedWithoutDelay)
+                    TextField("number".localized(), text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
@@ -719,10 +695,10 @@ struct UpdateReportSheet: View {
                 
                 HStack {
                     Image(systemName: "checkmark.circle")
-                    Text("Finished Tasks")
+                    Text("completed_tasks".localized())
                         .bold()
                     Spacer()
-                    TextField("Number", text: $numberOfFinishedTasks)
+                    TextField("number".localized(), text: $numberOfFinishedTasks)
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 120)
                         .multilineTextAlignment(.trailing)
@@ -731,26 +707,26 @@ struct UpdateReportSheet: View {
                 
                 HStack(alignment: .top) {
                     Image(systemName: "pencil")
-                    Text("Annotations")
+                    Text("annotations".localized())
                         .bold()
                     Spacer()
-                    TextField("Add note", text: $annotations, axis: .vertical)
+                    TextField("add_note".localized(), text: $annotations, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
             }
-            .navigationTitle("Update Report")
+            .navigationTitle("edit_report".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("cancel".localized()) { dismiss() }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") { updateReport() }
+                    Button("save".localized()) { updateReport() }
                         .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
                 }
             }
-            .alert("Invalid Input", isPresented: $showAlert) {
+            .alert("invalid_inpur".localized(), isPresented: $showAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(alertMessage)
@@ -762,7 +738,7 @@ struct UpdateReportSheet: View {
         // Validar que la fecha no sea futura
         guard date <= Date() else {
             showAlert = true
-            alertMessage = "Cannot create reports for future dates."
+            alertMessage = "err_reports_dates".localized()
             return
         }
 
@@ -771,14 +747,14 @@ struct UpdateReportSheet: View {
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
               let finishedTasks = Int(numberOfFinishedTasks) else {
             showAlert = true
-            alertMessage = "Please enter valid numbers for tasks."
+            alertMessage = "err_valid_num".localized()
             return
         }
         
         // Validaciones básicas
         guard totalTasks >= 0 else {
             showAlert = true
-            alertMessage = "Total tasks cannot be negative."
+            alertMessage = "err_negative_totalTasks".localized()
             return
         }
         
@@ -820,21 +796,21 @@ struct EditDepartmentSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Department Name", text: $newDepartmentName)
+                    TextField("department_name".localized(), text: $newDepartmentName)
                 }
             }
-            .navigationTitle("Edit Department")
+            .navigationTitle("edit_department".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button("cancel".localized()) {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button("save".localized()) {
                         // Actualizar el icono con el nuevo nombre del departamento
                         var dictionary = (try? JSONDecoder().decode([String: String].self, from: Data(iconStorage.utf8))) ?? [:]
                         if let icon = dictionary[departmentName] {
@@ -870,4 +846,8 @@ struct EditDepartmentSheet: View {
             }
         }
     }
+}
+
+extension Notification.Name {
+    static let departmentIconDidChange = Notification.Name("departmentIconDidChange")
 }
