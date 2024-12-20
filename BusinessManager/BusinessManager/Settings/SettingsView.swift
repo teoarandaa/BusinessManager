@@ -6,6 +6,7 @@ struct SettingsView: View {
     @AppStorage("appLanguage") private var appLanguage = "es" // Nuevo AppStorage para el idioma
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var systemColorScheme
+    @State private var showLanguageAlert = false
     
     // Definir los idiomas disponibles
     private let availableLanguages = [
@@ -35,11 +36,9 @@ struct SettingsView: View {
                         }
                     }
                     .onChange(of: appLanguage) { oldValue, newValue in
-                        // Aquí puedes añadir lógica adicional cuando cambie el idioma
                         UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
                         UserDefaults.standard.synchronize()
-                        // Opcional: Mostrar alerta para reiniciar la app
-                        // para que los cambios surtan efecto
+                        showLanguageAlert = true
                     }
                 }
                 
@@ -117,6 +116,14 @@ struct SettingsView: View {
                         dismiss()
                     }
                 }
+            }
+            .alert("language_change_title".localized(), isPresented: $showLanguageAlert) {
+                Button("restart_now".localized()) {
+                    exit(0) // Esto cerrará la app
+                }
+                Button("later".localized(), role: .cancel) { }
+            } message: {
+                Text("language_change_message".localized())
             }
         }
         .preferredColorScheme(colorSchemeValue)

@@ -553,6 +553,8 @@ struct IconPickerView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("done".localized()) {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
                         updateIcon(to: selectedIcon)
                         dismiss()
                     }
