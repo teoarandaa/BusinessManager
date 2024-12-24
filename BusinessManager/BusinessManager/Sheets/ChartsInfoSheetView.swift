@@ -37,7 +37,7 @@ struct ChartsInfoSheetView: View {
                             .bold()
                             .padding()
                         
-                        Text("charts_creation_description".localized())
+                        Text("charts_generation".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -55,12 +55,12 @@ struct ChartsInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Chart Types")
+                        Text("chart_types".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The Chart Type selector offers different ways to visualize your data. Switch between Productivity trends, Efficiency distribution, and Performance metrics to get the most relevant view of your team's progress. Each chart type provides unique insights into different aspects of department performance.")
+                        Text("chart_types_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -72,18 +72,18 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Chart Types")
+                    Text("chart_types".localized())
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Yearly Analysis")
+                        Text("yearly_analysis".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The Yearly Analysis view offers a broader perspective on organizational performance. By examining annual data, you can spot seasonal patterns and long-term trends, making it an essential tool for strategic planning and year-over-year performance assessment.")
+                        Text("yearly_analysis_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,13 +95,15 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Yearly Analysis")
+                    Text("yearly_analysis".localized())
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("ok".localized()) {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
                         dismiss()
                     }
                 }

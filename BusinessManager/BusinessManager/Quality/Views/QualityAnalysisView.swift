@@ -127,7 +127,7 @@ struct QualityAnalysisView: View {
                             // Time Frame Picker
                             Picker("time_frame".localized(), selection: $selectedTimeFrame) {
                                 ForEach(TimeFrame.allCases, id: \.self) { timeFrame in
-                                    Label(timeFrame.rawValue, systemImage: timeFrame.systemImage)
+                                    Label(timeFrame.localizedString, systemImage: timeFrame.systemImage)
                                         .tag(timeFrame)
                                 }
                             }

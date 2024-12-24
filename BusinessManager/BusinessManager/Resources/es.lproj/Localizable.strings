@@ -153,8 +153,6 @@
 "improving" = "Mejorando";
 "stable" = "Estable";
 "declining" = "Empeorando";
-
-// Time Frames
 "week" = "Semana";
 "month" = "Mes";
 "quarter" = "Trimestre";

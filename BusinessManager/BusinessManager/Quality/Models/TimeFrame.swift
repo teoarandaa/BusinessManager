@@ -1,10 +1,14 @@
 import SwiftUI
 
 enum TimeFrame: String, CaseIterable {
-    case week = "Week"
-    case month = "Month"
-    case quarter = "Quarter"
-    case year = "Year"
+    case week = "week"
+    case month = "month"
+    case quarter = "quarter"
+    case year = "year"
+    
+    var localizedString: String {
+        rawValue.localized()
+    }
     
     var systemImage: String {
         switch self {

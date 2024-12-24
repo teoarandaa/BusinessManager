@@ -32,12 +32,12 @@ struct QualityInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
-                        Text("How to create Metrics")
+                        Text("how_create_metrics".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("To create quality metrics, start by tracking task completion times and setting deadlines. Record the number of tasks assigned and completed. Calculate performance based on timely completions, volume of work from task ratios, and overall completion rates. Monitor these metrics regularly to identify trends and areas for improvement.")
+                        Text("metrics_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -49,13 +49,13 @@ struct QualityInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Metrics")
+                    Text("metrics".localized())
                 }
                 
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Department Filter")
+                        Text("department_filter".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
@@ -72,18 +72,18 @@ struct QualityInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Filters")
+                    Text("filters".localized())
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Threshold Settings")
+                        Text("threshold_settings".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Threshold Settings help establish and maintain quality standards across your organization. By setting minimum performance levels and benchmarks, you create clear targets and early warning indicators, enabling proactive management of your quality standards.")
+                        Text("threshold_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,7 +95,7 @@ struct QualityInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Thresholds")
+                    Text("thresholds".localized())
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))

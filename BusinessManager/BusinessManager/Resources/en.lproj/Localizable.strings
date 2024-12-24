@@ -163,8 +163,6 @@
 "improving" = "Improving";
 "stable" = "Stable";
 "declining" = "Declining";
-
-// Time Frames
 "week" = "Week";
 "month" = "Month";
 "quarter" = "Quarter";
