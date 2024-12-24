@@ -310,7 +310,7 @@ struct AddTaskSheet: View {
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 150)
                 }
                 
                 HStack {
@@ -404,7 +404,7 @@ struct UpdateTaskSheet: View {
                     Spacer()
                     DatePicker("", selection: $task.date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 150)
                 }
                 
                 HStack {

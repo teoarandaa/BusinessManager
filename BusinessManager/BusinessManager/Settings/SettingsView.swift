@@ -11,7 +11,8 @@ struct SettingsView: View {
     // Definir los idiomas disponibles
     private let availableLanguages = [
         ("es", "Español"),
-        ("en", "English")
+        ("en", "English"),
+        ("pt", "Português")
     ]
     
     private var effectiveColorScheme: ColorScheme {

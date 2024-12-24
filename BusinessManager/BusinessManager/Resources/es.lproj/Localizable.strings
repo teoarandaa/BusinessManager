@@ -72,6 +72,8 @@
 "err_valid_num" = "Por favor, ingrese números válidos para las tareas.";
 "err_negative_totalTasks" = "El total de tareas no puede ser negativo.";
 "edit_department" = "Editar Nombre";
+"volume_work_percent" = "Volumen de Trabajo (%)";
+"tasks_percent" = "Tareas Completadas (%)";
 
 
 // MARK: - Tasks
