@@ -101,7 +101,12 @@ struct QuarterYearPicker: View {
     @State private var selectedQuarter: Int
     
     private let years = Array((2020...Calendar.current.component(.year, from: Date())).reversed())
-    private let quarters = ["Q1 (Jan-Mar)", "Q2 (Apr-Jun)", "Q3 (Jul-Sep)", "Q4 (Oct-Dec)"]
+    private let quarters = [
+        "q1_range".localized(), // "Q1 (Ene-Mar)"
+        "q2_range".localized(), // "Q2 (Abr-Jun)"
+        "q3_range".localized(), // "Q3 (Jul-Sep)"
+        "q4_range".localized()  // "Q4 (Oct-Dic)"
+    ]
     
     init(selectedDate: Binding<Date>, onDateSelected: @escaping () -> Void) {
         _selectedDate = selectedDate
@@ -134,11 +139,11 @@ struct QuarterYearPicker: View {
             .padding()
             .onChange(of: selectedYear) { updateSelectedDate() }
             .onChange(of: selectedQuarter) { updateSelectedDate() }
-            .navigationTitle("Select Quarter")
+            .navigationTitle("select_quarter".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
@@ -188,11 +193,11 @@ struct YearPicker: View {
             .pickerStyle(.wheel)
             .padding()
             .onChange(of: selectedYear) { updateSelectedDate() }
-            .navigationTitle("Select Year")
+            .navigationTitle("select_year".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }

@@ -424,3 +424,10 @@
 "yearly" = "Yearly";
 
 "select_month" = "Select Month";
+"select_quarter" = "Select Quarter";
+"select_year" = "Select Year";
+
+"q1_range" = "Q1 (Jan-Mar)";
+"q2_range" = "Q2 (Apr-Jun)";
+"q3_range" = "Q3 (Jul-Sep)";
+"q4_range" = "Q4 (Oct-Dec)";

@@ -393,3 +393,11 @@
 "yearly" = "Anual";
 
 "select_month" = "Seleccionar Mes";
+
+"select_quarter" = "Seleccionar Trimestre";
+"select_year" = "Seleccionar Año";
+
+"q1_range" = "Q1 (Ene-Mar)";
+"q2_range" = "Q2 (Abr-Jun)";
+"q3_range" = "Q3 (Jul-Sep)";
+"q4_range" = "Q4 (Oct-Dic)";
