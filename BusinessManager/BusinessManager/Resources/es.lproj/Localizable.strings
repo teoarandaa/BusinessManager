@@ -35,6 +35,7 @@
 "language_change_message" = "Para aplicar el nuevo idioma, es necesario reiniciar la aplicación.";
 "restart_now" = "Reiniciar ahora";
 "later" = "Más tarde";
+"faq" = "FAQ";
 
 // MARK: - Reports
 "reports" = "Informes";
@@ -224,6 +225,7 @@
 "find_privacy_policy" = "¿Dónde puedo encontrar la política de privacidad?";
 "technical_issues" = "¿Qué debo hacer si encuentro problemas técnicos?";
 "contact_support" = "¿Cómo puedo contactar con soporte?";
+"privacy_policy_location" = "¿Dónde puedo encontrar la política de privacidad?";
 
 // MARK: - Privacy
 "general_policies" = "Políticas Generales";
@@ -238,13 +240,10 @@
 // MARK: - Terms of Use
 "acceptance_terms" = "1. Aceptación de Términos";
 "description_service" = "2. Descripción del Servicio";
-"in_app_purchases" = "3. Compras en la App";
-"payment_billing" = "a. Pago y Facturación";
-"refunds" = "b. Reembolsos";
-"price_changes" = "c. Cambios de Precio";
+"in_app_purchases" = "3. Compras en la Aplicación";
 "intellectual_property" = "4. Propiedad Intelectual";
 "limitation_liability" = "5. Limitación de Responsabilidad";
-"changes_terms" = "6. Cambios en los Términos de Uso";
+"changes_terms" = "6. Cambios en los Términos";
 "termination" = "7. Terminación";
 "governing_law" = "8. Ley Aplicable";
 "contact_information" = "9. Información de Contacto";
@@ -281,7 +280,7 @@
 "reports_overview" = "Resumen de Informes";
 "reports_description" = "Los informes ofrecen perspectivas sobre rendimiento, productividad y progreso.\n\nAlmacenados y organizados de forma segura por tipo y fecha, te ayudan a rastrear y compartir resultados, asegurando un acceso rápido para decisiones más inteligentes.";
 "how_create_reports" = "Cómo Crear Informes";
-"reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas, tareas completadas a tiempo y tareas completadas (las tareas completadas a tiempo están incluidas en este grupo).\nEstos datos se muestran luego en gráficos, proporcionando perspectivas claras sobre productividad, carga de trabajo y rendimiento, ayudándote a tomar decisiones informadas basadas en datos.";
+"reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas, tareas completadas a tiempo y tareas completadas (las tareas completadas a tiempo est��n incluidas en este grupo).\nEstos datos se muestran luego en gráficos, proporcionando perspectivas claras sobre productividad, carga de trabajo y rendimiento, ayudándote a tomar decisiones informadas basadas en datos.";
 "monthly_summary" = "Resumen Mensual";
 "monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo comparando rendimientos y tendencias departamentales. Este formato de informe facilita la revisión y compartición de métricas clave, haciéndolo invaluable para revisiones de gestión y evaluaciones de equipo.";
 "add_report" = "Añadir Informe";
@@ -319,9 +318,65 @@
 "monthly_summary_title" = "Resumen mensual";
 "monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo que compara el rendimiento y las tendencias de los departamentos. Este formato de informe facilita la revisión y el intercambio de métricas clave, haciéndolo invaluable para las revisiones de gestión y las evaluaciones de equipo.";
 "add_report_title" = "Añadir informe";
-"add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas espec��ficas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
+"add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
 "close" = "Cerrar";
 "workload" = "Carga de trabajo";
 
 "no_charts_data" = "Sin datos para gráficos";
 "start_adding_reports_charts" = "Empieza a añadir informes para ver los gráficos de análisis.";
+
+// MARK: - FAQ Answers
+"business_manager_description" = "Business Manager es una aplicación diseñada para ayudarte a gestionar y optimizar el rendimiento de tu empresa. Ofrece herramientas para seguimiento de tareas, análisis de rendimiento y generación de informes.";
+
+"business_manager_pricing" = "Business Manager ofrece funcionalidades básicas gratuitas. Las características avanzadas están disponibles mediante suscripción premium.";
+
+"new_features_frequency" = "Añadimos nuevas funciones regularmente, aproximadamente cada año, basándonos en los comentarios de los usuarios y las necesidades del mercado.";
+
+"updates_frequency" = "Sí, lanzamos actualizaciones frecuentes para mejorar el rendimiento, corregir errores y añadir nuevas funcionalidades.";
+
+"push_notifications_instructions" = "Puedes activar las notificaciones push en la sección de Ajustes > Notificaciones de la aplicación.";
+
+"available_languages" = "Sí, Business Manager está disponible en español e inglés. Trabajamos continuamente para a��adir más idiomas.";
+
+"accepted_payments" = "Aceptamos pagos a través de App Store, incluyendo tarjetas de crédito/débito y otros métodos de pago vinculados a tu cuenta de Apple.";
+
+"find_privacy_policy" = "Puedes encontrar nuestra política de privacidad en la sección de Ajustes > Privacidad.";
+
+"technical_support" = "Si encuentras problemas técnicos, primero intenta reiniciar la aplicación. Si el problema persiste, contacta con nuestro equipo de soporte.";
+
+"support_contact" = "Puedes contactar con nuestro equipo de soporte a través del correo electrónico help.businessmanager@gmail.com o desde la sección de Ajustes > Soporte.";
+
+// MARK: - Terms of Use Content
+"acceptance_terms_content" = "Al utilizar Business Manager, aceptas estos términos de uso en su totalidad. Si no estás de acuerdo con alguna parte de estos términos, no debes usar la aplicación.\n";
+
+"description_service_content" = "Business Manager es una aplicación de gestión empresarial que proporciona herramientas para el seguimiento de tareas, análisis de rendimiento y generación de informes. El servicio se proporciona 'tal cual' y puede actualizarse con el tiempo.\n";
+
+"in_app_purchases_content" = "Business Manager ofrece compras dentro de la aplicación para acceder a funciones premium. Estas compras están sujetas a los términos de la App Store.\n";
+
+"intellectual_property_content" = "Todo el contenido de Business Manager, incluyendo pero no limitado a gráficos, logotipos y textos, está protegido por derechos de autor y otras leyes de propiedad intelectual.\n";
+
+"limitation_liability_content" = "Business Manager no será responsable de ningún daño indirecto, incidental o consecuente que surja del uso o la imposibilidad de usar el servicio.\n";
+
+"changes_terms_content" = "Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en la aplicación.\n";
+
+"termination_content" = "Podemos terminar o suspender tu acceso al servicio inmediatamente, sin previo aviso, por cualquier razón, incluyendo el incumplimiento de estos términos.\n";
+
+"governing_law_content" = "Estos términos se rigen por las leyes del país donde opera Business Manager, sin tener en cuenta sus disposiciones sobre conflictos de leyes.\n";
+
+"contact_information_content" = "Si tienes preguntas sobre estos términos, puedes contactarnos en help.businessmanager@gmail.com.";
+
+// MARK: - Privacy Policy
+"privacy_policy" = "Política de Privacidad";
+"last_updated" = "Última actualización: 24 Dic 2024\n";
+"privacy_policy_main" = "Política de Privacidad";
+"privacy_policy_details" = "Business Manager para SwiftUI no recopila ningún dato sobre ti.\n\nTodos los datos se almacenarán de forma segura en tu dispositivo. Si en algún momento cambiamos nuestra Política de Privacidad, te lo notificaremos con una notificación.\n";
+"contact_us" = "Contáctanos";
+"privacy_contact_info" = "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en help.businessmanager@gmail.com";
+
+"privacy_contact_prefix" = "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en ";
+"privacy_email" = "help.businessmanager@gmail.com";
+
+"contact_information_prefix" = "Si tienes preguntas sobre estos términos, puedes contactarnos en ";
+
+"support_contact_prefix" = "Puedes contactar con nuestro equipo de soporte a través del correo electrónico ";
+"support_contact_suffix" = " o desde la sección de Ajustes > Soporte.";

@@ -234,6 +234,7 @@
 "find_privacy_policy" = "Where can I find the privacy policy?";
 "technical_issues" = "What should I do if I encounter technical issues?";
 "contact_support" = "How can I contact support?";
+"privacy_policy_location" = "Where can I find the privacy policy?";
 
 // MARK: - Privacy
 "general_policies" = "General Policies";
@@ -247,14 +248,14 @@
 
 // MARK: - Terms of Use
 "acceptance_terms" = "1. Acceptance of Terms";
-"description_service" = "2. Description of Service";
+"description_service" = "2. Service Description";
 "in_app_purchases" = "3. In-App Purchases";
 "payment_billing" = "a. Payment and Billing";
 "refunds" = "b. Refunds";
 "price_changes" = "c. Price Changes";
 "intellectual_property" = "4. Intellectual Property";
 "limitation_liability" = "5. Limitation of Liability";
-"changes_terms" = "6. Changes to Terms of Use";
+"changes_terms" = "6. Changes to Terms";
 "termination" = "7. Termination";
 "governing_law" = "8. Governing Law";
 "contact_information" = "9. Contact Information";
@@ -334,3 +335,79 @@
 // MARK: - Charts
 "no_charts_data" = "No Charts Data";
 "start_adding_reports_charts" = "Start adding reports to see analytics charts.";
+
+// MARK: - FAQ Answers
+"business_manager_description" = "Business Manager is an application designed to help you manage and optimize your business performance. It provides tools for task tracking, performance analysis, and report generation.";
+
+"business_manager_pricing" = "Business Manager offers basic features for free. Advanced features are available through premium subscription.";
+
+"new_features_frequency" = "We add new features regularly, approximately every year, based on user feedback and market needs.";
+
+"updates_frequency" = "Yes, we release frequent updates to improve performance, fix bugs, and add new features.";
+
+"push_notifications_instructions" = "You can enable push notifications in Settings > Notifications within the app.";
+
+"available_languages" = "Yes, Business Manager is available in English and Spanish. We are continuously working to add more languages.";
+
+"accepted_payments" = "We accept payments through the App Store, including credit/debit cards and other payment methods linked to your Apple account.";
+
+"find_privacy_policy" = "You can find our privacy policy in Settings > Privacy.";
+
+"technical_support" = "If you encounter technical issues, first try restarting the app. If the problem persists, contact our support team.";
+
+"support_contact" = "You can contact our support team via email at help.businessmanager@gmail.com or through Settings > Support.";
+
+// MARK: - Terms of Use Content
+"acceptance_terms_content" = "By using Business Manager, you agree to these terms of use in their entirety. If you disagree with any part of these terms, you should not use the application.";
+
+"description_service_content" = "Business Manager is a business management application that provides tools for task tracking, performance analysis, and report generation. The service is provided 'as is' and may be updated over time.";
+
+"in_app_purchases_content" = "Business Manager offers in-app purchases for access to premium features. These purchases are subject to App Store terms.";
+
+"payment_billing_content" = "Payments are processed through the Apple App Store. Billing occurs according to your chosen subscription plan. Prices may vary by location.";
+
+"refunds_content" = "Refund requests must be handled through the Apple App Store. Business Manager cannot process refunds directly.";
+
+"price_changes_content" = "Subscription prices may change in the future. Any price changes will be notified in advance through the app.";
+
+"intellectual_property_content" = "All content in Business Manager, including but not limited to graphics, logos, and text, is protected by copyright and other intellectual property laws.";
+
+"limitation_liability_content" = "Business Manager will not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use the service.";
+
+"changes_terms_content" = "We reserve the right to modify these terms at any time. Changes will take effect immediately upon posting to the app.";
+
+"termination_content" = "We may terminate or suspend your access to the service immediately, without prior notice, for any reason, including breach of these terms.";
+
+"governing_law_content" = "These terms are governed by the laws of the country where Business Manager operates, without regard to its conflict of law provisions.";
+
+"contact_information_content" = "If you have any questions about these terms, you can contact us at help.businessmanager@gmail.com.";
+
+// MARK: - Terms of Use Titles
+"acceptance_terms" = "1. Acceptance of Terms";
+"description_service" = "2. Service Description";
+"in_app_purchases" = "3. In-App Purchases";
+"payment_billing" = "a. Payment and Billing";
+"refunds" = "b. Refunds";
+"price_changes" = "c. Price Changes";
+"intellectual_property" = "4. Intellectual Property";
+"limitation_liability" = "5. Limitation of Liability";
+"changes_terms" = "6. Changes to Terms";
+"termination" = "7. Termination";
+"governing_law" = "8. Governing Law";
+"contact_information" = "9. Contact Information";
+
+// MARK: - Privacy Policy
+"privacy_policy" = "Privacy Policy";
+"last_updated" = "Last updated: 24 Dec 2024\n";
+"privacy_policy_main" = "Privacy Policy";
+"privacy_policy_details" = "Business Manager for SwiftUI does not collect any data about you.\n\nAll data will be securely stored on your device. If at any time we change our Privacy Policy, we will notify you with a notification.\n";
+"contact_us" = "Contact Us";
+"privacy_contact_info" = "If you have questions about this Privacy Policy, please contact us at help.businessmanager@gmail.com";
+
+"privacy_contact_prefix" = "If you have questions about this Privacy Policy, please contact us at ";
+"privacy_email" = "help.businessmanager@gmail.com";
+
+"contact_information_prefix" = "If you have questions about these terms, you can contact us at ";
+
+"support_contact_prefix" = "You can contact our support team via email at ";
+"support_contact_suffix" = " or through Settings > Support.";

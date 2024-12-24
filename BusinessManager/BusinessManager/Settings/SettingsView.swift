@@ -97,7 +97,7 @@ struct SettingsView: View {
                 // MARK: - Reports
                 Section("reports".localized()) {
                     NavigationLink(destination: MonthlyReportView()) {
-                        Label("monthly_summary_pdf".localized(), systemImage: "text.document")
+                        Label("monthly_summary".localized(), systemImage: "text.document")
                     }
                 }
                 Section {
