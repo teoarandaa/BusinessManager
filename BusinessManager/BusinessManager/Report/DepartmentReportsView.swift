@@ -142,26 +142,26 @@ struct FilterSheet: View {
                     }
                 }
                 
-                Section("Volume of Work (%)") {
+                Section("volume_work_percent".localized()) {
                     HStack {
-                        Text("Min:")
+                        Text("min".localized())
                         TextField("0", text: $minVolume)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
-                        Text("Max:")
+                        Text("max".localized())
                         TextField("100", text: $maxVolume)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                     }
                 }
                 
-                Section("Tasks") {
+                Section("tasks_percent".localized()) {
                     HStack {
-                        Text("Min:")
+                        Text("min".localized())
                         TextField("0", text: $minTasks)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
-                        Text("Max:")
+                        Text("max".localized())
                         TextField("1000", text: $maxTasks)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)

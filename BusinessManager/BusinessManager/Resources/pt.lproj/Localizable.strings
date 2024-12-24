@@ -1,0 +1,421 @@
+// MARK: - General
+"ok" = "OK";
+"cancel" = "Cancelar";
+"done" = "Concluído";
+"save" = "Salvar";
+"delete" = "Excluir";
+"edit" = "Editar";
+"add" = "Adicionar";
+
+// MARK: - Navigation
+"settings" = "Configurações";
+"departments" = "Departamentos";
+"reports" = "Relatórios";
+"tasks" = "Tarefas";
+"charts" = "Gráficos";
+"quality" = "Qualidade";
+
+// MARK: - Settings
+"appearance" = "Aparência";
+"notifications" = "Notificações";
+"push_notifications" = "Notificações push";
+"theme" = "Tema";
+"system" = "Sistema";
+"light" = "Claro";
+"dark" = "Escuro";
+"resources" = "Recursos";
+"pricing" = "Preços";
+"subscription_packages" = "Pacotes de Assinatura";
+"privacy" = "Privacidade";
+"support" = "Suporte do Business Manager";
+"version" = "Versão";
+"language" = "Idioma";
+"select_language" = "Selecionar idioma";
+"language_change_title" = "Mudança de idioma";
+"language_change_message" = "Para aplicar o novo idioma, é necessário reiniciar o aplicativo.";
+"restart_now" = "Reiniciar agora";
+"later" = "Mais tarde";
+"faq" = "FAQ";
+
+// MARK: - Reports
+"add_report" = "Adicionar Relatório";
+"update_report" = "Atualizar Relatório";
+"monthly_summary" = "Resumo Mensal";
+"date" = "Data";
+"department" = "Departamento";
+"tasks_created" = "Tarefas criadas";
+"on_time_tasks" = "Tarefas no Prazo";
+"finished_tasks" = "Tarefas Concluídas";
+"annotations" = "Anotações";
+"add_note" = "Adicionar nota";
+"use_existing_department" = "Usar Departamento Existente";
+"add_new" = "Adicionar Novo";
+"reports" = "Relatórios";
+"no_reports" = "Sem Relatórios";
+"start_adding_reports" = "Comece a adicionar relatórios para acompanhar o desempenho da sua equipe.";
+"edit_report" = "Editar Relatório";
+"new_report" = "Novo Relatório";
+"report_details" = "Detalhes do Relatório";
+"department_name" = "Nome do Departamento";
+"select_department" = "Selecionar Departamento";
+"tasks" = "Tarefas";
+"total_tasks" = "Total de Tarefas";
+"completed_tasks" = "Tarefas Concluídas";
+"completed_on_time" = "Concluídas no Prazo";
+"tasks_created" = "Tarefas Criadas";
+"performance_mark" = "Marca de Desempenho";
+"volume_of_work" = "Volume de Trabalho";
+"save_report" = "Salvar Relatório";
+"delete_report" = "Excluir Relatório";
+"delete_confirmation" = "Tem certeza que deseja excluir este relatório?";
+"delete" = "Excluir";
+"cancel" = "Cancelar";
+"invalid_input" = "Entrada Inválida";
+"future_date_error" = "Não é possível criar relatórios para datas futuras.";
+"invalid_numbers" = "Por favor, insira números válidos para as tarefas.";
+"negative_tasks_error" = "O total de tarefas não pode ser negativo.";
+"number" = "Número";
+"name" = "Nome";
+"add_note" = "Adicionar nota";
+"invalid_input" = "Entrada Inválida";
+"err_reports_dates" = "Não é possível criar relatórios para datas futuras.";
+"err_valid_num" = "Por favor, insira números válidos para as tarefas.";
+"err_negative_totalTasks" = "O total de tarefas não pode ser negativo.";
+"edit_department" = "Editar Nome";
+"volume_work_percent" = "Volume de Trabalho (%)";
+"tasks_percent" = "Tarefas Concluídas (%)";
+
+// MARK: - Tasks
+"add_task" = "Adicionar Tarefa";
+"update_task" = "Atualizar Tarefa";
+"active_tasks" = "Tarefas Ativas";
+"completed_tasks" = "Tarefas Concluídas";
+"priority" = "Prioridade";
+"status" = "Status";
+"completed" = "Concluída";
+"active" = "Ativa";
+"no_tasks" = "Sem Tarefas";
+"no_tasks_description" = "Comece a adicionar tarefas para ver sua lista.";
+"new_task" = "Nova Tarefa";
+"task_details" = "Detalhes da Tarefa";
+"search_tasks" = "Buscar tarefas";
+"sort_by" = "Ordenar por";
+"sort" = "Ordenar";
+"date" = "Data";
+"priority" = "Prioridade";
+"title" = "Título";
+"content" = "Conteúdo";
+"comments" = "Comentários";
+"status" = "Status";
+"expiring_date" = "Data de vencimento";
+"complete" = "Concluir";
+"reactivate" = "Reativar";
+"delete_task" = "Excluir Tarefa";
+"delete_task_confirmation" = "Tem certeza que deseja excluir esta tarefa?";
+"days_overdue" = "%d dias atrasado";
+"active" = "Ativa";
+"completed" = "Concluída";
+"cancel" = "Cancelar";
+"save" = "Salvar";
+"done" = "Concluído";
+"edit" = "Editar";
+"delete" = "Excluir";
+"settings" = "Configurações";
+"information" = "Informação";
+
+// MARK: - Charts
+"charts_for" = "Gráficos para %@";
+"yearly_charts" = "Gráficos Anuais";
+"yearly_summary" = "Resumo Anual";
+"yearly_summary_for" = "Resumo Anual para %@";
+"loading_yearly_summary" = "Carregando Resumo Anual...";
+
+// Chart Titles
+"productivity" = "Produtividade";
+"efficiency" = "Eficiência";
+"performance" = "Desempenho";
+"chart_type" = "Tipo de Gráfico";
+"yearly" = "Anual";
+
+// Chart Labels
+"volume_of_work" = "Volume de Trabalho";
+"tasks_completed" = "Tarefas Concluídas";
+"average_volume_work" = "Volume Médio de Trabalho";
+"department" = "Departamento";
+"date" = "Data";
+"efficiency" = "Eficiência";
+"finished_tasks" = "Tarefas Finalizadas";
+
+// MARK: - Quality
+"quality_analysis" = "Análise de Qualidade";
+"key_metrics" = "Métricas Principais";
+"thresholds" = "Limites";
+"min_performance" = "Desempenho Mínimo";
+"min_completion" = "Conclusão Mínima";
+"min_volume" = "Volume Mínimo";
+"time_frame" = "Período";
+"department" = "Departamento";
+"all_departments" = "Todos";
+"filter" = "Filtrar";
+"delay_pattern" = "Padrão de Atraso";
+"task_delays_by_department" = "Atrasos de Tarefas por Departamento";
+"delayed_tasks" = "Tarefas Atrasadas";
+"mark_as_resolved" = "Marcar como Resolvido";
+"target" = "Meta: %d%%";
+"improving" = "Melhorando";
+"stable" = "Estável";
+"declining" = "Declinando";
+"week" = "Semana";
+"month" = "Mês";
+"quarter" = "Trimestre";
+"year" = "Ano";
+
+// Insight Types
+"performance" = "Desempenho";
+"volume" = "Volume";
+"delay" = "Atraso";
+
+// MARK: - Alerts
+"invalid_input" = "Entrada Inválida";
+"future_date_error" = "Não é possível criar relatórios para datas futuras.";
+"invalid_numbers" = "Por favor, insira números válidos para as tarefas.";
+"negative_tasks_error" = "O total de tarefas não pode ser negativo.";
+"delete_confirmation" = "Tem certeza que deseja excluir isto?";
+
+// MARK: - Chart Types
+"performance_mark" = "Marca de Desempenho";
+"volume_of_work" = "Volume de Trabalho";
+"tasks_completed" = "Tarefas Concluídas";
+
+// MARK: - Quality Analysis
+"no_quality_data" = "Sem Dados de Qualidade";
+"start_adding_reports_quality" = "Comece a adicionar relatórios para ver a análise de qualidade.";
+"quality_analysis" = "Análise de Qualidade";
+"key_metrics" = "Métricas Principais";
+"analytics" = "Análises";
+"minimum_thresholds" = "Limites Mínimos";
+"thresholds_settings" = "Configurações de Limites";
+"performance_value" = "Desempenho: %d%%";
+"task_completion_value" = "Conclusão de Tarefas: %d%%";
+"volume_work_value" = "Volume de Trabalho: %d%%";
+"min_value" = "Mín: %d%%";
+"delay_pattern" = "Padrão de Atraso";
+"delayed_tasks" = "Tarefas Atrasadas";
+"date" = "Data";
+"task_completion" = "Conclusão de Tarefas";
+
+// MARK: - Department Reports
+"reports_by_year" = "Relatórios por Ano";
+"filters" = "Filtros";
+"no_results" = "Sem Resultados";
+"try_adjusting_filters" = "Tente ajustar seus filtros para encontrar o que procura.";
+"filter_by_date" = "Filtrar por Data";
+"date_range" = "Intervalo de Data";
+"from" = "De";
+"to" = "Até";
+"performance_percentage" = "Desempenho (%)";
+"volume_work_percentage" = "Volume de Trabalho (%)";
+"min" = "Mín:";
+"max" = "Máx:";
+"reset" = "Redefinir";
+"apply" = "Aplicar";
+"reports_for_year" = "Relatórios para %@";
+"all" = "Todos";
+"report_details" = "Detalhes do Relatório";
+"done" = "Concluído";
+"annotations" = "Anotações";
+
+// MARK: - FAQ
+"what_is_business_manager" = "O que é o Business Manager";
+"is_business_manager_free" = "O Business Manager é gratuito?";
+"how_often_new_features" = "Com que frequência vocês adicionam novos recursos ao aplicativo?";
+"frequent_updates" = "Existem atualizações frequentes do aplicativo?";
+"enable_push_notifications" = "Como ativo as notificações push?";
+"multiple_languages" = "O aplicativo está disponível em vários idiomas?";
+"payment_methods" = "Quais métodos de pagamento vocês aceitam?";
+"find_privacy_policy" = "Onde posso encontrar a política de privacidade?";
+"technical_issues" = "O que devo fazer se encontrar problemas técnicos?";
+"contact_support" = "Como posso entrar em contato com o suporte?";
+"privacy_policy_location" = "Onde posso encontrar a política de privacidade?";
+
+// MARK: - Privacy
+"general_policies" = "Políticas Gerais";
+"terms_of_use" = "Termos de Uso";
+"privacy_policy" = "Política de Privacidade";
+"last_updated" = "Última atualização: %@";
+"privacy_description" = "O Business Manager para SwiftUI não coleta nenhum dado sobre você.";
+"data_storage" = "Todos os dados serão armazenados com segurança no seu dispositivo. Se em algum momento alterarmos nossa Política de Privacidade, você será notificado.";
+"contact_us" = "Entre em Contato";
+"contact_privacy" = "Se você tiver dúvidas sobre esta Política de Privacidade, entre em contato conosco em help.businessmanager@gmail.com.";
+
+// MARK: - Terms of Use
+"acceptance_terms" = "1. Aceitação dos Termos";
+"description_service" = "2. Descrição do Serviço";
+"in_app_purchases" = "3. Compras no Aplicativo";
+"payment_billing" = "a. Pagamento e Cobrança";
+"refunds" = "b. Reembolsos";
+"price_changes" = "c. Alterações de Preço";
+"intellectual_property" = "4. Propriedade Intelectual";
+"limitation_liability" = "5. Limitação de Responsabilidade";
+"changes_terms" = "6. Alterações nos Termos";
+"termination" = "7. Rescisão";
+"governing_law" = "8. Lei Aplicável";
+"contact_information" = "9. Informações de Contato";
+
+// MARK: - Info Sheets
+"ok" = "Ok";
+"overview" = "Visão Geral";
+
+// Charts Info
+"analytics_overview" = "Visão Geral das Análises";
+"analytics_description" = "As análises visualizam métricas principais: o Gráfico de Produtividade acompanha tendências de desempenho, o Gráfico de Carga de Trabalho compara desempenho com carga usando um gráfico de dispersão para destacar eficiência, e o Gráfico de Desempenho exibe a carga média versus tarefas concluídas em um gráfico de barras, medindo eficiência.";
+"how_create_charts" = "Como Criar Gráficos";
+"charts_generation" = "Os gráficos são gerados a partir dos dados dos relatórios, processando desempenho, carga de trabalho e tarefas concluídas para criar insights visuais. Eles destacam tendências, eficiência e produtividade transformando dados brutos em informações acionáveis para cada departamento.";
+"chart_types" = "Tipos de Gráficos";
+"chart_types_description" = "O seletor de Tipo de Gráfico oferece diferentes formas de visualizar seus dados. Alterne entre tendências de Produtividade, distribuição de Eficiência e métricas de Desempenho para obter a visão mais relevante do progresso da sua equipe. Cada tipo de gráfico fornece insights únicos sobre diferentes aspectos do desempenho do departamento.";
+"yearly_analysis" = "Análise Anual";
+"yearly_analysis_description" = "A visualização da Análise Anual oferece uma perspectiva mais ampla sobre o desempenho organizacional. Ao examinar dados anuais, você pode identificar padrões sazonais e tendências de longo prazo, tornando-a uma ferramenta essencial para planejamento estratégico e avaliação de desempenho ano a ano.";
+"creating_reports" = "Criando Relatórios";
+
+// Quality Info
+"quality_overview" = "Visão Geral da Qualidade";
+"quality_description" = "A Análise de Qualidade fornece insights abrangentes sobre o desempenho do departamento, volume de trabalho e taxas de conclusão de tarefas. Métricas principais são rastreadas e analisadas para identificar tendências, ajudando você a manter altos padrões e melhorar a eficiência.";
+"how_create_metrics" = "Como Criar Métricas";
+"metrics_description" = "Para criar métricas de qualidade, comece rastreando tempos de conclusão de tarefas e definindo prazos. Registre o número de tarefas atribuídas e concluídas. Calcule o desempenho com base em conclusões pontuais, volume de trabalho a partir de proporções de tarefas e taxas gerais de conclusão. Monitore essas métricas regularmente para identificar tendências e áreas para melhoria.";
+"department_filter" = "Filtro de Departamento";
+"filter_description" = "O Filtro de Departamento aprimora suas capacidades de análise permitindo que você se concentre em períodos e departamentos específicos. Essa abordagem direcionada ajuda a identificar pontos fortes e áreas para melhoria, apoiando melhores decisões sobre recursos e processos.";
+"threshold_settings" = "Configurações de Limite";
+"threshold_description" = "As Configurações de Limite ajudam a estabelecer e manter padrões de qualidade em toda sua organização. Ao definir níveis mínimos de desempenho e benchmarks, você cria metas claras e indicadores de alerta precoce, permitindo o gerenciamento proativo de seus padrões de qualidade.";
+"metrics" = "Métricas";
+"filters" = "Filtros";
+"thresholds" = "Limites";
+
+// Reports Info
+"reports_overview" = "Visão Geral dos Relatórios";
+"reports_description" = "Os relatórios oferecem insights sobre desempenho, produtividade e progresso.\n\nArmazenados e organizados de forma segura por tipo e data, eles ajudam você a acompanhar e compartilhar resultados, garantindo acesso rápido para decisões mais inteligentes.";
+"how_create_reports" = "Como Criar Relatórios";
+"reports_creation_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas, tarefas concluídas no prazo e tarefas concluídas (tarefas concluídas no prazo estão incluídas neste grupo).\nEsses dados são então exibidos em gráficos, fornecendo insights claros sobre produtividade, carga de trabalho e desempenho, ajudando você a tomar decisões informadas e baseadas em dados.";
+"monthly_summary" = "Resumo Mensal";
+"monthly_summary_description" = "O recurso de Resumo Mensal gera um relatório PDF abrangente comparando desempenhos e tendências dos departamentos. Este formato de relatório facilita a revisão e compartilhamento de métricas principais, tornando-o inestimável para revisões gerenciais e avaliações de equipe.";
+"add_report" = "Adicionar Relatório";
+"add_report_description" = "Adicionar um novo relatório é um processo direto para acompanhar o progresso do seu departamento. Você pode inserir taxas de conclusão de tarefas, métricas de desempenho e notas específicas sobre conquistas ou desafios, construindo uma imagem clara do desempenho da sua equipe ao longo do tempo.";
+
+// Tasks Info
+"tasks_overview" = "Visão Geral das Tarefas";
+"tasks_description" = "As tarefas ajudam você a organizar, priorizar e acompanhar seu trabalho de forma eficiente. Com uma estrutura clara e atualizações em tempo real, você pode gerenciar prazos, monitorar o progresso e manter seu fluxo de trabalho otimizado, tudo em um só lugar.";
+"how_create_tasks" = "Como Criar Tarefas";
+"tasks_creation_description" = "As tarefas são criadas com as seguintes informações: data de vencimento para definir prazos, título para o nome da tarefa, conteúdo para detalhes da tarefa, comentários para notas adicionais e prioridade para indicar urgência. Esses dados garantem que as tarefas sejam bem organizadas e gerenciadas de forma eficaz.";
+"sort_tasks" = "Ordenar Tarefas";
+"sort_description" = "A funcionalidade de Ordenação organiza suas tarefas de forma eficaz. Ordene por data para uma visão cronológica dos prazos, ou por prioridade para focar primeiro nas tarefas críticas. Essa flexibilidade ajuda você a gerenciar seu fluxo de trabalho de acordo com suas necessidades atuais.";
+"add_task" = "Adicionar Tarefa";
+"add_task_description" = "Criar uma nova tarefa é um processo intuitivo onde você pode especificar prazos, definir prioridades e adicionar descrições detalhadas. Comentários adicionais fornecem contexto e melhoram o acompanhamento das tarefas, garantindo uma comunicação clara durante todo o processo.";
+"managing_tasks" = "Gerenciando Tarefas";
+"sort" = "Ordenar";
+
+// MARK: - Main Tab
+"reports" = "Relatórios";
+"analytics" = "Análises";
+"quality" = "Qualidade";
+"tasks" = "Tarefas";
+
+// MARK: - Reports
+"search_departments" = "Buscar departamentos";
+"reports_count" = "relatórios";
+"edit_name" = "Editar Nome";
+"change_icon" = "Alterar Ícone";
+"select_icon" = "Selecionar Ícone";
+"reports_for_year" = "Relatórios para %@";
+"how_to_create_reports" = "Como Criar Relatórios";
+"create_reports_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas, tarefas concluídas no prazo e tarefas concluídas (tarefas concluídas no prazo estão incluídas neste grupo).\nEsses dados são então exibidos em gráficos, fornecendo insights claros sobre produtividade, carga de trabalho e desempenho, ajudando você a tomar decisões informadas e baseadas em dados.";
+"monthly_summary_title" = "Resumo Mensal";
+"monthly_summary_description" = "O recurso de Resumo Mensal gera um relatório PDF abrangente comparando desempenhos e tendências dos departamentos. Este formato de relatório facilita a revisão e compartilhamento de métricas principais, tornando-o inestimável para revisões gerenciais e avaliações de equipe.";
+"add_report_title" = "Adicionar Relatório";
+"add_report_description" = "Adicionar um novo relatório é um processo direto para acompanhar o progresso do seu departamento. Você pode inserir taxas de conclusão de tarefas, métricas de desempenho e notas específicas sobre conquistas ou desafios, construindo uma imagem clara do desempenho da sua equipe ao longo do tempo.";
+"close" = "Fechar";
+"workload" = "Carga de Trabalho";
+
+// MARK: - Charts
+"no_charts_data" = "Sem Dados de Gráficos";
+"start_adding_reports_charts" = "Comece a adicionar relatórios para ver gráficos analíticos.";
+
+// MARK: - FAQ Answers
+"business_manager_description" = "O Business Manager é um aplicativo projetado para ajudar você a gerenciar e otimizar o desempenho do seu negócio. Ele fornece ferramentas para acompanhamento de tarefas, análise de desempenho e geração de relatórios.";
+"business_manager_pricing" = "O Business Manager oferece recursos básicos gratuitamente. Recursos avançados estão disponíveis através de assinatura premium.";
+"new_features_frequency" = "Adicionamos novos recursos regularmente, aproximadamente a cada ano, com base no feedback dos usuários e nas necessidades do mercado.";
+"updates_frequency" = "Sim, lançamos atualizações frequentes para melhorar o desempenho, corrigir bugs e adicionar novos recursos.";
+"push_notifications_instructions" = "Você pode ativar as notificações push em Configurações > Notificações dentro do aplicativo.";
+"available_languages" = "Sim, o Business Manager está disponível em inglês, espanhol e português. Estamos continuamente trabalhando para adicionar mais idiomas.";
+"accepted_payments" = "Aceitamos pagamentos através da App Store, incluindo cartões de crédito/débito e outros métodos de pagamento vinculados à sua conta Apple.";
+"find_privacy_policy" = "Você pode encontrar nossa política de privacidade em Configurações > Privacidade.";
+"technical_support" = "Se encontrar problemas técnicos, primeiro tente reiniciar o aplicativo. Se o problema persistir, entre em contato com nossa equipe de suporte.";
+"support_contact" = "Você pode entrar em contato com nossa equipe de suporte por e-mail em help.businessmanager@gmail.com ou através de Configurações > Suporte.";
+
+// MARK: - Terms of Use Content
+"acceptance_terms_content" = "Ao usar o Business Manager, você concorda com estes termos de uso em sua totalidade. Se você discordar de qualquer parte destes termos, não deve usar o aplicativo.\n";
+"description_service_content" = "O Business Manager é um aplicativo de gestão empresarial que fornece ferramentas para acompanhamento de tarefas, análise de desempenho e geração de relatórios. O serviço é fornecido 'como está' e pode ser atualizado ao longo do tempo.\n";
+"in_app_purchases_content" = "O Business Manager oferece compras no aplicativo para acesso a recursos premium. Essas compras estão sujeitas aos termos da App Store.\n";
+"payment_billing_content" = "Os pagamentos são processados através da App Store. A cobrança ocorre de acordo com seu plano de assinatura escolhido. Os preços podem variar por localização.\n";
+"refunds_content" = "Solicitações de reembolso devem ser tratadas através da App Store. O Business Manager não pode processar reembolsos diretamente.";
+"price_changes_content" = "Os preços das assinaturas podem mudar no futuro. Quaisquer alterações de preço serão notificadas antecipadamente através do aplicativo.\n";
+"intellectual_property_content" = "Todo o conteúdo no Business Manager, incluindo, mas não se limitando a gráficos, logotipos e texto, é protegido por direitos autorais e outras leis de propriedade intelectual.\n";
+"limitation_liability_content" = "O Business Manager não será responsável por quaisquer danos indiretos, incidentais ou consequenciais decorrentes do uso ou impossibilidade de uso do serviço.\n";
+"changes_terms_content" = "Reservamo-nos o direito de modificar estes termos a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação no aplicativo.\n";
+"termination_content" = "Podemos encerrar ou suspender seu acesso ao serviço imediatamente, sem aviso prévio, por qualquer motivo, incluindo violação destes termos.\n";
+"governing_law_content" = "Estes termos são regidos pelas leis do país onde o Business Manager opera, sem considerar suas disposições sobre conflitos de leis.\n";
+"contact_information_content" = "Se você tiver alguma dúvida sobre estes termos, pode entrar em contato conosco em help.businessmanager@gmail.com.";
+
+// MARK: - Terms of Use Titles
+"acceptance_terms" = "1. Aceitação dos Termos";
+"description_service" = "2. Descrição do Serviço";
+"in_app_purchases" = "3. Compras no Aplicativo";
+"payment_billing" = "a. Pagamento e Cobrança";
+"refunds" = "b. Reembolsos";
+"price_changes" = "c. Alterações de Preço";
+"intellectual_property" = "4. Propriedade Intelectual";
+"limitation_liability" = "5. Limitação de Responsabilidade";
+"changes_terms" = "6. Alterações nos Termos";
+"termination" = "7. Rescisão";
+"governing_law" = "8. Lei Aplicável";
+"contact_information" = "9. Informações de Contato";
+
+// MARK: - Privacy Policy
+"privacy_policy" = "Política de Privacidade";
+"last_updated" = "Última atualização: 24 Dez 2024\n";
+"privacy_policy_main" = "Política de Privacidade";
+"privacy_policy_details" = "O Business Manager para SwiftUI não coleta nenhum dado sobre você.\n\nTodos os dados serão armazenados com segurança no seu dispositivo. Se em algum momento alterarmos nossa Política de Privacidade, você será notificado.\n";
+"contact_us" = "Entre em Contato";
+"privacy_contact_info" = "Se você tiver dúvidas sobre esta Política de Privacidade, entre em contato conosco em help.businessmanager@gmail.com";
+"privacy_contact_prefix" = "Se você tiver dúvidas sobre esta Política de Privacidade, entre em contato conosco em ";
+"privacy_email" = "help.businessmanager@gmail.com";
+"contact_information_prefix" = "Se você tiver dúvidas sobre estes termos, pode entrar em contato conosco em ";
+"support_contact_prefix" = "Você pode entrar em contato com nossa equipe de suporte por e-mail em ";
+"support_contact_suffix" = " ou através de Configurações > Suporte.";
+"coming_soon" = "Em Breve";
+"plans_description" = "Estamos trabalhando em novos recursos e planos de assinatura empolgantes.\nFique ligado!";
+"monthly_report" = "Mensal";
+"quarterly_report" = "Trimestral";
+"yearly_report" = "Anual";
+"all_departments" = "Todos";
+"share_pdf" = "Compartilhar Relatório PDF";
+"report_period" = "Período do Relatório";
+"monthly" = "Mensal";
+"quarterly" = "Trimestral";
+"yearly" = "Anual";
+"select_month" = "Selecionar Mês";
+"select_quarter" = "Selecionar Trimestre";
+"select_year" = "Selecionar Ano";
+"q1_range" = "T1 (Jan-Mar)";
+"q2_range" = "T2 (Abr-Jun)";
+"q3_range" = "T3 (Jul-Set)";
+"q4_range" = "T4 (Out-Dez)";
+"reports_summary" = "Resumo dos Relatórios";
+"department_performance_overview" = "Visão Geral do Desempenho do Departamento";
+"quality_metrics" = "Métricas de Qualidade";
+"performance" = "Desempenho";
+"volume_of_work" = "Volume de Trabalho";
+"task_completion" = "Conclusão de Tarefas";
+"analytics_charts" = "Gráficos Analíticos";
+"reports_total" = "Total de Relatórios";
+"performance_average" = "Desempenho Médio";
+"volume_average" = "Volume Médio";
+"tasks_completed_total" = "Total de Tarefas Concluídas";
