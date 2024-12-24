@@ -401,3 +401,8 @@
 "q2_range" = "Q2 (Abr-Jun)";
 "q3_range" = "Q3 (Jul-Sep)";
 "q4_range" = "Q4 (Oct-Dic)";
+
+"monthly_report" = "Mensual";
+"quarterly_report" = "Trimestral";
+"yearly_report" = "Anual";
+"all_departments" = "Todos";

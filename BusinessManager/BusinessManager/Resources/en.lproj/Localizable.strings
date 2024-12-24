@@ -415,7 +415,10 @@
 "coming_soon" = "Coming Soon";
 "plans_description" = "We're working on exciting new features and subscription plans.\nStay tuned!";
 
-"monthly_report" = "Monthly Report";
+"monthly_report" = "Monthly";
+"quarterly_report" = "Quarterly";
+"yearly_report" = "Yearly";
+"all_departments" = "All";
 "share_pdf" = "Share PDF Report";
 
 "report_period" = "Report Period";

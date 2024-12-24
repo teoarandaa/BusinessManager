@@ -396,17 +396,15 @@ struct MonthlyReportView: View {
         let periodTitle: String
         switch selectedPeriod {
         case .month:
-            periodTitle = "Monthly Report"
+            periodTitle = "monthly_report".localized()
         case .quarter:
-            let month = Calendar.current.component(.month, from: selectedDate)
-            let quarter = (month - 1) / 3 + 1
-            periodTitle = "Q\(quarter) Report"
+            periodTitle = "quarterly_report".localized()
         case .year:
-            periodTitle = "Yearly Report"
+            periodTitle = "yearly_report".localized()
         }
         
         let departmentTitle = selectedDepartment == "All Departments" ? 
-            "All Departments" : selectedDepartment
+            "all_departments".localized() : selectedDepartment
         
         return "\(periodTitle) - \(departmentTitle) - \(periodFormatter.string(from: selectedDate))"
     }
