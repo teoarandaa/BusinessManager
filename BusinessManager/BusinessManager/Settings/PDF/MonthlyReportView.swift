@@ -48,7 +48,7 @@ struct MonthYearPicker: View {
             HStack {
                 Picker("Month", selection: $selectedMonth) {
                     ForEach(0..<months.count, id: \.self) { index in
-                        Text(months[index]).tag(index)
+                        Text(months[index].capitalized).tag(index)
                     }
                 }
                 .pickerStyle(.wheel)
@@ -239,6 +239,7 @@ struct MonthlyReportView: View {
         switch selectedPeriod {
         case .month:
             formatter.dateFormat = "MMMM yyyy"
+            formatter.formattingContext = .standalone
         case .quarter:
             let month = Calendar.current.component(.month, from: selectedDate)
             let quarter = (month - 1) / 3 + 1
