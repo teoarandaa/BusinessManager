@@ -155,7 +155,7 @@ struct ReportCell: View {
     var body: some View {
         HStack {
             Text(report.date, format: .dateTime.year().month(.abbreviated).day())
-                .frame(width: 100, alignment: .leading)
+                .frame(width: 150, alignment: .leading)
             Spacer()
             Text(report.departmentName)
                 .bold()

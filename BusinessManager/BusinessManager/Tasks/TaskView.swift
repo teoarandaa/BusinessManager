@@ -234,7 +234,7 @@ struct TasksCell: View {
                         .foregroundStyle(.red)
                 }
             }
-            .frame(width: 100, alignment: .leading)
+            .frame(width: 150, alignment: .leading)
             
             Spacer()
             Text(task.title)

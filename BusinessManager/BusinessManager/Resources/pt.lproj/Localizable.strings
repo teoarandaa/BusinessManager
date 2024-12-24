@@ -144,7 +144,7 @@
 "department" = "Departamento";
 "date" = "Data";
 "efficiency" = "Eficiência";
-"finished_tasks" = "Tarefas Finalizadas";
+"finished_tasks" = "Tarefas Feitas";
 
 // MARK: - Quality
 "quality_analysis" = "Análise de Qualidade";
