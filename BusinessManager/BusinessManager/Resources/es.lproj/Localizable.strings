@@ -319,7 +319,7 @@
 "monthly_summary_title" = "Resumen mensual";
 "monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo que compara el rendimiento y las tendencias de los departamentos. Este formato de informe facilita la revisión y el intercambio de métricas clave, haciéndolo invaluable para las revisiones de gestión y las evaluaciones de equipo.";
 "add_report_title" = "Añadir informe";
-"add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
+"add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas espec��ficas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
 "close" = "Cerrar";
 "workload" = "Carga de trabajo";
 
