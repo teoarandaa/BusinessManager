@@ -48,7 +48,7 @@ struct MonthYearPicker: View {
             HStack {
                 Picker("Month", selection: $selectedMonth) {
                     ForEach(0..<months.count, id: \.self) { index in
-                        Text(months[index]).tag(index)
+                        Text(months[index].capitalized).tag(index)
                     }
                 }
                 .pickerStyle(.wheel)
@@ -65,11 +65,11 @@ struct MonthYearPicker: View {
             .padding()
             .onChange(of: selectedYear) { updateSelectedDate() }
             .onChange(of: selectedMonth) { updateSelectedDate() }
-            .navigationTitle("Select Month")
+            .navigationTitle("select_month".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
@@ -101,7 +101,12 @@ struct QuarterYearPicker: View {
     @State private var selectedQuarter: Int
     
     private let years = Array((2020...Calendar.current.component(.year, from: Date())).reversed())
-    private let quarters = ["Q1 (Jan-Mar)", "Q2 (Apr-Jun)", "Q3 (Jul-Sep)", "Q4 (Oct-Dec)"]
+    private let quarters = [
+        "q1_range".localized(), // "Q1 (Ene-Mar)"
+        "q2_range".localized(), // "Q2 (Abr-Jun)"
+        "q3_range".localized(), // "Q3 (Jul-Sep)"
+        "q4_range".localized()  // "Q4 (Oct-Dic)"
+    ]
     
     init(selectedDate: Binding<Date>, onDateSelected: @escaping () -> Void) {
         _selectedDate = selectedDate
@@ -134,11 +139,11 @@ struct QuarterYearPicker: View {
             .padding()
             .onChange(of: selectedYear) { updateSelectedDate() }
             .onChange(of: selectedQuarter) { updateSelectedDate() }
-            .navigationTitle("Select Quarter")
+            .navigationTitle("select_quarter".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
@@ -188,11 +193,11 @@ struct YearPicker: View {
             .pickerStyle(.wheel)
             .padding()
             .onChange(of: selectedYear) { updateSelectedDate() }
-            .navigationTitle("Select Year")
+            .navigationTitle("select_year".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
@@ -239,6 +244,7 @@ struct MonthlyReportView: View {
         switch selectedPeriod {
         case .month:
             formatter.dateFormat = "MMMM yyyy"
+            formatter.formattingContext = .standalone
         case .quarter:
             let month = Calendar.current.component(.month, from: selectedDate)
             let quarter = (month - 1) / 3 + 1
@@ -262,6 +268,14 @@ struct MonthlyReportView: View {
         }
     }
     
+    private let reportsSummaryTitle = "reports_summary".localized()
+    private let departmentPerformanceTitle = "department_performance_overview".localized()
+    private let qualityMetricsTitle = "quality_metrics".localized()
+    private let performanceTitle = "performance".localized()
+    private let volumeOfWorkTitle = "volume_of_work".localized()
+    private let taskCompletionTitle = "task_completion".localized()
+    private let analyticsChartsTitle = "analytics_charts".localized()
+    
     var body: some View {
         List {
             Section {
@@ -274,9 +288,10 @@ struct MonthlyReportView: View {
                     generateAndSharePDF()
                 }
                 
-                Picker("department".localized(), selection: $selectedDepartment) {
+                Picker("select_department".localized(), selection: $selectedDepartment) {
                     ForEach(departments, id: \.self) { department in
-                        Text(department)
+                        Text(department == "All Departments" ? "all_departments".localized() : department)
+                            .tag(department)
                     }
                 }
                 .onChange(of: selectedDepartment) {
@@ -297,7 +312,7 @@ struct MonthlyReportView: View {
             if let pdfData = pdfData {
                 Section {
                     Button(action: { showShareSheet = true }) {
-                        Label("share_pdf_report".localized(), systemImage: "square.and.arrow.up")
+                        Label("share_pdf".localized(), systemImage: "square.and.arrow.up")
                             .foregroundStyle(.accent)
                     }
                     
@@ -389,17 +404,15 @@ struct MonthlyReportView: View {
         let periodTitle: String
         switch selectedPeriod {
         case .month:
-            periodTitle = "Monthly Report"
+            periodTitle = "monthly_report".localized()
         case .quarter:
-            let month = Calendar.current.component(.month, from: selectedDate)
-            let quarter = (month - 1) / 3 + 1
-            periodTitle = "Q\(quarter) Report"
+            periodTitle = "quarterly_report".localized()
         case .year:
-            periodTitle = "Yearly Report"
+            periodTitle = "yearly_report".localized()
         }
         
         let departmentTitle = selectedDepartment == "All Departments" ? 
-            "All Departments" : selectedDepartment
+            "all_departments".localized() : selectedDepartment
         
         return "\(periodTitle) - \(departmentTitle) - \(periodFormatter.string(from: selectedDate))"
     }
@@ -425,6 +438,14 @@ class PDFGenerator {
     private let minPerformance: Double
     private let minVolumeOfWork: Double
     private let minTaskCompletion: Double
+    
+    private let reportsSummaryTitle = "reports_summary".localized()
+    private let departmentPerformanceTitle = "department_performance_overview".localized()
+    private let qualityMetricsTitle = "quality_metrics".localized()
+    private let performanceTitle = "performance".localized()
+    private let volumeOfWorkTitle = "volume_of_work".localized()
+    private let taskCompletionTitle = "task_completion".localized()
+    private let analyticsChartsTitle = "analytics_charts".localized()
     
     private let chartColors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple]
     
@@ -516,7 +537,7 @@ class PDFGenerator {
                 .font: UIFont.systemFont(ofSize: 20, weight: .bold)
             ]
             
-            // Usar el título generado dinámicamente
+            // Usar el ttulo generado dinámicamente
             (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw logo en la esquina inferior derecha
@@ -541,19 +562,24 @@ class PDFGenerator {
             ]
             
             let reportsY = margin + 50
-            ("reports_summary".localized() as NSString).draw(at: CGPoint(x: margin, y: reportsY), withAttributes: summaryTitleAttributes)
+            let reportsSummaryTitle = "reports_summary".localized()
+            (reportsSummaryTitle as NSString).draw(
+                at: CGPoint(x: margin, y: reportsY),
+                withAttributes: summaryTitleAttributes
+            )
             
-            ("department_performance_overview".localized() as NSString).draw(
+            let departmentPerformanceTitle = "department_performance_overview".localized()
+            (departmentPerformanceTitle as NSString).draw(
                 at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
                 withAttributes: summaryTitleAttributes
             )
             
             // Draw reports details
             let reportDetails = """
-            \("total_reports".localized()): \(reports.count)
-            \("average_performance".localized()): \(String(format: "%.1f", averagePerformance()))
-            \("average_volume".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
-            \("total_tasks_completed".localized()): \(totalTasks())
+            \("reports_total".localized()): \(reports.count)
+            \("performance_average".localized()): \(String(format: "%.1f", averagePerformance()))
+            \("volume_average".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
+            \("tasks_completed_total".localized()): \(totalTasks())
             """
             
             (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
@@ -636,7 +662,7 @@ class PDFGenerator {
                     let avgPerformance = reports.reduce(0.0) { $0 + Double($1.performanceMark) } / Double(reports.count) / 100.0
                     let avgVolume = reports.reduce(0.0) { $0 + Double($1.volumeOfWorkMark) } / Double(reports.count) / 100.0
                     
-                    // Normalizar tareas usando el m��ximo real
+                    // Normalizar tareas usando el máximo real
                     let avgTasks = Double(reports.reduce(0) { $0 + $1.numberOfFinishedTasks }) / Double(reports.count) / Double(maxTasks)
                     
                     let values = [avgPerformance, avgVolume, avgTasks]
@@ -685,15 +711,16 @@ class PDFGenerator {
             
             // Draw quality metrics with less spacing from reports
             let metricsY = reportsY + 200
-            ("Quality Metrics" as NSString).draw(
+            let qualityMetricsTitle = "quality_metrics".localized()
+            (qualityMetricsTitle as NSString).draw(
                 at: CGPoint(x: margin, y: metricsY),
                 withAttributes: summaryTitleAttributes
             )
             
             let metrics = [
-                ("Performance", averagePerformance(), minPerformance),
-                ("Volume of Work", averageVolumeOfWork(), minVolumeOfWork),
-                ("Task Completion", averageCompletion(), minTaskCompletion)
+                (performanceTitle, averagePerformance(), minPerformance),
+                (volumeOfWorkTitle, averageVolumeOfWork(), minVolumeOfWork),
+                (taskCompletionTitle, averageCompletion(), minTaskCompletion)
             ]
             
             let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
@@ -746,7 +773,8 @@ class PDFGenerator {
             // Charts section with title much higher up
             let chartsY = metricsY + 350
             
-            ("Analytics Charts" as NSString).draw(
+            let analyticsChartsTitle = "analytics_charts".localized()
+            (analyticsChartsTitle as NSString).draw(
                 at: CGPoint(x: margin, y: chartsY - 180),
                 withAttributes: summaryTitleAttributes
             )
@@ -807,22 +835,6 @@ class PDFGenerator {
             path.lineWidth = 1.5
             path.stroke()
         }
-        
-        // Draw legend
-        let sortedDepartments = Array(departmentData.keys).sorted()
-        sortedDepartments.enumerated().forEach { index, department in
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (department as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
-        }
     }
     
     private func drawEfficiencyChart(at point: CGPoint, size: CGSize, title: String) {
@@ -846,22 +858,6 @@ class PDFGenerator {
                 color.setFill()
                 dotPath.fill()
             }
-        }
-        
-        // Draw legend
-        let sortedDepartments = Array(departmentData.keys).sorted()
-        sortedDepartments.enumerated().forEach { index, department in
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (department as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
         }
     }
     
@@ -889,19 +885,6 @@ class PDFGenerator {
             getColorForDepartment(department).setFill()
             UIBezierPath(rect: barRect).fill()
             
-            // Legend
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (department as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
-            
             // Performance value
             ("\(Int(avgPerformance))%" as NSString).draw(
                 at: CGPoint(x: x, y: point.y - height - 10),
@@ -914,6 +897,58 @@ class PDFGenerator {
         reports.reduce(into: 0) { result, report in
             result += report.numberOfFinishedTasks
         }
+    }
+    
+    private let summaryTextAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 12)
+    ]
+    
+    private func drawReportsSummary(at point: CGPoint) {
+        let summaryText = """
+        \("reports_total".localized()): \(reports.count)
+        \("performance_average".localized()): \(String(format: "%.1f%%", averagePerformance()))
+        \("volume_average".localized()): \(String(format: "%.1f%%", averageVolumeOfWork()))
+        \("tasks_completed_total".localized()): \(totalTasks())
+        """
+        
+        // Dibujar el título de la sección
+        ("reports_summary".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        
+        // Dibujar el contenido
+        (summaryText as NSString).draw(
+            at: CGPoint(x: margin + 20, y: point.y + 30),
+            withAttributes: summaryTextAttributes
+        )
+    }
+    
+    private func drawDepartmentPerformance(at point: CGPoint) {
+        // Dibujar el título de la sección
+        ("department_performance_overview".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        // ... resto del código ...
+    }
+    
+    private func drawQualityMetrics(at point: CGPoint) {
+        // Dibujar el título de la sección
+        ("quality_metrics".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        // ... resto del código ...
+    }
+    
+    private func drawAnalyticsCharts(at point: CGPoint) {
+        // Dibujar el título de la sección
+        ("analytics_charts".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        // ... resto del código ...
     }
 }
 

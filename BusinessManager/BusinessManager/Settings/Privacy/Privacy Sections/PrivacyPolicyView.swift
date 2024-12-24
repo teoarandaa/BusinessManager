@@ -26,14 +26,22 @@ struct PrivacyPolicyView: View {
                         .bold()
                     
                     Text("privacy_policy_details".localized())
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .font(.callout)
                         
                     Text("contact_us".localized())
                         .font(.title2)
                         .bold()
                         
-                    Text("privacy_contact_info".localized())
+                    (Text("privacy_contact_prefix".localized()) +
+                    Text("privacy_email".localized())
+                        .foregroundColor(.accentColor)
+                        .underline())
+                        .font(.callout)
+                        .onTapGesture {
+                            if let url = URL(string: "mailto:help.businessmanager@gmail.com") {
+                                UIApplication.shared.open(url)
+                            }
+                        }
                 }
             }
             .padding()

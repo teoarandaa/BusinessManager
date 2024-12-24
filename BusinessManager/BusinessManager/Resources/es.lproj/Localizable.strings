@@ -25,7 +25,7 @@
 "dark" = "Oscuro";
 "resources" = "Recursos";
 "pricing" = "Precios";
-"subscription_packages" = "Paquetes de suscripción";
+"subscription_packages" = "Suscripciones";
 "privacy" = "Privacidad";
 "support" = "Soporte de Business Manager";
 "version" = "Versión";
@@ -35,6 +35,7 @@
 "language_change_message" = "Para aplicar el nuevo idioma, es necesario reiniciar la aplicación.";
 "restart_now" = "Reiniciar ahora";
 "later" = "Más tarde";
+"faq" = "FAQ";
 
 // MARK: - Reports
 "reports" = "Informes";
@@ -143,7 +144,7 @@
 "min_volume" = "Volumen Mínimo";
 "time_frame" = "Período";
 "department" = "Departamento";
-"all_departments" = "Todos los Departamentos";
+"all_departments" = "Todos";
 "filter" = "Filtrar";
 "delay_pattern" = "Patrón de Retrasos";
 "task_delays_by_department" = "Retrasos por Departamento";
@@ -153,8 +154,6 @@
 "improving" = "Mejorando";
 "stable" = "Estable";
 "declining" = "Empeorando";
-
-// Time Frames
 "week" = "Semana";
 "month" = "Mes";
 "quarter" = "Trimestre";
@@ -192,6 +191,7 @@
 "delay_pattern" = "Patrón de Retrasos";
 "delayed_tasks" = "Tareas Retrasadas";
 "date" = "Fecha";
+"task_completion" = "Finalización de Tareas";
 
 // MARK: - Department Reports
 "reports_by_year" = "Informes por Año";
@@ -225,6 +225,7 @@
 "find_privacy_policy" = "¿Dónde puedo encontrar la política de privacidad?";
 "technical_issues" = "¿Qué debo hacer si encuentro problemas técnicos?";
 "contact_support" = "¿Cómo puedo contactar con soporte?";
+"privacy_policy_location" = "¿Dónde puedo encontrar la política de privacidad?";
 
 // MARK: - Privacy
 "general_policies" = "Políticas Generales";
@@ -239,13 +240,10 @@
 // MARK: - Terms of Use
 "acceptance_terms" = "1. Aceptación de Términos";
 "description_service" = "2. Descripción del Servicio";
-"in_app_purchases" = "3. Compras en la App";
-"payment_billing" = "a. Pago y Facturación";
-"refunds" = "b. Reembolsos";
-"price_changes" = "c. Cambios de Precio";
+"in_app_purchases" = "3. Compras en la Aplicación";
 "intellectual_property" = "4. Propiedad Intelectual";
 "limitation_liability" = "5. Limitación de Responsabilidad";
-"changes_terms" = "6. Cambios en los Términos de Uso";
+"changes_terms" = "6. Cambios en los Términos";
 "termination" = "7. Terminación";
 "governing_law" = "8. Ley Aplicable";
 "contact_information" = "9. Información de Contacto";
@@ -326,3 +324,98 @@
 
 "no_charts_data" = "Sin datos para gráficos";
 "start_adding_reports_charts" = "Empieza a añadir informes para ver los gráficos de análisis.";
+
+// MARK: - FAQ Answers
+"business_manager_description" = "Business Manager es una aplicación diseñada para ayudarte a gestionar y optimizar el rendimiento de tu empresa. Ofrece herramientas para seguimiento de tareas, análisis de rendimiento y generación de informes.";
+
+"business_manager_pricing" = "Business Manager ofrece funcionalidades básicas gratuitas. Las características avanzadas están disponibles mediante suscripción premium.";
+
+"new_features_frequency" = "Añadimos nuevas funciones regularmente, aproximadamente cada año, basándonos en los comentarios de los usuarios y las necesidades del mercado.";
+
+"updates_frequency" = "Sí, lanzamos actualizaciones frecuentes para mejorar el rendimiento, corregir errores y añadir nuevas funcionalidades.";
+
+"push_notifications_instructions" = "Puedes activar las notificaciones push en la sección de Ajustes > Notificaciones de la aplicación.";
+
+"available_languages" = "Sí, Business Manager está disponible en español e inglés. Trabajamos continuamente para añadir más idiomas.";
+
+"accepted_payments" = "Aceptamos pagos a través de App Store, incluyendo tarjetas de crédito/débito y otros métodos de pago vinculados a tu cuenta de Apple.";
+
+"find_privacy_policy" = "Puedes encontrar nuestra política de privacidad en la sección de Ajustes > Privacidad.";
+
+"technical_support" = "Si encuentras problemas técnicos, primero intenta reiniciar la aplicación. Si el problema persiste, contacta con nuestro equipo de soporte.";
+
+"support_contact" = "Puedes contactar con nuestro equipo de soporte a través del correo electrónico help.businessmanager@gmail.com o desde la sección de Ajustes > Soporte.";
+
+// MARK: - Terms of Use Content
+"acceptance_terms_content" = "Al utilizar Business Manager, aceptas estos términos de uso en su totalidad. Si no estás de acuerdo con alguna parte de estos términos, no debes usar la aplicación.\n";
+
+"description_service_content" = "Business Manager es una aplicación de gestión empresarial que proporciona herramientas para el seguimiento de tareas, análisis de rendimiento y generación de informes. El servicio se proporciona 'tal cual' y puede actualizarse con el tiempo.\n";
+
+"in_app_purchases_content" = "Business Manager ofrece compras dentro de la aplicación para acceder a funciones premium. Estas compras están sujetas a los términos de la App Store.\n";
+
+"intellectual_property_content" = "Todo el contenido de Business Manager, incluyendo pero no limitado a gráficos, logotipos y textos, está protegido por derechos de autor y otras leyes de propiedad intelectual.\n";
+
+"limitation_liability_content" = "Business Manager no será responsable de ningún daño indirecto, incidental o consecuente que surja del uso o la imposibilidad de usar el servicio.\n";
+
+"changes_terms_content" = "Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en la aplicación.\n";
+
+"termination_content" = "Podemos terminar o suspender tu acceso al servicio inmediatamente, sin previo aviso, por cualquier razón, incluyendo el incumplimiento de estos términos.\n";
+
+"governing_law_content" = "Estos términos se rigen por las leyes del país donde opera Business Manager, sin tener en cuenta sus disposiciones sobre conflictos de leyes.\n";
+
+"contact_information_content" = "Si tienes preguntas sobre estos términos, puedes contactarnos en help.businessmanager@gmail.com.";
+
+// MARK: - Privacy Policy
+"privacy_policy" = "Política de Privacidad";
+"last_updated" = "Última actualización: 24 Dic 2024\n";
+"privacy_policy_main" = "Política de Privacidad";
+"privacy_policy_details" = "Business Manager para SwiftUI no recopila ningún dato sobre ti.\n\nTodos los datos se almacenarán de forma segura en tu dispositivo. Si en algún momento cambiamos nuestra Política de Privacidad, te lo notificaremos con una notificación.\n";
+"contact_us" = "Contáctanos";
+"privacy_contact_info" = "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en help.businessmanager@gmail.com";
+
+"privacy_contact_prefix" = "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en ";
+"privacy_email" = "help.businessmanager@gmail.com";
+
+"contact_information_prefix" = "Si tienes preguntas sobre estos términos, puedes contactarnos en ";
+
+"support_contact_prefix" = "Puedes contactar con nuestro equipo de soporte a través del correo electrónico ";
+"support_contact_suffix" = " o desde la sección de Ajustes > Soporte.";
+
+"coming_soon" = "Próximamente";
+"plans_description" = "Estamos trabajando en nuevas funciones y planes de suscripción emocionantes.\n¡Mantente atento!";
+
+"monthly_report" = "Informe Mensual";
+"share_pdf" = "Compartir Informe PDF";
+
+"report_period" = "Período del Informe";
+"monthly" = "Mensual";
+"quarterly" = "Trimestral";
+"yearly" = "Anual";
+
+"select_month" = "Seleccionar Mes";
+
+"select_quarter" = "Seleccionar Trimestre";
+"select_year" = "Seleccionar Año";
+
+"q1_range" = "Q1 (Ene-Mar)";
+"q2_range" = "Q2 (Abr-Jun)";
+"q3_range" = "Q3 (Jul-Sep)";
+"q4_range" = "Q4 (Oct-Dic)";
+
+"monthly_report" = "Mensual";
+"quarterly_report" = "Trimestral";
+"yearly_report" = "Anual";
+"all_departments" = "Todos";
+
+"reports_summary" = "Resumen de Informes";
+"department_performance_overview" = "Resumen de Rendimiento por Departamento";
+"quality_metrics" = "Métricas de Calidad";
+"performance" = "Rendimiento";
+"volume_of_work" = "Volumen de Trabajo";
+"task_completion" = "Finalización de Tareas";
+"analytics_charts" = "Gráficos de Análisis";
+
+"reports_total" = "Total de Informes";
+"performance_average" = "Rendimiento Promedio";
+"volume_average" = "Volumen Promedio";
+"tasks_completed_total" = "Total de Tareas Completadas";

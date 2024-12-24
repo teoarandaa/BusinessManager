@@ -55,12 +55,12 @@ struct TasksInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
-                        Text("Sort Tasks")
+                        Text("sort_tasks".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("The Sort functionality organizes your tasks effectively. Sort by date for a chronological view of deadlines, or by priority to focus on critical tasks first. This flexibility helps you manage your workflow according to your current needs.")
+                        Text("sort_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -72,18 +72,18 @@ struct TasksInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Sort")
+                    Text("sort".localized())
                 }
                 
                 // Fourth Page
                 ScrollView {
                     VStack {
-                        Text("Add Task")
+                        Text("add_task".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("Creating a new task is an intuitive process where you can specify deadlines, set priorities, and add detailed descriptions. Additional comments provide context and improve task tracking, ensuring clear communication throughout the process.")
+                        Text("add_task_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         
@@ -95,7 +95,7 @@ struct TasksInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("Add Task")
+                    Text("add_task".localized())
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))

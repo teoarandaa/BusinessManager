@@ -173,7 +173,7 @@ struct TaskView: View {
                     ContentUnavailableView(label: {
                         Label("no_tasks".localized(), systemImage: "list.bullet.clipboard")
                     }, description: {
-                        Text("start_adding_tasks".localized())
+                        Text("no_tasks_description".localized())
                     }, actions: {
                         Button("add_task".localized()) { isShowingItemSheet1 = true }
                     })
@@ -316,7 +316,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.alignleft")
-                        Text("Title")
+                        Text("title".localized())
                             .bold()
                     }
                     Spacer()
@@ -328,7 +328,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "doc.text")
-                        Text("Content")
+                        Text("content".localized())
                             .bold()
                     }
                     Spacer()
@@ -340,7 +340,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.bubble")
-                        Text("Comments")
+                        Text("comments".localized())
                             .bold()
                     }
                     Spacer()
@@ -352,7 +352,7 @@ struct AddTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "flag")
-                        Text("Priority")
+                        Text("priority".localized())
                             .bold()
                     }
                     Spacer()
@@ -398,7 +398,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "calendar")
-                        Text("Expiring date")
+                        Text("expiring_date".localized())
                             .bold()
                     }
                     Spacer()
@@ -410,7 +410,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.alignleft")
-                        Text("Title")
+                        Text("title".localized())
                             .bold()
                     }
                     Spacer()
@@ -422,7 +422,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "doc.text")
-                        Text("Content")
+                        Text("content".localized())
                             .bold()
                     }
                     Spacer()
@@ -434,7 +434,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "text.bubble")
-                        Text("Comments")
+                        Text("comments".localized())
                             .bold()
                     }
                     Spacer()
@@ -446,7 +446,7 @@ struct UpdateTaskSheet: View {
                 HStack {
                     HStack {
                         Image(systemName: "flag")
-                        Text("Priority")
+                        Text("priority".localized())
                             .bold()
                     }
                     Spacer()
@@ -459,18 +459,18 @@ struct UpdateTaskSheet: View {
                     .frame(maxWidth: 120)
                 }
             }
-            .navigationTitle("Update Task")
+            .navigationTitle("update_task".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button("cancel".localized()) {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         let generator = UINotificationFeedbackGenerator()
                         generator.notificationOccurred(.success)
                         dismiss()
@@ -493,20 +493,20 @@ struct TaskDetailSheet: View {
             Form {
                 Section {
                     HStack {
-                        Text("Date")
+                        Text("date".localized())
                         Spacer()
                         Text(task.date, format: .dateTime.year().month(.abbreviated).day())
                     }
                     
                     HStack {
-                        Text("Title")
+                        Text("title".localized())
                         Spacer()
                         Text(task.title)
                             .multilineTextAlignment(.trailing)
                     }
                     
                     HStack {
-                        Text("Content")
+                        Text("content".localized())
                         Spacer()
                         Text(task.content)
                             .multilineTextAlignment(.trailing)
@@ -514,7 +514,7 @@ struct TaskDetailSheet: View {
                     
                     if !task.comments.isEmpty {
                         HStack {
-                            Text("Comments")
+                            Text("comments".localized())
                             Spacer()
                             Text(task.comments)
                                 .multilineTextAlignment(.trailing)
@@ -522,7 +522,7 @@ struct TaskDetailSheet: View {
                     }
                     
                     HStack {
-                        Text("Priority")
+                        Text("priority".localized())
                         Spacer()
                         Text(task.priority)
                             .padding(8)
@@ -541,31 +541,31 @@ struct TaskDetailSheet: View {
                     }
                     
                     HStack {
-                        Text("Status")
+                        Text("status".localized())
                         Spacer()
-                        Text(task.isCompleted ? "Completed" : "Active")
+                        Text(task.isCompleted ? "completed".localized() : "active".localized())
                             .foregroundStyle(task.isCompleted ? .green : .blue)
                     }
                 }
                 
                 Section {
-                    Button("Delete Task", role: .destructive) {
+                    Button("delete_task".localized(), role: .destructive) {
                         showingDeleteAlert = true
                     }
                 }
             }
-            .navigationTitle("Task Details")
+            .navigationTitle("task_details".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button("cancel".localized()) {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Edit") {
+                    Button("edit".localized()) {
                         showingEditSheet = true
                     }
                 }
@@ -573,16 +573,16 @@ struct TaskDetailSheet: View {
             .sheet(isPresented: $showingEditSheet) {
                 UpdateTaskSheet(task: task)
             }
-            .alert("Delete Task", isPresented: $showingDeleteAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Delete", role: .destructive) {
+            .alert("delete_task".localized(), isPresented: $showingDeleteAlert) {
+                Button("cancel".localized(), role: .cancel) { }
+                Button("delete".localized(), role: .destructive) {
                     context.delete(task)
                     let generator = UINotificationFeedbackGenerator()
                     generator.notificationOccurred(.success)
                     dismiss()
                 }
             } message: {
-                Text("Are you sure you want to delete this task?")
+                Text("delete_task_confirmation".localized())
             }
         }
     }

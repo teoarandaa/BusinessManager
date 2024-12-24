@@ -49,7 +49,7 @@ struct FAQView: View {
         ),
         FAQItem(
             question: "contact_support".localized(),
-            answer: "support_contact".localized()
+            answer: ""
         )
     ]
     
@@ -62,7 +62,20 @@ struct FAQView: View {
                     set: { expandedItem = $0 ? item.id : nil }
                 )
             ) {
-                Text(item.answer)
+                if item.question == "contact_support".localized() {
+                    (Text("support_contact_prefix".localized()) +
+                    Text("privacy_email".localized())
+                        .foregroundColor(.accentColor)
+                        .underline() +
+                    Text("support_contact_suffix".localized()))
+                        .onTapGesture {
+                            if let url = URL(string: "mailto:help.businessmanager@gmail.com") {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                } else {
+                    Text(item.answer)
+                }
             } label: {
                 Text(item.question)
                     .font(.headline)
