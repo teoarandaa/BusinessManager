@@ -107,7 +107,7 @@
 "content" = "Conteúdo";
 "comments" = "Comentários";
 "status" = "Status";
-"expiring_date" = "Data de vencimento";
+"expiring_date" = "Data final";
 "complete" = "Concluir";
 "reactivate" = "Reativar";
 "delete_task" = "Excluir Tarefa";

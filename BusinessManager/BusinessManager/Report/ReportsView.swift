@@ -186,7 +186,7 @@ struct AddReportSheet: View {
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 150)
                 }
                 
                 HStack {
@@ -660,7 +660,7 @@ struct UpdateReportSheet: View {
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 150)
                 }
                 
                 HStack {
