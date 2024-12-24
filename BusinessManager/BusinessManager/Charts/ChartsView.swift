@@ -27,7 +27,7 @@ struct ChartsView: View {
             case .efficiency:
                 return "gauge.medium"
             case .performance:
-                return "chart.bar.fill"
+                return "chart.bar"
             }
         }
     }
