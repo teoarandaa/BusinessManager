@@ -812,22 +812,6 @@ class PDFGenerator {
             path.lineWidth = 1.5
             path.stroke()
         }
-        
-        // Draw legend
-        let sortedDepartments = Array(departmentData.keys).sorted()
-        sortedDepartments.enumerated().forEach { index, department in
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (department as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
-        }
     }
     
     private func drawEfficiencyChart(at point: CGPoint, size: CGSize, title: String) {
@@ -851,22 +835,6 @@ class PDFGenerator {
                 color.setFill()
                 dotPath.fill()
             }
-        }
-        
-        // Draw legend
-        let sortedDepartments = Array(departmentData.keys).sorted()
-        sortedDepartments.enumerated().forEach { index, department in
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (department as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
         }
     }
     
@@ -893,19 +861,6 @@ class PDFGenerator {
             let barRect = CGRect(x: x, y: point.y - height, width: barWidth, height: height)
             getColorForDepartment(department).setFill()
             UIBezierPath(rect: barRect).fill()
-            
-            // Legend
-            let legendX = point.x + (CGFloat(index) * 80)
-            let legendY = point.y + 35
-            
-            let legendRect = CGRect(x: legendX, y: legendY, width: 8, height: 8)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: legendRect).fill()
-            
-            (department as NSString).draw(
-                at: CGPoint(x: legendX + 12, y: legendY),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
             
             // Performance value
             ("\(Int(avgPerformance))%" as NSString).draw(
