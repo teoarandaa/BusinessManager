@@ -284,7 +284,7 @@
 "how_create_reports" = "Cómo Crear Informes";
 "reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas, tareas completadas a tiempo y tareas completadas (las tareas completadas a tiempo están incluidas en este grupo).\nEstos datos se muestran luego en gráficos, proporcionando perspectivas claras sobre productividad, carga de trabajo y rendimiento, ayudándote a tomar decisiones informadas basadas en datos.";
 "monthly_summary" = "Resumen Mensual";
-"monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo comparando rendimientos y tendencias departamentales. Este formato de informe facilita la revisión y compartición de métricas clave, haciéndolo invaluable para revisiones de gestión y evaluaciones de equipo.";
+"monthly_summary_description" = "La función de Resumen Mensual muestra los rendimientos y las tendencias departamentales. Este formato de informe facilita la revisión de métricas clave, haciéndolo invaluable para revisiones de gestión y evaluaciones de equipo.";
 "add_report" = "Añadir Informe";
 "add_report_description" = "Añadir un nuevo informe es un proceso sencillo para rastrear el progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
 

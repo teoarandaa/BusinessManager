@@ -296,7 +296,7 @@
 "how_create_reports" = "Como Criar Relatórios";
 "reports_creation_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas, tarefas concluídas no prazo e tarefas concluídas (tarefas concluídas no prazo estão incluídas neste grupo).\nEsses dados são então exibidos em gráficos, fornecendo insights claros sobre produtividade, carga de trabalho e desempenho, ajudando você a tomar decisões informadas e baseadas em dados.";
 "monthly_summary" = "Resumo Mensal";
-"monthly_summary_description" = "O recurso de Resumo Mensal gera um relatório PDF abrangente comparando desempenhos e tendências dos departamentos. Este formato de relatório facilita a revisão e compartilhamento de métricas principais, tornando-o inestimável para revisões gerenciais e avaliações de equipe.";
+"monthly_summary_description" = "O recurso Resumo Mensal mostra desempenhos e tendências departamentais. Esse formato de relatório facilita a revisão das principais métricas, tornando-o inestimável para análises gerenciais e avaliações de equipe.";
 "add_report" = "Adicionar Relatório";
 "add_report_description" = "Adicionar um novo relatório é um processo direto para acompanhar o progresso do seu departamento. Você pode inserir taxas de conclusão de tarefas, métricas de desempenho e notas específicas sobre conquistas ou desafios, construindo uma imagem clara do desempenho da sua equipe ao longo do tempo.";
 
