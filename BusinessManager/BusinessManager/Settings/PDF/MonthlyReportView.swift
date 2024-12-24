@@ -274,9 +274,10 @@ struct MonthlyReportView: View {
                     generateAndSharePDF()
                 }
                 
-                Picker("department".localized(), selection: $selectedDepartment) {
+                Picker("select_department".localized(), selection: $selectedDepartment) {
                     ForEach(departments, id: \.self) { department in
-                        Text(department)
+                        Text(department == "All Departments" ? "all_departments".localized() : department)
+                            .tag(department)
                     }
                 }
                 .onChange(of: selectedDepartment) {
@@ -297,7 +298,7 @@ struct MonthlyReportView: View {
             if let pdfData = pdfData {
                 Section {
                     Button(action: { showShareSheet = true }) {
-                        Label("share_pdf_report".localized(), systemImage: "square.and.arrow.up")
+                        Label("share_pdf".localized(), systemImage: "square.and.arrow.up")
                             .foregroundStyle(.accent)
                     }
                     
@@ -636,7 +637,7 @@ class PDFGenerator {
                     let avgPerformance = reports.reduce(0.0) { $0 + Double($1.performanceMark) } / Double(reports.count) / 100.0
                     let avgVolume = reports.reduce(0.0) { $0 + Double($1.volumeOfWorkMark) } / Double(reports.count) / 100.0
                     
-                    // Normalizar tareas usando el m��ximo real
+                    // Normalizar tareas usando el máximo real
                     let avgTasks = Double(reports.reduce(0) { $0 + $1.numberOfFinishedTasks }) / Double(reports.count) / Double(maxTasks)
                     
                     let values = [avgPerformance, avgVolume, avgTasks]
