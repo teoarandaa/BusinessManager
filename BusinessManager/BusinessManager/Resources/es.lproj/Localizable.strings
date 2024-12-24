@@ -391,3 +391,5 @@
 "monthly" = "Mensual";
 "quarterly" = "Trimestral";
 "yearly" = "Anual";
+
+"select_month" = "Seleccionar Mes";

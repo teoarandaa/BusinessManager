@@ -65,11 +65,11 @@ struct MonthYearPicker: View {
             .padding()
             .onChange(of: selectedYear) { updateSelectedDate() }
             .onChange(of: selectedMonth) { updateSelectedDate() }
-            .navigationTitle("Select Month")
+            .navigationTitle("select_month".localized())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button("done".localized()) {
                         dismiss()
                     }
                 }
