@@ -406,3 +406,16 @@
 "quarterly_report" = "Trimestral";
 "yearly_report" = "Anual";
 "all_departments" = "Todos";
+
+"reports_summary" = "Resumen de Informes";
+"department_performance_overview" = "Resumen de Rendimiento por Departamento";
+"quality_metrics" = "Métricas de Calidad";
+"performance" = "Rendimiento";
+"volume_of_work" = "Volumen de Trabajo";
+"task_completion" = "Finalización de Tareas";
+"analytics_charts" = "Gráficos de Análisis";
+
+"reports_total" = "Total de Informes";
+"performance_average" = "Rendimiento Promedio";
+"volume_average" = "Volumen Promedio";
+"tasks_completed_total" = "Total de Tareas Completadas";

@@ -268,6 +268,14 @@ struct MonthlyReportView: View {
         }
     }
     
+    private let reportsSummaryTitle = "reports_summary".localized()
+    private let departmentPerformanceTitle = "department_performance_overview".localized()
+    private let qualityMetricsTitle = "quality_metrics".localized()
+    private let performanceTitle = "performance".localized()
+    private let volumeOfWorkTitle = "volume_of_work".localized()
+    private let taskCompletionTitle = "task_completion".localized()
+    private let analyticsChartsTitle = "analytics_charts".localized()
+    
     var body: some View {
         List {
             Section {
@@ -431,6 +439,14 @@ class PDFGenerator {
     private let minVolumeOfWork: Double
     private let minTaskCompletion: Double
     
+    private let reportsSummaryTitle = "reports_summary".localized()
+    private let departmentPerformanceTitle = "department_performance_overview".localized()
+    private let qualityMetricsTitle = "quality_metrics".localized()
+    private let performanceTitle = "performance".localized()
+    private let volumeOfWorkTitle = "volume_of_work".localized()
+    private let taskCompletionTitle = "task_completion".localized()
+    private let analyticsChartsTitle = "analytics_charts".localized()
+    
     private let chartColors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple]
     
     private var departmentData: [String: [Report]] {
@@ -521,7 +537,7 @@ class PDFGenerator {
                 .font: UIFont.systemFont(ofSize: 20, weight: .bold)
             ]
             
-            // Usar el título generado dinámicamente
+            // Usar el ttulo generado dinámicamente
             (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
             
             // Draw logo en la esquina inferior derecha
@@ -546,19 +562,24 @@ class PDFGenerator {
             ]
             
             let reportsY = margin + 50
-            ("reports_summary".localized() as NSString).draw(at: CGPoint(x: margin, y: reportsY), withAttributes: summaryTitleAttributes)
+            let reportsSummaryTitle = "reports_summary".localized()
+            (reportsSummaryTitle as NSString).draw(
+                at: CGPoint(x: margin, y: reportsY),
+                withAttributes: summaryTitleAttributes
+            )
             
-            ("department_performance_overview".localized() as NSString).draw(
+            let departmentPerformanceTitle = "department_performance_overview".localized()
+            (departmentPerformanceTitle as NSString).draw(
                 at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
                 withAttributes: summaryTitleAttributes
             )
             
             // Draw reports details
             let reportDetails = """
-            \("total_reports".localized()): \(reports.count)
-            \("average_performance".localized()): \(String(format: "%.1f", averagePerformance()))
-            \("average_volume".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
-            \("total_tasks_completed".localized()): \(totalTasks())
+            \("reports_total".localized()): \(reports.count)
+            \("performance_average".localized()): \(String(format: "%.1f", averagePerformance()))
+            \("volume_average".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
+            \("tasks_completed_total".localized()): \(totalTasks())
             """
             
             (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
@@ -690,15 +711,16 @@ class PDFGenerator {
             
             // Draw quality metrics with less spacing from reports
             let metricsY = reportsY + 200
-            ("Quality Metrics" as NSString).draw(
+            let qualityMetricsTitle = "quality_metrics".localized()
+            (qualityMetricsTitle as NSString).draw(
                 at: CGPoint(x: margin, y: metricsY),
                 withAttributes: summaryTitleAttributes
             )
             
             let metrics = [
-                ("Performance", averagePerformance(), minPerformance),
-                ("Volume of Work", averageVolumeOfWork(), minVolumeOfWork),
-                ("Task Completion", averageCompletion(), minTaskCompletion)
+                (performanceTitle, averagePerformance(), minPerformance),
+                (volumeOfWorkTitle, averageVolumeOfWork(), minVolumeOfWork),
+                (taskCompletionTitle, averageCompletion(), minTaskCompletion)
             ]
             
             let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
@@ -751,7 +773,8 @@ class PDFGenerator {
             // Charts section with title much higher up
             let chartsY = metricsY + 350
             
-            ("Analytics Charts" as NSString).draw(
+            let analyticsChartsTitle = "analytics_charts".localized()
+            (analyticsChartsTitle as NSString).draw(
                 at: CGPoint(x: margin, y: chartsY - 180),
                 withAttributes: summaryTitleAttributes
             )
@@ -874,6 +897,58 @@ class PDFGenerator {
         reports.reduce(into: 0) { result, report in
             result += report.numberOfFinishedTasks
         }
+    }
+    
+    private let summaryTextAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 12)
+    ]
+    
+    private func drawReportsSummary(at point: CGPoint) {
+        let summaryText = """
+        \("reports_total".localized()): \(reports.count)
+        \("performance_average".localized()): \(String(format: "%.1f%%", averagePerformance()))
+        \("volume_average".localized()): \(String(format: "%.1f%%", averageVolumeOfWork()))
+        \("tasks_completed_total".localized()): \(totalTasks())
+        """
+        
+        // Dibujar el título de la sección
+        ("reports_summary".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        
+        // Dibujar el contenido
+        (summaryText as NSString).draw(
+            at: CGPoint(x: margin + 20, y: point.y + 30),
+            withAttributes: summaryTextAttributes
+        )
+    }
+    
+    private func drawDepartmentPerformance(at point: CGPoint) {
+        // Dibujar el título de la sección
+        ("department_performance_overview".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        // ... resto del código ...
+    }
+    
+    private func drawQualityMetrics(at point: CGPoint) {
+        // Dibujar el título de la sección
+        ("quality_metrics".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        // ... resto del código ...
+    }
+    
+    private func drawAnalyticsCharts(at point: CGPoint) {
+        // Dibujar el título de la sección
+        ("analytics_charts".localized() as NSString).draw(
+            at: CGPoint(x: margin, y: point.y),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
+        )
+        // ... resto del código ...
     }
 }
 

@@ -434,3 +434,16 @@
 "q2_range" = "Q2 (Apr-Jun)";
 "q3_range" = "Q3 (Jul-Sep)";
 "q4_range" = "Q4 (Oct-Dec)";
+
+"reports_summary" = "Reports Summary";
+"department_performance_overview" = "Department Performance Overview";
+"quality_metrics" = "Quality Metrics";
+"performance" = "Performance";
+"volume_of_work" = "Volume of Work";
+"task_completion" = "Task Completion";
+"analytics_charts" = "Analytics Charts";
+
+"reports_total" = "Total Reports";
+"performance_average" = "Average Performance";
+"volume_average" = "Average Volume";
+"tasks_completed_total" = "Total Tasks Completed";
