@@ -310,7 +310,8 @@ struct AddTaskSheet: View {
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 150)
+                        .fixedSize()
+                        .padding(.trailing, -8)
                 }
                 
                 HStack {
@@ -362,7 +363,8 @@ struct AddTaskSheet: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .frame(maxWidth: 120)
+                    .frame(width: 120)
+                    .padding(.trailing, -8)
                 }
             }
             .navigationTitle("new_task".localized())
@@ -404,7 +406,8 @@ struct UpdateTaskSheet: View {
                     Spacer()
                     DatePicker("", selection: $task.date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 150)
+                        .fixedSize()
+                        .padding(.trailing, -8)
                 }
                 
                 HStack {
@@ -456,7 +459,8 @@ struct UpdateTaskSheet: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .frame(maxWidth: 120)
+                    .frame(width: 120)
+                    .padding(.trailing, -8)
                 }
             }
             .navigationTitle("update_task".localized())
