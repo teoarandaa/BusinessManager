@@ -25,7 +25,7 @@
 "dark" = "Oscuro";
 "resources" = "Recursos";
 "pricing" = "Precios";
-"subscription_packages" = "Paquetes de suscripción";
+"subscription_packages" = "Suscripciones";
 "privacy" = "Privacidad";
 "support" = "Soporte de Business Manager";
 "version" = "Versión";
@@ -144,7 +144,7 @@
 "min_volume" = "Volumen Mínimo";
 "time_frame" = "Período";
 "department" = "Departamento";
-"all_departments" = "Todos los Departamentos";
+"all_departments" = "Todos";
 "filter" = "Filtrar";
 "delay_pattern" = "Patrón de Retrasos";
 "task_delays_by_department" = "Retrasos por Departamento";
@@ -280,7 +280,7 @@
 "reports_overview" = "Resumen de Informes";
 "reports_description" = "Los informes ofrecen perspectivas sobre rendimiento, productividad y progreso.\n\nAlmacenados y organizados de forma segura por tipo y fecha, te ayudan a rastrear y compartir resultados, asegurando un acceso rápido para decisiones más inteligentes.";
 "how_create_reports" = "Cómo Crear Informes";
-"reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas, tareas completadas a tiempo y tareas completadas (las tareas completadas a tiempo est��n incluidas en este grupo).\nEstos datos se muestran luego en gráficos, proporcionando perspectivas claras sobre productividad, carga de trabajo y rendimiento, ayudándote a tomar decisiones informadas basadas en datos.";
+"reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas, tareas completadas a tiempo y tareas completadas (las tareas completadas a tiempo están incluidas en este grupo).\nEstos datos se muestran luego en gráficos, proporcionando perspectivas claras sobre productividad, carga de trabajo y rendimiento, ayudándote a tomar decisiones informadas basadas en datos.";
 "monthly_summary" = "Resumen Mensual";
 "monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo comparando rendimientos y tendencias departamentales. Este formato de informe facilita la revisión y compartición de métricas clave, haciéndolo invaluable para revisiones de gestión y evaluaciones de equipo.";
 "add_report" = "Añadir Informe";
@@ -336,7 +336,7 @@
 
 "push_notifications_instructions" = "Puedes activar las notificaciones push en la sección de Ajustes > Notificaciones de la aplicación.";
 
-"available_languages" = "Sí, Business Manager está disponible en español e inglés. Trabajamos continuamente para a��adir más idiomas.";
+"available_languages" = "Sí, Business Manager está disponible en español e inglés. Trabajamos continuamente para añadir más idiomas.";
 
 "accepted_payments" = "Aceptamos pagos a través de App Store, incluyendo tarjetas de crédito/débito y otros métodos de pago vinculados a tu cuenta de Apple.";
 
@@ -380,3 +380,14 @@
 
 "support_contact_prefix" = "Puedes contactar con nuestro equipo de soporte a través del correo electrónico ";
 "support_contact_suffix" = " o desde la sección de Ajustes > Soporte.";
+
+"coming_soon" = "Próximamente";
+"plans_description" = "Estamos trabajando en nuevas funciones y planes de suscripción emocionantes.\n¡Mantente atento!";
+
+"monthly_report" = "Informe Mensual";
+"share_pdf" = "Compartir Informe PDF";
+
+"report_period" = "Período del Informe";
+"monthly" = "Mensual";
+"quarterly" = "Trimestral";
+"yearly" = "Anual";

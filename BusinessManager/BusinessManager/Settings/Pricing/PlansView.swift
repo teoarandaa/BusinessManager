@@ -1,15 +1,15 @@
-//
-//  PlansView.swift
-//  BusinessManager
-//
-//  Created by Teo Aranda Páez on 17/12/24.
-//
-
 import SwiftUI
 
 struct PlansView: View {
     var body: some View {
-        Text("PlansView")
+        NavigationStack {
+            ContentUnavailableView {
+                Label("coming_soon", systemImage: "sparkles")
+            } description: {
+                Text("plans_description")
+            }
+            .navigationTitle("subscription_packages")
+        }
     }
 }
 

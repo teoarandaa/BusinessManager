@@ -25,7 +25,7 @@
 "dark" = "Dark";
 "resources" = "Resources";
 "pricing" = "Pricing";
-"subscription_packages" = "Subscription packages";
+"subscription_packages" = "Subscriptions";
 "privacy" = "Privacy";
 "support" = "Business Manager support";
 "version" = "Version";
@@ -153,7 +153,7 @@
 "min_volume" = "Minimum Volume";
 "time_frame" = "Time Frame";
 "department" = "Department";
-"all_departments" = "All Departments";
+"all_departments" = "All";
 "filter" = "Filter";
 "delay_pattern" = "Delay Pattern";
 "task_delays_by_department" = "Task Delays by Department";
@@ -411,3 +411,14 @@
 
 "support_contact_prefix" = "You can contact our support team via email at ";
 "support_contact_suffix" = " or through Settings > Support.";
+
+"coming_soon" = "Coming Soon";
+"plans_description" = "We're working on exciting new features and subscription plans.\nStay tuned!";
+
+"monthly_report" = "Monthly Report";
+"share_pdf" = "Share PDF Report";
+
+"report_period" = "Report Period";
+"monthly" = "Monthly";
+"quarterly" = "Quarterly";
+"yearly" = "Yearly";
