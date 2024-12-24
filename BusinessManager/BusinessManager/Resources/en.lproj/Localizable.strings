@@ -200,6 +200,7 @@
 "delay_pattern" = "Delay Pattern";
 "delayed_tasks" = "Delayed Tasks";
 "date" = "Date";
+"task_completion" = "Task Completion";
 
 // MARK: - Department Reports
 "reports_by_year" = "Reports by Year";

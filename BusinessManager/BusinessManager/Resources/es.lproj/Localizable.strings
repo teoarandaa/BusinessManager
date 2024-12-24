@@ -190,6 +190,7 @@
 "delay_pattern" = "Patrón de Retrasos";
 "delayed_tasks" = "Tareas Retrasadas";
 "date" = "Fecha";
+"task_completion" = "Finalización de Tareas";
 
 // MARK: - Department Reports
 "reports_by_year" = "Informes por Año";
