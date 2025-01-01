@@ -426,3 +426,10 @@
 "radar_performance" = "Rendimiento";
 "radar_volume" = "Volumen";
 "radar_tasks" = "Tareas";
+
+// MARK: - Icon Categories
+"all" = "Todos";
+"general" = "General";
+"tech" = "Tecnología";
+"business" = "Negocios";
+"communication" = "Comunicación";

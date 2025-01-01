@@ -434,10 +434,16 @@ struct IconSection: Identifiable {
 }
 
 // Luego las variables y datos necesarios
-let categories = ["All", "General", "Tech", "Business", "Communication"]
+let categories = [
+    "all".localized(),
+    "general".localized(),
+    "tech".localized(),
+    "business".localized(),
+    "communication".localized()
+]
 
 let sections = [
-    IconSection(title: "General", icons: [
+    IconSection(title: "general".localized(), icons: [
         IconItem(icon: "building.2"),
         IconItem(icon: "building.columns"),
         IconItem(icon: "building"),
@@ -449,7 +455,7 @@ let sections = [
         IconItem(icon: "chart.pie"),
         IconItem(icon: "chart.line.uptrend.xyaxis")
     ]),
-    IconSection(title: "Tech", icons: [
+    IconSection(title: "tech".localized(), icons: [
         IconItem(icon: "desktopcomputer"),
         IconItem(icon: "laptopcomputer"),
         IconItem(icon: "keyboard"),
@@ -461,7 +467,7 @@ let sections = [
         IconItem(icon: "display"),
         IconItem(icon: "pc")
     ]),
-    IconSection(title: "Business", icons: [
+    IconSection(title: "business".localized(), icons: [
         IconItem(icon: "creditcard"),
         IconItem(icon: "banknote"),
         IconItem(icon: "dollarsign.circle"),
@@ -473,7 +479,7 @@ let sections = [
         IconItem(icon: "pencil.and.outline"),
         IconItem(icon: "list.clipboard")
     ]),
-    IconSection(title: "Communication", icons: [
+    IconSection(title: "communication".localized(), icons: [
         IconItem(icon: "message"),
         IconItem(icon: "phone"),
         IconItem(icon: "envelope"),

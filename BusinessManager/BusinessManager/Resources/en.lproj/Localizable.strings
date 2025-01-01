@@ -421,3 +421,10 @@
 "radar_performance" = "Performance";
 "radar_volume" = "Volume";
 "radar_tasks" = "Tasks";
+
+// MARK: - Icon Categories
+"all" = "All";
+"general" = "General";
+"tech" = "Tech";
+"business" = "Business";
+"communication" = "Communication";
