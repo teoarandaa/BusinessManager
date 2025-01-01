@@ -389,7 +389,8 @@
 "support_contact_suffix" = " or through Settings > Support.";
 "coming_soon" = "Coming Soon";
 "plans_description" = "We're working on exciting new features and subscription plans.\nStay tuned!";
-"monthly_report" = "PDF Report";
+"title_pdf" = "PDF Report";
+"monthly_report" = "Monthly";
 "quarterly_report" = "Quarterly";
 "yearly_report" = "Yearly";
 "all_departments" = "All";
@@ -428,3 +429,13 @@
 "tech" = "Tech";
 "business" = "Business";
 "communication" = "Communication";
+
+// MARK: - Chart Types Explanations
+"performance_chart" = "Performance Comparison";
+"performance_description" = "This bar chart compares the volume of work with the number of completed tasks for each department. It helps visualize the relationship between workload and task completion, making it easy to identify departments that might be overloaded or underutilized.";
+
+"volume_chart" = "Productivity Trends";
+"volume_description" = "This line chart shows performance trends over time for each department. It helps track how performance metrics evolve throughout the month, making it easy to identify patterns, improvements, or potential issues in department efficiency.";
+
+"tasks_chart" = "Workload Analysis";
+"tasks_description" = "This scatter plot shows the relationship between work volume and performance for each department. It helps identify how departments handle different workload levels and their efficiency, revealing potential bottlenecks or optimal working conditions.";

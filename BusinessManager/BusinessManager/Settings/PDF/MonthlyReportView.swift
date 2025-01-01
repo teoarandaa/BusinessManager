@@ -337,7 +337,7 @@ struct MonthlyReportView: View {
                 }
             }
         }
-        .navigationTitle("monthly_report".localized())
+        .navigationTitle("title_pdf".localized())
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showDatePicker) {
             switch selectedPeriod {
