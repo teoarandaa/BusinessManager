@@ -392,7 +392,7 @@
 "support_contact_suffix" = " ou através de Configurações > Suporte.";
 "coming_soon" = "Em Breve";
 "plans_description" = "Estamos trabalhando em novos recursos e planos de assinatura empolgantes.\nFique ligado!";
-"monthly_report" = "Mensal";
+"monthly_report" = "Relatório PDF";
 "quarterly_report" = "Trimestral";
 "yearly_report" = "Anual";
 "all_departments" = "Todos";
@@ -401,7 +401,7 @@
 "monthly" = "Mensal";
 "quarterly" = "Trimestral";
 "yearly" = "Anual";
-"select_month" = "Selecionar Mês";
+"select_month" = "Selecionar";
 "select_quarter" = "Selecionar Trimestre";
 "select_year" = "Selecionar Ano";
 "q1_range" = "T1 (Jan-Mar)";
@@ -424,3 +424,10 @@
 "radar_performance" = "Desempenho";
 "radar_volume" = "Volume";
 "radar_tasks" = "Tarefas";
+
+// MARK: - Icon Categories
+"all" = "Todos";
+"general" = "Geral";
+"tech" = "Tecnologia";
+"business" = "Negócios";
+"communication" = "Comunicação";

@@ -279,23 +279,39 @@ struct MonthlyReportView: View {
     var body: some View {
         List {
             Section {
-                Picker("report_period".localized(), selection: $selectedPeriod) {
-                    ForEach(ReportPeriod.allCases, id: \.self) { period in
-                        Text(period.localizedName)
+                HStack {
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text("report_period".localized())
+                            .bold()
                     }
-                }
-                .onChange(of: selectedPeriod) {
-                    generateAndSharePDF()
+                    Spacer()
+                    Picker("", selection: $selectedPeriod) {
+                        ForEach(ReportPeriod.allCases, id: \.self) { period in
+                            Text(period.localizedName)
+                        }
+                    }
+                    .onChange(of: selectedPeriod) {
+                        generateAndSharePDF()
+                    }
                 }
                 
-                Picker("select_department".localized(), selection: $selectedDepartment) {
-                    ForEach(departments, id: \.self) { department in
-                        Text(department == "All Departments" ? "all_departments".localized() : department)
-                            .tag(department)
+                HStack {
+                    HStack {
+                        Image(systemName: "building.2")
+                        Text("select_department".localized())
+                            .bold()
                     }
-                }
-                .onChange(of: selectedDepartment) {
-                    generateAndSharePDF()
+                    Spacer()
+                    Picker("", selection: $selectedDepartment) {
+                        ForEach(departments, id: \.self) { department in
+                            Text(department == "All Departments" ? "all_departments".localized() : department)
+                                .tag(department)
+                        }
+                    }
+                    .onChange(of: selectedDepartment) {
+                        generateAndSharePDF()
+                    }
                 }
                 
                 HStack {
@@ -934,7 +950,6 @@ class PDFGenerator {
             at: CGPoint(x: margin, y: point.y),
             withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
         )
-        // ... resto del código ...
     }
     
     private func drawQualityMetrics(at point: CGPoint) {
@@ -943,7 +958,6 @@ class PDFGenerator {
             at: CGPoint(x: margin, y: point.y),
             withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
         )
-        // ... resto del código ...
     }
     
     private func drawAnalyticsCharts(at point: CGPoint) {
@@ -952,7 +966,6 @@ class PDFGenerator {
             at: CGPoint(x: margin, y: point.y),
             withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
         )
-        // ... resto del código ...
     }
 }
 
