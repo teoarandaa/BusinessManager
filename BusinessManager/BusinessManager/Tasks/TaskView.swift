@@ -175,7 +175,11 @@ struct TaskView: View {
                     }, description: {
                         Text("no_tasks_description".localized())
                     }, actions: {
-                        Button("add_task".localized()) { isShowingItemSheet1 = true }
+                        Button {
+                            isShowingItemSheet1 = true
+                        } label: {
+                            Label("add_task".localized(), systemImage: "plus")
+                        }
                     })
                     .offset(y: -60)
                 } else if !searchText.isEmpty && filteredTasks.isEmpty {
