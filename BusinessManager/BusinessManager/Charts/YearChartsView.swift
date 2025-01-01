@@ -157,7 +157,7 @@ struct YearChartsView: View {
                                     Circle()
                                         .fill(monthColors[month] ?? .black)
                                         .frame(width: 10, height: 10)
-                                    Text(DateFormatter().monthSymbols[month - 1])
+                                    Text(DateFormatter().monthSymbols[month - 1].capitalized)
                                         .font(.caption)
                                 }
                             }

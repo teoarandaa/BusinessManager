@@ -60,7 +60,7 @@ struct QualityInfoSheetView: View {
                             .bold()
                             .padding()
                         
-                        Text("The Department Filter enhances your analysis capabilities by allowing you to focus on specific time periods and departments. This targeted approach helps identify strengths and areas for improvement, supporting better decision-making about resources and processes.")
+                        Text("filter_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                         

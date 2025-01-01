@@ -155,7 +155,7 @@ struct ReportCell: View {
     var body: some View {
         HStack {
             Text(report.date, format: .dateTime.year().month(.abbreviated).day())
-                .frame(width: 100, alignment: .leading)
+                .frame(width: 150, alignment: .leading)
             Spacer()
             Text(report.departmentName)
                 .bold()
@@ -186,7 +186,8 @@ struct AddReportSheet: View {
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 150)
+                        .fixedSize()
+                        .padding(.trailing, -8)
                 }
                 
                 HStack {
@@ -195,7 +196,7 @@ struct AddReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("name".localized(), text: $departmentName, axis: .vertical)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -206,7 +207,7 @@ struct AddReportSheet: View {
                     Spacer()
                     TextField("number".localized(), text: $totalTasksCreated)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -217,7 +218,7 @@ struct AddReportSheet: View {
                     Spacer()
                     TextField("number".localized(), text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -228,8 +229,9 @@ struct AddReportSheet: View {
                     Spacer()
                     TextField("number".localized(), text: $numberOfFinishedTasks)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 120, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
+                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack(alignment: .top) {
@@ -238,7 +240,7 @@ struct AddReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("add_note".localized(), text: $annotations, axis: .vertical)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
             }
@@ -660,7 +662,8 @@ struct UpdateReportSheet: View {
                     Spacer()
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .labelsHidden()
-                        .frame(maxWidth: 150)
+                        .fixedSize()
+                        .padding(.trailing, -8)
                 }
                 
                 HStack {
@@ -669,7 +672,7 @@ struct UpdateReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("name".localized(), text: $departmentName, axis: .vertical)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -680,7 +683,7 @@ struct UpdateReportSheet: View {
                     Spacer()
                     TextField("number".localized(), text: $totalTasksCreated)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -691,7 +694,7 @@ struct UpdateReportSheet: View {
                     Spacer()
                     TextField("number".localized(), text: $tasksCompletedWithoutDelay)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
                 
@@ -702,7 +705,7 @@ struct UpdateReportSheet: View {
                     Spacer()
                     TextField("number".localized(), text: $numberOfFinishedTasks)
                         .keyboardType(.numberPad)
-                        .frame(maxWidth: 120)
+                        .frame(maxWidth: 120, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                         .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
@@ -713,7 +716,7 @@ struct UpdateReportSheet: View {
                         .bold()
                     Spacer()
                     TextField("add_note".localized(), text: $annotations, axis: .vertical)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
                 }
             }
