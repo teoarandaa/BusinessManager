@@ -97,6 +97,75 @@ struct ChartsInfoSheetView: View {
                 .tabItem {
                     Text("yearly_analysis".localized())
                 }
+                
+                // Fifth Page (Performance)
+                ScrollView {
+                    VStack {
+                        Text("performance_chart".localized())
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("performance_description".localized())
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("performance_chart".localized())
+                }
+                
+                // Sixth Page (Volume)
+                ScrollView {
+                    VStack {
+                        Text("volume_chart".localized())
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("volume_description".localized())
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("volume_chart".localized())
+                }
+                
+                // Seventh Page (Tasks)
+                ScrollView {
+                    VStack {
+                        Text("tasks_chart".localized())
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("tasks_description".localized())
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        
+                        Image("")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .padding()
+                    }
+                }
+                .tabItem {
+                    Text("tasks_chart".localized())
+                }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {

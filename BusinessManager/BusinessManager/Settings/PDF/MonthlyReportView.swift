@@ -337,7 +337,7 @@ struct MonthlyReportView: View {
                 }
             }
         }
-        .navigationTitle("monthly_report".localized())
+        .navigationTitle("title_pdf".localized())
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showDatePicker) {
             switch selectedPeriod {
@@ -465,23 +465,15 @@ class PDFGenerator {
     
     private let chartColors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemOrange, .systemPurple]
     
-    private var departmentData: [String: [Report]] {
-        Dictionary(grouping: reports) { $0.departmentName }
-    }
+    // Mantener un orden y color fijo para los departamentos
+    private static var departmentOrder: [String] = []
+    private static var departmentColors: [String: UIColor] = [:]
+    private let availableColors: [UIColor] = [
+        .systemBlue, .systemGreen, .systemRed,
+        .systemOrange, .systemPurple, .systemTeal
+    ]
     
-    private lazy var departmentColorMap: [String: UIColor] = {
-        var colorMap: [String: UIColor] = [:]
-        let departments = Array(departmentData.keys).sorted()
-        
-        for (index, department) in departments.enumerated() {
-            colorMap[department] = chartColors[index % chartColors.count]
-        }
-        return colorMap
-    }()
-    
-    private func getColorForDepartment(_ department: String) -> UIColor {
-        return departmentColorMap[department] ?? chartColors[0]
-    }
+    private var departmentData: [String: [Report]] = [:]
     
     init(
         date: Date,
@@ -499,6 +491,18 @@ class PDFGenerator {
         self.minPerformance = minPerformance
         self.minVolumeOfWork = minVolumeOfWork
         self.minTaskCompletion = minTaskCompletion
+        
+        // Agrupar los informes por departamento
+        self.departmentData = Dictionary(grouping: reports) { $0.departmentName }
+        
+        // Asignar colores fijos la primera vez que vemos un departamento
+        let departments = Array(departmentData.keys).sorted()
+        departments.forEach { department in
+            if !PDFGenerator.departmentOrder.contains(department) {
+                PDFGenerator.departmentOrder.append(department)
+                PDFGenerator.departmentColors[department] = availableColors[PDFGenerator.departmentColors.count % availableColors.count]
+            }
+        }
     }
     
     private func averagePerformance() -> Double {
@@ -546,283 +550,283 @@ class PDFGenerator {
         let pageRect = CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight)
         let renderer = UIGraphicsPDFRenderer(bounds: pageRect, format: format)
         
-        let data = renderer.pdfData { context in
-            context.beginPage()
+        return renderer.pdfData { context in
+            drawPDFContent(context: context)
+        }
+    }
+    
+    private func drawPDFContent(context: UIGraphicsPDFRendererContext) {
+        context.beginPage()
+        
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 20, weight: .bold)
+        ]
+        
+        // Usar el ttulo generado dinámicamente
+        (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
+        
+        // Draw logo en la esquina inferior derecha
+        if let logo = UIImage(named: "pdf_logo") {
+            let logoSize: CGFloat = 80
+            let aspectRatio = logo.size.width / logo.size.height
+            let logoHeight = logoSize
+            let logoWidth = logoHeight * aspectRatio
             
-            let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 20, weight: .bold)
-            ]
-            
-            // Usar el ttulo generado dinámicamente
-            (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
-            
-            // Draw logo en la esquina inferior derecha
-            if let logo = UIImage(named: "pdf_logo") {
-                let logoSize: CGFloat = 80
-                let aspectRatio = logo.size.width / logo.size.height
-                let logoHeight = logoSize
-                let logoWidth = logoHeight * aspectRatio
-                
-                let logoX = pageWidth - margin - logoWidth
-                let logoY = pageHeight - (margin / 4) - logoHeight
-                let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
-                logo.draw(in: logoRect)
+            let logoX = pageWidth - margin - logoWidth
+            let logoY = pageHeight - (margin / 4) - logoHeight
+            let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
+            logo.draw(in: logoRect)
+        }
+        
+        // Draw reports summary
+        let summaryTitleAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+        ]
+        let summaryTextAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14)
+        ]
+        
+        let reportsY = margin + 50
+        let reportsSummaryTitle = "reports_summary".localized()
+        (reportsSummaryTitle as NSString).draw(
+            at: CGPoint(x: margin, y: reportsY),
+            withAttributes: summaryTitleAttributes
+        )
+        
+        let departmentPerformanceTitle = "department_performance_overview".localized()
+        (departmentPerformanceTitle as NSString).draw(
+            at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
+            withAttributes: summaryTitleAttributes
+        )
+        
+        // Draw reports details
+        let reportDetails = """
+        \("reports_total".localized()): \(reports.count)
+        \("performance_average".localized()): \(String(format: "%.1f", averagePerformance()))
+        \("volume_average".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
+        \("tasks_completed_total".localized()): \(totalTasks())
+        """
+        
+        (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
+        
+        // Dibujar gráfico de radar (siempre, incluso sin datos)
+        let centerX = pageWidth - margin - 150
+        let centerY = reportsY + 130
+        let radarRadius: CGFloat = 80
+        let axes = 3
+        let angleStep = 2 * CGFloat.pi / CGFloat(axes)
+        
+        // Dibujar círculos de referencia
+        let referenceCircles = [0.2, 0.4, 0.6, 0.8, 1.0]
+        for reference in referenceCircles {
+            let path = UIBezierPath()
+            for i in 0...axes {
+                let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                let point = CGPoint(
+                    x: centerX + cos(angle) * (radarRadius * CGFloat(reference)),
+                    y: centerY + sin(angle) * (radarRadius * CGFloat(reference))
+                )
+                if i == 0 {
+                    path.move(to: point)
+                } else {
+                    path.addLine(to: point)
+                }
             }
-            
-            // Draw reports summary
-            let summaryTitleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 14, weight: .bold)
-            ]
-            let summaryTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 14)
-            ]
-            
-            let reportsY = margin + 50
-            let reportsSummaryTitle = "reports_summary".localized()
-            (reportsSummaryTitle as NSString).draw(
-                at: CGPoint(x: margin, y: reportsY),
-                withAttributes: summaryTitleAttributes
+            path.close()
+            UIColor.gray.withAlphaComponent(0.2).setStroke()
+            path.lineWidth = 0.5
+            path.stroke()
+        }
+        
+        // Dibujar líneas de los ejes
+        for i in 0..<axes {
+            let path = UIBezierPath()
+            let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+            path.move(to: CGPoint(x: centerX, y: centerY))
+            path.addLine(to: CGPoint(
+                x: centerX + cos(angle) * radarRadius,
+                y: centerY + sin(angle) * radarRadius
+            ))
+            UIColor.gray.setStroke()
+            path.lineWidth = 0.5
+            path.stroke()
+        }
+        
+        // Dibujar etiquetas de los ejes
+        let axisLabels = [
+            "radar_performance".localized(),
+            "radar_volume".localized(),
+            "radar_tasks".localized()
+        ]
+        let labelAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 10)
+        ]
+        
+        for (i, label) in axisLabels.enumerated() {
+            let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+            let point = CGPoint(
+                x: centerX + cos(angle) * (radarRadius + 15),
+                y: centerY + sin(angle) * (radarRadius + 15)
             )
-            
-            let departmentPerformanceTitle = "department_performance_overview".localized()
-            (departmentPerformanceTitle as NSString).draw(
-                at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
-                withAttributes: summaryTitleAttributes
+            (label as NSString).draw(
+                at: point,
+                withAttributes: labelAttributes
             )
+        }
+        
+        // Solo dibujar datos de departamentos si existen
+        if !departmentData.isEmpty {
+            // Calcular el máximo número de tareas
+            let maxTasks = departmentData.values.flatMap { reports in
+                reports.map { $0.numberOfFinishedTasks }
+            }.max() ?? 1
             
-            // Draw reports details
-            let reportDetails = """
-            \("reports_total".localized()): \(reports.count)
-            \("performance_average".localized()): \(String(format: "%.1f", averagePerformance()))
-            \("volume_average".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
-            \("tasks_completed_total".localized()): \(totalTasks())
-            """
-            
-            (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
-            
-            // Draw radar chart
-            let radarCenterY = reportsY + 130
-            let centerX = pageWidth - margin - 150
-            let radarRadius: CGFloat = 80
-            let departmentReports = Dictionary(grouping: reports, by: { $0.departmentName })
-            
-            // Dibujar ejes del radar (siempre)
-            let axes = 3
-            let angleStep = 2 * CGFloat.pi / CGFloat(axes)
-            
-            // Dibujar círculos de referencia (20%, 40%, 60%, 80%, 100%)
-            let referenceCircles = [0.2, 0.4, 0.6, 0.8, 1.0]
-            for reference in referenceCircles {
+            // Dibujar datos por departamento
+            let sortedDepartments = getSortedDepartments()
+            sortedDepartments.forEach { department in
+                guard let reports = departmentData[department] else { return }
+                
+                let avgPerformance = reports.reduce(0.0) { $0 + Double($1.performanceMark) } / Double(reports.count) / 100.0
+                let avgVolume = reports.reduce(0.0) { $0 + Double($1.volumeOfWorkMark) } / Double(reports.count) / 100.0
+                let avgTasks = Double(reports.reduce(0) { $0 + $1.numberOfFinishedTasks }) / Double(reports.count) / Double(maxTasks)
+                
+                let values = [avgPerformance, avgVolume, avgTasks]
                 let path = UIBezierPath()
+                
                 for i in 0...axes {
-                    let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
+                    let idx = i % axes
+                    let angle = CGFloat(idx) * angleStep - CGFloat.pi / 2
+                    let value = CGFloat(values[idx])
                     let point = CGPoint(
-                        x: centerX + cos(angle) * (radarRadius * CGFloat(reference)),
-                        y: radarCenterY + sin(angle) * (radarRadius * CGFloat(reference))
+                        x: centerX + cos(angle) * (radarRadius * value),
+                        y: centerY + sin(angle) * (radarRadius * value)
                     )
+                    
                     if i == 0 {
                         path.move(to: point)
                     } else {
                         path.addLine(to: point)
                     }
                 }
+                
                 path.close()
-                UIColor.gray.withAlphaComponent(0.2).setStroke()
+                let departmentColor = getColorForDepartment(department)
+                departmentColor.withAlphaComponent(0.5).setFill()
+                departmentColor.setStroke()
+                path.lineWidth = 1.0
+                path.fill()
                 path.stroke()
-            }
-            
-            // Dibujar líneas de los ejes
-            for i in 0..<axes {
-                let path = UIBezierPath()
-                let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
-                path.move(to: CGPoint(x: centerX, y: radarCenterY))
-                path.addLine(to: CGPoint(
-                    x: centerX + cos(angle) * radarRadius,
-                    y: radarCenterY + sin(angle) * radarRadius
-                ))
-                UIColor.gray.setStroke()
-                path.stroke()
-            }
-            
-            // Dibujar etiquetas de los ejes
-            let axisLabels = [
-                "radar_performance".localized(),
-                "radar_volume".localized(),
-                "radar_tasks".localized()
-            ]
-            let labelAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 10)
-            ]
-            
-            for (i, label) in axisLabels.enumerated() {
-                let angle = CGFloat(i) * angleStep - CGFloat.pi / 2
-                let point = CGPoint(
-                    x: centerX + cos(angle) * (radarRadius + 15),
-                    y: radarCenterY + sin(angle) * (radarRadius + 15)
-                )
-                (label as NSString).draw(
-                    at: point,
-                    withAttributes: labelAttributes
+                
+                // Dibujar leyenda
+                let legendX = centerX + radarRadius + 30
+                let legendY = centerY - radarRadius + (CGFloat(sortedDepartments.firstIndex(of: department) ?? 0) * 20)
+                
+                departmentColor.setFill()
+                let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
+                UIBezierPath(rect: legendRect).fill()
+                
+                let legendText = department
+                let legendAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 10)
+                ]
+                (legendText as NSString).draw(
+                    at: CGPoint(x: legendX + 15, y: legendY),
+                    withAttributes: legendAttributes
                 )
             }
-            
-            // Solo dibujamos los datos si existen
-            if !departmentReports.isEmpty {
-                // Dibujar datos por departamento
-                let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed,
-                                       .systemOrange, .systemPurple, .systemTeal]
-                
-                // Encontrar el máximo número de tareas entre todos los departamentos
-                let maxTasks = departmentReports.values.flatMap { reports in
-                    reports.map { $0.numberOfFinishedTasks }
-                }.max() ?? 1
-                
-                departmentReports.enumerated().forEach { index, entry in
-                    let reports = entry.value
-                    let avgPerformance = reports.reduce(0.0) { $0 + Double($1.performanceMark) } / Double(reports.count) / 100.0
-                    let avgVolume = reports.reduce(0.0) { $0 + Double($1.volumeOfWorkMark) } / Double(reports.count) / 100.0
-                    
-                    // Normalizar tareas usando el máximo real
-                    let avgTasks = Double(reports.reduce(0) { $0 + $1.numberOfFinishedTasks }) / Double(reports.count) / Double(maxTasks)
-                    
-                    let values = [avgPerformance, avgVolume, avgTasks]
-                    let path = UIBezierPath()
-                    
-                    for i in 0...axes {
-                        let idx = i % axes
-                        let angle = CGFloat(idx) * angleStep - CGFloat.pi / 2
-                        let value = CGFloat(values[idx])
-                        let point = CGPoint(
-                            x: centerX + cos(angle) * (radarRadius * value),
-                            y: radarCenterY + sin(angle) * (radarRadius * value)
-                        )
-                        
-                        if i == 0 {
-                            path.move(to: point)
-                        } else {
-                            path.addLine(to: point)
-                        }
-                    }
-                    
-                    path.close()
-                    colors[index % colors.count].withAlphaComponent(0.5).setFill()
-                    colors[index % colors.count].setStroke()
-                    path.fill()
-                    path.stroke()
-                    
-                    // Dibujar leyenda
-                    let legendX = centerX + radarRadius + 30
-                    let legendY = radarCenterY - radarRadius + (CGFloat(index) * 20)
-                    
-                    colors[index % colors.count].setFill()
-                    let legendRect = CGRect(x: legendX, y: legendY, width: 10, height: 10)
-                    UIBezierPath(rect: legendRect).fill()
-                    
-                    let legendText = entry.key
-                    let legendAttributes: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.systemFont(ofSize: 10)
-                    ]
-                    (legendText as NSString).draw(
-                        at: CGPoint(x: legendX + 15, y: legendY),
-                        withAttributes: legendAttributes
-                    )
-                }
-            }
-            
-            // Draw quality metrics with less spacing from reports
-            let metricsY = reportsY + 200
-            let qualityMetricsTitle = "quality_metrics".localized()
-            (qualityMetricsTitle as NSString).draw(
-                at: CGPoint(x: margin, y: metricsY),
-                withAttributes: summaryTitleAttributes
-            )
-            
-            let metrics = [
-                (performanceTitle, averagePerformance(), minPerformance),
-                (volumeOfWorkTitle, averageVolumeOfWork(), minVolumeOfWork),
-                (taskCompletionTitle, averageCompletion(), minTaskCompletion)
-            ]
-            
-            let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
-            
-            metrics.enumerated().forEach { index, metric in
-                let metricX = margin + (CGFloat(index) * (metricWidth + 20))
-                let metricY = metricsY + 40
-                
-                // Draw metric title
-                (metric.0 as NSString).draw(
-                    at: CGPoint(x: metricX, y: metricY),
-                    withAttributes: [
-                        .font: UIFont.boldSystemFont(ofSize: 14)
-                    ]
-                )
-                
-                // Draw metric value with color based on threshold
-                let isAboveMinimum = metric.1 >= metric.2
-                ("\(Int(metric.1))%" as NSString).draw(
-                    at: CGPoint(x: metricX, y: metricY + 25),
-                    withAttributes: [
-                        .font: UIFont.systemFont(ofSize: 24, weight: .bold),
-                        .foregroundColor: isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed
-                    ]
-                )
-                
-                // Draw progress bar
-                let barHeight: CGFloat = 8
-                let barWidth = metricWidth - 20
-                let barY = metricY + 60
-                
-                // Background bar
-                let backgroundBar = UIBezierPath(
-                    roundedRect: CGRect(x: metricX, y: barY, width: barWidth, height: barHeight),
-                    cornerRadius: 4
-                )
-                UIColor.systemGray5.setFill()
-                backgroundBar.fill()
-                
-                // Progress bar with color based on threshold
-                let progressWidth = barWidth * CGFloat(metric.1 / 100)
-                let progressBar = UIBezierPath(
-                    roundedRect: CGRect(x: metricX, y: barY, width: progressWidth, height: barHeight),
-                    cornerRadius: 4
-                )
-                (isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed).setFill()
-                progressBar.fill()
-            }
-            
-            // Charts section with title much higher up
-            let chartsY = metricsY + 350
-            
-            let analyticsChartsTitle = "analytics_charts".localized()
-            (analyticsChartsTitle as NSString).draw(
-                at: CGPoint(x: margin, y: chartsY - 180),
-                withAttributes: summaryTitleAttributes
-            )
-            
-            let chartWidth = (pageWidth - (2 * margin) - 40) / 3
-            let chartHeight: CGFloat = 150
-            
-            // Draw all three charts side by side
-            drawProductivityChart(
-                at: CGPoint(x: margin, y: chartsY),
-                size: CGSize(width: chartWidth, height: chartHeight),
-                title: "Productivity Trends"
-            )
-            
-            drawEfficiencyChart(
-                at: CGPoint(x: margin + chartWidth + 20, y: chartsY),
-                size: CGSize(width: chartWidth, height: chartHeight),
-                title: "Efficiency Analysis"
-            )
-            
-            drawPerformanceChart(
-                at: CGPoint(x: margin + (chartWidth + 20) * 2, y: chartsY),
-                size: CGSize(width: chartWidth, height: chartHeight),
-                title: "Performance Overview"
-            )
         }
         
-        return data
+        // Draw quality metrics with less spacing from reports
+        let metricsY = reportsY + 200
+        let qualityMetricsTitle = "quality_metrics".localized()
+        (qualityMetricsTitle as NSString).draw(
+            at: CGPoint(x: margin, y: metricsY),
+            withAttributes: summaryTitleAttributes
+        )
+        
+        let metrics = [
+            (performanceTitle, averagePerformance(), minPerformance),
+            (volumeOfWorkTitle, averageVolumeOfWork(), minVolumeOfWork),
+            (taskCompletionTitle, averageCompletion(), minTaskCompletion)
+        ]
+        
+        let metricWidth: CGFloat = (pageWidth - (2 * margin) - 40) / 3
+        
+        metrics.enumerated().forEach { index, metric in
+            let metricX = margin + (CGFloat(index) * (metricWidth + 20))
+            let metricY = metricsY + 40
+            
+            // Draw metric title
+            (metric.0 as NSString).draw(
+                at: CGPoint(x: metricX, y: metricY),
+                withAttributes: [
+                    .font: UIFont.boldSystemFont(ofSize: 14)
+                ]
+            )
+            
+            // Draw metric value with color based on threshold
+            let isAboveMinimum = metric.1 >= metric.2
+            ("\(Int(metric.1))%" as NSString).draw(
+                at: CGPoint(x: metricX, y: metricY + 25),
+                withAttributes: [
+                    .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+                    .foregroundColor: isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed
+                ]
+            )
+            
+            // Draw progress bar
+            let barHeight: CGFloat = 8
+            let barWidth = metricWidth - 20
+            let barY = metricY + 60
+            
+            // Background bar
+            let backgroundBar = UIBezierPath(
+                roundedRect: CGRect(x: metricX, y: barY, width: barWidth, height: barHeight),
+                cornerRadius: 4
+            )
+            UIColor.systemGray5.setFill()
+            backgroundBar.fill()
+            
+            // Progress bar with color based on threshold
+            let progressWidth = barWidth * CGFloat(metric.1 / 100)
+            let progressBar = UIBezierPath(
+                roundedRect: CGRect(x: metricX, y: barY, width: progressWidth, height: barHeight),
+                cornerRadius: 4
+            )
+            (isAboveMinimum ? UIColor.systemGreen : UIColor.systemRed).setFill()
+            progressBar.fill()
+        }
+        
+        // Charts section with title much higher up
+        let chartsY = metricsY + 350
+        
+        let analyticsChartsTitle = "analytics_charts".localized()
+        (analyticsChartsTitle as NSString).draw(
+            at: CGPoint(x: margin, y: chartsY - 180),
+            withAttributes: summaryTitleAttributes
+        )
+        
+        let chartWidth = (pageWidth - (2 * margin) - 40) / 3
+        let chartHeight: CGFloat = 150
+        
+        // Draw all three charts side by side
+        drawProductivityChart(
+            at: CGPoint(x: margin, y: chartsY),
+            size: CGSize(width: chartWidth, height: chartHeight),
+            title: "Productivity Trends"
+        )
+        
+        drawEfficiencyChart(
+            at: CGPoint(x: margin + chartWidth + 20, y: chartsY),
+            size: CGSize(width: chartWidth, height: chartHeight),
+            title: "Efficiency Analysis"
+        )
+        
+        drawPerformanceChart(
+            at: CGPoint(x: margin + (chartWidth + 20) * 2, y: chartsY),
+            size: CGSize(width: chartWidth, height: chartHeight),
+            title: "Performance Overview"
+        )
     }
     
     private func drawProductivityChart(at point: CGPoint, size: CGSize, title: String) {
@@ -966,6 +970,15 @@ class PDFGenerator {
             at: CGPoint(x: margin, y: point.y),
             withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
         )
+    }
+    
+    private func getColorForDepartment(_ department: String) -> UIColor {
+        return PDFGenerator.departmentColors[department] ?? .systemGray
+    }
+    
+    private func getSortedDepartments() -> [String] {
+        // Usar el orden original guardado
+        return PDFGenerator.departmentOrder.filter { departmentData.keys.contains($0) }
     }
 }
 

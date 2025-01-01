@@ -404,7 +404,8 @@
 "q3_range" = "Q3 (Jul-Sep)";
 "q4_range" = "Q4 (Oct-Dic)";
 
-"monthly_report" = "Informe PDF";
+"title_pdf" = "Informe PDF";
+"monthly_report" = "Mensual";
 "quarterly_report" = "Trimestral";
 "yearly_report" = "Anual";
 "all_departments" = "Todos";
@@ -433,3 +434,13 @@
 "tech" = "Tecnología";
 "business" = "Negocios";
 "communication" = "Comunicación";
+
+// MARK: - Chart Types Explanations
+"performance_chart" = "Comparación de Rendimiento";
+"performance_description" = "Este gráfico de barras compara el volumen de trabajo con el número de tareas completadas por cada departamento. Ayuda a visualizar la relación entre la carga de trabajo y la finalización de tareas, facilitando identificar departamentos que podrían estar sobrecargados o infrautilizados.";
+
+"volume_chart" = "Tendencias de Productividad";
+"volume_description" = "Este gráfico de líneas muestra las tendencias de rendimiento a lo largo del tiempo para cada departamento. Ayuda a seguir cómo evolucionan las métricas de rendimiento durante el mes, facilitando la identificación de patrones, mejoras o posibles problemas en la eficiencia del departamento.";
+
+"tasks_chart" = "Análisis de Carga de Trabajo";
+"tasks_description" = "Este gráfico de dispersión muestra la relación entre el volumen de trabajo y el rendimiento de cada departamento. Ayuda a identificar cómo los departamentos manejan diferentes niveles de carga de trabajo y su eficiencia, revelando posibles cuellos de botella o condiciones óptimas de trabajo.";
