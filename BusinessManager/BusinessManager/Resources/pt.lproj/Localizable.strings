@@ -419,3 +419,8 @@
 "performance_average" = "Desempenho Médio";
 "volume_average" = "Volume Médio";
 "tasks_completed_total" = "Total de Tarefas Concluídas";
+
+// Radar Chart Labels
+"radar_performance" = "Desempenho";
+"radar_volume" = "Volume";
+"radar_tasks" = "Tarefas";

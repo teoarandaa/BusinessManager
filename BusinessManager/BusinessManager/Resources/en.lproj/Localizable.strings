@@ -252,9 +252,6 @@
 "acceptance_terms" = "1. Acceptance of Terms";
 "description_service" = "2. Service Description";
 "in_app_purchases" = "3. In-App Purchases";
-"payment_billing" = "a. Payment and Billing";
-"refunds" = "b. Refunds";
-"price_changes" = "c. Price Changes";
 "intellectual_property" = "4. Intellectual Property";
 "limitation_liability" = "5. Limitation of Liability";
 "changes_terms" = "6. Changes to Terms";
@@ -419,3 +416,8 @@
 "performance_average" = "Average Performance";
 "volume_average" = "Average Volume";
 "tasks_completed_total" = "Total Tasks Completed";
+
+// MARK: - Radar Chart Labels
+"radar_performance" = "Performance";
+"radar_volume" = "Volume";
+"radar_tasks" = "Tasks";

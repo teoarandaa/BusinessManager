@@ -135,7 +135,7 @@
 "department" = "Departamento";
 "date" = "Fecha";
 "efficiency" = "Eficiencia";
-"finished_tasks" = "Tareas finalizadas";
+"finished_tasks" = "Tareas hechas";
 
 // MARK: - Quality
 "quality_analysis" = "Análisis de Calidad";
@@ -322,7 +322,7 @@
 "add_report_title" = "Añadir informe";
 "add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
 "close" = "Cerrar";
-"workload" = "Carga de trabajo";
+"workload" = "Volumen de trabajo";
 
 "no_charts_data" = "Sin datos para gráficos";
 "start_adding_reports_charts" = "Empieza a añadir informes para ver los gráficos de análisis.";
@@ -421,3 +421,8 @@
 "performance_average" = "Rendimiento Promedio";
 "volume_average" = "Volumen Promedio";
 "tasks_completed_total" = "Total de Tareas Completadas";
+
+// MARK: - Radar Chart Labels
+"radar_performance" = "Rendimiento";
+"radar_volume" = "Volumen";
+"radar_tasks" = "Tareas";

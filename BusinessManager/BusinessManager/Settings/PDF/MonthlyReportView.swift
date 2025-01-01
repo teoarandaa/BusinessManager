@@ -629,7 +629,11 @@ class PDFGenerator {
             }
             
             // Dibujar etiquetas de los ejes
-            let axisLabels = ["Performance", "Volume", "Tasks"]
+            let axisLabels = [
+                "radar_performance".localized(),
+                "radar_volume".localized(),
+                "radar_tasks".localized()
+            ]
             let labelAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 10)
             ]
