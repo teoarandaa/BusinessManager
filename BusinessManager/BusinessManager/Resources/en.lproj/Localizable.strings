@@ -389,7 +389,7 @@
 "support_contact_suffix" = " or through Settings > Support.";
 "coming_soon" = "Coming Soon";
 "plans_description" = "We're working on exciting new features and subscription plans.\nStay tuned!";
-"monthly_report" = "Monthly";
+"monthly_report" = "PDF Report";
 "quarterly_report" = "Quarterly";
 "yearly_report" = "Yearly";
 "all_departments" = "All";
@@ -398,7 +398,7 @@
 "monthly" = "Monthly";
 "quarterly" = "Quarterly";
 "yearly" = "Yearly";
-"select_month" = "Select Month";
+"select_month" = "Select";
 "select_quarter" = "Select Quarter";
 "select_year" = "Select Year";
 "q1_range" = "Q1 (Jan-Mar)";

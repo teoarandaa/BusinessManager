@@ -231,7 +231,6 @@ struct AddReportSheet: View {
                         .keyboardType(.numberPad)
                         .frame(maxWidth: 120, alignment: .trailing)
                         .multilineTextAlignment(.trailing)
-                        .foregroundStyle(numberOfFinishedTasks.isEmpty ? .secondary : .primary)
                 }
                 
                 HStack(alignment: .top) {

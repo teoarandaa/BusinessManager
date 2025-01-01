@@ -32,10 +32,14 @@ struct SettingsView: View {
             List {
                 // MARK: - Language
                 Section("language".localized()) {
-                    Picker("select_language".localized(), selection: $appLanguage) {
-                        ForEach(availableLanguages, id: \.0) { language in
-                            Text(language.1).tag(language.0)
+                    Label {
+                        Picker("select_language".localized(), selection: $appLanguage) {
+                            ForEach(availableLanguages, id: \.0) { language in
+                                Text(language.1).tag(language.0)
+                            }
                         }
+                    } icon: {
+                        Image(systemName: "globe")
                     }
                     .onChange(of: appLanguage) { oldValue, newValue in
                         UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
