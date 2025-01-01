@@ -501,28 +501,44 @@ struct TaskDetailSheet: View {
             Form {
                 Section {
                     HStack {
-                        Text("date".localized())
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text("expiring_date".localized())
+                                .bold()
+                        }
                         Spacer()
                         Text(task.date, format: .dateTime.year().month(.abbreviated).day())
                     }
                     
                     HStack {
-                        Text("title".localized())
+                        HStack {
+                            Image(systemName: "text.alignleft")
+                            Text("title".localized())
+                                .bold()
+                        }
                         Spacer()
                         Text(task.title)
                             .multilineTextAlignment(.trailing)
                     }
                     
                     HStack {
-                        Text("content".localized())
-                        Spacer()
+                        HStack {
+                            Image(systemName: "doc.text")
+                            Text("content".localized())
+                                .bold()
+                        }
+                    Spacer()
                         Text(task.content)
                             .multilineTextAlignment(.trailing)
                     }
                     
                     if !task.comments.isEmpty {
                         HStack {
-                            Text("comments".localized())
+                            HStack {
+                                Image(systemName: "text.bubble")
+                                Text("comments".localized())
+                                    .bold()
+                            }
                             Spacer()
                             Text(task.comments)
                                 .multilineTextAlignment(.trailing)
@@ -530,7 +546,11 @@ struct TaskDetailSheet: View {
                     }
                     
                     HStack {
-                        Text("priority".localized())
+                        HStack {
+                            Image(systemName: "flag")
+                            Text("priority".localized())
+                                .bold()
+                        }
                         Spacer()
                         Text(task.priority)
                             .padding(8)
@@ -549,7 +569,11 @@ struct TaskDetailSheet: View {
                     }
                     
                     HStack {
-                        Text("status".localized())
+                        HStack {
+                            Image(systemName: "gauge.with.needle")
+                            Text("status".localized())
+                                .bold()
+                        }
                         Spacer()
                         Text(task.isCompleted ? "completed".localized() : "active".localized())
                             .foregroundStyle(task.isCompleted ? .green : .blue)
