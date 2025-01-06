@@ -265,7 +265,7 @@
 
 // Charts Info
 "analytics_overview" = "Analytics Overview";
-"analytics_description" = "Analytics visualize key metrics: the Productivity Chart tracks performance trends, the Workload Chart compares performance with workload using a scatter plot to highlight efficiency, and the Performance Chart displays average workload versus completed tasks in a bar chart, measuring efficiency.";
+"analytics_description" = "Analytics visualize key metrics: the Productivity Chart tracks performance trends, and the Workload Chart compares performance with workload using a scatter plot to highlight efficiency.";
 "how_create_charts" = "How to Create Charts";
 "charts_generation" = "Charts are generated from report data, processing performance, workload, and completed tasks to create visual insights. They highlight trends, efficiency, and productivity by transforming raw data into actionable information for each department.";
 "chart_types" = "Chart Types";
@@ -431,9 +431,6 @@
 "communication" = "Communication";
 
 // MARK: - Chart Types Explanations
-"performance_chart" = "Performance Comparison";
-"performance_description" = "This bar chart compares the volume of work with the number of completed tasks for each department. It helps visualize the relationship between workload and task completion, making it easy to identify departments that might be overloaded or underutilized.";
-
 "volume_chart" = "Productivity Trends";
 "volume_description" = "This line chart shows performance trends over time for each department. It helps track how performance metrics evolve throughout the month, making it easy to identify patterns, improvements, or potential issues in department efficiency.";
 
