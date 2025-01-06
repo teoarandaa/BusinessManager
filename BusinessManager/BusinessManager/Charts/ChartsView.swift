@@ -14,7 +14,6 @@ struct ChartsView: View {
     enum ChartType: String, CaseIterable {
         case productivity = "productivity"
         case efficiency = "efficiency"
-        case performance = "performance"
         
         var localizedName: String {
             rawValue.localized()
@@ -26,8 +25,6 @@ struct ChartsView: View {
                 return "chart.line.uptrend.xyaxis"
             case .efficiency:
                 return "gauge.medium"
-            case .performance:
-                return "chart.bar"
             }
         }
     }
@@ -70,10 +67,6 @@ struct ChartsView: View {
                                     
                                 case .efficiency:
                                     WorkloadChartView()
-                                        .transition(.opacity)
-                                    
-                                case .performance:
-                                    PerformanceChartView()
                                         .transition(.opacity)
                                 }
                             }
@@ -128,32 +121,6 @@ struct ChartsView: View {
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
             }
-        }
-    }
-    
-    private func getChartIcon(for type: String) -> String {
-        switch type {
-        case "Productivity":
-            return "chart.line.uptrend.xyaxis"
-        case "Efficiency":
-            return "gauge.medium"
-        case "Performance":
-            return "chart.bar.fill"
-        default:
-            return "chart.line.uptrend.xyaxis"
-        }
-    }
-    
-    private func getChartDescription(for type: String) -> String {
-        switch type {
-        case "Productivity":
-            return "Track your team's productivity trends and patterns"
-        case "Efficiency":
-            return "Monitor workload distribution and efficiency metrics"
-        case "Performance":
-            return "Analyze overall performance and goal achievement"
-        default:
-            return ""
         }
     }
 }

@@ -98,29 +98,6 @@ struct ChartsInfoSheetView: View {
                     Text("yearly_analysis".localized())
                 }
                 
-                // Fifth Page (Performance)
-                ScrollView {
-                    VStack {
-                        Text("performance_chart".localized())
-                            .font(.largeTitle)
-                            .bold()
-                            .padding()
-                        
-                        Text("performance_description".localized())
-                            .padding()
-                            .multilineTextAlignment(.center)
-                        
-                        Image("")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .padding()
-                    }
-                }
-                .tabItem {
-                    Text("performance_chart".localized())
-                }
-                
                 // Sixth Page (Volume)
                 ScrollView {
                     VStack {
@@ -141,7 +118,7 @@ struct ChartsInfoSheetView: View {
                     }
                 }
                 .tabItem {
-                    Text("volume_chart".localized())
+                    Text("tasks_chart".localized())
                 }
                 
                 // Seventh Page (Tasks)

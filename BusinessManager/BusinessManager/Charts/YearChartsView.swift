@@ -19,69 +19,6 @@ struct YearChartsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 35) {
-                // Performance Chart
-                VStack(spacing: 20) {
-                    Text("performance".localized())
-                        .font(.title)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                    
-                    // Leyenda (añadida aquí)
-                    HStack {
-                        Circle()
-                            .fill(Color.accentColor)
-                            .frame(width: 10, height: 10)
-                        Text("volume_of_work".localized())
-                            .font(.caption)
-                        
-                        Circle()
-                            .fill(Color.blue)
-                            .frame(width: 10, height: 10)
-                        Text("tasks_completed".localized())
-                            .font(.caption)
-                    }
-                    
-                    Chart {
-                        let groupedData = Dictionary(grouping: data, by: { $0.departmentName })
-                        
-                        ForEach(groupedData.keys.sorted(), id: \.self) { department in
-                            if let departmentData = groupedData[department] {
-                                let totalVolume = departmentData.reduce(0) { $0 + $1.volumeOfWorkMark }
-                                let averageVolume = departmentData.isEmpty ? 0 : Double(totalVolume) / Double(departmentData.count)
-                                
-                                BarMark(
-                                    x: .value("department".localized(), department),
-                                    y: .value("average_volume_work".localized(), averageVolume)
-                                )
-                                .foregroundStyle(Color.accentColor)
-                                .position(by: .value("Category", "Average Volume of Work"))
-                            }
-                        }
-                        
-                        ForEach(data) { data in
-                            BarMark(
-                                x: .value("department".localized(), data.departmentName),
-                                y: .value("tasks_completed".localized(), data.numberOfFinishedTasks)
-                            )
-                            .foregroundStyle(Color.blue)
-                            .position(by: .value("category".localized(), "tasks_completed".localized()))
-                        }
-                    }
-                    .chartXAxis {
-                        AxisMarks()
-                    }
-                    .chartYAxis {
-                        AxisMarks()
-                    }
-                    .aspectRatio(1.0, contentMode: .fit)
-                    .padding()
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.horizontal)
-
                 // Productivity Chart
                 VStack(spacing: 20) {
                     Text("productivity".localized())

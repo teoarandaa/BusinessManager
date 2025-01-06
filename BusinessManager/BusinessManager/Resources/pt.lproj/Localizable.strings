@@ -268,7 +268,7 @@
 
 // Charts Info
 "analytics_overview" = "Visão Geral das Análises";
-"analytics_description" = "As análises visualizam métricas principais: o Gráfico de Produtividade acompanha tendências de desempenho, o Gráfico de Carga de Trabalho compara desempenho com carga usando um gráfico de dispersão para destacar eficiência, e o Gráfico de Desempenho exibe a carga média versus tarefas concluídas em um gráfico de barras, medindo eficiência.";
+"analytics_description" = "As análises visualizam métricas principais: o Gráfico de Produtividade acompanha tendências de desempenho, e o Gráfico de Carga de Trabalho compara desempenho com carga usando um gráfico de dispersão para destacar eficiência.";
 "how_create_charts" = "Como Criar Gráficos";
 "charts_generation" = "Os gráficos são gerados a partir dos dados dos relatórios, processando desempenho, carga de trabalho e tarefas concluídas para criar insights visuais. Eles destacam tendências, eficiência e produtividade transformando dados brutos em informações acionáveis para cada departamento.";
 "chart_types" = "Tipos de Gráficos";
@@ -434,9 +434,6 @@
 "communication" = "Comunicação";
 
 // MARK: - Chart Types Explanations
-"performance_chart" = "Comparação de Desempenho";
-"performance_description" = "Este gráfico de barras compara o volume de trabalho com o número de tarefas concluídas por departamento. Ajuda a visualizar a relação entre a carga de trabalho e a conclusão de tarefas, facilitando identificar departamentos que podem estar sobrecarregados ou subutilizados.";
-
 "volume_chart" = "Tendências de Produtividade";
 "volume_description" = "Este gráfico de linha mostra as tendências de desempenho ao longo do tempo para cada departamento. Ajuda a acompanhar como as métricas de desempenho evoluem durante o mês, facilitando a identificação de padrões, melhorias ou possíveis problemas na eficiência do departamento.";
 
