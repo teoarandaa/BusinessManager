@@ -58,22 +58,7 @@ struct TaskView: View {
                 if !activeTasks.isEmpty {
                     Section("active_tasks".localized()) {
                         ForEach(activeTasks) { task in
-                            TasksCell(task: task)
-                                .onTapGesture {
-                                    taskToEdit = task
-                                }
-                                .swipeActions {
-                                    Button {
-                                        withAnimation {
-                                            task.isCompleted = true
-                                            let generator = UINotificationFeedbackGenerator()
-                                            generator.notificationOccurred(.success)
-                                        }
-                                    } label: {
-                                        Label("complete".localized(), systemImage: "checkmark.circle.fill")
-                                    }
-                                    .tint(.green)
-                                }
+                            TaskRow(task: task, context: context, showingTaskSheet: $isShowingItemSheet1, selectedTask: $taskToEdit)
                         }
                         .onDelete { indexSet in
                             for index in indexSet {
@@ -88,22 +73,7 @@ struct TaskView: View {
                 if !completedTasks.isEmpty {
                     Section("completed_tasks".localized()) {
                         ForEach(completedTasks) { task in
-                            TasksCell(task: task)
-                                .onTapGesture {
-                                    taskToEdit = task
-                                }
-                                .swipeActions {
-                                    Button {
-                                        withAnimation {
-                                            task.isCompleted = false
-                                            let generator = UINotificationFeedbackGenerator()
-                                            generator.notificationOccurred(.success)
-                                        }
-                                    } label: {
-                                        Label("reactivate".localized(), systemImage: "arrow.uturn.left.circle.fill")
-                                    }
-                                    .tint(.blue)
-                                }
+                            TaskRow(task: task, context: context, showingTaskSheet: $isShowingItemSheet1, selectedTask: $taskToEdit)
                         }
                         .onDelete { indexSet in
                             for index in indexSet {
@@ -194,75 +164,73 @@ struct TaskView: View {
     TaskView()
 }
 
-struct TasksCell: View {
+struct TaskRow: View {
     let task: Task
-    
-    var dateColor: Color {
-        let calendar = Calendar.current
-        let today = Date()
-        let daysUntilDue = calendar.dateComponents([.day], from: today, to: task.date).day ?? 0
-        
-        if task.isCompleted {
-            return .secondary
-        } else if task.date < today {
-            return .red
-        } else if daysUntilDue <= 1 {
-            return .red
-        } else if daysUntilDue <= 3 {
-            return .orange
-        } else if daysUntilDue <= 7 {
-            return .yellow
-        } else {
-            return .primary
-        }
-    }
-    
-    var daysOverdue: Int? {
-        let calendar = Calendar.current
-        let today = Date()
-        if task.date < today && !task.isCompleted {
-            let days = calendar.dateComponents([.day], from: task.date, to: today).day ?? 0
-            return days
-        }
-        return nil
-    }
+    let context: ModelContext
+    @Binding var showingTaskSheet: Bool
+    @Binding var selectedTask: Task?
     
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(task.date, format: .dateTime.year().month(.abbreviated).day())
-                    .foregroundStyle(dateColor)
-                if let overdue = daysOverdue {
-                    Text(String(format: "days_overdue".localized(), overdue))
-                        .font(.caption)
-                        .foregroundStyle(.red)
-                }
+            VStack(alignment: .leading) {
+                Text(task.title)
+                    .font(.headline)
+                Text(task.content)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
-            .frame(width: 150, alignment: .leading)
             
             Spacer()
-            Text(task.title)
-                .bold()
-                .foregroundStyle(task.isCompleted ? .secondary : .primary)
-            Spacer()
-            Text(task.priority)
-                .padding(4)
-                .foregroundStyle(
-                    task.priority == "P1" ? Color.red :
-                    task.priority == "P2" ? Color.yellow :
-                    Color.green
-                )
-                .background(
-                    (task.priority == "P1" ? Color.red :
-                    task.priority == "P2" ? Color.yellow :
-                    Color.green)
-                    .opacity(0.2)
-                    .cornerRadius(6)
-                )
-                .bold()
+            
+            VStack(alignment: .trailing) {
+                Text(task.date, format: .dateTime.day().month())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                
+                Text(task.priority)
+                    .font(.caption)
+                    .padding(8)
+                    .foregroundStyle(
+                        task.priority == "P1" ? Color.red :
+                        task.priority == "P2" ? Color.yellow :
+                        Color.green
+                    )
+                    .background(
+                        (task.priority == "P1" ? Color.red :
+                         task.priority == "P2" ? Color.yellow :
+                         Color.green)
+                        .opacity(0.2)
+                        .cornerRadius(8)
+                    )
+            }
         }
-        .padding(.vertical, 4)
         .contentShape(Rectangle())
+        .onTapGesture {
+            selectedTask = task
+            showingTaskSheet = true
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive) {
+                context.delete(task)
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.success)
+            } label: {
+                Label("delete".localized(), systemImage: "trash")
+            }
+            
+            Button {
+                task.isCompleted.toggle()
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
+            } label: {
+                if task.isCompleted {
+                    Label("reactivate".localized(), systemImage: "arrow.uturn.backward")
+                } else {
+                    Label("complete".localized(), systemImage: "checkmark")
+                }
+            }
+            .tint(task.isCompleted ? .blue : .green)
+        }
     }
 }
 
@@ -283,7 +251,6 @@ struct AddTaskSheet: View {
             date: date,
             title: title,
             content: content,
-            comments: comments,
             priority: priority
         )
         
@@ -338,18 +305,6 @@ struct AddTaskSheet: View {
                     }
                     Spacer()
                     TextField("", text: $content, axis: .vertical)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.trailing)
-                }
-                
-                HStack {
-                    HStack {
-                        Image(systemName: "text.bubble")
-                        Text("comments".localized())
-                            .bold()
-                    }
-                    Spacer()
-                    TextField("", text: $comments, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
@@ -440,18 +395,6 @@ struct UpdateTaskSheet: View {
                 
                 HStack {
                     HStack {
-                        Image(systemName: "text.bubble")
-                        Text("comments".localized())
-                            .bold()
-                    }
-                    Spacer()
-                    TextField("", text: $task.comments, axis: .vertical)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.trailing)
-                }
-                
-                HStack {
-                    HStack {
                         Image(systemName: "flag")
                         Text("priority".localized())
                             .bold()
@@ -527,22 +470,9 @@ struct TaskDetailSheet: View {
                             Text("content".localized())
                                 .bold()
                         }
-                    Spacer()
+                        Spacer()
                         Text(task.content)
                             .multilineTextAlignment(.trailing)
-                    }
-                    
-                    if !task.comments.isEmpty {
-                        HStack {
-                            HStack {
-                                Image(systemName: "text.bubble")
-                                Text("comments".localized())
-                                    .bold()
-                            }
-                            Spacer()
-                            Text(task.comments)
-                                .multilineTextAlignment(.trailing)
-                        }
                     }
                     
                     HStack {

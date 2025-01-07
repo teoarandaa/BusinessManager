@@ -96,7 +96,6 @@
 "priority" = "Prioridad";
 "title" = "Título";
 "content" = "Contenido";
-"comments" = "Comentarios";
 "status" = "Estado";
 "expiring_date" = "Fecha de vencimiento";
 "complete" = "Completar";
