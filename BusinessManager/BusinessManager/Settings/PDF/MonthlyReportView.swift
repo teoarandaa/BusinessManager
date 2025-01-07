@@ -800,40 +800,42 @@ class PDFGenerator {
         // Charts section
         let chartsY = metricsY + 350
         
+        // Título de la sección de Analytics
         let analyticsChartsTitle = "analytics_charts".localized()
         (analyticsChartsTitle as NSString).draw(
-            at: CGPoint(x: margin, y: chartsY - 180),
+            at: CGPoint(x: margin, y: chartsY - 200),
             withAttributes: summaryTitleAttributes
         )
         
         // Ajustado para solo 2 charts con más espacio
         let chartWidth = (pageWidth - (2 * margin) - 20) / 2
         let chartHeight: CGFloat = 150
+        let chartY = chartsY + 20
         
         // Draw only two charts side by side and centered
         let firstChartX = margin + (pageWidth - (2 * margin) - (2 * chartWidth)) / 3
         
-        // Primer chart con título
+        // Primer chart con título (ajustado a 180 puntos)
         let performanceTitle = "performance_chart".localized()
         (performanceTitle as NSString).draw(
-            at: CGPoint(x: firstChartX, y: chartsY - 20),
-            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+            at: CGPoint(x: firstChartX + (chartWidth / 2) - 40, y: chartY - 180),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 14)]
         )
         
         drawProductivityChart(
-            at: CGPoint(x: firstChartX, y: chartsY),
+            at: CGPoint(x: firstChartX, y: chartY),
             size: CGSize(width: chartWidth, height: chartHeight)
         )
         
-        // Segundo chart con título
+        // Segundo chart con título (ajustado a 180 puntos)
         let volumeTitle = "volume_chart".localized()
         (volumeTitle as NSString).draw(
-            at: CGPoint(x: firstChartX + chartWidth + 20, y: chartsY - 20),
-            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+            at: CGPoint(x: firstChartX + chartWidth + (chartWidth / 2) - 30, y: chartY - 180),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 14)]
         )
         
         drawVolumeChart(
-            at: CGPoint(x: firstChartX + chartWidth + 20, y: chartsY),
+            at: CGPoint(x: firstChartX + chartWidth + 20, y: chartY),
             size: CGSize(width: chartWidth, height: chartHeight)
         )
     }
