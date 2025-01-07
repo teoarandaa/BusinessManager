@@ -52,7 +52,7 @@ struct DepartmentReportsView: View {
         let reportsByYear = Dictionary(grouping: filteredReports, by: { Calendar.current.component(.year, from: $0.date) })
         
         List {
-            ForEach(reportsByYear.keys.sorted(), id: \.self) { year in
+            ForEach(reportsByYear.keys.sorted(by: >), id: \.self) { year in
                 if let reportsForYear = reportsByYear[year] {
                     NavigationLink(destination: YearReportsView(reports: reportsForYear, year: year)) {
                         Text("\(String(year))")
@@ -61,7 +61,7 @@ struct DepartmentReportsView: View {
                 }
             }
             .onDelete { indexSet in
-                let sortedYears = reportsByYear.keys.sorted()
+                let sortedYears = reportsByYear.keys.sorted(by: >)
                 for index in indexSet {
                     let yearToDelete = sortedYears[index]
                     let reportsToDelete = departmentReports.filter {
