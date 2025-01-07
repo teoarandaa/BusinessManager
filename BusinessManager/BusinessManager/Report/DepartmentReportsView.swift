@@ -28,11 +28,12 @@ struct DepartmentReportsView: View {
         if let dateRange = filters.dateRange {
             let calendar = Calendar.current
             let startOfDay = calendar.startOfDay(for: dateRange.lowerBound)
-            let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: dateRange.upperBound)!
+            let endDate = calendar.date(byAdding: .day, value: 1, to: dateRange.upperBound)!
+            let endOfDay = calendar.startOfDay(for: endDate)
             
             reports = reports.filter { 
                 let reportDate = $0.date
-                return reportDate >= startOfDay && reportDate <= endOfDay
+                return reportDate >= startOfDay && reportDate < endOfDay
             }
         }
         
