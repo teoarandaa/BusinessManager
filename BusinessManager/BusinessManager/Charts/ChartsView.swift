@@ -50,7 +50,7 @@ struct ChartsView: View {
                         Text("start_adding_reports_charts".localized())
                             .foregroundStyle(.secondary)
                     }, actions: {
-                        Button("reports".localized()) {
+                        Button("go_to_reports".localized()) {
                             selectedTab = 0
                         }
                     })
