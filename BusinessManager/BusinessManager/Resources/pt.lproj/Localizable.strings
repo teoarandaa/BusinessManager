@@ -438,3 +438,6 @@
 
 "tasks_chart" = "Análise de Carga de Trabalho";
 "tasks_description" = "Este gráfico de dispersão mostra a relação entre o volume de trabalho e o desempenho de cada departamento. Ajuda a identificar como os departamentos lidam com diferentes níveis de carga de trabalho e sua eficiência, revelando possíveis gargalos ou condições ideais de trabalho.";
+
+"performance_chart" = "Produtividade";
+"volume_chart" = "Eficiência";
