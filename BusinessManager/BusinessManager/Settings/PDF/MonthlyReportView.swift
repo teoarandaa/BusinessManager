@@ -797,39 +797,50 @@ class PDFGenerator {
             progressBar.fill()
         }
         
-        // Charts section with title much higher up
+        // Charts section
         let chartsY = metricsY + 350
         
+        // Título de la sección de Analytics
         let analyticsChartsTitle = "analytics_charts".localized()
         (analyticsChartsTitle as NSString).draw(
-            at: CGPoint(x: margin, y: chartsY - 180),
+            at: CGPoint(x: margin, y: chartsY - 200),
             withAttributes: summaryTitleAttributes
         )
         
-        let chartWidth = (pageWidth - (2 * margin) - 40) / 3
+        // Ajustado para solo 2 charts con más espacio
+        let chartWidth = (pageWidth - (2 * margin) - 20) / 2
         let chartHeight: CGFloat = 150
+        let chartY = chartsY + 20
         
-        // Draw all three charts side by side
+        // Draw only two charts side by side and centered
+        let firstChartX = margin + (pageWidth - (2 * margin) - (2 * chartWidth)) / 3
+        
+        // Primer chart con título (ajustado a 180 puntos)
+        let performanceTitle = "performance_chart".localized()
+        (performanceTitle as NSString).draw(
+            at: CGPoint(x: firstChartX + (chartWidth / 2) - 40, y: chartY - 180),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 14)]
+        )
+        
         drawProductivityChart(
-            at: CGPoint(x: margin, y: chartsY),
-            size: CGSize(width: chartWidth, height: chartHeight),
-            title: "Productivity Trends"
+            at: CGPoint(x: firstChartX, y: chartY),
+            size: CGSize(width: chartWidth, height: chartHeight)
         )
         
-        drawEfficiencyChart(
-            at: CGPoint(x: margin + chartWidth + 20, y: chartsY),
-            size: CGSize(width: chartWidth, height: chartHeight),
-            title: "Efficiency Analysis"
+        // Segundo chart con título (ajustado a 180 puntos)
+        let volumeTitle = "volume_chart".localized()
+        (volumeTitle as NSString).draw(
+            at: CGPoint(x: firstChartX + chartWidth + (chartWidth / 2) - 30, y: chartY - 180),
+            withAttributes: [.font: UIFont.boldSystemFont(ofSize: 14)]
         )
         
-        drawPerformanceChart(
-            at: CGPoint(x: margin + (chartWidth + 20) * 2, y: chartsY),
-            size: CGSize(width: chartWidth, height: chartHeight),
-            title: "Performance Overview"
+        drawVolumeChart(
+            at: CGPoint(x: firstChartX + chartWidth + 20, y: chartY),
+            size: CGSize(width: chartWidth, height: chartHeight)
         )
     }
     
-    private func drawProductivityChart(at point: CGPoint, size: CGSize, title: String) {
+    private func drawProductivityChart(at point: CGPoint, size: CGSize) {
         // Draw chart content first
         let path = UIBezierPath()
         path.move(to: point)
@@ -861,7 +872,7 @@ class PDFGenerator {
         }
     }
     
-    private func drawEfficiencyChart(at point: CGPoint, size: CGSize, title: String) {
+    private func drawVolumeChart(at point: CGPoint, size: CGSize) {
         // Draw chart content first
         let path = UIBezierPath()
         path.move(to: point)
@@ -882,38 +893,6 @@ class PDFGenerator {
                 color.setFill()
                 dotPath.fill()
             }
-        }
-    }
-    
-    private func drawPerformanceChart(at point: CGPoint, size: CGSize, title: String) {
-        // Draw chart content first
-        let path = UIBezierPath()
-        path.move(to: point)
-        path.addLine(to: CGPoint(x: point.x + size.width, y: point.y))
-        path.move(to: point)
-        path.addLine(to: CGPoint(x: point.x, y: point.y - size.height))
-        UIColor.gray.setStroke()
-        path.stroke()
-        
-        let barSpacing: CGFloat = 5
-        let sortedDepartments = Array(departmentData.keys).sorted()
-        let barWidth = (size.width - (barSpacing * CGFloat(departmentData.count - 1))) / CGFloat(departmentData.count)
-        
-        sortedDepartments.enumerated().forEach { index, department in
-            let reports = departmentData[department] ?? []
-            let avgPerformance = reports.map(\.performanceMark).average
-            let x = point.x + (CGFloat(index) * (barWidth + barSpacing))
-            let height = CGFloat(avgPerformance) / 100.0 * size.height
-            
-            let barRect = CGRect(x: x, y: point.y - height, width: barWidth, height: height)
-            getColorForDepartment(department).setFill()
-            UIBezierPath(rect: barRect).fill()
-            
-            // Performance value
-            ("\(Int(avgPerformance))%" as NSString).draw(
-                at: CGPoint(x: x, y: point.y - height - 10),
-                withAttributes: [.font: UIFont.systemFont(ofSize: 8)]
-            )
         }
     }
     

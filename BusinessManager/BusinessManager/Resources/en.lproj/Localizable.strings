@@ -435,3 +435,6 @@
 
 "tasks_chart" = "Workload Analysis";
 "tasks_description" = "This scatter plot shows the relationship between work volume and performance for each department. It helps identify how departments handle different workload levels and their efficiency, revealing potential bottlenecks or optimal working conditions.";
+
+"performance_chart" = "Productivity";
+"volume_chart" = "Efficiency";

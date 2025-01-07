@@ -440,3 +440,6 @@
 
 "tasks_chart" = "Análisis de Carga de Trabajo";
 "tasks_description" = "Este gráfico de dispersión muestra la relación entre el volumen de trabajo y el rendimiento de cada departamento. Ayuda a identificar cómo los departamentos manejan diferentes niveles de carga de trabajo y su eficiencia, revelando posibles cuellos de botella o condiciones óptimas de trabajo.";
+
+"performance_chart" = "Productividad";
+"volume_chart" = "Eficiencia";
