@@ -7,16 +7,14 @@ final class Task: Identifiable {
     var date: Date
     var title: String
     var content: String
-    var comments: String
     var priority: String
     var isCompleted: Bool
     
-    init(date: Date, title: String, content: String, comments: String, priority: String) {
+    init(date: Date, title: String, content: String, priority: String) {
         self.id = UUID().uuidString
         self.date = date
         self.title = title
         self.content = content
-        self.comments = comments
         self.priority = priority
         self.isCompleted = false
     }
