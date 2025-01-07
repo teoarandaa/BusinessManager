@@ -10,7 +10,7 @@
 // MARK: - Navigation
 "settings" = "Configurações";
 "departments" = "Departamentos";
-"reports" = "Relatórios";
+"go_to_reports" = "Ir para os Relatórios";
 "tasks" = "Tarefas";
 "charts" = "Gráficos";
 "quality" = "Qualidade";

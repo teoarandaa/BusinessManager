@@ -45,7 +45,7 @@ struct QualityAnalysisView: View {
                         Text("start_adding_reports_quality".localized())
                             .foregroundStyle(.secondary)
                     }, actions: {
-                        Button("reports".localized()) {
+                        Button("go_to_reports".localized()) {
                             selectedTab = 0
                         }
                     })

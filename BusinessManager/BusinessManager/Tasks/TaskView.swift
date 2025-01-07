@@ -58,7 +58,7 @@ struct TaskView: View {
                 if !activeTasks.isEmpty {
                     Section("active_tasks".localized()) {
                         ForEach(activeTasks) { task in
-                            TaskRow(task: task, context: context, showingTaskSheet: $isShowingItemSheet1, selectedTask: $taskToEdit)
+                            TaskRow(task: task, context: context, selectedTask: $taskToEdit)
                         }
                         .onDelete { indexSet in
                             for index in indexSet {
@@ -73,7 +73,7 @@ struct TaskView: View {
                 if !completedTasks.isEmpty {
                     Section("completed_tasks".localized()) {
                         ForEach(completedTasks) { task in
-                            TaskRow(task: task, context: context, showingTaskSheet: $isShowingItemSheet1, selectedTask: $taskToEdit)
+                            TaskRow(task: task, context: context, selectedTask: $taskToEdit)
                         }
                         .onDelete { indexSet in
                             for index in indexSet {
@@ -167,29 +167,27 @@ struct TaskView: View {
 struct TaskRow: View {
     let task: Task
     let context: ModelContext
-    @Binding var showingTaskSheet: Bool
     @Binding var selectedTask: Task?
     
     var body: some View {
-        HStack {
+        HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 Text(task.title)
                     .font(.headline)
+                    .strikethrough(task.isCompleted)
                 Text(task.content)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+                    .lineLimit(3)
+                    .truncationMode(.tail)
             }
             
             Spacer()
             
-            VStack(alignment: .trailing) {
-                Text(task.date, format: .dateTime.day().month())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                
+            VStack(alignment: .trailing, spacing: 4) {
                 Text(task.priority)
-                    .font(.caption)
-                    .padding(8)
+                    .font(.callout)
+                    .padding(10)
                     .foregroundStyle(
                         task.priority == "P1" ? Color.red :
                         task.priority == "P2" ? Color.yellow :
@@ -200,14 +198,17 @@ struct TaskRow: View {
                          task.priority == "P2" ? Color.yellow :
                          Color.green)
                         .opacity(0.2)
-                        .cornerRadius(8)
+                        .cornerRadius(10)
                     )
+                
+                Text(task.date, format: .dateTime.day().month())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
         .contentShape(Rectangle())
         .onTapGesture {
             selectedTask = task
-            showingTaskSheet = true
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {
@@ -436,7 +437,6 @@ struct TaskDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
     let task: Task
     let context: ModelContext
-    @State private var showingDeleteAlert = false
     @State private var showingEditSheet = false
     
     var body: some View {
@@ -509,12 +509,6 @@ struct TaskDetailSheet: View {
                             .foregroundStyle(task.isCompleted ? .green : .blue)
                     }
                 }
-                
-                Section {
-                    Button("delete_task".localized(), role: .destructive) {
-                        showingDeleteAlert = true
-                    }
-                }
             }
             .navigationTitle("task_details".localized())
             .navigationBarTitleDisplayMode(.inline)
@@ -534,17 +528,6 @@ struct TaskDetailSheet: View {
             }
             .sheet(isPresented: $showingEditSheet) {
                 UpdateTaskSheet(task: task)
-            }
-            .alert("delete_task".localized(), isPresented: $showingDeleteAlert) {
-                Button("cancel".localized(), role: .cancel) { }
-                Button("delete".localized(), role: .destructive) {
-                    context.delete(task)
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.notificationOccurred(.success)
-                    dismiss()
-                }
-            } message: {
-                Text("delete_task_confirmation".localized())
             }
         }
     }
