@@ -445,3 +445,11 @@
 "volume_chart" = "Eficiência";
 
 "delay_days" = "dias de atraso";
+"export_csv" = "Exportar CSV";
+
+"filters" = "Filtros";
+"period" = "Período";
+"weekly" = "Semanal";
+"monthly" = "Mensal";
+"yearly" = "Anual";
+"all_departments" = "Todos os Departamentos";

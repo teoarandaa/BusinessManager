@@ -448,3 +448,11 @@
 "tasks_completed_on_time_total" = "Total de Tareas Completadas a Tiempo";
 
 "delay_days" = "días de retraso";
+"export_csv" = "Exportar CSV";
+
+"filters" = "Filtros";
+"period" = "Período";
+"weekly" = "Semanal";
+"monthly" = "Mensual";
+"yearly" = "Anual";
+"all_departments" = "Todos los Departamentos";
