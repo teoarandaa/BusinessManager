@@ -446,3 +446,5 @@
 
 "tasks_created_total" = "Total de Tareas Creadas";
 "tasks_completed_on_time_total" = "Total de Tareas Completadas a Tiempo";
+
+"delay_days" = "días de retraso";

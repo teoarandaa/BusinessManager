@@ -121,6 +121,7 @@
 "delete" = "Delete";
 "settings" = "Settings";
 "information" = "Information";
+"delay_days" = "days overdue";
 
 // MARK: - Charts
 "charts_for" = "Charts for %@";

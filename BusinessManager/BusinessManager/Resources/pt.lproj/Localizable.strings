@@ -443,3 +443,5 @@
 
 "performance_chart" = "Produtividade";
 "volume_chart" = "Eficiência";
+
+"delay_days" = "dias de atraso";
