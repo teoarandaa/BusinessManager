@@ -4,13 +4,21 @@ import Charts
 struct DelayPatternView: View {
     let reports: [Report]
     
-    private var chartData: [(date: Date, delays: Int)] {
-        reports
-            .sorted { $0.date < $1.date }
-            .map { report in
-                let delays = report.totalTasksCreated - report.tasksCompletedWithoutDelay
-                return (date: report.date, delays: delays)
-            }
+    private var chartData: [(date: Date, delays: Double)] {
+        let calendar = Calendar.current
+        let groupedByDate = Dictionary(grouping: reports) { report in
+            calendar.startOfDay(for: report.date)
+        }
+        
+        return groupedByDate.map { date, reports in
+            // Si hay más de un reporte por día (múltiples departamentos), calculamos la media
+            let averageDelays = reports.map { report -> Double in
+                Double(report.totalTasksCreated - report.tasksCompletedWithoutDelay)
+            }.reduce(0, +) / Double(reports.count)
+            
+            return (date: date, delays: averageDelays)
+        }
+        .sorted { $0.date < $1.date }
     }
     
     var body: some View {
