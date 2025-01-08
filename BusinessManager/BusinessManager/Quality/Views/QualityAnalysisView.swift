@@ -97,6 +97,15 @@ struct QualityAnalysisView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 
                                 ErrorDistributionChart(reports: filteredReports)
+                            }
+                            .padding(.horizontal)
+                            
+                            VStack(spacing: 16) {
+                                Text("delay_pattern".localized())
+                                    .font(.title2)
+                                    .bold()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
                                 DelayPatternView(reports: filteredReports)
                             }
                             .padding(.horizontal)
@@ -365,4 +374,4 @@ private struct MetricView: View {
         case .declining: return "declining".localized()
         }
     }
-} 
+}
