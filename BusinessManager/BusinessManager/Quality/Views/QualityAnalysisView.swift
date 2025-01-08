@@ -111,13 +111,7 @@ struct QualityAnalysisView: View {
                                 
                                 let recommendations = generateRecommendations()
                                 if recommendations.isEmpty {
-                                    ContentUnavailableView(label: {
-                                        Label("no_recommendations".localized(), systemImage: "checkmark.circle.fill")
-                                            .font(.title2)
-                                    }, description: {
-                                        Text("all_metrics_good".localized())
-                                            .foregroundStyle(.secondary)
-                                    })
+                                    noRecommendationsView()
                                 } else {
                                     ForEach(recommendations, id: \.id) { recommendation in
                                         RecommendationCard(recommendation: recommendation)
@@ -127,6 +121,7 @@ struct QualityAnalysisView: View {
                             .padding(.horizontal)
                         }
                         .padding(.vertical)
+                        .scrollDisabled(false)
                     }
                 }
             }
@@ -340,6 +335,17 @@ struct QualityAnalysisView: View {
         }
         
         return recommendations
+    }
+    
+    // MARK: - Helper Views
+    private func noRecommendationsView() -> some View {
+        ContentUnavailableView(label: {
+            Label("no_recommendations".localized(), systemImage: "checkmark.circle.fill")
+                .font(.title2)
+        }, description: {
+            Text("all_metrics_good".localized())
+                .foregroundStyle(.secondary)
+        })
     }
 }
 
