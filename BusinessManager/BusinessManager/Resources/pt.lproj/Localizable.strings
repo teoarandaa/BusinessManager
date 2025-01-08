@@ -474,3 +474,6 @@
 "completion_suggestion_1" = "Implementar melhor priorização de tarefas";
 "completion_suggestion_2" = "Revisar processo de definição de prazos";
 "completion_suggestion_3" = "Considerar adicionar ferramentas de acompanhamento de progresso";
+
+"no_recommendations" = "Sem Recomendações";
+"all_metrics_good" = "Todas as métricas estão atingindo suas metas. Continue o bom trabalho!";
