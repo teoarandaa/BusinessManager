@@ -500,10 +500,10 @@ struct IconPickerView: View {
     @AppStorage("departmentIcons") private var iconStorage: String = "{}"
     let departmentName: String
     @State private var selectedIcon: String = "building.2"
-    @State private var selectedCategory: String = "All"
+    @State private var selectedCategory: String = "all".localized()
     
     var filteredSections: [IconSection] {
-        selectedCategory == "All" ? sections : sections.filter { $0.title == selectedCategory }
+        selectedCategory == "all".localized() ? sections : sections.filter { $0.title == selectedCategory }
     }
     
     var body: some View {
