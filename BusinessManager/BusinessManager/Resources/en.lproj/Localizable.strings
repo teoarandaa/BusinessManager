@@ -416,6 +416,8 @@
 "performance_average" = "Average Performance";
 "volume_average" = "Average Volume";
 "tasks_completed_total" = "Total Tasks Completed";
+"tasks_created_total" = "Total Tasks Created";
+"tasks_completed_on_time_total" = "Total Tasks Completed On Time";
 
 // MARK: - Radar Chart Labels
 "radar_performance" = "Performance";

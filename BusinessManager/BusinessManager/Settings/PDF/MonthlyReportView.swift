@@ -562,23 +562,10 @@ class PDFGenerator {
             .font: UIFont.systemFont(ofSize: 20, weight: .bold)
         ]
         
-        // Usar el ttulo generado dinámicamente
+        // Título del reporte
         (reportTitle as NSString).draw(at: CGPoint(x: margin, y: margin), withAttributes: titleAttributes)
         
-        // Draw logo en la esquina inferior derecha
-        if let logo = UIImage(named: "pdf_logo") {
-            let logoSize: CGFloat = 80
-            let aspectRatio = logo.size.width / logo.size.height
-            let logoHeight = logoSize
-            let logoWidth = logoHeight * aspectRatio
-            
-            let logoX = pageWidth - margin - logoWidth
-            let logoY = pageHeight - (margin / 4) - logoHeight
-            let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
-            logo.draw(in: logoRect)
-        }
-        
-        // Draw reports summary
+        // Reports summary section
         let summaryTitleAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 14, weight: .bold)
         ]
@@ -593,21 +580,40 @@ class PDFGenerator {
             withAttributes: summaryTitleAttributes
         )
         
+        // Draw reports details with all metrics
+        let reportDetails = """
+        \("reports_total".localized()): \(reports.count)
+        \("performance_average".localized()): \(String(format: "%.1f", averagePerformance()))
+        \("volume_average".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
+        \("tasks_created_total".localized()): \(totalTasksCreated())
+        \("tasks_completed_total".localized()): \(totalTasks())
+        \("tasks_completed_on_time_total".localized()): \(totalTasksCompletedOnTime())
+        """
+        
+        (reportDetails as NSString).draw(
+            at: CGPoint(x: margin, y: reportsY + 20),
+            withAttributes: summaryTextAttributes
+        )
+        
+        // Department performance title
         let departmentPerformanceTitle = "department_performance_overview".localized()
         (departmentPerformanceTitle as NSString).draw(
             at: CGPoint(x: pageWidth - margin - 280, y: reportsY),
             withAttributes: summaryTitleAttributes
         )
         
-        // Draw reports details
-        let reportDetails = """
-        \("reports_total".localized()): \(reports.count)
-        \("performance_average".localized()): \(String(format: "%.1f", averagePerformance()))
-        \("volume_average".localized()): \(String(format: "%.1f", averageVolumeOfWork()))
-        \("tasks_completed_total".localized()): \(totalTasks())
-        """
-        
-        (reportDetails as NSString).draw(at: CGPoint(x: margin, y: reportsY + 20), withAttributes: summaryTextAttributes)
+        // Draw logo en la esquina inferior derecha
+        if let logo = UIImage(named: "pdf_logo") {
+            let logoSize: CGFloat = 80
+            let aspectRatio = logo.size.width / logo.size.height
+            let logoHeight = logoSize
+            let logoWidth = logoHeight * aspectRatio
+            
+            let logoX = pageWidth - margin - logoWidth
+            let logoY = pageHeight - (margin / 4) - logoHeight
+            let logoRect = CGRect(x: logoX, y: logoY, width: logoWidth, height: logoHeight)
+            logo.draw(in: logoRect)
+        }
         
         // Dibujar gráfico de radar (siempre, incluso sin datos)
         let centerX = pageWidth - margin - 150
@@ -902,25 +908,40 @@ class PDFGenerator {
         }
     }
     
+    private func totalTasksCreated() -> Int {
+        reports.reduce(into: 0) { result, report in
+            result += report.totalTasksCreated
+        }
+    }
+    
+    private func totalTasksCompletedOnTime() -> Int {
+        reports.reduce(into: 0) { result, report in
+            result += report.tasksCompletedWithoutDelay
+        }
+    }
+    
     private let summaryTextAttributes: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 12)
     ]
     
     private func drawReportsSummary(at point: CGPoint) {
-        let summaryText = """
-        \("reports_total".localized()): \(reports.count)
-        \("performance_average".localized()): \(String(format: "%.1f%%", averagePerformance()))
-        \("volume_average".localized()): \(String(format: "%.1f%%", averageVolumeOfWork()))
-        \("tasks_completed_total".localized()): \(totalTasks())
-        """
-        
         // Dibujar el título de la sección
         ("reports_summary".localized() as NSString).draw(
             at: CGPoint(x: margin, y: point.y),
             withAttributes: [.font: UIFont.boldSystemFont(ofSize: 16)]
         )
         
-        // Dibujar el contenido
+        // Preparar el texto del resumen con todas las métricas
+        let summaryText = """
+        \("reports_total".localized()): \(reports.count)
+        \("performance_average".localized()): \(String(format: "%.1f%%", averagePerformance()))
+        \("volume_average".localized()): \(String(format: "%.1f%%", averageVolumeOfWork()))
+        \("tasks_created_total".localized()): \(totalTasksCreated())
+        \("tasks_completed_total".localized()): \(totalTasks())
+        \("tasks_completed_on_time_total".localized()): \(totalTasksCompletedOnTime())
+        """
+        
+        // Dibujar el contenido del resumen
         (summaryText as NSString).draw(
             at: CGPoint(x: margin + 20, y: point.y + 30),
             withAttributes: summaryTextAttributes
