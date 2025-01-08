@@ -21,6 +21,8 @@ struct ExportCSVView: View {
     @State private var showShareSheet = false
     @State private var csvURL: URL?
     
+    private let hapticFeedback = UINotificationFeedbackGenerator()
+    
     var body: some View {
         List {
             Section("filters".localized()) {
@@ -56,7 +58,7 @@ struct ExportCSVView: View {
         }
         .sheet(isPresented: $showShareSheet) {
             if let csvURL = csvURL {
-                CSVShareSheet(activityItems: [csvURL])
+                CSVShareSheet(activityItems: [csvURL], isPresented: $showShareSheet)
             }
         }
     }
@@ -130,9 +132,23 @@ struct ExportCSVView: View {
 // Rename ShareSheet to CSVShareSheet
 struct CSVShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
+    @Binding var isPresented: Bool
+    private let hapticFeedback = UINotificationFeedbackGenerator()
     
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        let controller = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: nil
+        )
+        
+        controller.completionWithItemsHandler = { _, completed, _, _ in
+            if completed {
+                hapticFeedback.notificationOccurred(.success)
+                isPresented = false
+            }
+        }
+        
+        return controller
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
