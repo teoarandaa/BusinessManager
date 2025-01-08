@@ -2,13 +2,6 @@ import SwiftUI
 import SwiftData
 import Charts
 
-extension Array where Element == Int {
-    var average: Double {
-        guard !isEmpty else { return 0 }
-        return Double(reduce(0, +)) / Double(count)
-    }
-}
-
 struct QualityAnalysisView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Report.date) private var reports: [Report]
@@ -19,9 +12,9 @@ struct QualityAnalysisView: View {
     @State private var showingInfo = false
     @State private var showingSettings = false
     
-    @AppStorage("minPerformance") private var minPerformance: Double = 70
-    @AppStorage("minTaskCompletion") private var minTaskCompletion: Double = 75
-    @AppStorage("minVolumeOfWork") private var minVolumeOfWork: Double = 65
+    @AppStorage("minPerformance") private var minPerformance: Double = 0
+    @AppStorage("minTaskCompletion") private var minTaskCompletion: Double = 0
+    @AppStorage("minVolumeOfWork") private var minVolumeOfWork: Double = 0
     
     @Binding var selectedTab: Int
     
@@ -109,6 +102,18 @@ struct QualityAnalysisView: View {
                                 DelayPatternView(reports: filteredReports)
                             }
                             .padding(.horizontal)
+                            
+                            VStack(spacing: 16) {
+                                Text("recommendations".localized())
+                                    .font(.title2)
+                                    .bold()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                ForEach(generateRecommendations(), id: \.id) { recommendation in
+                                    RecommendationCard(recommendation: recommendation)
+                                }
+                            }
+                            .padding(.horizontal)
                         }
                         .padding(.vertical)
                     }
@@ -190,11 +195,11 @@ struct QualityAnalysisView: View {
     // MARK: - Computed Properties
     
     private var averagePerformance: Double {
-        filteredReports.map(\.performanceMark).average
+        filteredReports.map { Double($0.performanceMark) }.average ?? 0
     }
     
     private var averageVolume: Double {
-        filteredReports.map(\.volumeOfWorkMark).average
+        filteredReports.map { Double($0.volumeOfWorkMark) }.average ?? 0
     }
     
     private var averageCompletion: Double {
@@ -205,11 +210,11 @@ struct QualityAnalysisView: View {
     }
     
     private var performanceTrend: QualityMetric.MetricTrend {
-        calculateTrend(values: filteredReports.map(\.performanceMark))
+        calculateTrend(values: filteredReports.map { Double($0.performanceMark) })
     }
     
     private var volumeTrend: QualityMetric.MetricTrend {
-        calculateTrend(values: filteredReports.map(\.volumeOfWorkMark))
+        calculateTrend(values: filteredReports.map { Double($0.volumeOfWorkMark) })
     }
     
     private var completionTrend: QualityMetric.MetricTrend {
@@ -221,18 +226,14 @@ struct QualityAnalysisView: View {
     
     // MARK: - Helper Functions
     
-    private func calculateTrend(values: [Int]) -> QualityMetric.MetricTrend {
-        calculateTrend(values: values.map(Double.init))
-    }
-    
     private func calculateTrend(values: [Double]) -> QualityMetric.MetricTrend {
         guard values.count >= 2 else { return .stable }
         
         let firstHalf = Array(values.prefix(values.count / 2))
         let secondHalf = Array(values.suffix(values.count / 2))
         
-        let firstAvg = firstHalf.reduce(0.0, +) / Double(firstHalf.count)
-        let secondAvg = secondHalf.reduce(0.0, +) / Double(secondHalf.count)
+        let firstAvg = firstHalf.average ?? 0
+        let secondAvg = secondHalf.average ?? 0
         
         if secondAvg > firstAvg * 1.05 {
             return .improving
@@ -268,6 +269,66 @@ struct QualityAnalysisView: View {
             let yearEnd = calendar.date(byAdding: .year, value: 1, to: yearStart)!
             return date >= yearStart && date < yearEnd
         }
+    }
+    
+    private func generateRecommendations() -> [Recommendation] {
+        var recommendations: [Recommendation] = []
+        
+        // Agrupar reportes por departamento
+        let departmentReports = Dictionary(grouping: filteredReports, by: { $0.departmentName })
+        
+        for (department, reports) in departmentReports {
+            // Analizar rendimiento
+            let avgPerformance = reports.map { Double($0.performanceMark) }.average ?? 0
+            if avgPerformance < minPerformance {
+                recommendations.append(Recommendation(
+                    department: department,
+                    issue: String(format: "low_performance_issue".localized(), Int(avgPerformance)),
+                    suggestions: [
+                        "performance_suggestion_1".localized(),
+                        "performance_suggestion_2".localized(),
+                        "performance_suggestion_3".localized()
+                    ],
+                    type: .performance
+                ))
+            }
+            
+            // Analizar volumen de trabajo
+            let avgVolume = reports.map { Double($0.volumeOfWorkMark) }.average ?? 0
+            if avgVolume < minVolumeOfWork {
+                recommendations.append(Recommendation(
+                    department: department,
+                    issue: String(format: "low_volume_issue".localized(), Int(avgVolume)),
+                    suggestions: [
+                        "volume_suggestion_1".localized(),
+                        "volume_suggestion_2".localized(),
+                        "volume_suggestion_3".localized()
+                    ],
+                    type: .volume
+                ))
+            }
+            
+            // Analizar completitud de tareas
+            let completionRate = reports.map { report -> Double in
+                guard report.totalTasksCreated > 0 else { return 0 }
+                return Double(report.tasksCompletedWithoutDelay) / Double(report.totalTasksCreated) * 100
+            }.average ?? 0
+            
+            if completionRate < minTaskCompletion {
+                recommendations.append(Recommendation(
+                    department: department,
+                    issue: String(format: "low_completion_issue".localized(), Int(completionRate)),
+                    suggestions: [
+                        "completion_suggestion_1".localized(),
+                        "completion_suggestion_2".localized(),
+                        "completion_suggestion_3".localized()
+                    ],
+                    type: .taskCompletion
+                ))
+            }
+        }
+        
+        return recommendations
     }
 }
 
