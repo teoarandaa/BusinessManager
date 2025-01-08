@@ -19,6 +19,75 @@ enum ExportPeriod: String, CaseIterable {
     }
 }
 
+struct CSVPreviewView: View {
+    let csvString: String
+    
+    private var rows: [[String]] {
+        csvString.components(separatedBy: .newlines)
+            .filter { !$0.isEmpty }
+            .map { $0.components(separatedBy: ",") }
+    }
+    
+    // Definir anchos fijos para cada columna
+    private let columnWidths: [CGFloat] = [
+        120,  // Department
+        100,  // Date
+        130,   // Tasks Created
+        140,  // Completed On Time
+        120,  // Total Completed
+        120,  // Performance %
+        100   // Volume %
+    ]
+    
+    var body: some View {
+        ScrollView([.horizontal, .vertical]) {
+            if rows.isEmpty {
+                Text("no_data".localized())
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding()
+            } else {
+                VStack(alignment: .leading, spacing: 0) {
+                    // Header
+                    if let headerRow = rows.first {
+                        HStack(spacing: 0) {
+                            ForEach(headerRow.indices, id: \.self) { index in
+                                Text(headerRow[index])
+                                    .font(.caption.bold())
+                                    .padding(8)
+                                    .frame(width: columnWidths[index], alignment: .leading)
+                                    .background(Color.gray.opacity(0.1))
+                            }
+                        }
+                    }
+                    
+                    // Data rows
+                    if rows.count > 1 {
+                        ForEach(Array(rows.dropFirst().enumerated()), id: \.offset) { index, row in
+                            HStack(spacing: 0) {
+                                ForEach(row.indices, id: \.self) { columnIndex in
+                                    Text(row[columnIndex])
+                                        .font(.caption)
+                                        .padding(8)
+                                        .frame(width: columnWidths[columnIndex], alignment: .leading)
+                                }
+                            }
+                            .background(index % 2 == 0 ? Color.clear : Color.gray.opacity(0.05))
+                        }
+                    }
+                }
+                .padding()
+            }
+        }
+        .background(Color(UIColor.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+        )
+    }
+}
+
 struct ExportCSVView: View {
     @Environment(\.modelContext) private var context
     @Query private var reports: [Report]
@@ -30,6 +99,7 @@ struct ExportCSVView: View {
     @State private var showShareSheet = false
     @State private var showDatePicker = false
     @State private var csvURL: URL?
+    @State private var csvString: String = ""
     
     private let hapticFeedback = UINotificationFeedbackGenerator()
     
@@ -66,6 +136,9 @@ struct ExportCSVView: View {
                         }
                     }
                 }
+                .onChange(of: selectedPeriod) { oldValue, newValue in 
+                    generateCSV() 
+                }
                 
                 // Department Picker
                 HStack {
@@ -83,6 +156,9 @@ struct ExportCSVView: View {
                         }
                     }
                 }
+                .onChange(of: selectedDepartment) { oldValue, newValue in 
+                    generateCSV() 
+                }
                 
                 // Date Selection Button
                 Button(action: { showDatePicker = true }) {
@@ -90,7 +166,7 @@ struct ExportCSVView: View {
                         Image(systemName: selectedPeriod.systemImage)
                             .foregroundStyle(.accent)
                         Text(periodFormatter.string(from: selectedDate))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.accent)
                         Spacer()
                     }
                 }
@@ -101,24 +177,37 @@ struct ExportCSVView: View {
                     Label("export_csv".localized(), systemImage: "arrow.down.doc")
                         .foregroundStyle(.accent)
                 }
+                
+                if !csvString.isEmpty {
+                    CSVPreviewView(csvString: csvString)
+                        .frame(height: 300)
+                        .listRowInsets(EdgeInsets())
+                }
             }
         }
         .navigationTitle("export_csv".localized())
         .onAppear {
             loadDepartments()
+            generateCSV()
+        }
+        .onChange(of: selectedDate) { oldValue, newValue in 
+            generateCSV() 
         }
         .sheet(isPresented: $showDatePicker) {
             switch selectedPeriod {
             case .month:
-                MonthYearPicker(selectedDate: $selectedDate) {
+                ExportMonthYearPicker(selectedDate: $selectedDate) {
+                    generateCSV()
                     showDatePicker = false
                 }
             case .quarter:
                 QuarterYearPicker(selectedDate: $selectedDate) {
+                    generateCSV()
                     showDatePicker = false
                 }
             case .year:
                 YearPicker(selectedDate: $selectedDate) {
+                    generateCSV()
                     showDatePicker = false
                 }
             }
@@ -134,13 +223,11 @@ struct ExportCSVView: View {
         departments = Array(Set(reports.map { $0.departmentName })).sorted()
     }
     
-    private func prepareAndShowShareSheet() {
-        let fileName = "business_manager_report.csv"
+    private func generateCSV() {
         let header = "Department,Date,Tasks Created,Completed On Time,Total Completed,Performance %,Volume %\n"
-        
         let filteredReports = reports.filter { isReportIncluded($0) }
         
-        var csvString = header
+        var csv = header
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
@@ -156,11 +243,16 @@ struct ExportCSVView: View {
                 String(Int(report.volumeOfWorkMark))
             ].joined(separator: ",")
             
-            csvString += row + "\n"
+            csv += row + "\n"
         }
         
+        csvString = csv
+    }
+    
+    private func prepareAndShowShareSheet() {
         guard let data = csvString.data(using: .utf8) else { return }
         
+        let fileName = "business_manager_report.csv"
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         try? data.write(to: tempURL)
         
@@ -231,6 +323,82 @@ struct CSVShareSheet: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+
+// Rename just this struct
+struct ExportMonthYearPicker: View {
+    @Binding var selectedDate: Date
+    @Environment(\.dismiss) private var dismiss
+    let onDateSelected: () -> Void
+    
+    @State private var selectedYear: Int
+    @State private var selectedMonth: Int
+    
+    private let years = Array((2020...Calendar.current.component(.year, from: Date())).reversed())
+    private let months = Calendar.current.monthSymbols
+    
+    init(selectedDate: Binding<Date>, onDateSelected: @escaping () -> Void) {
+        self._selectedDate = selectedDate
+        self.onDateSelected = onDateSelected
+        
+        let calendar = Calendar.current
+        let date = selectedDate.wrappedValue
+        _selectedYear = State(initialValue: calendar.component(.year, from: date))
+        _selectedMonth = State(initialValue: calendar.component(.month, from: date) - 1)
+    }
+    
+    var body: some View {
+        NavigationStack {
+            HStack {
+                Picker("Month", selection: $selectedMonth) {
+                    ForEach(0..<months.count, id: \.self) { index in
+                        Text(months[index].capitalized).tag(index)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+                
+                Picker("Year", selection: $selectedYear) {
+                    ForEach(years, id: \.self) { year in
+                        Text(String(year)).tag(year)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(maxWidth: .infinity)
+            }
+            .padding()
+            .onChange(of: selectedYear) { oldValue, newValue in 
+                updateSelectedDate() 
+            }
+            .onChange(of: selectedMonth) { oldValue, newValue in 
+                updateSelectedDate() 
+            }
+            .navigationTitle("select_month".localized())
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("done".localized()) {
+                        onDateSelected()
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .presentationDetents([.height(280)])
+    }
+    
+    private func updateSelectedDate() {
+        var dateComponents = DateComponents()
+        dateComponents.year = selectedYear
+        dateComponents.month = selectedMonth + 1
+        dateComponents.day = 1
+        
+        if let date = Calendar.current.date(from: dateComponents) {
+            selectedDate = date
+        }
+    }
+}
+
+// Hacer los mismos cambios en QuarterYearPicker y YearPicker
 
 #Preview {
     ExportCSVView()
