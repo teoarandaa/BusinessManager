@@ -470,3 +470,6 @@
 "completion_suggestion_1" = "Implement better task prioritization";
 "completion_suggestion_2" = "Review deadline setting process";
 "completion_suggestion_3" = "Consider adding progress tracking tools";
+
+"no_recommendations" = "No Recommendations";
+"all_metrics_good" = "All metrics are meeting their targets. Keep up the good work!";
