@@ -203,6 +203,10 @@
 "delayed_tasks" = "Delayed Tasks";
 "date" = "Date";
 "task_completion" = "Task Completion";
+"low_performance_issue" = "Performance is at %d%%, below target";
+"low_volume_issue" = "Work volume is at %d%%, below target";
+"low_completion_issue" = "Task completion rate is at %d%%, below target";
+"suggested_actions" = "Suggested actions";
 
 // MARK: - Department Reports
 "reports_by_year" = "Reports by Year";
@@ -452,3 +456,17 @@
 
 "add_title" = "Add title";
 "add_description" = "Add description";
+
+// MARK: - Quality Recommendations
+"recommendations" = "Recommendations";
+"performance_suggestion_1" = "Review team training needs";
+"performance_suggestion_2" = "Implement performance tracking tools";
+"performance_suggestion_3" = "Schedule regular performance reviews";
+
+"volume_suggestion_1" = "Analyze resource allocation";
+"volume_suggestion_2" = "Optimize task distribution";
+"volume_suggestion_3" = "Consider team capacity adjustments";
+
+"completion_suggestion_1" = "Implement better task prioritization";
+"completion_suggestion_2" = "Review deadline setting process";
+"completion_suggestion_3" = "Consider adding progress tracking tools";
