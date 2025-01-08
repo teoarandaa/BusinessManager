@@ -64,8 +64,8 @@
 "future_date_error" = "No se pueden crear informes para fechas futuras.";
 "invalid_numbers" = "Por favor, introduce números válidos para las tareas.";
 "negative_tasks_error" = "El total de tareas no puede ser negativo.";
-"number" = "Número";
-"name" = "Nombre";
+"number" = "Añadir número";
+"name" = "Añadir nombre";
 "add_note" = "Añadir nota";
 "invalid_input" = "Entrada Incorrecta";
 "err_reports_dates" = "No se pueden crear informes para fechas futuras.";
@@ -456,3 +456,6 @@
 "monthly" = "Mensual";
 "yearly" = "Anual";
 "all_departments" = "Todos los Departamentos";
+
+"add_title" = "Añadir título";
+"add_description" = "Añadir descripción";
