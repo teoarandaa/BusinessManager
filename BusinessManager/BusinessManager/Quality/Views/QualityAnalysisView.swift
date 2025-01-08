@@ -109,8 +109,19 @@ struct QualityAnalysisView: View {
                                     .bold()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 
-                                ForEach(generateRecommendations(), id: \.id) { recommendation in
-                                    RecommendationCard(recommendation: recommendation)
+                                let recommendations = generateRecommendations()
+                                if recommendations.isEmpty {
+                                    ContentUnavailableView(label: {
+                                        Label("no_recommendations".localized(), systemImage: "checkmark.circle.fill")
+                                            .font(.title2)
+                                    }, description: {
+                                        Text("all_metrics_good".localized())
+                                            .foregroundStyle(.secondary)
+                                    })
+                                } else {
+                                    ForEach(recommendations, id: \.id) { recommendation in
+                                        RecommendationCard(recommendation: recommendation)
+                                    }
                                 }
                             }
                             .padding(.horizontal)
