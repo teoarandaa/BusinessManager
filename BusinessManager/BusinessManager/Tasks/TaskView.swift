@@ -510,15 +510,14 @@ struct TaskDetailSheet: View {
                             .multilineTextAlignment(.trailing)
                     }
                     
-                    HStack {
+                    VStack(alignment: .leading, spacing: 4) {
                         HStack {
                             Image(systemName: "doc.text")
                             Text("content".localized())
                                 .bold()
                         }
-                        Spacer()
                         Text(task.content)
-                            .multilineTextAlignment(.trailing)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
                     HStack {
