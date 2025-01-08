@@ -235,12 +235,14 @@ struct AddReportSheet: View {
                 
                 HStack(alignment: .top) {
                     Image(systemName: "pencil")
-                    Text("annotations".localized())
-                        .bold()
-                    Spacer()
-                    TextField("add_note".localized(), text: $annotations, axis: .vertical)
-                        .frame(maxWidth: 200, alignment: .trailing)
-                        .multilineTextAlignment(.trailing)
+                    VStack(alignment: .leading) {
+                        Text("annotations".localized())
+                            .bold()
+                        TextField("add_note".localized(), text: $annotations, axis: .vertical)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(4...6)
+                    }
                 }
             }
             .navigationTitle("add_report".localized())
@@ -717,12 +719,14 @@ struct UpdateReportSheet: View {
                 
                 HStack(alignment: .top) {
                     Image(systemName: "pencil")
-                    Text("annotations".localized())
-                        .bold()
-                    Spacer()
-                    TextField("add_note".localized(), text: $annotations, axis: .vertical)
-                        .frame(maxWidth: 200, alignment: .trailing)
-                        .multilineTextAlignment(.trailing)
+                    VStack(alignment: .leading) {
+                        Text("annotations".localized())
+                            .bold()
+                        TextField("add_note".localized(), text: $annotations, axis: .vertical)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(4...6)
+                    }
                 }
             }
             .navigationTitle("edit_report".localized())

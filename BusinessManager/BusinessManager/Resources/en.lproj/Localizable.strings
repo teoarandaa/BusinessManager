@@ -74,8 +74,8 @@
 "future_date_error" = "Cannot create reports for future dates.";
 "invalid_numbers" = "Please enter valid numbers for tasks.";
 "negative_tasks_error" = "Total tasks cannot be negative.";
-"number" = "Number";
-"name" = "Name";
+"number" = "Add number";
+"name" = "Add name";
 "add_note" = "Add note";
 "invalid_input" = "Invalid Input";
 "err_reports_dates" = "Cannot create reports for future dates.";
@@ -449,3 +449,6 @@
 "monthly" = "Monthly";
 "yearly" = "Yearly";
 "all_departments" = "All Departments";
+
+"add_title" = "Add title";
+"add_description" = "Add description";
