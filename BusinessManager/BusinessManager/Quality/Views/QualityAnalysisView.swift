@@ -111,13 +111,7 @@ struct QualityAnalysisView: View {
                                 
                                 let recommendations = generateRecommendations()
                                 if recommendations.isEmpty {
-                                    ContentUnavailableView(label: {
-                                        Label("no_recommendations".localized(), systemImage: "checkmark.circle.fill")
-                                            .font(.title2)
-                                    }, description: {
-                                        Text("all_metrics_good".localized())
-                                            .foregroundStyle(.secondary)
-                                    })
+                                    noRecommendationsView()
                                 } else {
                                     ForEach(recommendations, id: \.id) { recommendation in
                                         RecommendationCard(recommendation: recommendation)
@@ -127,6 +121,7 @@ struct QualityAnalysisView: View {
                             .padding(.horizontal)
                         }
                         .padding(.vertical)
+                        .scrollDisabled(false)
                     }
                 }
             }
@@ -341,6 +336,17 @@ struct QualityAnalysisView: View {
         
         return recommendations
     }
+    
+    // MARK: - Helper Views
+    private func noRecommendationsView() -> some View {
+        ContentUnavailableView(label: {
+            Label("no_recommendations".localized(), systemImage: "checkmark.circle.fill")
+                .font(.title2)
+        }, description: {
+            Text("all_metrics_good".localized())
+                .foregroundStyle(.secondary)
+        })
+    }
 }
 
 #Preview {
@@ -360,17 +366,17 @@ private struct ThresholdsSettingsView: View {
                 Section("minimum_thresholds".localized()) {
                     VStack(alignment: .leading) {
                         Text(String(format: "performance_value".localized(), Int(minPerformance)))
-                        Slider(value: $minPerformance, in: 0...100, step: 5)
+                        Slider(value: $minPerformance, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
                         Text(String(format: "task_completion_value".localized(), Int(minTaskCompletion)))
-                        Slider(value: $minTaskCompletion, in: 0...100, step: 5)
+                        Slider(value: $minTaskCompletion, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
                         Text(String(format: "volume_work_value".localized(), Int(minVolumeOfWork)))
-                        Slider(value: $minVolumeOfWork, in: 0...100, step: 5)
+                        Slider(value: $minVolumeOfWork, in: 0...100, step: 1)
                     }
                 }
             }
