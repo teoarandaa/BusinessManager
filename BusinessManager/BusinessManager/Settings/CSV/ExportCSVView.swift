@@ -2,12 +2,20 @@ import SwiftUI
 import SwiftData
 
 enum ExportPeriod: String, CaseIterable {
-    case week = "weekly"
     case month = "monthly"
+    case quarter = "quarterly"
     case year = "yearly"
     
     var localizedName: String {
         rawValue.localized()
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .month: return "calendar"
+        case .quarter: return "calendar.badge.clock"
+        case .year: return "calendar.badge.exclamationmark"
+        }
     }
 }
 
@@ -17,44 +25,103 @@ struct ExportCSVView: View {
     
     @State private var selectedPeriod: ExportPeriod = .month
     @State private var selectedDepartment = "all_departments".localized()
+    @State private var selectedDate = Date()
     @State private var departments: [String] = []
     @State private var showShareSheet = false
+    @State private var showDatePicker = false
     @State private var csvURL: URL?
     
     private let hapticFeedback = UINotificationFeedbackGenerator()
     
+    private var periodFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        switch selectedPeriod {
+        case .month:
+            formatter.dateFormat = "MMMM yyyy"
+            formatter.formattingContext = .standalone
+        case .quarter:
+            let month = Calendar.current.component(.month, from: selectedDate)
+            let quarter = (month - 1) / 3 + 1
+            formatter.dateFormat = "'Q'\(quarter) yyyy"
+        case .year:
+            formatter.dateFormat = "yyyy"
+        }
+        return formatter
+    }
+    
     var body: some View {
         List {
-            Section("filters".localized()) {
+            Section {
                 // Period Picker
-                Picker("period".localized(), selection: $selectedPeriod) {
-                    ForEach(ExportPeriod.allCases, id: \.self) { period in
-                        Text(period.localizedName).tag(period)
+                HStack {
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text("report_period".localized())
+                            .bold()
+                    }
+                    Spacer()
+                    Picker("", selection: $selectedPeriod) {
+                        ForEach(ExportPeriod.allCases, id: \.self) { period in
+                            Text(period.localizedName)
+                        }
                     }
                 }
                 
                 // Department Picker
-                Picker("department".localized(), selection: $selectedDepartment) {
-                    Text("all_departments".localized())
-                        .tag("all_departments".localized())
-                    ForEach(departments, id: \.self) { department in
-                        Text(department).tag(department)
+                HStack {
+                    HStack {
+                        Image(systemName: "building.2")
+                        Text("select_department".localized())
+                            .bold()
+                    }
+                    Spacer()
+                    Picker("", selection: $selectedDepartment) {
+                        Text("all_departments".localized())
+                            .tag("all_departments".localized())
+                        ForEach(departments, id: \.self) { department in
+                            Text(department)
+                        }
+                    }
+                }
+                
+                // Date Selection Button
+                Button(action: { showDatePicker = true }) {
+                    HStack {
+                        Image(systemName: selectedPeriod.systemImage)
+                            .foregroundStyle(.accent)
+                        Text(periodFormatter.string(from: selectedDate))
+                            .foregroundStyle(.secondary)
+                        Spacer()
                     }
                 }
             }
             
             Section {
                 Button(action: prepareAndShowShareSheet) {
-                    HStack {
-                        Image(systemName: "arrow.down.doc")
-                        Text("export_csv".localized())
-                    }
+                    Label("export_csv".localized(), systemImage: "arrow.down.doc")
+                        .foregroundStyle(.accent)
                 }
             }
         }
         .navigationTitle("export_csv".localized())
         .onAppear {
             loadDepartments()
+        }
+        .sheet(isPresented: $showDatePicker) {
+            switch selectedPeriod {
+            case .month:
+                MonthYearPicker(selectedDate: $selectedDate) {
+                    showDatePicker = false
+                }
+            case .quarter:
+                QuarterYearPicker(selectedDate: $selectedDate) {
+                    showDatePicker = false
+                }
+            case .year:
+                YearPicker(selectedDate: $selectedDate) {
+                    showDatePicker = false
+                }
+            }
         }
         .sheet(isPresented: $showShareSheet) {
             if let csvURL = csvURL {
@@ -108,23 +175,34 @@ struct ExportCSVView: View {
         
         // Verificar período
         let calendar = Calendar.current
-        let now = Date()
+        var startDate: Date
+        var endDate: Date
         
-        let isInSelectedPeriod: Bool
         switch selectedPeriod {
-        case .week:
-            let weekAgo = calendar.date(byAdding: .day, value: -7, to: now)!
-            isInSelectedPeriod = report.date >= weekAgo
-            
         case .month:
-            let monthAgo = calendar.date(byAdding: .month, value: -1, to: now)!
-            isInSelectedPeriod = report.date >= monthAgo
+            startDate = calendar.startOfMonth(for: selectedDate)
+            endDate = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startDate) ?? startDate
+            
+        case .quarter:
+            let month = calendar.component(.month, from: selectedDate)
+            let quarterStartMonth = ((month - 1) / 3) * 3 + 1
+            var components = DateComponents()
+            components.year = calendar.component(.year, from: selectedDate)
+            components.month = quarterStartMonth
+            components.day = 1
+            startDate = calendar.date(from: components) ?? selectedDate
+            endDate = calendar.date(byAdding: DateComponents(month: 3, day: -1), to: startDate) ?? startDate
             
         case .year:
-            let yearAgo = calendar.date(byAdding: .year, value: -1, to: now)!
-            isInSelectedPeriod = report.date >= yearAgo
+            var components = DateComponents()
+            components.year = calendar.component(.year, from: selectedDate)
+            components.month = 1
+            components.day = 1
+            startDate = calendar.date(from: components) ?? selectedDate
+            endDate = calendar.date(byAdding: DateComponents(year: 1, day: -1), to: startDate) ?? startDate
         }
         
+        let isInSelectedPeriod = report.date >= startDate && report.date <= endDate
         return isInSelectedDepartment && isInSelectedPeriod
     }
 }
