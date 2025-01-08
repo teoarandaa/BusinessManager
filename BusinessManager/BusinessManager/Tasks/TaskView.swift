@@ -169,6 +169,34 @@ struct TaskRow: View {
     let context: ModelContext
     @Binding var selectedTask: Task?
     
+    // Función para calcular los días restantes o de retraso
+    private var daysRemaining: Int {
+        let calendar = Calendar.current
+        let today = Date()
+        return calendar.numberOfDaysBetween(from: today, to: task.date)
+    }
+    
+    // Función para determinar el color de la fecha
+    private var dateColor: Color {
+        if task.isCompleted {
+            return .secondary
+        }
+        
+        if daysRemaining < 0 {
+            return .red
+        } else if daysRemaining <= 2 { // 2 días o menos
+            return .yellow
+        }
+        return .secondary
+    }
+    
+    // Función para obtener el texto de días de retraso
+    private var delayText: String? {
+        guard daysRemaining < 0 && !task.isCompleted else { return nil }
+        let days = abs(daysRemaining)
+        return "(\("delay_days".localized()): \(days))"
+    }
+    
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
@@ -201,9 +229,17 @@ struct TaskRow: View {
                         .cornerRadius(10)
                     )
                 
-                Text(task.date, format: .dateTime.day().month())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(task.date, format: .dateTime.day().month().year())
+                        .font(.caption)
+                        .foregroundStyle(dateColor)
+                    
+                    if let delayText = delayText {
+                        Text(delayText)
+                            .font(.caption2)
+                            .foregroundStyle(.red)
+                    }
+                }
             }
         }
         .contentShape(Rectangle())
@@ -232,6 +268,16 @@ struct TaskRow: View {
             }
             .tint(task.isCompleted ? .blue : .green)
         }
+    }
+}
+
+// Extensión de Calendar para calcular días entre fechas
+extension Calendar {
+    func numberOfDaysBetween(from: Date, to: Date) -> Int {
+        let fromDate = startOfDay(for: from)
+        let toDate = startOfDay(for: to)
+        let numberOfDays = dateComponents([.day], from: fromDate, to: toDate)
+        return numberOfDays.day ?? 0
     }
 }
 

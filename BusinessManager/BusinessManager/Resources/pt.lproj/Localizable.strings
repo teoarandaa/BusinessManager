@@ -419,6 +419,8 @@
 "performance_average" = "Desempenho Médio";
 "volume_average" = "Volume Médio";
 "tasks_completed_total" = "Total de Tarefas Concluídas";
+"tasks_created_total" = "Total de Tarefas Criadas";
+"tasks_completed_on_time_total" = "Total de Tarefas Concluídas no Prazo";
 
 // Radar Chart Labels
 "radar_performance" = "Desempenho";
@@ -441,3 +443,5 @@
 
 "performance_chart" = "Produtividade";
 "volume_chart" = "Eficiência";
+
+"delay_days" = "dias de atraso";
