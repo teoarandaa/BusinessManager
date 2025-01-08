@@ -33,10 +33,10 @@ struct CSVPreviewView: View {
         120,  // Department
         100,  // Date
         130,   // Tasks Created
-        140,  // Completed On Time
-        120,  // Total Completed
+        240,  // Tasks Completed On Time
+        160,  // Total Tasks Completed
         120,  // Performance %
-        100   // Volume %
+        150   // Volume %
     ]
     
     var body: some View {
@@ -224,10 +224,16 @@ struct ExportCSVView: View {
     }
     
     private func generateCSV() {
-        let header = "Department,Date,Tasks Created,Completed On Time,Total Completed,Performance %,Volume %\n"
-        let filteredReports = reports.filter { isReportIncluded($0) }
+        // Headers
+        csvString = "\("department".localized()),"
+        csvString += "\("date".localized()),"
+        csvString += "\("tasks_created".localized()),"
+        csvString += "\("tasks_completed_ontime".localized()),"
+        csvString += "\("total_completed".localized()),"
+        csvString += "\("performance".localized()),"
+        csvString += "\("volume_of_work".localized())\n"
         
-        var csv = header
+        let filteredReports = reports.filter { isReportIncluded($0) }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
@@ -243,10 +249,8 @@ struct ExportCSVView: View {
                 String(Int(report.volumeOfWorkMark))
             ].joined(separator: ",")
             
-            csv += row + "\n"
+            csvString += row + "\n"
         }
-        
-        csvString = csv
     }
     
     private func prepareAndShowShareSheet() {

@@ -341,7 +341,7 @@
 
 "push_notifications_instructions" = "Puedes activar las notificaciones push en la sección de Ajustes > Notificaciones de la aplicación.";
 
-"available_languages" = "Sí, Business Manager está disponible en español e inglés. Trabajamos continuamente para añadir más idiomas.";
+"available_languages" = "Sí, Business Manager está disponible en inglés, español, portugués, francés, italiano y alemán. Estamos trabajando continuamente para añadir más idiomas.";
 
 "accepted_payments" = "Aceptamos pagos a través de App Store, incluyendo tarjetas de crédito/débito y otros métodos de pago vinculados a tu cuenta de Apple.";
 
@@ -480,3 +480,8 @@
 
 "no_recommendations" = "Sin Recomendaciones";
 "all_metrics_good" = "Todas las métricas cumplen sus objetivos. ¡Sigue así!";
+
+// CSV Headers
+"tasks_created" = "Tareas Creadas";
+"tasks_completed_ontime" = "Tareas Completadas a Tiempo";
+"total_completed" = "Total Completadas";

@@ -43,7 +43,7 @@
 "monthly_summary" = "Résumé mensuel";
 "date" = "Date";
 "department" = "Département";
-"tasks_created" = "Tâches créées";
+"tasks_created" = "Tâches Créées";
 "on_time_tasks" = "Tâches à temps";
 "finished_tasks" = "Tâches terminées";
 "annotations" = "Annotations";
@@ -61,8 +61,8 @@
 "tasks" = "Tâches";
 "total_tasks" = "Total des tâches";
 "completed_tasks" = "Tâches terminées";
-"completed_on_time" = "Terminées à temps";
-"tasks_created" = "Tâches créées";
+"completed_on_time" = "Tâches Terminées à Temps";
+"tasks_created" = "Tâches Créées";
 "performance_mark" = "Marque de performance";
 "volume_of_work" = "Volume de travail";
 "save_report" = "Enregistrer le rapport";
@@ -345,7 +345,7 @@
 "new_features_frequency" = "Nous ajoutons de nouvelles fonctionnalités régulièrement, environ une fois par an, en fonction des retours des utilisateurs et des besoins du marché.";
 "updates_frequency" = "Oui, nous publions fréquemment des mises à jour pour améliorer les performances, corriger les bogues et ajouter de nouvelles fonctionnalités.";
 "push_notifications_instructions" = "Vous pouvez activer les notifications push dans Paramètres > Notifications dans l'application.";
-"available_languages" = "Oui, Business Manager est disponible en anglais et en espagnol. Nous travaillons en continu pour ajouter d'autres langues.";
+"available_languages" = "Oui, Business Manager est disponible en anglais, espagnol, portugais, français, italien et allemand. Nous travaillons constamment pour ajouter d'autres langues.";
 "accepted_payments" = "Nous acceptons les paiements via l'App Store, y compris les cartes de crédit/débit et d'autres méthodes de paiement liées à votre compte Apple.";
 "find_privacy_policy" = "Vous pouvez trouver notre politique de confidentialité dans Paramètres > Confidentialité.";
 "technical_support" = "Si vous rencontrez des problèmes techniques, commencez par redémarrer l'application. Si le problème persiste, contactez notre équipe de support.";
@@ -473,3 +473,8 @@
 
 "no_recommendations" = "Aucune recommandation";
 "all_metrics_good" = "Tous les indicateurs sont conformes aux objectifs. Continuez ainsi!";
+
+// CSV Headers
+"tasks_created" = "Tâches Créées";
+"tasks_completed_ontime" = "Tâches Terminées à Temps";
+"total_completed" = "Total Terminées";

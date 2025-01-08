@@ -43,7 +43,7 @@
 "monthly_summary" = "Monthly Summary";
 "date" = "Date";
 "department" = "Department";
-"tasks_created" = "Tasks created";
+"tasks_created" = "Tasks Created";
 "on_time_tasks" = "On-Time Tasks";
 "finished_tasks" = "Finished Tasks";
 "annotations" = "Annotations";
@@ -345,7 +345,7 @@
 "new_features_frequency" = "We add new features regularly, approximately every year, based on user feedback and market needs.";
 "updates_frequency" = "Yes, we release frequent updates to improve performance, fix bugs, and add new features.";
 "push_notifications_instructions" = "You can enable push notifications in Settings > Notifications within the app.";
-"available_languages" = "Yes, Business Manager is available in English and Spanish. We are continuously working to add more languages.";
+"available_languages" = "Yes, Business Manager is available in English, Spanish, Portuguese, French, Italian and German. We are continuously working to add more languages.";
 "accepted_payments" = "We accept payments through the App Store, including credit/debit cards and other payment methods linked to your Apple account.";
 "find_privacy_policy" = "You can find our privacy policy in Settings > Privacy.";
 "technical_support" = "If you encounter technical issues, first try restarting the app. If the problem persists, contact our support team.";
@@ -473,3 +473,8 @@
 
 "no_recommendations" = "No Recommendations";
 "all_metrics_good" = "All metrics are meeting their targets. Keep up the good work!";
+
+// CSV Headers
+"tasks_created" = "Tasks Created";
+"tasks_completed_ontime" = "Tasks Completed On Time";
+"total_completed" = "Total Completed";

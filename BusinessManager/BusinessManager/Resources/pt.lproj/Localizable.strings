@@ -43,7 +43,7 @@
 "monthly_summary" = "Resumo Mensal";
 "date" = "Data";
 "department" = "Departamento";
-"tasks_created" = "Tarefas criadas";
+"tasks_created" = "Tarefas Criadas";
 "on_time_tasks" = "Tarefas no Prazo";
 "finished_tasks" = "Tarefas Concluídas";
 "annotations" = "Anotações";
@@ -347,7 +347,7 @@
 "new_features_frequency" = "Adicionamos novos recursos regularmente, aproximadamente a cada ano, com base no feedback dos usuários e nas necessidades do mercado.";
 "updates_frequency" = "Sim, lançamos atualizações frequentes para melhorar o desempenho, corrigir bugs e adicionar novos recursos.";
 "push_notifications_instructions" = "Você pode ativar as notificações push em Configurações > Notificações dentro do aplicativo.";
-"available_languages" = "Sim, o Business Manager está disponível em inglês, espanhol e português. Estamos continuamente trabalhando para adicionar mais idiomas.";
+"available_languages" = "Sim, o Business Manager está disponível em inglês, espanhol, português, francês, italiano e alemão. Estamos trabalhando continuamente para adicionar mais idiomas.";
 "accepted_payments" = "Aceitamos pagamentos através da App Store, incluindo cartões de crédito/débito e outros métodos de pagamento vinculados à sua conta Apple.";
 "find_privacy_policy" = "Você pode encontrar nossa política de privacidade em Configurações > Privacidade.";
 "technical_support" = "Se encontrar problemas técnicos, primeiro tente reiniciar o aplicativo. Se o problema persistir, entre em contato com nossa equipe de suporte.";
@@ -477,3 +477,8 @@
 
 "no_recommendations" = "Sem Recomendações";
 "all_metrics_good" = "Todas as métricas estão atingindo suas metas. Continue o bom trabalho!";
+
+// CSV Headers
+"tasks_created" = "Tarefas Criadas";
+"tasks_completed_ontime" = "Tarefas Concluídas no Prazo";
+"total_completed" = "Total Concluídas";

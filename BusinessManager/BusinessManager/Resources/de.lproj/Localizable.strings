@@ -254,7 +254,7 @@
 
 // MARK: - Terms of Use
 "acceptance_terms" = "1. Annahme der Bedingungen";
-"description_service" = "2. Servicebeschreibung";
+"description_service" = "2. Dienstbeschreibung";
 "in_app_purchases" = "3. In-App-Käufe";
 "intellectual_property" = "4. Geistiges Eigentum";
 "limitation_liability" = "5. Haftungsbeschränkung";
@@ -345,7 +345,7 @@
 "new_features_frequency" = "Wir fügen regelmäßig neue Funktionen hinzu, etwa jedes Jahr, basierend auf Nutzerfeedback und Marktbedürfnissen.";
 "updates_frequency" = "Ja, wir veröffentlichen häufige Updates, um die Leistung zu verbessern, Fehler zu beheben und neue Funktionen hinzuzufügen.";
 "push_notifications_instructions" = "Sie können Push-Benachrichtigungen in den Einstellungen > Benachrichtigungen innerhalb der App aktivieren.";
-"available_languages" = "Ja, Business Manager ist in Englisch und Spanisch verfügbar. Wir arbeiten kontinuierlich daran, weitere Sprachen hinzuzufügen.";
+"available_languages" = "Ja, Business Manager ist in Englisch, Spanisch, Portugiesisch, Französisch, Italienisch und Deutsch verfügbar. Wir arbeiten kontinuierlich daran, weitere Sprachen hinzuzufügen.";
 "accepted_payments" = "Wir akzeptieren Zahlungen über den App Store, einschließlich Kredit-/Debitkarten und anderer Zahlungsmethoden, die mit Ihrem Apple-Konto verknüpft sind.";
 "find_privacy_policy" = "Sie können unsere Datenschutzrichtlinie unter Einstellungen > Datenschutz finden.";
 "technical_support" = "Wenn Sie technische Probleme haben, versuchen Sie zunächst, die App neu zu starten. Wenn das Problem weiterhin besteht, wenden Sie sich an unser Support-Team.";
@@ -473,3 +473,8 @@
 
 "no_recommendations" = "Keine Empfehlungen";
 "all_metrics_good" = "Alle Kennzahlen erreichen ihre Ziele. Weiter so!";
+
+// CSV Headers
+"tasks_created" = "Erstellte Aufgaben";
+"tasks_completed_ontime" = "Pünktlich Abgeschlossene Aufgaben";
+"total_completed" = "Gesamt Abgeschlossen";

@@ -43,7 +43,7 @@
 "monthly_summary" = "Riepilogo Mensile";
 "date" = "Data";
 "department" = "Dipartimento";
-"tasks_created" = "Compiti creati";
+"tasks_created" = "Attività Create";
 "on_time_tasks" = "Compiti Puntuali";
 "finished_tasks" = "Compiti Completati";
 "annotations" = "Annotazioni";
@@ -345,7 +345,7 @@
 "new_features_frequency" = "Aggiungiamo nuove funzionalità regolarmente, circa ogni anno, basandoci sui feedback degli utenti e sulle esigenze del mercato.";
 "updates_frequency" = "Sì, rilasciamo aggiornamenti frequenti per migliorare le prestazioni, correggere bug e aggiungere nuove funzionalità.";
 "push_notifications_instructions" = "Puoi abilitare le notifiche push in Impostazioni > Notifiche all'interno dell'app.";
-"available_languages" = "Sì, Business Manager è disponibile in inglese e spagnolo. Stiamo lavorando continuamente per aggiungere più lingue.";
+"available_languages" = "Sì, Business Manager è disponibile in inglese, spagnolo, portoghese, francese, italiano e tedesco. Stiamo lavorando continuamente per aggiungere altre lingue.";
 "accepted_payments" = "Accettiamo pagamenti tramite App Store, incluse carte di credito/debito e altri metodi di pagamento collegati al tuo account Apple.";
 "find_privacy_policy" = "Puoi trovare la nostra politica sulla privacy in Impostazioni > Privacy.";
 "technical_support" = "Se riscontri problemi tecnici, prova prima a riavviare l'app. Se il problema persiste, contatta il nostro team di supporto.";
@@ -473,3 +473,8 @@
 
 "no_recommendations" = "Nessuna Raccomandazione";
 "all_metrics_good" = "Tutte le metriche soddisfano i loro obiettivi. Continuate così!";
+
+// CSV Headers
+"tasks_created" = "Attività Create";
+"tasks_completed_ontime" = "Attività Completate in Tempo";
+"total_completed" = "Totale Completate";
