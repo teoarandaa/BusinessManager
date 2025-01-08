@@ -202,6 +202,10 @@
 "delayed_tasks" = "Tarefas Atrasadas";
 "date" = "Data";
 "task_completion" = "Conclusão de Tarefas";
+"low_performance_issue" = "O desempenho está em %d%%, abaixo da meta";
+"low_volume_issue" = "O volume de trabalho está em %d%%, abaixo da meta";
+"low_completion_issue" = "A taxa de conclusão está em %d%%, abaixo da meta";
+"suggested_actions" = "Ações sugeridas";
 
 // MARK: - Department Reports
 "reports_by_year" = "Relatórios por Ano";
@@ -456,3 +460,17 @@
 
 "add_title" = "Adicionar título";
 "add_description" = "Adicionar descrição";
+
+// MARK: - Quality Recommendations
+"recommendations" = "Recomendações";
+"performance_suggestion_1" = "Revisar necessidades de treinamento da equipe";
+"performance_suggestion_2" = "Implementar ferramentas de monitoramento de desempenho";
+"performance_suggestion_3" = "Agendar revisões regulares de desempenho";
+
+"volume_suggestion_1" = "Analisar alocação de recursos";
+"volume_suggestion_2" = "Otimizar distribuição de tarefas";
+"volume_suggestion_3" = "Considerar ajustes na capacidade da equipe";
+
+"completion_suggestion_1" = "Implementar melhor priorização de tarefas";
+"completion_suggestion_2" = "Revisar processo de definição de prazos";
+"completion_suggestion_3" = "Considerar adicionar ferramentas de acompanhamento de progresso";

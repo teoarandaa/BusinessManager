@@ -511,12 +511,12 @@ class PDFGenerator {
     
     private func averagePerformance() -> Double {
         guard !reports.isEmpty else { return 0 }
-        return reports.map(\.performanceMark).average
+        return reports.map { Double($0.performanceMark) }.average ?? 0
     }
     
     private func averageVolumeOfWork() -> Double {
         guard !reports.isEmpty else { return 0 }
-        return reports.map(\.volumeOfWorkMark).average
+        return reports.map { Double($0.volumeOfWorkMark) }.average ?? 0
     }
     
     private func averageCompletion() -> Double {
