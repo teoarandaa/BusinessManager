@@ -360,17 +360,17 @@ private struct ThresholdsSettingsView: View {
                 Section("minimum_thresholds".localized()) {
                     VStack(alignment: .leading) {
                         Text(String(format: "performance_value".localized(), Int(minPerformance)))
-                        Slider(value: $minPerformance, in: 0...100, step: 5)
+                        Slider(value: $minPerformance, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
                         Text(String(format: "task_completion_value".localized(), Int(minTaskCompletion)))
-                        Slider(value: $minTaskCompletion, in: 0...100, step: 5)
+                        Slider(value: $minTaskCompletion, in: 0...100, step: 1)
                     }
                     
                     VStack(alignment: .leading) {
                         Text(String(format: "volume_work_value".localized(), Int(minVolumeOfWork)))
-                        Slider(value: $minVolumeOfWork, in: 0...100, step: 5)
+                        Slider(value: $minVolumeOfWork, in: 0...100, step: 1)
                     }
                 }
             }
