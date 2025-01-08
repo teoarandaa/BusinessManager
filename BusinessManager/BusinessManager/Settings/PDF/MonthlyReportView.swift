@@ -357,7 +357,10 @@ struct MonthlyReportView: View {
         }
         .sheet(isPresented: $showShareSheet) {
             if let pdfData = pdfData {
-                ShareSheet(items: [pdfData], isPresented: $showShareSheet)
+                let fileName = "\(generateReportTitle()).pdf"
+                let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+                let _ = try? pdfData.write(to: tempURL)
+                ShareSheet(items: [tempURL], isPresented: $showShareSheet)
             }
         }
         .onAppear {
@@ -413,6 +416,7 @@ struct MonthlyReportView: View {
             minVolumeOfWork: minVolumeOfWork,
             minTaskCompletion: minTaskCompletion
         )
+        
         self.pdfData = pdfGenerator.generatePDF()
     }
     
