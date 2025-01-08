@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct SettingsView: View {
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
@@ -104,6 +105,9 @@ struct SettingsView: View {
                     NavigationLink(destination: MonthlyReportView()) {
                         Label("monthly_summary".localized(), systemImage: "text.document")
                     }
+                    NavigationLink(destination: ExportCSVView()) {
+                        Label("export_csv".localized(), systemImage: "arrow.down.doc")
+                    }
                 }
                 Section {
                     Text("version".localized() + " \(appVersion!)")
@@ -153,6 +157,50 @@ struct SettingsView: View {
     
     var appVersion: String? {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+    }
+    
+    private func exportCSV() {
+        let fileName = "business_manager_report.csv"
+        let header = "Department,Date,Tasks Created,Completed On Time,Total Completed,Performance %,Volume %\n"
+        
+        let descriptor = FetchDescriptor<Report>()
+        let context = try? ModelContainer(for: Report.self).mainContext
+        guard let reports = try? context?.fetch(descriptor) else { return }
+        
+        var csvString = header
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        
+        for report in reports {
+            let row = [
+                report.departmentName,
+                dateFormatter.string(from: report.date),
+                String(report.totalTasksCreated),
+                String(report.tasksCompletedWithoutDelay),
+                String(report.numberOfFinishedTasks),
+                String(Int(report.performanceMark)),
+                String(Int(report.volumeOfWorkMark))
+            ].joined(separator: ",")
+            
+            csvString += row + "\n"
+        }
+        
+        guard let data = csvString.data(using: .utf8) else { return }
+        
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+        try? data.write(to: tempURL)
+        
+        let activityVC = UIActivityViewController(
+            activityItems: [tempURL],
+            applicationActivities: nil
+        )
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootVC = window.rootViewController {
+            rootVC.present(activityVC, animated: true)
+        }
     }
 }
 

@@ -441,3 +441,11 @@
 
 "performance_chart" = "Productivity";
 "volume_chart" = "Efficiency";
+"export_csv" = "Export CSV";
+
+"filters" = "Filters";
+"period" = "Period";
+"weekly" = "Weekly";
+"monthly" = "Monthly";
+"yearly" = "Yearly";
+"all_departments" = "All Departments";
