@@ -14,6 +14,9 @@ struct SettingsView: View {
         ("es", "Español"),
         ("en", "English"),
         ("pt", "Português"),
+        ("fr", "Français"),
+        ("de", "Deutsch"),
+        ("it", "Italiano")
     ]
     
     private var effectiveColorScheme: ColorScheme {
