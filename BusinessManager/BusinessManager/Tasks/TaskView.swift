@@ -339,21 +339,21 @@ struct AddTaskSheet: View {
                             .bold()
                     }
                     Spacer()
-                    TextField("", text: $title, axis: .vertical)
+                    TextField("add_title".localized(), text: $title, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
-                HStack {
-                    HStack {
-                        Image(systemName: "doc.text")
+                HStack(alignment: .top) {
+                    Image(systemName: "doc.text")
+                    VStack(alignment: .leading) {
                         Text("content".localized())
                             .bold()
+                        TextField("add_description".localized(), text: $content, axis: .vertical)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(4...6)
                     }
-                    Spacer()
-                    TextField("", text: $content, axis: .vertical)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {
@@ -423,21 +423,21 @@ struct UpdateTaskSheet: View {
                             .bold()
                     }
                     Spacer()
-                    TextField("", text: $task.title, axis: .vertical)
+                    TextField("add_title".localized(), text: $task.title, axis: .vertical)
                         .frame(maxWidth: 200)
                         .multilineTextAlignment(.trailing)
                 }
                 
-                HStack {
-                    HStack {
-                        Image(systemName: "doc.text")
+                HStack(alignment: .top) {
+                    Image(systemName: "doc.text")
+                    VStack(alignment: .leading) {
                         Text("content".localized())
                             .bold()
+                        TextField("add_description".localized(), text: $task.content, axis: .vertical)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(4...6)
                     }
-                    Spacer()
-                    TextField("", text: $task.content, axis: .vertical)
-                        .frame(maxWidth: 200)
-                        .multilineTextAlignment(.trailing)
                 }
                 
                 HStack {

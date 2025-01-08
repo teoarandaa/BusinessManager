@@ -338,7 +338,7 @@ struct MonthlyReportView: View {
             }
         }
         .navigationTitle("title_pdf".localized())
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         .sheet(isPresented: $showDatePicker) {
             switch selectedPeriod {
             case .month:
