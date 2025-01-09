@@ -40,7 +40,7 @@
 // MARK: - Reports
 "add_report" = "Aggiungi Rapporto";
 "update_report" = "Aggiorna Rapporto";
-"monthly_summary" = "Riepilogo Mensile";
+"monthly_summary" = "Esporta PDF";
 "date" = "Data";
 "department" = "Dipartimento";
 "tasks_created" = "Attività Create";
