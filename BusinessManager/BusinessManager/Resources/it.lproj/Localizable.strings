@@ -295,7 +295,7 @@
 "reports_overview" = "Panoramica dei Report";
 "reports_description" = "I report offrono approfondimenti su prestazioni, produttività e progressi.\n\nArchiviati in modo sicuro e organizzati per tipo e data, ti aiutano a monitorare e condividere i risultati, garantendo un accesso rapido per decisioni più intelligenti.";
 "how_create_reports" = "Come Creare Report";
-"reports_creation_description" = "Per creare report accurati, sono necessari la data attuale, il nome del dipartimento, le attività create, quelle completate in tempo e quelle completate in generale (quelle completate in tempo sono incluse in questo gruppo).\nQuesti dati vengono poi visualizzati nei grafici, fornendo chiari approfondimenti su produttività, carico di lavoro e prestazioni, aiutandoti a prendere decisioni informate basate sui dati.";
+"reports_creation_description" = "Per creare report accurati e completi, sono necessari: data attuale, dipartimento, attività create e completate (incluse quelle puntuali). Questi dati vengono visualizzati in grafici dettagliati per fornire approfondimenti completi su produttività e prestazioni del team, facilitando il monitoraggio quotidiano e supportando decisioni strategiche basate sui dati.";
 "monthly_summary" = "Riepilogo Mensile";
 "monthly_summary_description" = "La funzione Riepilogo Mensile mostra le prestazioni e le tendenze dei dipartimenti. Questo formato di report semplifica la revisione delle metriche chiave, rendendolo inestimabile per revisioni manageriali e valutazioni di squadra.";
 "add_report" = "Aggiungi Report";
@@ -327,7 +327,7 @@
 "select_icon" = "Seleziona Icona";
 "reports_for_year" = "Report per %@";
 "how_to_create_reports" = "Come Creare Report";
-"create_reports_description" = "Per creare report accurati, abbiamo bisogno della data attuale, del nome del dipartimento, delle attività create, delle attività completate in tempo e delle attività completate (le attività completate in tempo sono incluse in questo gruppo).\nQuesti dati vengono poi visualizzati in grafici, fornendo chiari approfondimenti su produttività, carico di lavoro e prestazioni, aiutandoti a prendere decisioni informate basate sui dati.";
+"create_reports_description" = "Per creare report accurati e completi, sono necessari: data attuale, dipartimento, attività create e completate (incluse quelle puntuali). Questi dati vengono visualizzati in grafici dettagliati per fornire approfondimenti completi su produttività e prestazioni del team, facilitando il monitoraggio quotidiano e supportando decisioni strategiche basate sui dati.";
 "monthly_summary_title" = "Riepilogo Mensile";
 "monthly_summary_description" = "La funzione Riepilogo Mensile genera un report PDF completo confrontando le prestazioni e le tendenze dei dipartimenti. Questo formato di report semplifica la revisione e la condivisione delle metriche chiave, rendendolo inestimabile per le revisioni manageriali e le valutazioni dei team.";
 "add_report_title" = "Aggiungi Report";

@@ -183,7 +183,7 @@ struct QualityAnalysisView: View {
             }
             .sheet(isPresented: $showingInfo) {
                 QualityInfoSheetView()
-                    .presentationDetents([.height(700)])
+                    .presentationDetents([.height(550)])
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()

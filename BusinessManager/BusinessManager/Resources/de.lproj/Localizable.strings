@@ -282,7 +282,7 @@
 "quality_overview" = "Qualitätsübersicht";
 "quality_description" = "Die Qualitätsanalyse bietet umfassende Einblicke in die Abteilungsleistung, das Arbeitsvolumen und die Aufgabenabschlussraten. Wichtige Kennzahlen werden verfolgt und analysiert, um Trends zu identifizieren, die Ihnen helfen, hohe Standards zu wahren und die Effizienz zu verbessern.";
 "how_create_metrics" = "Wie man Kennzahlen erstellt";
-"metrics_description" = "Um Qualitätskennzahlen zu erstellen, beginnen Sie mit der Verfolgung der Aufgabenabschlusstermine und setzen Sie Fristen. Aufzeichnungen über die Anzahl der zugewiesenen und abgeschlossenen Aufgaben. Berechnen Sie die Leistung basierend auf rechtzeitigen Abschlüssen, dem Verhältnis von Arbeitsvolumen zu Aufgaben und den Gesamtabschlussraten. Überwachen Sie diese Kennzahlen regelmäßig, um Trends und Verbesserungsmöglichkeiten zu erkennen.";
+"metrics_description" = "Qualitätskennzahlen basieren auf der systematischen Verfolgung von Aufgabenabschlüssen, Einhaltung von Fristen und allgemeiner Leistung. Die regelmäßige Überwachung dieser Metriken hilft dabei, Trends zu erkennen und gezielte Verbesserungen in der Teamleistung umzusetzen.";
 "department_filter" = "Abteilungsfilter";
 "filter_description" = "Der Abteilungsfilter verbessert Ihre Analysemöglichkeiten, indem er es Ihnen ermöglicht, sich auf bestimmte Zeiträume und Abteilungen zu konzentrieren. Dieser gezielte Ansatz hilft, Stärken und Verbesserungsbereiche zu identifizieren und unterstützt bessere Entscheidungen hinsichtlich Ressourcen und Prozessen.";
 "threshold_settings" = "Schwellenwert-Einstellungen";
@@ -327,7 +327,7 @@
 "select_icon" = "Symbol auswählen";
 "reports_for_year" = "Berichte für %@";
 "how_to_create_reports" = "Wie man Berichte erstellt";
-"create_reports_description" = "Um genaue Berichte zu erstellen, benötigen wir das aktuelle Datum, den Abteilungsnamen, erstellte Aufgaben, pünktlich abgeschlossene Aufgaben und abgeschlossene Aufgaben (pünktlich abgeschlossene Aufgaben sind in dieser Gruppe enthalten).\nDiese Daten werden dann in Diagrammen angezeigt und bieten klare Einblicke in Produktivität, Arbeitsbelastung und Leistung, die Ihnen helfen, fundierte, datengestützte Entscheidungen zu treffen.";
+"create_reports_description" = "Für genaue Berichte benötigen wir: Datum, Abteilung, erstellte und abgeschlossene Aufgaben sowie pünktlich erledigte Aufgaben. Diese Daten werden in Diagrammen visualisiert, um detaillierte Einblicke in die Produktivität und Leistung Ihres Teams zu bieten.";
 "monthly_summary_title" = "Monatliche Zusammenfassung";
 "monthly_summary_description" = "Die Funktion Monatliche Zusammenfassung erstellt einen umfassenden PDF-Bericht, der die Abteilungsleistungen und Trends vergleicht. Dieses Berichtsformat erleichtert die Überprüfung und das Teilen von Schlüsselmetriken und ist daher unverzichtbar für Managementbewertungen und Teamevaluierungen.";
 "add_report_title" = "Bericht hinzufügen";

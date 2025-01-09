@@ -103,7 +103,7 @@ struct TaskView: View {
             }
             .sheet(isPresented: $isShowingItemSheet2) {
                 TasksInfoSheetView()
-                    .presentationDetents([.height(700)])
+                    .presentationDetents([.height(550)])
             }
             .sheet(item: $taskToEdit) { task in
                 TaskDetailSheet(task: task, context: context)
