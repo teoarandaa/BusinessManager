@@ -40,7 +40,7 @@
 // MARK: - Reports
 "add_report" = "Add Report";
 "update_report" = "Update Report";
-"monthly_summary" = "Monthly Summary";
+"monthly_summary" = "Export PDF";
 "date" = "Date";
 "department" = "Department";
 "tasks_created" = "Tasks Created";

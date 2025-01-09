@@ -40,7 +40,7 @@
 // MARK: - Reports
 "add_report" = "Bericht hinzufügen";
 "update_report" = "Bericht aktualisieren";
-"monthly_summary" = "Monatliche Zusammenfassung";
+"monthly_summary" = "PDF exportieren";
 "date" = "Datum";
 "department" = "Abteilung";
 "tasks_created" = "Erstellte Aufgaben";
