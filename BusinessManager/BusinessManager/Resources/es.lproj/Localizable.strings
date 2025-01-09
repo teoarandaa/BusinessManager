@@ -286,7 +286,7 @@
 "reports_description" = "Los informes ofrecen perspectivas sobre rendimiento, productividad y progreso.\n\nAlmacenados y organizados de forma segura por tipo y fecha, te ayudan a rastrear y compartir resultados, asegurando un acceso rápido para decisiones más inteligentes.";
 "how_create_reports" = "Cómo Crear Informes";
 "reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas y completadas (incluyendo las completadas a tiempo). Estos datos se visualizan en gráficos para proporcionar información clara sobre productividad y rendimiento, facilitando la toma de decisiones basada en datos.";
-"monthly_summary" = "Resumen Mensual";
+"monthly_summary" = "Exportar PDF";
 "monthly_summary_description" = "La función de Resumen Mensual muestra los rendimientos y las tendencias departamentales. Este formato de informe facilita la revisión de métricas clave, haciéndolo invaluable para revisiones de gestión y evaluaciones de equipo.";
 "add_report" = "Añadir Informe";
 "add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
