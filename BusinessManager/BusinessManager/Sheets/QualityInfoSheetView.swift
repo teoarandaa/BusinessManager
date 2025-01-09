@@ -9,6 +9,15 @@ struct QualityInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "checkmark.seal.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("quality_overview".localized())
                             .font(.largeTitle)
                             .bold()
@@ -17,14 +26,6 @@ struct QualityInfoSheetView: View {
                         Text("quality_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "checkmark.seal.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -34,6 +35,15 @@ struct QualityInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "chart.bar.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("how_create_metrics".localized())
                             .font(.largeTitle)
                             .bold()
@@ -42,14 +52,6 @@ struct QualityInfoSheetView: View {
                         Text("metrics_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "chart.bar.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -59,6 +61,15 @@ struct QualityInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "folder.fill.badge.gearshape")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("department_filter".localized())
                             .font(.largeTitle)
                             .bold()
@@ -67,14 +78,6 @@ struct QualityInfoSheetView: View {
                         Text("filter_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "line.3.horizontal.decrease.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -84,6 +87,15 @@ struct QualityInfoSheetView: View {
                 // Fourth Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "gauge.with.dots.needle.50percent")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("threshold_settings".localized())
                             .font(.largeTitle)
                             .bold()
@@ -92,14 +104,6 @@ struct QualityInfoSheetView: View {
                         Text("threshold_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "slider.horizontal.3")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {

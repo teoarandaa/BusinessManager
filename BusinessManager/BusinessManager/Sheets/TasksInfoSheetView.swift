@@ -9,6 +9,15 @@ struct TasksInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "list.clipboard.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("tasks_overview".localized())
                             .font(.largeTitle)
                             .bold()
@@ -17,14 +26,6 @@ struct TasksInfoSheetView: View {
                         Text("tasks_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "list.clipboard.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -34,6 +35,15 @@ struct TasksInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "plus.square.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("how_create_tasks".localized())
                             .font(.largeTitle)
                             .bold()
@@ -42,14 +52,6 @@ struct TasksInfoSheetView: View {
                         Text("tasks_creation_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "checklist")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -59,6 +61,15 @@ struct TasksInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "arrow.up.arrow.down.square.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("sort_tasks".localized())
                             .font(.largeTitle)
                             .bold()
@@ -67,14 +78,6 @@ struct TasksInfoSheetView: View {
                         Text("sort_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "arrow.up.arrow.down.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -84,6 +87,15 @@ struct TasksInfoSheetView: View {
                 // Fourth Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "plus.app.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("add_task".localized())
                             .font(.largeTitle)
                             .bold()
@@ -92,14 +104,6 @@ struct TasksInfoSheetView: View {
                         Text("add_task_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 140)
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(.tint)
-                            .padding()
                     }
                 }
                 .tabItem {

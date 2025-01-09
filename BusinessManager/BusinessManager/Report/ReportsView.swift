@@ -100,7 +100,7 @@ struct ReportsView: View {
                 }
                 .sheet(isPresented: $isShowingInfoSheet) {
                     ReportsInfoSheetView()
-                        .presentationDetents([.height(700)])
+                        .presentationDetents([.height(550)])
                 }
                 .sheet(item: $reportToEdit) { report in
                     UpdateReportSheet(report: report)

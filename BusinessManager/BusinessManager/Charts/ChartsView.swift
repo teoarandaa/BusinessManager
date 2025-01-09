@@ -79,7 +79,7 @@ struct ChartsView: View {
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isShowingItemSheet2) {
                 ChartsInfoSheetView()
-                    .presentationDetents([.height(700)])
+                    .presentationDetents([.height(550)])
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
