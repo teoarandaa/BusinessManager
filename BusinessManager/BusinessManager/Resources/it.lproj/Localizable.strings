@@ -282,7 +282,7 @@
 "quality_overview" = "Panoramica della Qualità";
 "quality_description" = "L'Analisi della Qualità fornisce approfondimenti completi sulle prestazioni dei dipartimenti, il volume di lavoro e i tassi di completamento delle attività. Le metriche chiave vengono monitorate e analizzate per identificare tendenze, aiutandoti a mantenere alti standard e migliorare l'efficienza.";
 "how_create_metrics" = "Come Creare Metriche";
-"metrics_description" = "Per creare metriche di qualità, inizia monitorando i tempi di completamento delle attività e impostando scadenze. Registra il numero di attività assegnate e completate. Calcola le prestazioni basandoti su completamenti puntuali, volume di lavoro derivato dal rapporto tra attività e tassi di completamento complessivi. Monitora regolarmente queste metriche per identificare tendenze e aree di miglioramento.";
+"metrics_description" = "Le metriche di qualità si basano sul monitoraggio dei tempi di completamento, attività assegnate e completate. Calcola le prestazioni in base a completamenti puntuali e volume di lavoro per identificare aree di miglioramento.";
 "department_filter" = "Filtro Dipartimento";
 "filter_description" = "Il Filtro Dipartimento migliora le capacità di analisi consentendoti di concentrarti su periodi di tempo e dipartimenti specifici. Questo approccio mirato aiuta a identificare punti di forza e aree di miglioramento, supportando decisioni migliori sulle risorse e i processi.";
 "threshold_settings" = "Impostazioni di Soglia";
