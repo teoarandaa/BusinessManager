@@ -271,7 +271,7 @@
 "analytics_overview" = "Aperçu des analyses";
 "analytics_description" = "Les analyses visualisent les principaux indicateurs : le graphique de productivité suit les tendances de la performance, et le graphique de charge de travail compare la performance avec la charge de travail à l'aide d'un graphique de dispersion pour mettre en évidence l'efficacité.";
 "how_create_charts" = "Comment créer des graphiques";
-"charts_generation" = "Les graphiques sont générés à partir des données des rapports, traitant la performance, la charge de travail et les tâches terminées pour créer des informations visuelles. Ils mettent en évidence les tendances, l'efficacité et la productivité en transformant les données brutes en informations exploitables pour chaque département.";
+"charts_generation" = "Les graphiques sont générés à partir des données des rapports pour visualiser la performance et la charge de travail, transformant les données en informations exploitables.";
 "chart_types" = "Types de graphiques";
 "chart_types_description" = "Le sélecteur de type de graphique propose différentes façons de visualiser vos données. Alternez entre les tendances de productivité, la distribution de l'efficacité et les indicateurs de performance pour obtenir la vue la plus pertinente de l'avancement de votre équipe. Chaque type de graphique offre des perspectives uniques sur différents aspects de la performance du département.";
 "yearly_analysis" = "Analyse annuelle";
@@ -303,9 +303,9 @@
 
 // Tasks Info
 "tasks_overview" = "Aperçu des tâches";
-"tasks_description" = "Les tâches vous aident à organiser, prioriser et suivre votre travail de manière efficace. Avec une structure claire et des mises à jour en temps réel, vous pouvez gérer les délais, surveiller les progrès et optimiser votre flux de travail, le tout en un seul endroit.";
+"tasks_description" = "Ce graphique montre la relation entre le volume de travail et la performance des départements, identifiant les goulets d'étranglement et l'efficacité. Il permet d'analyser comment chaque département gère sa charge de travail et d'optimiser les conditions de travail.";
 "how_create_tasks" = "Comment créer des tâches";
-"tasks_creation_description" = "Les tâches sont créées avec les informations suivantes : date d'expiration pour définir les délais, titre pour le nom de la tâche, contenu pour les détails de la tâche, commentaires pour des notes supplémentaires, et priorité pour indiquer l'urgence. Ces données garantissent que les tâches sont bien organisées et gérées efficacement.";
+"tasks_creation_description" = "Les tâches incluent : date d'expiration, titre, contenu, commentaires et priorité. Ces éléments assurent une gestion efficace des tâches.";
 "sort_tasks" = "Trier les tâches";
 "sort_description" = "La fonction de tri organise vos tâches efficacement. Triez par date pour une vue chronologique des délais, ou par priorité pour vous concentrer d'abord sur les tâches critiques. Cette flexibilité vous aide à gérer votre flux de travail en fonction de vos besoins actuels.";
 "add_task" = "Ajouter une tâche";
@@ -327,7 +327,7 @@
 "select_icon" = "Sélectionner une icône";
 "reports_for_year" = "Rapports pour %@";
 "how_to_create_reports" = "Comment créer des rapports";
-"create_reports_description" = "Pour créer des rapports précis, nous avons besoin de la date actuelle, du département, des tâches créées et terminées (incluant celles à temps). Ces données sont visualisées dans des graphiques détaillés pour fournir des informations complètes sur la productivité et la performance de l'équipe, facilitant la prise de décisions basée sur les données.";
+"create_reports_description" = "Pour créer des rapports précis, nous avons besoin de la date actuelle, du département et des données sur les tâches. Ces informations sont visualisées en graphiques pour faciliter l'analyse de la productivité.";
 "monthly_summary_title" = "Résumé mensuel";
 "monthly_summary_description" = "La fonctionnalité de résumé mensuel génère un rapport PDF complet comparant les performances et les tendances des départements. Ce format de rapport facilite la révision et le partage des indicateurs clés, ce qui le rend inestimable pour les revues de gestion et les évaluations d'équipe.";
 "add_report_title" = "Ajouter un rapport";
@@ -441,7 +441,6 @@
 "volume_description" = "Ce graphique linéaire montre les tendances de performance au fil du temps pour chaque département. Il aide à suivre l'évolution des indicateurs de performance tout au long du mois, ce qui facilite l'identification des modèles, des améliorations ou des problèmes potentiels dans l'efficacité des départements.";
 
 "tasks_chart" = "Analyse de la Charge de Travail";
-"tasks_description" = "Ce graphique en nuage de points montre la relation entre le volume de travail et la performance pour chaque département. Il aide à identifier comment les départements gèrent différents niveaux de charge de travail et leur efficacité, mettant en évidence les goulets d'étranglement potentiels ou les conditions de travail optimales.";
 
 "performance_chart" = "Productivité";
 "volume_chart" = "Efficacité";

@@ -295,9 +295,9 @@
 
 // Reports Info
 "reports_overview" = "Visão Geral dos Relatórios";
-"reports_description" = "Os relatórios oferecem insights sobre desempenho, produtividade e progresso.\n\nArmazenados e organizados de forma segura por tipo e data, eles ajudam você a acompanhar e compartilhar resultados, garantindo acesso rápido para decisões mais inteligentes.";
+"reports_description" = "Os relatórios oferecem insights sobre desempenho e produtividade. Organizados por tipo e data, eles facilitam o acompanhamento e compartilhamento de resultados, permitindo decisões mais inteligentes.";
 "how_create_reports" = "Como Criar Relatórios";
-"reports_creation_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas, tarefas concluídas no prazo e tarefas concluídas (tarefas concluídas no prazo estão incluídas neste grupo).\nEsses dados são então exibidos em gráficos, fornecendo insights claros sobre produtividade, carga de trabalho e desempenho, ajudando você a tomar decisões informadas e baseadas em dados.";
+"reports_creation_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas e concluídas (incluindo as no prazo). Esses dados são exibidos em gráficos para fornecer insights claros sobre produtividade e desempenho.";
 "monthly_summary" = "Resumo Mensal";
 "monthly_summary_description" = "O recurso Resumo Mensal mostra desempenhos e tendências departamentais. Esse formato de relatório facilita a revisão das principais métricas, tornando-o inestimável para análises gerenciais e avaliações de equipe.";
 "add_report" = "Adicionar Relatório";
@@ -329,7 +329,7 @@
 "select_icon" = "Selecionar Ícone";
 "reports_for_year" = "Relatórios para %@";
 "how_to_create_reports" = "Como Criar Relatórios";
-"create_reports_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas, tarefas concluídas no prazo e tarefas concluídas (tarefas concluídas no prazo estão incluídas neste grupo).\nEsses dados são então exibidos em gráficos, fornecendo insights claros sobre produtividade, carga de trabalho e desempenho, ajudando você a tomar decisões informadas e baseadas em dados.";
+"create_reports_description" = "Para criar relatórios precisos, precisamos da data atual, nome do departamento, tarefas criadas e concluídas (incluindo as no prazo). Esses dados são exibidos em gráficos para fornecer insights claros sobre produtividade e desempenho.";
 "monthly_summary_title" = "Resumo Mensal";
 "monthly_summary_description" = "O recurso de Resumo Mensal gera um relatório PDF abrangente comparando desempenhos e tendências dos departamentos. Este formato de relatório facilita a revisão e compartilhamento de métricas principais, tornando-o inestimável para revisões gerenciais e avaliações de equipe.";
 "add_report_title" = "Adicionar Relatório";

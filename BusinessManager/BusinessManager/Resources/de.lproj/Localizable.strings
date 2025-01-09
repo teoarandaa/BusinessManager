@@ -282,11 +282,11 @@
 "quality_overview" = "Qualitätsübersicht";
 "quality_description" = "Die Qualitätsanalyse bietet umfassende Einblicke in die Abteilungsleistung, das Arbeitsvolumen und die Aufgabenabschlussraten. Wichtige Kennzahlen werden verfolgt und analysiert, um Trends zu identifizieren, die Ihnen helfen, hohe Standards zu wahren und die Effizienz zu verbessern.";
 "how_create_metrics" = "Wie man Kennzahlen erstellt";
-"metrics_description" = "Qualitätskennzahlen basieren auf der systematischen Verfolgung von Aufgabenabschlüssen, Einhaltung von Fristen und allgemeiner Leistung. Die regelmäßige Überwachung dieser Metriken hilft dabei, Trends zu erkennen und gezielte Verbesserungen in der Teamleistung umzusetzen.";
+"metrics_description" = "Die Qualitätskennzahlen zeigen die wichtigsten Leistungsindikatoren für jede Abteilung, einschließlich Effizienz, Arbeitsvolumen und Aufgabenabschluss. Diese Metriken helfen bei der Identifizierung von Verbesserungsmöglichkeiten.";
 "department_filter" = "Abteilungsfilter";
 "filter_description" = "Der Abteilungsfilter verbessert Ihre Analysemöglichkeiten, indem er es Ihnen ermöglicht, sich auf bestimmte Zeiträume und Abteilungen zu konzentrieren. Dieser gezielte Ansatz hilft, Stärken und Verbesserungsbereiche zu identifizieren und unterstützt bessere Entscheidungen hinsichtlich Ressourcen und Prozessen.";
 "threshold_settings" = "Schwellenwert-Einstellungen";
-"threshold_description" = "Schwellenwert-Einstellungen helfen dabei, Qualitätsstandards in Ihrer Organisation festzulegen und aufrechtzuerhalten. Durch das Festlegen von Mindestleistungsniveaus und Benchmarks schaffen Sie klare Ziele und Frühwarnindikatoren, die eine proaktive Verwaltung Ihrer Qualitätsstandards ermöglichen.";
+"threshold_description" = "Schwellenwerte definieren die Mindeststandards für Leistung, Arbeitsvolumen und Aufgabenabschluss. Sie helfen, Problembereiche zu identifizieren und ermöglichen rechtzeitige Korrekturmaßnahmen.";
 "metrics" = "Kennzahlen";
 "filters" = "Filter";
 "thresholds" = "Schwellenwerte";
@@ -297,15 +297,15 @@
 "how_create_reports" = "Wie man Berichte erstellt";
 "reports_creation_description" = "Um genaue Berichte zu erstellen, benötigen wir das aktuelle Datum, den Abteilungsnamen, die erstellten Aufgaben, die rechtzeitig abgeschlossenen Aufgaben und die abgeschlossenen Aufgaben (rechtzeitig abgeschlossene Aufgaben sind in dieser Gruppe enthalten).\nDiese Daten werden dann in Diagrammen angezeigt, die klare Einblicke in Produktivität, Arbeitslast und Leistung bieten und Ihnen helfen, informierte, datengestützte Entscheidungen zu treffen.";
 "monthly_summary" = "Monatliche Zusammenfassung";
-"monthly_summary_description" = "Die Funktion 'Monatliche Zusammenfassung' zeigt die Abteilungsleistung und Trends. Dieses Berichtsformat erleichtert die Überprüfung wichtiger Kennzahlen und ist für Managementbewertungen und Teamevaluierungen von unschätzbarem Wert.";
+"monthly_summary_description" = "Die monatliche Zusammenfassung erstellt einen PDF-Bericht der Abteilungsleistungen und Trends für effektive Managementbewertungen.";
 "add_report" = "Bericht hinzufügen";
 "add_report_description" = "Das Hinzufügen eines neuen Berichts ist ein unkomplizierter Prozess zur Verfolgung des Fortschritts Ihrer Abteilung. Sie können Abschlussraten, Leistungskennzahlen und spezifische Notizen zu Erfolgen oder Herausforderungen eingeben und so ein klares Bild der Leistung Ihres Teams im Laufe der Zeit erstellen.";
 
 // Tasks Info
 "tasks_overview" = "Aufgabenübersicht";
-"tasks_description" = "Aufgaben helfen Ihnen, Ihre Arbeit effizient zu organisieren, zu priorisieren und zu verfolgen. Mit einer klaren Struktur und Echtzeit-Updates können Sie Fristen verwalten, den Fortschritt überwachen und Ihren Arbeitsablauf optimieren, alles an einem Ort.";
+"tasks_description" = "Dieses Diagramm zeigt die Beziehung zwischen Arbeitsvolumen und Leistung der Abteilungen, um Engpässe und optimale Arbeitsbedingungen zu identifizieren.";
 "how_create_tasks" = "Wie man Aufgaben erstellt";
-"tasks_creation_description" = "Aufgaben werden mit den folgenden Informationen erstellt: Ablaufdatum zur Festlegung von Fristen, Titel für den Aufgabenname, Inhalt für Aufgabendetails, Kommentare für zusätzliche Notizen und Priorität zur Angabe der Dringlichkeit. Diese Daten sorgen dafür, dass Aufgaben gut organisiert und effektiv verwaltet werden.";
+"tasks_creation_description" = "Aufgaben werden mit folgenden Informationen erstellt: Ablaufdatum für Fristen, Titel für den Aufgabennamen, Inhalt für Details, Kommentare für zusätzliche Notizen und Priorität für die Dringlichkeit.";
 "sort_tasks" = "Aufgaben sortieren";
 "sort_description" = "Die Sortierfunktion organisiert Ihre Aufgaben effektiv. Sortieren Sie nach Datum, um eine chronologische Ansicht der Fristen zu erhalten, oder nach Priorität, um sich zuerst auf wichtige Aufgaben zu konzentrieren. Diese Flexibilität hilft Ihnen, Ihren Arbeitsablauf nach Ihren aktuellen Bedürfnissen zu verwalten.";
 "add_task" = "Aufgabe hinzufügen";
@@ -329,7 +329,6 @@
 "how_to_create_reports" = "Wie man Berichte erstellt";
 "create_reports_description" = "Für genaue Berichte benötigen wir: Datum, Abteilung, erstellte und abgeschlossene Aufgaben sowie pünktlich erledigte Aufgaben. Diese Daten werden in Diagrammen visualisiert, um detaillierte Einblicke in die Produktivität und Leistung Ihres Teams zu bieten.";
 "monthly_summary_title" = "Monatliche Zusammenfassung";
-"monthly_summary_description" = "Die Funktion Monatliche Zusammenfassung erstellt einen umfassenden PDF-Bericht, der die Abteilungsleistungen und Trends vergleicht. Dieses Berichtsformat erleichtert die Überprüfung und das Teilen von Schlüsselmetriken und ist daher unverzichtbar für Managementbewertungen und Teamevaluierungen.";
 "add_report_title" = "Bericht hinzufügen";
 "add_report_description" = "Das Hinzufügen eines neuen Berichts ist ein unkomplizierter Prozess, um den Fortschritt Ihrer Abteilung zu verfolgen. Sie können Abschlussraten von Aufgaben, Leistungskennzahlen und spezifische Notizen zu Erfolgen oder Herausforderungen eingeben, um ein klares Bild der Leistung Ihres Teams im Laufe der Zeit zu erstellen.";
 "close" = "Schließen";
@@ -441,7 +440,6 @@
 "volume_description" = "Dieses Liniendiagramm zeigt die Leistungstrends über die Zeit für jede Abteilung. Es hilft dabei, die Entwicklung der Leistungskennzahlen im Laufe des Monats zu verfolgen und Muster, Verbesserungen oder potenzielle Probleme in der Abteilungseffizienz zu erkennen.";
 
 "tasks_chart" = "Arbeitsbelastungsanalyse";
-"tasks_description" = "Dieses Streudiagramm zeigt die Beziehung zwischen Arbeitsvolumen und Leistung für jede Abteilung. Es hilft dabei, zu erkennen, wie Abteilungen mit unterschiedlichen Arbeitsbelastungen umgehen und ihre Effizienz, wodurch potenzielle Engpässe oder optimale Arbeitsbedingungen aufgezeigt werden.";
 
 "performance_chart" = "Produktivität";
 "volume_chart" = "Effizienz";
