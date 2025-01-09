@@ -9,6 +9,15 @@ struct ReportsInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "doc.text.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("reports_overview".localized())
                             .font(.largeTitle)
                             .bold()
@@ -17,12 +26,6 @@ struct ReportsInfoSheetView: View {
                         Text("reports_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image("reports1")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -32,6 +35,15 @@ struct ReportsInfoSheetView: View {
                 // Second Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "square.and.pencil")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("how_to_create_reports".localized())
                             .font(.largeTitle)
                             .bold()
@@ -40,12 +52,6 @@ struct ReportsInfoSheetView: View {
                         Text("create_reports_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image("reports2")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -55,6 +61,15 @@ struct ReportsInfoSheetView: View {
                 // Third Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "calendar.badge.clock")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("monthly_summary_title".localized())
                             .font(.largeTitle)
                             .bold()
@@ -63,12 +78,6 @@ struct ReportsInfoSheetView: View {
                         Text("monthly_summary_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image("reports3")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .padding()
                     }
                 }
                 .tabItem {
@@ -78,6 +87,15 @@ struct ReportsInfoSheetView: View {
                 // Fourth Page
                 ScrollView {
                     VStack {
+                        Image(systemName: "plus.app.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
                         Text("add_report_title".localized())
                             .font(.largeTitle)
                             .bold()
@@ -86,12 +104,6 @@ struct ReportsInfoSheetView: View {
                         Text("add_report_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
-                        
-                        Image("reports4")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .padding()
                     }
                 }
                 .tabItem {

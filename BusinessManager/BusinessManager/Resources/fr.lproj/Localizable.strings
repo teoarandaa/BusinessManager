@@ -282,7 +282,7 @@
 "quality_overview" = "Aperçu de la qualité";
 "quality_description" = "L'analyse de la qualité fournit des informations complètes sur la performance des départements, le volume de travail et les taux d'achèvement des tâches. Les principaux indicateurs sont suivis et analysés pour identifier les tendances, vous aidant à maintenir des normes élevées et à améliorer l'efficacité.";
 "how_create_metrics" = "Comment créer des indicateurs";
-"metrics_description" = "Pour créer des indicateurs de qualité, commencez par suivre les temps d'achèvement des tâches et fixer des délais. Enregistrez le nombre de tâches assignées et terminées. Calculez la performance en fonction des achèvements à temps, des ratios volume de travail/tâches et des taux d'achèvement globaux. Surveillez régulièrement ces indicateurs pour identifier les tendances et les domaines à améliorer.";
+"metrics_description" = "Pour créer des indicateurs de qualité, suivez les temps d'achèvement et les délais des tâches. Enregistrez les tâches assignées et terminées, calculez la performance basée sur les achèvements à temps et les taux globaux. Une surveillance régulière permet d'identifier les tendances et les améliorations possibles.";
 "department_filter" = "Filtre de département";
 "filter_description" = "Le filtre de département améliore vos capacités d'analyse en vous permettant de vous concentrer sur des périodes spécifiques et des départements. Cette approche ciblée aide à identifier les points forts et les domaines à améliorer, soutenant ainsi une meilleure prise de décision concernant les ressources et les processus.";
 "threshold_settings" = "Paramètres des seuils";
@@ -327,7 +327,7 @@
 "select_icon" = "Sélectionner une icône";
 "reports_for_year" = "Rapports pour %@";
 "how_to_create_reports" = "Comment créer des rapports";
-"create_reports_description" = "Pour créer des rapports précis, nous avons besoin de la date actuelle, du nom du département, des tâches créées, des tâches terminées à temps et des tâches terminées (les tâches terminées à temps sont incluses dans ce groupe).\nCes données sont ensuite affichées dans des graphiques, fournissant des informations claires sur la productivité, la charge de travail et la performance, vous aidant à prendre des décisions éclairées basées sur les données.";
+"create_reports_description" = "Pour créer des rapports précis, nous avons besoin de la date actuelle, du département, des tâches créées et terminées (incluant celles à temps). Ces données sont visualisées dans des graphiques détaillés pour fournir des informations complètes sur la productivité et la performance de l'équipe, facilitant la prise de décisions basée sur les données.";
 "monthly_summary_title" = "Résumé mensuel";
 "monthly_summary_description" = "La fonctionnalité de résumé mensuel génère un rapport PDF complet comparant les performances et les tendances des départements. Ce format de rapport facilite la révision et le partage des indicateurs clés, ce qui le rend inestimable pour les revues de gestion et les évaluations d'équipe.";
 "add_report_title" = "Ajouter un rapport";
