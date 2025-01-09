@@ -18,10 +18,12 @@ struct ChartsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("charts1")
+                        Image(systemName: "chart.xyaxis.line")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -41,10 +43,12 @@ struct ChartsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("charts2")
+                        Image(systemName: "chart.bar.doc.horizontal")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -64,10 +68,12 @@ struct ChartsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("charts3")
+                        Image(systemName: "chart.dots.scatter")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -87,10 +93,12 @@ struct ChartsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("charts4")
+                        Image(systemName: "chart.bar.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -110,10 +118,12 @@ struct ChartsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("")
+                        Image(systemName: "chart.line.uptrend.xyaxis")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -133,10 +143,12 @@ struct ChartsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("")
+                        Image(systemName: "chart.bar.xaxis")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }

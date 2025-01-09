@@ -18,10 +18,12 @@ struct ReportsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports1")
+                        Image(systemName: "doc.text.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -41,10 +43,12 @@ struct ReportsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports2")
+                        Image(systemName: "doc.badge.plus")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -64,10 +68,12 @@ struct ReportsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports3")
+                        Image(systemName: "calendar.badge.clock")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -87,10 +93,12 @@ struct ReportsInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("reports4")
+                        Image(systemName: "square.and.pencil")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }

@@ -18,10 +18,12 @@ struct TasksInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("tasks1")
+                        Image(systemName: "list.clipboard.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -41,10 +43,12 @@ struct TasksInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("tasks2")
+                        Image(systemName: "checklist")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -64,10 +68,12 @@ struct TasksInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("tasks3")
+                        Image(systemName: "arrow.up.arrow.down.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -87,10 +93,12 @@ struct TasksInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("tasks4")
+                        Image(systemName: "plus.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }

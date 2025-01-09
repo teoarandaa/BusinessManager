@@ -18,10 +18,12 @@ struct QualityInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("quality1")
+                        Image(systemName: "checkmark.seal.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -41,10 +43,12 @@ struct QualityInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("quality2")
+                        Image(systemName: "chart.bar.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -64,10 +68,12 @@ struct QualityInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("quality3")
+                        Image(systemName: "line.3.horizontal.decrease.circle.fill")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
@@ -87,10 +93,12 @@ struct QualityInfoSheetView: View {
                             .padding()
                             .multilineTextAlignment(.center)
                         
-                        Image("quality4")
+                        Image(systemName: "slider.horizontal.3")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
+                            .frame(height: 140)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
                             .padding()
                     }
                 }
