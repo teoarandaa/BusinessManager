@@ -481,24 +481,24 @@
 
 // MARK: - Onboarding
 "onboarding_welcome" = "Welcome to Business Manager";
-"onboarding_welcome_subtitle" = "Your business solution";
-"onboarding_welcome_description" = "A comprehensive platform to manage and optimize your business.";
+"onboarding_welcome_subtitle" = "Your comprehensive business solution";
+"onboarding_welcome_description" = "Discover a revolutionary platform specifically designed to transform your business management. Business Manager combines powerful tools, intelligent analytics, and an intuitive interface to give you complete control over every aspect of your company. Get ready to take your business management to the next level with a solution that evolves with you.";
 
-"onboarding_business" = "Business Management";
-"onboarding_business_subtitle" = "Total control";
-"onboarding_business_description" = "Manage your business efficiently with intuitive tools for task tracking and performance analysis.";
+"onboarding_business" = "Advanced Business Management";
+"onboarding_business_subtitle" = "Total control and strategic vision";
+"onboarding_business_description" = "Take absolute control of your business with our comprehensive suite of management tools. From strategic planning to daily execution, our system allows you to monitor, analyze, and optimize every aspect of your operations. Coordinate teams, manage resources, and make informed decisions with real-time data that keeps you always one step ahead.";
 
-"onboarding_reports" = "Detailed Reports";
-"onboarding_reports_subtitle" = "Tracking and analysis";
-"onboarding_reports_description" = "Generate comprehensive reports on department performance, task completion rates, and productivity trends.";
+"onboarding_reports" = "Detailed and Customizable Reports";
+"onboarding_reports_subtitle" = "Comprehensive tracking and analysis";
+"onboarding_reports_description" = "Transform complex data into actionable information with our detailed reports. Analyze departmental performance, monitor task completion rates, and discover productivity trends with customizable and dynamic reports. Gain deep insights into your business with interactive charts and real-time metrics that help you make informed strategic decisions.";
 
-"onboarding_analytics" = "Advanced Analytics";
-"onboarding_analytics_subtitle" = "Data visualization";
-"onboarding_analytics_description" = "Visualize key data with interactive charts and gain valuable insights into your team's performance.";
+"onboarding_analytics" = "Advanced and Intelligent Analytics";
+"onboarding_analytics_subtitle" = "Data visualization and predictions";
+"onboarding_analytics_description" = "Harness the power of advanced analytics to uncover hidden patterns and emerging trends in your business. Our data visualization tools transform complex information into clear, actionable insights. Use interactive charts, customizable dashboards, and predictive analytics to anticipate trends and optimize your team's performance in real-time.";
 
-"onboarding_quality" = "Quality Control";
-"onboarding_quality_subtitle" = "Continuous improvement";
-"onboarding_quality_description" = "Monitor and improve work quality with detailed metrics and personalized recommendations.";
+"onboarding_quality" = "Comprehensive Quality Control";
+"onboarding_quality_subtitle" = "Excellence and continuous improvement";
+"onboarding_quality_description" = "Elevate your company's quality standards with our comprehensive control and improvement system. Implement detailed metrics, receive AI-powered personalized recommendations, and establish continuous improvement processes. Our system not only identifies areas for improvement but also provides practical and measurable suggestions to optimize quality in each department.";
 
 "get_started" = "Get Started";
 

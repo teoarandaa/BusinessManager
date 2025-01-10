@@ -481,25 +481,25 @@
 
 // MARK: - Onboarding
 "onboarding_welcome" = "Bienvenue sur Business Manager";
-"onboarding_welcome_subtitle" = "Votre solution d'entreprise";
-"onboarding_welcome_description" = "Une plateforme complète pour gérer et optimiser votre entreprise.";
+"onboarding_welcome_subtitle" = "Votre solution d'entreprise complète";
+"onboarding_welcome_description" = "Découvrez une plateforme révolutionnaire spécialement conçue pour transformer la gestion de votre entreprise. Business Manager combine des outils puissants, des analyses intelligentes et une interface intuitive pour vous donner un contrôle total sur chaque aspect de votre entreprise. Préparez-vous à faire passer votre gestion d'entreprise au niveau supérieur avec une solution qui évolue avec vous.";
 
-"onboarding_reports" = "Rapports Détaillés";
-"onboarding_reports_subtitle" = "Suivi et analyse";
-"onboarding_reports_description" = "Générez des rapports complets sur les performances des départements, les taux d'achèvement des tâches et les tendances de productivité.";
+"onboarding_business" = "Gestion d'Entreprise Avancée";
+"onboarding_business_subtitle" = "Contrôle total et vision stratégique";
+"onboarding_business_description" = "Prenez le contrôle absolu de votre entreprise avec notre suite complète d'outils de gestion. De la planification stratégique à l'exécution quotidienne, notre système vous permet de surveiller, d'analyser et d'optimiser chaque aspect de vos opérations. Coordonnez les équipes, gérez les ressources et prenez des décisions éclairées avec des données en temps réel qui vous gardent toujours une longueur d'avance.";
 
-"onboarding_analytics" = "Analyse Avancée";
-"onboarding_analytics_subtitle" = "Visualisation des données";
-"onboarding_analytics_description" = "Visualisez les données clés avec des graphiques interactifs et obtenez des insights précieux sur les performances de votre équipe.";
+"onboarding_reports" = "Rapports Détaillés et Personnalisables";
+"onboarding_reports_subtitle" = "Suivi et analyse exhaustifs";
+"onboarding_reports_description" = "Transformez des données complexes en informations exploitables avec nos rapports détaillés. Analysez la performance départementale, surveillez les taux d'achèvement des tâches et découvrez les tendances de productivité avec des rapports personnalisables et dynamiques. Obtenez des aperçus approfondis de votre entreprise avec des graphiques interactifs et des métriques en temps réel qui vous aident à prendre des décisions stratégiques éclairées.";
 
-"onboarding_quality" = "Contrôle Qualité";
-"onboarding_quality_subtitle" = "Amélioration continue";
-"onboarding_quality_description" = "Surveillez et améliorez la qualité du travail avec des métriques détaillées et des recommandations personnalisées.";
+"onboarding_analytics" = "Analyses Avancées et Intelligentes";
+"onboarding_analytics_subtitle" = "Visualisation des données et prédictions";
+"onboarding_analytics_description" = "Exploitez la puissance des analyses avancées pour découvrir les modèles cachés et les tendances émergentes de votre entreprise. Nos outils de visualisation de données transforment des informations complexes en insights clairs et exploitables. Utilisez des graphiques interactifs, des tableaux de bord personnalisables et des analyses prédictives pour anticiper les tendances et optimiser la performance de votre équipe en temps réel.";
+
+"onboarding_quality" = "Contrôle Qualité Complet";
+"onboarding_quality_subtitle" = "Excellence et amélioration continue";
+"onboarding_quality_description" = "Élevez les standards de qualité de votre entreprise avec notre système complet de contrôle et d'amélioration. Implémentez des métriques détaillées, recevez des recommandations personnalisées basées sur l'IA et établissez des processus d'amélioration continue. Notre système identifie non seulement les domaines d'amélioration mais fournit également des suggestions pratiques et mesurables pour optimiser la qualité dans chaque département.";
 
 "get_started" = "Commencer";
-
-"onboarding_business" = "Gestion d'Entreprise";
-"onboarding_business_subtitle" = "Contrôle total";
-"onboarding_business_description" = "Gérez votre entreprise efficacement avec des outils intuitifs pour le suivi des tâches et l'analyse des performances.";
 
 "recommendations_description" = "Le système analyse automatiquement les données de performance, le volume de travail et les taux d'achèvement des tâches pour générer des recommandations personnalisées. Ces suggestions aident à améliorer l'efficacité et la qualité du travail dans chaque département.";

@@ -488,24 +488,24 @@
 
 // MARK: - Onboarding
 "onboarding_welcome" = "Bienvenido a Business Manager";
-"onboarding_welcome_subtitle" = "Tu solución empresarial";
-"onboarding_welcome_description" = "Una plataforma integral para gestionar y optimizar tu negocio.";
+"onboarding_welcome_subtitle" = "Tu solución empresarial integral";
+"onboarding_welcome_description" = "Descubre una plataforma revolucionaria diseñada específicamente para transformar la gestión de tu negocio. Business Manager combina herramientas potentes, análisis inteligente y una interfaz intuitiva para ofrecerte el control total sobre cada aspecto de tu empresa. Prepárate para llevar tu gestión empresarial al siguiente nivel con una solución que evoluciona contigo.";
 
-"onboarding_business" = "Gestión Empresarial";
-"onboarding_business_subtitle" = "Control total";
-"onboarding_business_description" = "Gestiona tu negocio de manera eficiente con herramientas intuitivas para el seguimiento de tareas y análisis de rendimiento.";
+"onboarding_business" = "Gestión Empresarial Avanzada";
+"onboarding_business_subtitle" = "Control total y visión estratégica";
+"onboarding_business_description" = "Toma el control absoluto de tu negocio con nuestro conjunto completo de herramientas de gestión. Desde la planificación estratégica hasta la ejecución diaria, nuestro sistema te permite supervisar, analizar y optimizar cada aspecto de tus operaciones. Coordina equipos, gestiona recursos y toma decisiones informadas con datos en tiempo real que te mantienen siempre un paso adelante.";
 
-"onboarding_reports" = "Informes Detallados";
-"onboarding_reports_subtitle" = "Seguimiento y análisis";
-"onboarding_reports_description" = "Genera informes completos sobre el rendimiento del departamento, las tasas de finalización de tareas y las tendencias de productividad.";
+"onboarding_reports" = "Informes Detallados y Personalizables";
+"onboarding_reports_subtitle" = "Seguimiento y análisis exhaustivo";
+"onboarding_reports_description" = "Transforma datos complejos en información accionable con nuestros informes detallados. Analiza el rendimiento departamental, monitorea las tasas de finalización de tareas y descubre tendencias de productividad con informes personalizables y dinámicos. Obtén una visión profunda de tu negocio con gráficos interactivos y métricas en tiempo real que te ayudan a tomar decisiones estratégicas fundamentadas.";
 
-"onboarding_analytics" = "Análisis Avanzado";
-"onboarding_analytics_subtitle" = "Visualización de datos";
-"onboarding_analytics_description" = "Visualiza datos clave con gráficos interactivos y obtén información valiosa sobre el rendimiento de tu equipo.";
+"onboarding_analytics" = "Análisis Avanzado e Inteligente";
+"onboarding_analytics_subtitle" = "Visualización de datos y predicciones";
+"onboarding_analytics_description" = "Aprovecha el poder del análisis avanzado para descubrir patrones ocultos y tendencias emergentes en tu negocio. Nuestras herramientas de visualización de datos transforman información compleja en insights claros y accionables. Utiliza gráficos interactivos, paneles personalizables y análisis predictivo para anticipar tendencias y optimizar el rendimiento de tu equipo en tiempo real.";
 
-"onboarding_quality" = "Control de Calidad";
-"onboarding_quality_subtitle" = "Mejora continua";
-"onboarding_quality_description" = "Supervisa y mejora la calidad del trabajo con métricas detalladas y recomendaciones personalizadas.";
+"onboarding_quality" = "Control de Calidad Integral";
+"onboarding_quality_subtitle" = "Excelencia y mejora continua";
+"onboarding_quality_description" = "Eleva los estándares de calidad de tu empresa con nuestro sistema integral de control y mejora. Implementa métricas detalladas, recibe recomendaciones personalizadas basadas en IA y establece procesos de mejora continua. Nuestro sistema no solo identifica áreas de mejora, sino que también proporciona sugerencias prácticas y medibles para optimizar la calidad en cada departamento.";
 
 "get_started" = "Comenzar";
 

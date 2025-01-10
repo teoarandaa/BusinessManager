@@ -480,24 +480,24 @@
 
 // MARK: - Onboarding
 "onboarding_welcome" = "Willkommen bei Business Manager";
-"onboarding_welcome_subtitle" = "Ihre Geschäftslösung";
-"onboarding_welcome_description" = "Eine umfassende Plattform zur Verwaltung und Optimierung Ihres Unternehmens.";
+"onboarding_welcome_subtitle" = "Ihre umfassende Geschäftslösung";
+"onboarding_welcome_description" = "Entdecken Sie eine revolutionäre Plattform, die speziell für die Transformation Ihres Unternehmensmanagements entwickelt wurde. Business Manager vereint leistungsstarke Tools, intelligente Analysen und eine intuitive Benutzeroberfläche, um Ihnen die vollständige Kontrolle über jeden Aspekt Ihres Unternehmens zu geben. Bereiten Sie sich darauf vor, Ihr Geschäftsmanagement mit einer Lösung, die sich mit Ihnen weiterentwickelt, auf die nächste Stufe zu heben.";
 
-"onboarding_business" = "Geschäftsführung";
-"onboarding_business_subtitle" = "Volle Kontrolle";
-"onboarding_business_description" = "Verwalten Sie Ihr Unternehmen effizient mit intuitiven Tools für Aufgabenverfolgung und Leistungsanalyse.";
+"onboarding_business" = "Fortschrittliches Geschäftsmanagement";
+"onboarding_business_subtitle" = "Totale Kontrolle und strategische Vision";
+"onboarding_business_description" = "Übernehmen Sie die absolute Kontrolle über Ihr Unternehmen mit unserer umfassenden Suite von Management-Tools. Von der strategischen Planung bis zur täglichen Ausführung ermöglicht Ihnen unser System die Überwachung, Analyse und Optimierung jedes Aspekts Ihrer Geschäftstätigkeit. Koordinieren Sie Teams, verwalten Sie Ressourcen und treffen Sie fundierte Entscheidungen mit Echtzeitdaten, die Sie immer einen Schritt voraus sein lassen.";
 
-"onboarding_reports" = "Detaillierte Berichte";
-"onboarding_reports_subtitle" = "Tracking und Analyse";
-"onboarding_reports_description" = "Erstellen Sie umfassende Berichte über Abteilungsleistung, Aufgabenabschlussraten und Produktivitätstrends.";
+"onboarding_reports" = "Detaillierte und anpassbare Berichte";
+"onboarding_reports_subtitle" = "Umfassendes Tracking und Analyse";
+"onboarding_reports_description" = "Verwandeln Sie komplexe Daten in umsetzbare Informationen mit unseren detaillierten Berichten. Analysieren Sie die Abteilungsleistung, überwachen Sie Aufgabenabschlussraten und entdecken Sie Produktivitätstrends mit anpassbaren und dynamischen Berichten. Gewinnen Sie tiefe Einblicke in Ihr Unternehmen mit interaktiven Diagrammen und Echtzeit-Metriken, die Ihnen helfen, fundierte strategische Entscheidungen zu treffen.";
 
-"onboarding_analytics" = "Erweiterte Analysen";
-"onboarding_analytics_subtitle" = "Datenvisualisierung";
-"onboarding_analytics_description" = "Visualisieren Sie wichtige Daten mit interaktiven Diagrammen und gewinnen Sie wertvolle Einblicke in die Leistung Ihres Teams.";
+"onboarding_analytics" = "Fortschrittliche und intelligente Analysen";
+"onboarding_analytics_subtitle" = "Datenvisualisierung und Vorhersagen";
+"onboarding_analytics_description" = "Nutzen Sie die Kraft fortschrittlicher Analysen, um verborgene Muster und aufkommende Trends in Ihrem Unternehmen aufzudecken. Unsere Datenvisualisierungstools verwandeln komplexe Informationen in klare, umsetzbare Erkenntnisse. Nutzen Sie interaktive Diagramme, anpassbare Dashboards und prädiktive Analysen, um Trends vorherzusehen und die Leistung Ihres Teams in Echtzeit zu optimieren.";
 
-"onboarding_quality" = "Qualitätskontrolle";
-"onboarding_quality_subtitle" = "Kontinuierliche Verbesserung";
-"onboarding_quality_description" = "Überwachen und verbessern Sie die Arbeitsqualität mit detaillierten Metriken und personalisierten Empfehlungen.";
+"onboarding_quality" = "Umfassende Qualitätskontrolle";
+"onboarding_quality_subtitle" = "Exzellenz und kontinuierliche Verbesserung";
+"onboarding_quality_description" = "Heben Sie die Qualitätsstandards Ihres Unternehmens mit unserem umfassenden Kontroll- und Verbesserungssystem. Implementieren Sie detaillierte Metriken, erhalten Sie KI-gestützte personalisierte Empfehlungen und etablieren Sie kontinuierliche Verbesserungsprozesse. Unser System identifiziert nicht nur Verbesserungsbereiche, sondern liefert auch praktische und messbare Vorschläge zur Optimierung der Qualität in jeder Abteilung.";
 
 "get_started" = "Loslegen";
 

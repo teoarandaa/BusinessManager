@@ -481,24 +481,24 @@
 
 // MARK: - Onboarding
 "onboarding_welcome" = "Benvenuto in Business Manager";
-"onboarding_welcome_subtitle" = "La tua soluzione aziendale";
-"onboarding_welcome_description" = "Una piattaforma completa per gestire e ottimizzare la tua azienda.";
+"onboarding_welcome_subtitle" = "La tua soluzione aziendale completa";
+"onboarding_welcome_description" = "Scopri una piattaforma rivoluzionaria specificamente progettata per trasformare la gestione della tua azienda. Business Manager combina strumenti potenti, analisi intelligenti e un'interfaccia intuitiva per darti il controllo completo su ogni aspetto della tua azienda. Preparati a portare la gestione aziendale al livello successivo con una soluzione che si evolve con te.";
 
-"onboarding_business" = "Gestione Aziendale";
-"onboarding_business_subtitle" = "Controllo totale";
-"onboarding_business_description" = "Gestisci la tua attività in modo efficiente con strumenti intuitivi per il monitoraggio delle attività e l'analisi delle prestazioni.";
+"onboarding_business" = "Gestione Aziendale Avanzata";
+"onboarding_business_subtitle" = "Controllo totale e visione strategica";
+"onboarding_business_description" = "Prendi il controllo assoluto della tua azienda con la nostra suite completa di strumenti di gestione. Dalla pianificazione strategica all'esecuzione quotidiana, il nostro sistema ti permette di monitorare, analizzare e ottimizzare ogni aspetto delle tue operazioni. Coordina i team, gestisci le risorse e prendi decisioni informate con dati in tempo reale che ti mantengono sempre un passo avanti.";
 
-"onboarding_reports" = "Report Dettagliati";
-"onboarding_reports_subtitle" = "Monitoraggio e analisi";
-"onboarding_reports_description" = "Genera report completi sulle prestazioni del dipartimento, i tassi di completamento delle attività e le tendenze di produttività.";
+"onboarding_reports" = "Report Dettagliati e Personalizzabili";
+"onboarding_reports_subtitle" = "Monitoraggio e analisi completi";
+"onboarding_reports_description" = "Trasforma dati complessi in informazioni utilizzabili con i nostri report dettagliati. Analizza le prestazioni dei dipartimenti, monitora i tassi di completamento delle attività e scopri le tendenze di produttività con report personalizzabili e dinamici. Ottieni approfondimenti dettagliati sulla tua azienda con grafici interattivi e metriche in tempo reale che ti aiutano a prendere decisioni strategiche informate.";
 
-"onboarding_analytics" = "Analisi Avanzata";
-"onboarding_analytics_subtitle" = "Visualizzazione dei dati";
-"onboarding_analytics_description" = "Visualizza i dati chiave con grafici interattivi e ottieni informazioni preziose sulle prestazioni del tuo team.";
+"onboarding_analytics" = "Analisi Avanzate e Intelligenti";
+"onboarding_analytics_subtitle" = "Visualizzazione dei dati e previsioni";
+"onboarding_analytics_description" = "Sfrutta la potenza dell'analisi avanzata per scoprire modelli nascosti e tendenze emergenti nella tua azienda. I nostri strumenti di visualizzazione dei dati trasformano informazioni complesse in insight chiari e utilizzabili. Utilizza grafici interattivi, dashboard personalizzabili e analisi predittive per anticipare le tendenze e ottimizzare le prestazioni del tuo team in tempo reale.";
 
-"onboarding_quality" = "Controllo Qualità";
-"onboarding_quality_subtitle" = "Miglioramento continuo";
-"onboarding_quality_description" = "Monitora e migliora la qualità del lavoro con metriche dettagliate e raccomandazioni personalizzate.";
+"onboarding_quality" = "Controllo Qualità Completo";
+"onboarding_quality_subtitle" = "Eccellenza e miglioramento continuo";
+"onboarding_quality_description" = "Eleva gli standard di qualità della tua azienda con il nostro sistema completo di controllo e miglioramento. Implementa metriche dettagliate, ricevi raccomandazioni personalizzate basate sull'IA e stabilisci processi di miglioramento continuo. Il nostro sistema non solo identifica le aree di miglioramento ma fornisce anche suggerimenti pratici e misurabili per ottimizzare la qualità in ogni dipartimento.";
 
 "get_started" = "Inizia";
 
