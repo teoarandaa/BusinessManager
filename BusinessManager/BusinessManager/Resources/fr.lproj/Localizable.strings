@@ -273,7 +273,7 @@
 "how_create_charts" = "Comment créer des graphiques";
 "charts_generation" = "Les graphiques sont générés à partir des données des rapports pour visualiser la performance et la charge de travail, transformant les données en informations exploitables.";
 "chart_types" = "Types de graphiques";
-"chart_types_description" = "Le sélecteur de type de graphique propose différentes façons de visualiser vos données. Alternez entre les tendances de productivité, la distribution de l'efficacité et les indicateurs de performance pour obtenir la vue la plus pertinente de l'avancement de votre équipe. Chaque type de graphique offre des perspectives uniques sur différents aspects de la performance du département.";
+"chart_types_description" = "Le sélecteur de type de graphique propose différentes façons de visualiser vos données. Alternez entre le graphique de Productivité montrant les tendances de performance et le graphique de Charge de Travail comparant les volumes de travail, offrant des vues complémentaires des progrès de votre équipe.";
 "yearly_analysis" = "Analyse annuelle";
 "yearly_analysis_description" = "La vue d'analyse annuelle offre une perspective plus large sur la performance organisationnelle. En examinant les données annuelles, vous pouvez repérer des motifs saisonniers et des tendances à long terme, ce qui en fait un outil essentiel pour la planification stratégique et l'évaluation de la performance d'une année sur l'autre.";
 "creating_reports" = "Créer des rapports";
@@ -297,13 +297,13 @@
 "how_create_reports" = "Comment créer des rapports";
 "reports_creation_description" = "Pour créer des rapports précis, nous avons besoin de la date actuelle, du nom du département, des tâches créées, des tâches terminées à temps et des tâches terminées (les tâches terminées à temps sont incluses dans ce groupe).\nCes données sont ensuite affichées dans des graphiques, fournissant des informations claires sur la productivité, la charge de travail et la performance, vous aidant à prendre des décisions éclairées basées sur les données.";
 "monthly_summary" = "Résumé mensuel";
-"monthly_summary_description" = "La fonctionnalité de résumé mensuel montre la performance et les tendances des départements. Ce format de rapport facilite la révision des indicateurs clés, ce qui le rend inestimable pour les revues de gestion et les évaluations d'équipe.";
+"monthly_summary_description" = "Le résumé mensuel affiche les statistiques clés du département telles que les tâches accomplies, la performance et le volume de travail. Cette vue consolidée facilite l'analyse des tendances et l'évaluation des progrès mensuels.";
 "add_report" = "Ajouter un rapport";
 "add_report_description" = "Ajouter un nouveau rapport est un processus simple pour suivre les progrès de votre département. Vous pouvez entrer les taux d'achèvement des tâches, les indicateurs de performance et des notes spécifiques sur les réalisations ou les défis, créant ainsi une image claire de la performance de votre équipe au fil du temps.";
 
 // Tasks Info
 "tasks_overview" = "Aperçu des tâches";
-"tasks_description" = "Ce graphique montre la relation entre le volume de travail et la performance des départements, identifiant les goulets d'étranglement et l'efficacité. Il permet d'analyser comment chaque département gère sa charge de travail et d'optimiser les conditions de travail.";
+"tasks_description" = "Gérez vos tâches efficacement avec des fonctionnalités comme les priorités (P1, P2, P3), les dates d'échéance, l'état d'achèvement et le filtrage. Organisez votre travail, définissez des priorités et suivez l'avancement de chaque tâche.";
 "how_create_tasks" = "Comment créer des tâches";
 "tasks_creation_description" = "Les tâches incluent : date d'expiration, titre, contenu, commentaires et priorité. Ces éléments assurent une gestion efficace des tâches.";
 "sort_tasks" = "Trier les tâches";
@@ -329,7 +329,7 @@
 "how_to_create_reports" = "Comment créer des rapports";
 "create_reports_description" = "Pour créer des rapports précis, nous avons besoin de la date actuelle, du département et des données sur les tâches. Ces informations sont visualisées en graphiques pour faciliter l'analyse de la productivité.";
 "monthly_summary_title" = "Résumé mensuel";
-"monthly_summary_description" = "La fonctionnalité de résumé mensuel génère un rapport PDF complet comparant les performances et les tendances des départements. Ce format de rapport facilite la révision et le partage des indicateurs clés, ce qui le rend inestimable pour les revues de gestion et les évaluations d'équipe.";
+"monthly_summary_description" = "Le résumé mensuel affiche les statistiques clés du département telles que les tâches accomplies, la performance et le volume de travail. Cette vue consolidée facilite l'analyse des tendances et l'évaluation des progrès mensuels.";
 "add_report_title" = "Ajouter un rapport";
 "add_report_description" = "Ajouter un nouveau rapport est un processus simple pour suivre les progrès de votre département. Vous pouvez entrer les taux d'achèvement des tâches, les indicateurs de performance et des notes spécifiques sur les réalisations ou les défis, créant ainsi une image claire de la performance de votre équipe au fil du temps.";
 "close" = "Fermer";
@@ -440,7 +440,8 @@
 "volume_chart" = "Tendances de Productivité";
 "volume_description" = "Ce graphique linéaire montre les tendances de performance au fil du temps pour chaque département. Il aide à suivre l'évolution des indicateurs de performance tout au long du mois, ce qui facilite l'identification des modèles, des améliorations ou des problèmes potentiels dans l'efficacité des départements.";
 
-"tasks_chart" = "Analyse de la Charge de Travail";
+"workload_chart" = "Graphique de Charge de Travail";
+"workload_description" = "Le graphique de charge de travail montre la distribution et le volume des tâches dans le temps, vous permettant d'identifier les pics d'activité et d'optimiser l'allocation des ressources.";
 
 "performance_chart" = "Productivité";
 "volume_chart" = "Efficacité";
@@ -500,3 +501,5 @@
 "onboarding_business" = "Gestion d'Entreprise";
 "onboarding_business_subtitle" = "Contrôle total";
 "onboarding_business_description" = "Gérez votre entreprise efficacement avec des outils intuitifs pour le suivi des tâches et l'analyse des performances.";
+
+"recommendations_description" = "Le système analyse automatiquement les données de performance, le volume de travail et les taux d'achèvement des tâches pour générer des recommandations personnalisées. Ces suggestions aident à améliorer l'efficacité et la qualité du travail dans chaque département.";
