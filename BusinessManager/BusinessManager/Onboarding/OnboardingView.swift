@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var currentPage = 0
     @State private var showButton = false
+    @Binding var showOnboarding: Bool
     
     private let onboardingPages = [
         OnboardingPage(
@@ -43,8 +43,12 @@ struct OnboardingView: View {
         )
     ]
     
+    var progress: CGFloat {
+        CGFloat(currentPage) / CGFloat(onboardingPages.count - 1)
+    }
+    
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack(spacing: 0) {
             TabView(selection: $currentPage) {
                 ForEach(onboardingPages.indices, id: \.self) { index in
                     VStack {
@@ -82,38 +86,55 @@ struct OnboardingView: View {
                     .tag(index)
                 }
             }
-            .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: currentPage == onboardingPages.count - 1 ? .never : .always))
-            .onChange(of: currentPage) { oldValue, newValue in
-                if newValue == onboardingPages.count - 1 {
-                    withAnimation(.spring(duration: 1.0, bounce: 0.3)) {
-                        showButton = true
-                    }
-                } else {
-                    withAnimation(.easeOut(duration: 0.8)) {
-                        showButton = false
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            
+            Spacer()
+            
+            // Barra de progreso/Botón unificado
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    // Fondo
+                    RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: currentPage == onboardingPages.count - 1 ? 50 : 6)
+                    
+                    // Barra de progreso/Botón
+                    RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
+                        .fill(Color.accentColor.gradient)
+                        .frame(width: currentPage == onboardingPages.count - 1 ? geometry.size.width : geometry.size.width * progress,
+                               height: currentPage == onboardingPages.count - 1 ? 50 : 6)
+                        .overlay {
+                            if currentPage == onboardingPages.count - 1 {
+                                Text("get_started".localized())
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .opacity(showButton ? 1 : 0)
+                                    .animation(.easeIn.delay(0.2), value: showButton)
+                            }
+                        }
+                }
+                .frame(maxHeight: .infinity)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if currentPage == onboardingPages.count - 1 {
+                        withAnimation(.easeInOut(duration: 1.0)) {
+                            showOnboarding = false
+                        }
                     }
                 }
             }
-            
-            if currentPage == onboardingPages.count - 1 {
-                Button {
-                    withAnimation(.easeInOut(duration: 1.0)) {
-                        hasSeenOnboarding = true
+            .frame(width: 200, height: 50)
+            .padding(.bottom, 20)
+            .animation(.spring(duration: 0.5), value: currentPage)
+            .onChange(of: currentPage) { oldValue, newValue in
+                if newValue == onboardingPages.count - 1 {
+                    withAnimation(.easeIn.delay(0.3)) {
+                        showButton = true
                     }
-                } label: {
-                    Text("get_started".localized())
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .frame(width: 200)
-                        .frame(height: 50)
-                        .background(Color.accentColor.gradient)
-                        .cornerRadius(10)
+                } else {
+                    showButton = false
                 }
-                .padding(.bottom, 20)
-                .opacity(showButton ? 1 : 0)
-                .offset(y: showButton ? 0 : 50)
             }
         }
     }
@@ -128,5 +149,5 @@ private struct OnboardingPage {
 }
 
 #Preview {
-    OnboardingView()
+    OnboardingView(showOnboarding: .constant(true))
 }
