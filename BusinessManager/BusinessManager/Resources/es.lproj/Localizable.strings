@@ -263,7 +263,7 @@
 "how_create_charts" = "Cómo Crear Gráficos";
 "charts_generation" = "Los gráficos se generan a partir de datos de informes, procesando rendimiento, carga de trabajo y tareas completadas para crear perspectivas visuales. Destacan tendencias, eficiencia y productividad transformando datos brutos en información procesable para cada departamento.";
 "chart_types" = "Tipos de Gráficos";
-"chart_types_description" = "El selector de Tipo de Gráfico ofrece diferentes formas de visualizar tus datos. Cambia entre tendencias de Productividad, distribución de Eficiencia y métricas de Rendimiento para obtener la vista más relevante del progreso de tu equipo. Cada tipo de gráfico proporciona perspectivas únicas sobre diferentes aspectos del rendimiento departamental.";
+"chart_types_description" = "El selector de Tipo de Gráfico ofrece diferentes formas de visualizar tus datos. Alterna entre el gráfico de Productividad que muestra tendencias de rendimiento y el gráfico de Volumen de Trabajo que compara cargas laborales, proporcionando vistas complementarias del progreso de tu equipo.";
 "yearly_analysis" = "Análisis Anual";
 "yearly_analysis_description" = "La vista de Análisis Anual ofrece una perspectiva más amplia del rendimiento organizacional. Al examinar datos anuales, puedes detectar patrones estacionales y tendencias a largo plazo, convirtiéndola en una herramienta esencial para la planificación estratégica y la evaluación del rendimiento año tras año.";
 "creating_reports" = "Creando Informes";
@@ -287,13 +287,13 @@
 "how_create_reports" = "Cómo Crear Informes";
 "reports_creation_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas y completadas (incluyendo las completadas a tiempo). Estos datos se visualizan en gráficos para proporcionar información clara sobre productividad y rendimiento, facilitando la toma de decisiones basada en datos.";
 "monthly_summary" = "Exportar PDF";
-"monthly_summary_description" = "La función de Resumen Mensual muestra los rendimientos y las tendencias departamentales. Este formato de informe facilita la revisión de métricas clave, haciéndolo invaluable para revisiones de gestión y evaluaciones de equipo.";
+"monthly_summary_description" = "El resumen mensual muestra estadísticas clave del departamento como tareas completadas, rendimiento y volumen de trabajo. Esta vista consolidada facilita el análisis de tendencias y la evaluación del progreso mensual.";
 "add_report" = "Añadir Informe";
 "add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
 
 // Tasks Info
 "tasks_overview" = "Resumen de Tareas";
-"tasks_description" = "Las tareas te ayudan a organizar, priorizar y rastrear tu trabajo eficientemente. Con una estructura clara y actualizaciones en tiempo real, puedes gestionar plazos, monitorear progreso y mantener tu flujo de trabajo optimizado, todo en un solo lugar.";
+"tasks_description" = "Gestiona tus tareas de manera eficiente con funciones como prioridades (P1, P2, P3), fechas de vencimiento, estado de completado y filtrado. Organiza tu trabajo, establece prioridades y realiza un seguimiento del progreso de cada tarea.";
 "how_create_tasks" = "Cómo Crear Tareas";
 "tasks_creation_description" = "Las tareas se crean con la siguiente información: fecha de vencimiento para establecer plazos, título para el nombre de la tarea, contenido para detalles de la tarea, comentarios para notas adicionales y prioridad para indicar urgencia. Estos datos aseguran que las tareas estén bien organizadas y gestionadas efectivamente.";
 "sort_tasks" = "Ordenar Tareas";
@@ -321,7 +321,7 @@
 "how_to_create_reports" = "Cómo crear informes";
 "create_reports_description" = "Para crear informes precisos, necesitamos la fecha actual, nombre del departamento, tareas creadas y completadas (incluyendo las completadas a tiempo). Estos datos se visualizan en gráficos para proporcionar información clara sobre productividad y rendimiento, facilitando la toma de decisiones basada en datos.";
 "monthly_summary_title" = "Resumen mensual";
-"monthly_summary_description" = "La función de Resumen Mensual genera un informe PDF completo que compara el rendimiento y las tendencias de los departamentos. Este formato de informe facilita la revisión y el intercambio de métricas clave, haciéndolo invaluable para las revisiones de gestión y las evaluaciones de equipo.";
+"monthly_summary_description" = "El resumen mensual muestra estadísticas clave del departamento como tareas completadas, rendimiento y volumen de trabajo. Esta vista consolidada facilita el análisis de tendencias y la evaluación del progreso mensual.";
 "add_report_title" = "Añadir informe";
 "add_report_description" = "Añadir un nuevo informe es un proceso sencillo para realizar el seguimiento del progreso de tu departamento. Puedes introducir tasas de finalización de tareas, métricas de rendimiento y notas específicas sobre logros o desafíos, construyendo una imagen clara del rendimiento de tu equipo a lo largo del tiempo.";
 "close" = "Cerrar";
@@ -442,8 +442,8 @@
 "volume_chart" = "Tendencias de Productividad";
 "volume_description" = "Este gráfico de líneas muestra las tendencias de rendimiento a lo largo del tiempo para cada departamento. Ayuda a seguir cómo evolucionan las métricas de rendimiento durante el mes, facilitando la identificación de patrones, mejoras o posibles problemas en la eficiencia del departamento.";
 
-"tasks_chart" = "Análisis de Carga de Trabajo";
-"tasks_description" = "Este gráfico de dispersión muestra la relación entre el volumen de trabajo y el rendimiento de cada departamento. Ayuda a identificar cómo los departamentos manejan diferentes niveles de carga de trabajo y su eficiencia, revelando posibles cuellos de botella o condiciones óptimas de trabajo.";
+"workload_chart" = "Gráfico de Carga de Trabajo";
+"workload_description" = "El gráfico de carga de trabajo muestra la distribución y volumen de tareas a lo largo del tiempo, permitiéndote identificar picos de actividad y optimizar la asignación de recursos.";
 
 "performance_chart" = "Productividad";
 "volume_chart" = "Eficiencia";
@@ -508,3 +508,5 @@
 "onboarding_quality_description" = "Supervisa y mejora la calidad del trabajo con métricas detalladas y recomendaciones personalizadas.";
 
 "get_started" = "Comenzar";
+
+"recommendations_description" = "El sistema analiza automáticamente los datos de rendimiento, volumen de trabajo y tasas de finalización de tareas para generar recomendaciones personalizadas. Estas sugerencias ayudan a mejorar la eficiencia y calidad del trabajo en cada departamento.";

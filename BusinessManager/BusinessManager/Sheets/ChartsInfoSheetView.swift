@@ -9,7 +9,7 @@ struct ChartsInfoSheetView: View {
                 // First Page
                 ScrollView {
                     VStack {
-                        Image(systemName: "chart.xyaxis.line")
+                        Image(systemName: "chart.bar.fill")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 100)
@@ -113,7 +113,7 @@ struct ChartsInfoSheetView: View {
                 // Sixth Page (Volume)
                 ScrollView {
                     VStack {
-                        Image(systemName: "chart.bar.fill")
+                        Image(systemName: "chart.xyaxis.line")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 100)
@@ -136,10 +136,10 @@ struct ChartsInfoSheetView: View {
                     Text("tasks_chart".localized())
                 }
                 
-                // Seventh Page (Tasks)
+                // Seventh Page (Carga de trabajo)
                 ScrollView {
                     VStack {
-                        Image(systemName: "checklist")
+                        Image(systemName: "chart.dots.scatter")
                             .resizable()
                             .scaledToFit()
                             .frame(height: 100)
@@ -148,12 +148,12 @@ struct ChartsInfoSheetView: View {
                             .padding(.horizontal)
                             .padding(.top, 40)
                         
-                        Text("tasks_chart".localized())
+                        Text("workload_chart".localized())
                             .font(.largeTitle)
                             .bold()
                             .padding()
                         
-                        Text("tasks_description".localized())
+                        Text("workload_description".localized())
                             .padding()
                             .multilineTextAlignment(.center)
                     }
