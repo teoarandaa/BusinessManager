@@ -48,93 +48,94 @@ struct OnboardingView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        NavigationStack {
             TabView(selection: $currentPage) {
                 ForEach(onboardingPages.indices, id: \.self) { index in
-                    VStack {
-                        Spacer()
-                            .frame(height: 60)
-                        
-                        Image(systemName: onboardingPages[index].systemImage)
-                            .font(.system(size: 80))
-                            .foregroundStyle(onboardingPages[index].accentColor.gradient)
-                            .frame(height: 100)
-                        
-                        VStack(spacing: 16) {
-                            Text(onboardingPages[index].title)
-                                .font(.title)
-                                .bold()
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            // Header con imagen grande
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color.accentColor)
+                                .frame(height: 200)
+                                .overlay(
+                                    Image(systemName: onboardingPages[index].systemImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.white)
+                                        .padding(60)
+                                )
+                                .padding(.horizontal)
+                                .padding(.bottom, 10)
                             
-                            Text(onboardingPages[index].subtitle)
-                                .font(.title3)
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
+                            // Título y subtítulo principales
+                            VStack(spacing: 8) {
+                                Text(onboardingPages[index].title)
+                                    .font(.title)
+                                    .bold()
+                                Text(onboardingPages[index].subtitle)
+                                    .font(.title3)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
                             
+                            // Descripción
                             Text(onboardingPages[index].description)
                                 .font(.body)
-                                .multilineTextAlignment(.center)
                                 .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 24)
+                            
+                            Spacer()
                         }
-                        .padding(.horizontal, 32)
-                        
-                        Spacer()
+                        .padding(.top)
                     }
+                    .scrollIndicators(.hidden)
                     .tag(index)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            
-            Spacer()
-            
-            // Barra de progreso/Botón unificado
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    // Fondo
-                    RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(height: currentPage == onboardingPages.count - 1 ? 50 : 6)
-                    
-                    // Barra de progreso/Botón
-                    RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
-                        .fill(Color.accentColor.gradient)
-                        .frame(width: currentPage == onboardingPages.count - 1 ? geometry.size.width : geometry.size.width * progress,
-                               height: currentPage == onboardingPages.count - 1 ? 50 : 6)
-                        .overlay {
-                            if currentPage == onboardingPages.count - 1 {
-                                Text("get_started".localized())
-                                    .font(.headline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .opacity(showButton ? 1 : 0)
-                                    .animation(.easeIn.delay(0.2), value: showButton)
+            .animation(.spring(duration: 0.3), value: currentPage)
+            .safeAreaInset(edge: .bottom) {
+                // Barra de progreso/Botón
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        // Fondo
+                        RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 200, height: currentPage == onboardingPages.count - 1 ? 50 : 6)
+                            .frame(height: 50, alignment: .center)
+                        
+                        // Barra de progreso/Botón
+                        RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
+                            .fill(Color.accentColor.gradient)
+                            .frame(
+                                width: currentPage == onboardingPages.count - 1 ? 200 : 200 * progress,
+                                height: currentPage == onboardingPages.count - 1 ? 50 : 6
+                            )
+                            .frame(height: 50, alignment: .center)
+                            .overlay {
+                                if currentPage == onboardingPages.count - 1 {
+                                    Text("get_started".localized())
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .animation(.spring(duration: 0.3), value: currentPage)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if currentPage == onboardingPages.count - 1 {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                showOnboarding = false
                             }
                         }
-                }
-                .frame(maxHeight: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if currentPage == onboardingPages.count - 1 {
-                        withAnimation(.easeInOut(duration: 1.0)) {
-                            showOnboarding = false
-                        }
                     }
                 }
-            }
-            .frame(width: 200, height: 50)
-            .padding(.bottom, 20)
-            .animation(.spring(duration: 0.5), value: currentPage)
-            .onChange(of: currentPage) { oldValue, newValue in
-                if newValue == onboardingPages.count - 1 {
-                    withAnimation(.easeIn.delay(0.3)) {
-                        showButton = true
-                    }
-                } else {
-                    showButton = false
-                }
+                .frame(height: 50)
+                .padding(.bottom, 20)
             }
         }
     }
