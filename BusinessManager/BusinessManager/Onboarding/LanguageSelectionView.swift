@@ -69,12 +69,10 @@ struct LanguageSelectionView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .principal) {
-                            if !isNavigating {
-                                Text("Business Manager")
-                                    .font(.system(size: 32, weight: .bold))
-                                    .foregroundColor(.accentColor)
-                                    .opacity(navTitleOpacity)
-                            }
+                            Text("Business Manager")
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.accentColor)
+                                .opacity(navTitleOpacity)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -123,14 +121,16 @@ struct LanguageSelectionView: View {
     private func handleLanguageSelection(_ language: (String, String, String)) {
         isNavigating = true
         
-        withAnimation(.easeInOut(duration: 0.5)) {
+        // Desvanecer todo junto
+        withAnimation(.easeOut(duration: 0.3)) {
             contentOpacity = 0
-            navTitleOpacity = 0
             titleOpacity = 0
             backgroundOpacity = 0
+            navTitleOpacity = 0
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+        // Cambiar al onboarding después de un breve desvanecimiento
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             // Cambiar el idioma
             UserDefaults.standard.set([language.2], forKey: "AppleLanguages")
             UserDefaults.standard.synchronize()
@@ -143,7 +143,7 @@ struct LanguageSelectionView: View {
                 NotificationCenter.default.post(name: NSNotification.Name("LanguageChanged"), object: nil)
             }
             
-            // Cambiar directamente sin animación
+            // Cambiar directamente al onboarding
             showLanguageSelection = false
             showOnboarding = true
         }
