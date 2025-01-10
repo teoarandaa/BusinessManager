@@ -478,3 +478,26 @@
 "tasks_created" = "Attività Create";
 "tasks_completed_ontime" = "Attività Completate in Tempo";
 "total_completed" = "Totale Completate";
+
+// MARK: - Onboarding
+"onboarding_welcome" = "Benvenuto in Business Manager";
+"onboarding_welcome_subtitle" = "La tua soluzione aziendale";
+"onboarding_welcome_description" = "Una piattaforma completa per gestire e ottimizzare la tua azienda.";
+
+"onboarding_business" = "Gestione Aziendale";
+"onboarding_business_subtitle" = "Controllo totale";
+"onboarding_business_description" = "Gestisci la tua attività in modo efficiente con strumenti intuitivi per il monitoraggio delle attività e l'analisi delle prestazioni.";
+
+"onboarding_reports" = "Report Dettagliati";
+"onboarding_reports_subtitle" = "Monitoraggio e analisi";
+"onboarding_reports_description" = "Genera report completi sulle prestazioni del dipartimento, i tassi di completamento delle attività e le tendenze di produttività.";
+
+"onboarding_analytics" = "Analisi Avanzata";
+"onboarding_analytics_subtitle" = "Visualizzazione dei dati";
+"onboarding_analytics_description" = "Visualizza i dati chiave con grafici interattivi e ottieni informazioni preziose sulle prestazioni del tuo team.";
+
+"onboarding_quality" = "Controllo Qualità";
+"onboarding_quality_subtitle" = "Miglioramento continuo";
+"onboarding_quality_description" = "Monitora e migliora la qualità del lavoro con metriche dettagliate e raccomandazioni personalizzate.";
+
+"get_started" = "Inizia";
