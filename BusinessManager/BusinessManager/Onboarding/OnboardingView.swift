@@ -108,7 +108,7 @@ struct OnboardingView: View {
                         
                         // Barra de progreso/Botón
                         RoundedRectangle(cornerRadius: currentPage == onboardingPages.count - 1 ? 10 : 8)
-                            .fill(Color.accentColor.gradient)
+                            .fill(Color.accentColor)
                             .frame(
                                 width: currentPage == onboardingPages.count - 1 ? 200 : 200 * progress,
                                 height: currentPage == onboardingPages.count - 1 ? 50 : 6
