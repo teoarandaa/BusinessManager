@@ -9,6 +9,8 @@ struct LanguageSelectionView: View {
     @State private var contentOpacity: Double = 0
     @State private var backgroundOpacity: Double = 1
     @State private var navTitleOpacity: Double = 0
+    @State private var isNavigating: Bool = false
+    @State private var selectedLanguage: String? = nil
     
     private let languages = [
         ("English", "🇺🇸", "en"),
@@ -39,26 +41,7 @@ struct LanguageSelectionView: View {
                                 VStack(spacing: 12) {
                                     ForEach(languages, id: \.2) { language in
                                         Button {
-                                            // Cambiar el idioma y reiniciar
-                                            UserDefaults.standard.set([language.2], forKey: "AppleLanguages")
-                                            UserDefaults.standard.synchronize()
-                                            
-                                            // Actualizar el AppStorage para el picker en SettingsView
-                                            appLanguage = language.2
-                                            
-                                            // Forzar el cambio de idioma
-                                            if let languageURL = Bundle.main.url(forResource: language.2, withExtension: "lproj"),
-                                               let bundle = Bundle(url: languageURL) {
-                                                Bundle.setLanguage(bundle)
-                                                
-                                                // Forzar actualización de la interfaz
-                                                NotificationCenter.default.post(name: NSNotification.Name("LanguageChanged"), object: nil)
-                                            }
-                                            
-                                            withAnimation {
-                                                showLanguageSelection = false
-                                                showOnboarding = true
-                                            }
+                                            handleLanguageSelection(language)
                                         } label: {
                                             HStack {
                                                 Text(language.1)
@@ -86,16 +69,17 @@ struct LanguageSelectionView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .principal) {
-                            Text("Business Manager")
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.accentColor)
-                                .opacity(navTitleOpacity)
+                            if !isNavigating {
+                                Text("Business Manager")
+                                    .font(.system(size: 32, weight: .bold))
+                                    .foregroundColor(.accentColor)
+                                    .opacity(navTitleOpacity)
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .overlay {
-                        if titleOpacity > 0 {
-                            // Título animado que simula venir del Launch Screen
+                        if titleOpacity > 0 && !isNavigating {
                             Text("Business Manager")
                                 .font(.system(size: 32, weight: .bold))
                                 .foregroundColor(.accentColor)
@@ -116,23 +100,52 @@ struct LanguageSelectionView: View {
                 // Esperar 1 segundo antes de comenzar la animación
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     // Animar el título hacia arriba
-                    withAnimation(.easeOut(duration: 1.0)) {
+                    withAnimation(.easeOut(duration: 1.2)) {
                         titleOffset = -geometry.size.height / 2 + 0
                         backgroundOpacity = 0
                     }
                     
                     // Desvanecer el título animado y mostrar el título de navegación
-                    withAnimation(.easeIn(duration: 0.3).delay(1.0)) {
+                    withAnimation(.easeIn(duration: 0.5).delay(1.2)) {
                         titleOpacity = 0
                         navTitleOpacity = 1
                     }
                     
                     // Mostrar el contenido ligeramente después
-                    withAnimation(.easeIn(duration: 0.5).delay(1.1)) {
+                    withAnimation(.easeIn(duration: 0.7).delay(1.2)) {
                         contentOpacity = 1
                     }
                 }
             }
+        }
+    }
+    
+    private func handleLanguageSelection(_ language: (String, String, String)) {
+        isNavigating = true
+        
+        withAnimation(.easeInOut(duration: 0.5)) {
+            contentOpacity = 0
+            navTitleOpacity = 0
+            titleOpacity = 0
+            backgroundOpacity = 0
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            // Cambiar el idioma
+            UserDefaults.standard.set([language.2], forKey: "AppleLanguages")
+            UserDefaults.standard.synchronize()
+            appLanguage = language.2
+            
+            // Forzar el cambio de idioma
+            if let languageURL = Bundle.main.url(forResource: language.2, withExtension: "lproj"),
+               let bundle = Bundle(url: languageURL) {
+                Bundle.setLanguage(bundle)
+                NotificationCenter.default.post(name: NSNotification.Name("LanguageChanged"), object: nil)
+            }
+            
+            // Cambiar directamente sin animación
+            showLanguageSelection = false
+            showOnboarding = true
         }
     }
 }
