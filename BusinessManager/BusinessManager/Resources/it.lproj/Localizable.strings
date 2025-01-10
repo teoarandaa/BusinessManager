@@ -273,7 +273,7 @@
 "how_create_charts" = "Come Creare Grafici";
 "charts_generation" = "I grafici vengono generati dai dati dei report, elaborando prestazioni, carico di lavoro e attività completate per creare approfondimenti visivi. Evidenziano tendenze, efficienza e produttività trasformando i dati grezzi in informazioni utili per ciascun dipartimento.";
 "chart_types" = "Tipi di Grafico";
-"chart_types_description" = "Il selettore del Tipo di Grafico offre diversi modi per visualizzare i tuoi dati. Passa tra tendenze della produttività, distribuzione dell'efficienza e metriche delle prestazioni per ottenere la vista più rilevante dei progressi del tuo team. Ogni tipo di grafico fornisce approfondimenti unici su diversi aspetti delle prestazioni del dipartimento.";
+"chart_types_description" = "Il selettore del Tipo di Grafico offre diversi modi per visualizzare i tuoi dati. Passa tra il grafico della Produttività che mostra le tendenze delle prestazioni e il grafico del Carico di Lavoro che confronta i volumi di lavoro, fornendo viste complementari dei progressi del tuo team.";
 "yearly_analysis" = "Analisi Annuale";
 "yearly_analysis_description" = "La vista Analisi Annuale offre una prospettiva più ampia sulle prestazioni organizzative. Esaminando i dati annuali, puoi individuare schemi stagionali e tendenze a lungo termine, rendendola uno strumento essenziale per la pianificazione strategica e la valutazione delle prestazioni anno dopo anno.";
 "creating_reports" = "Creare Report";
@@ -297,13 +297,13 @@
 "how_create_reports" = "Come Creare Report";
 "reports_creation_description" = "Per creare report accurati e completi, sono necessari: data attuale, dipartimento, attività create e completate (incluse quelle puntuali). Questi dati vengono visualizzati in grafici dettagliati per fornire approfondimenti completi su produttività e prestazioni del team, facilitando il monitoraggio quotidiano e supportando decisioni strategiche basate sui dati.";
 "monthly_summary" = "Riepilogo Mensile";
-"monthly_summary_description" = "La funzione Riepilogo Mensile mostra le prestazioni e le tendenze dei dipartimenti. Questo formato di report semplifica la revisione delle metriche chiave, rendendolo inestimabile per revisioni manageriali e valutazioni di squadra.";
+"monthly_summary_description" = "Il riepilogo mensile mostra le statistiche chiave del dipartimento come attività completate, prestazioni e volume di lavoro. Questa vista consolidata facilita l'analisi delle tendenze e la valutazione dei progressi mensili.";
 "add_report" = "Aggiungi Report";
 "add_report_description" = "Aggiungere un nuovo report è un processo semplice per monitorare i progressi del tuo dipartimento. Puoi inserire tassi di completamento delle attività, metriche di prestazione e note specifiche sui successi o sulle sfide, costruendo un quadro chiaro delle prestazioni del tuo team nel tempo.";
 
 // Tasks Info
 "tasks_overview" = "Panoramica delle Attività";
-"tasks_description" = "Le attività ti aiutano a organizzare, prioritizzare e monitorare il tuo lavoro in modo efficiente. Con una struttura chiara e aggiornamenti in tempo reale, puoi gestire le scadenze, monitorare i progressi e ottimizzare il flusso di lavoro, tutto in un unico posto.";
+"tasks_description" = "Gestisci le tue attività in modo efficiente con funzionalità come priorità (P1, P2, P3), scadenze, stato di completamento e filtraggio. Organizza il tuo lavoro, imposta le priorità e tieni traccia dei progressi di ogni attività.";
 "how_create_tasks" = "Come Creare Attività";
 "tasks_creation_description" = "Le attività vengono create con le seguenti informazioni: data di scadenza per impostare le scadenze, titolo per il nome dell'attività, contenuto per i dettagli dell'attività, commenti per note aggiuntive e priorità per indicare l'urgenza. Questi dati garantiscono che le attività siano ben organizzate e gestite in modo efficace.";
 "sort_tasks" = "Ordina Attività";
@@ -329,7 +329,7 @@
 "how_to_create_reports" = "Come Creare Report";
 "create_reports_description" = "Per creare report accurati e completi, sono necessari: data attuale, dipartimento, attività create e completate (incluse quelle puntuali). Questi dati vengono visualizzati in grafici dettagliati per fornire approfondimenti completi su produttività e prestazioni del team, facilitando il monitoraggio quotidiano e supportando decisioni strategiche basate sui dati.";
 "monthly_summary_title" = "Riepilogo Mensile";
-"monthly_summary_description" = "La funzione Riepilogo Mensile genera un report PDF completo confrontando le prestazioni e le tendenze dei dipartimenti. Questo formato di report semplifica la revisione e la condivisione delle metriche chiave, rendendolo inestimabile per le revisioni manageriali e le valutazioni dei team.";
+"monthly_summary_description" = "Il riepilogo mensile mostra le statistiche chiave del dipartimento come attività completate, prestazioni e volume di lavoro. Questa vista consolidata facilita l'analisi delle tendenze e la valutazione dei progressi mensili.";
 "add_report_title" = "Aggiungi Report";
 "add_report_description" = "Aggiungere un nuovo report è un processo semplice per monitorare i progressi del tuo dipartimento. Puoi inserire tassi di completamento delle attività, metriche di prestazione e note specifiche su successi o sfide, costruendo un quadro chiaro delle prestazioni del tuo team nel tempo.";
 "close" = "Chiudi";
@@ -440,8 +440,8 @@
 "volume_chart" = "Andamento della Produttività";
 "volume_description" = "Questo grafico a linee mostra l'andamento delle prestazioni nel tempo per ogni dipartimento. Aiuta a monitorare come evolvono le metriche di prestazione durante il mese, facilitando l'identificazione di schemi, miglioramenti o potenziali problemi nell'efficienza del dipartimento.";
 
-"tasks_chart" = "Analisi del Carico di Lavoro";
-"tasks_description" = "Questo diagramma a dispersione mostra la relazione tra il volume di lavoro e le prestazioni per ogni dipartimento. Aiuta a identificare come i dipartimenti gestiscono diversi livelli di carico di lavoro e la loro efficienza, rivelando potenziali colli di bottiglia o condizioni di lavoro ottimali.";
+"workload_chart" = "Grafico del Carico di Lavoro";
+"workload_description" = "Il grafico del carico di lavoro mostra la distribuzione e il volume delle attività nel tempo, consentendo di identificare i picchi di attività e ottimizzare l'allocazione delle risorse.";
 
 "performance_chart" = "Produttività";
 "volume_chart" = "Efficienza";
@@ -501,3 +501,5 @@
 "onboarding_quality_description" = "Monitora e migliora la qualità del lavoro con metriche dettagliate e raccomandazioni personalizzate.";
 
 "get_started" = "Inizia";
+
+"recommendations_description" = "Il sistema analizza automaticamente i dati sulle prestazioni, il volume di lavoro e i tassi di completamento delle attività per generare raccomandazioni personalizzate. Questi suggerimenti aiutano a migliorare l'efficienza e la qualità del lavoro in ogni dipartimento.";

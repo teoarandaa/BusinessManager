@@ -273,7 +273,7 @@
 "how_create_charts" = "How to Create Charts";
 "charts_generation" = "Charts are generated from report data, processing performance, workload, and completed tasks to create visual insights. They highlight trends, efficiency, and productivity by transforming raw data into actionable information for each department.";
 "chart_types" = "Chart Types";
-"chart_types_description" = "The Chart Type selector offers different ways to visualize your data. Switch between Productivity trends, Efficiency distribution, and Performance metrics to get the most relevant view of your team's progress. Each chart type provides unique insights into different aspects of department performance.";
+"chart_types_description" = "The Chart Type selector offers different ways to visualize your data. Switch between the Productivity chart showing performance trends and the Workload chart comparing work volumes, providing complementary views of your team's progress.";
 "yearly_analysis" = "Yearly Analysis";
 "yearly_analysis_description" = "The Yearly Analysis view offers a broader perspective on organizational performance. By examining annual data, you can spot seasonal patterns and long-term trends, making it an essential tool for strategic planning and year-over-year performance assessment.";
 "creating_reports" = "Creating Reports";
@@ -297,13 +297,13 @@
 "how_create_reports" = "How to Create Reports";
 "reports_creation_description" = "To create accurate reports, we need the current date, department name, tasks created, tasks completed on-time, and tasks completed (tasks completed on-time is included in this group).\nThis data is then displayed in charts, providing clear insights into productivity, workload, and performance, helping you make informed, data-driven decisions.";
 "monthly_summary" = "Monthly Summary";
-"monthly_summary_description" = "The Monthly Summary feature shows departmental performance and trends. This report format makes it easy to review key metrics, making it invaluable for management reviews and team evaluations.";
+"monthly_summary_description" = "The monthly summary shows key department statistics such as completed tasks, performance, and work volume. This consolidated view facilitates trend analysis and monthly progress evaluation.";
 "add_report" = "Add Report";
 "add_report_description" = "Adding a new report is a straightforward process for tracking your department's progress. You can input task completion rates, performance metrics, and specific notes about achievements or challenges, building a clear picture of your team's performance over time.";
 
 // Tasks Info
 "tasks_overview" = "Tasks Overview";
-"tasks_description" = "Tasks help you organize, prioritize, and track your work efficiently. With a clear structure and real-time updates, you can manage deadlines, monitor progress, and keep your workflow optimized, all in one place.";
+"tasks_description" = "Manage your tasks efficiently with features like priorities (P1, P2, P3), due dates, completion status, and filtering. Organize your work, set priorities, and track the progress of each task.";
 "how_create_tasks" = "How to Create Tasks";
 "tasks_creation_description" = "Tasks are created with the following information: expiring date to set deadlines, title for the task name, content for task details, comments for additional notes, and priority to indicate urgency. This data ensures tasks are well-organized and managed effectively.";
 "sort_tasks" = "Sort Tasks";
@@ -440,8 +440,8 @@
 "volume_chart" = "Productivity Trends";
 "volume_description" = "This line chart shows performance trends over time for each department. It helps track how performance metrics evolve throughout the month, making it easy to identify patterns, improvements, or potential issues in department efficiency.";
 
-"tasks_chart" = "Workload Analysis";
-"tasks_description" = "This scatter plot shows the relationship between work volume and performance for each department. It helps identify how departments handle different workload levels and their efficiency, revealing potential bottlenecks or optimal working conditions.";
+"workload_chart" = "Workload Chart";
+"workload_description" = "The workload chart shows the distribution and volume of tasks over time, allowing you to identify activity peaks and optimize resource allocation.";
 
 "performance_chart" = "Productivity";
 "volume_chart" = "Efficiency";
@@ -501,3 +501,5 @@
 "onboarding_quality_description" = "Monitor and improve work quality with detailed metrics and personalized recommendations.";
 
 "get_started" = "Get Started";
+
+"recommendations_description" = "The system automatically analyzes performance data, work volume, and task completion rates to generate personalized recommendations. These suggestions help improve work efficiency and quality in each department.";

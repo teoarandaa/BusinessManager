@@ -109,6 +109,32 @@ struct QualityInfoSheetView: View {
                 .tabItem {
                     Text("thresholds".localized())
                 }
+                
+                // Fifth Page (Recommendations)
+                ScrollView {
+                    VStack {
+                        Image(systemName: "lightbulb.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 100)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(.tint)
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                        
+                        Text("recommendations".localized())
+                            .font(.largeTitle)
+                            .bold()
+                            .padding()
+                        
+                        Text("recommendations_description".localized())
+                            .padding()
+                            .multilineTextAlignment(.center)
+                    }
+                }
+                .tabItem {
+                    Text("recommendations".localized())
+                }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             .toolbar {

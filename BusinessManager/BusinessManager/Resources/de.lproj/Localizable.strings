@@ -273,7 +273,7 @@
 "how_create_charts" = "Wie man Diagramme erstellt";
 "charts_generation" = "Diagramme werden aus Berichtsdaten generiert, die Leistung, Arbeitslast und abgeschlossene Aufgaben verarbeiten, um visuelle Erkenntnisse zu schaffen. Sie heben Trends, Effizienz und Produktivität hervor, indem sie Rohdaten in umsetzbare Informationen für jede Abteilung umwandeln.";
 "chart_types" = "Diagrammtypen";
-"chart_types_description" = "Der Diagrammtyp-Auswahlgeber bietet verschiedene Möglichkeiten, Ihre Daten zu visualisieren. Wechseln Sie zwischen Produktivitätstrends, Effizienzdaten und Leistungskennzahlen, um die relevanteste Ansicht des Fortschritts Ihres Teams zu erhalten. Jeder Diagrammtyp liefert einzigartige Einblicke in verschiedene Aspekte der Abteilungsleistung.";
+"chart_types_description" = "Der Diagrammtyp-Auswahlgeber bietet verschiedene Möglichkeiten, Ihre Daten zu visualisieren. Wechseln Sie zwischen dem Produktivitätsdiagramm, das Leistungstrends zeigt, und dem Arbeitslastdiagramm, das Arbeitsvolumen vergleicht, um komplementäre Ansichten des Teamfortschritts zu erhalten.";
 "yearly_analysis" = "Jährliche Analyse";
 "yearly_analysis_description" = "Die Ansicht der jährlichen Analyse bietet eine breitere Perspektive auf die organisatorische Leistung. Durch die Untersuchung von Jahresdaten können saisonale Muster und langfristige Trends erkannt werden, was es zu einem unverzichtbaren Werkzeug für die strategische Planung und die Bewertung der Leistung im Jahresvergleich macht.";
 "creating_reports" = "Berichte erstellen";
@@ -297,13 +297,13 @@
 "how_create_reports" = "Wie man Berichte erstellt";
 "reports_creation_description" = "Um genaue Berichte zu erstellen, benötigen wir das aktuelle Datum, den Abteilungsnamen, die erstellten Aufgaben, die rechtzeitig abgeschlossenen Aufgaben und die abgeschlossenen Aufgaben (rechtzeitig abgeschlossene Aufgaben sind in dieser Gruppe enthalten).\nDiese Daten werden dann in Diagrammen angezeigt, die klare Einblicke in Produktivität, Arbeitslast und Leistung bieten und Ihnen helfen, informierte, datengestützte Entscheidungen zu treffen.";
 "monthly_summary" = "Monatliche Zusammenfassung";
-"monthly_summary_description" = "Die monatliche Zusammenfassung erstellt einen PDF-Bericht der Abteilungsleistungen und Trends für effektive Managementbewertungen.";
+"monthly_summary_description" = "Die monatliche Zusammenfassung zeigt wichtige Abteilungsstatistiken wie abgeschlossene Aufgaben, Leistung und Arbeitsvolumen. Diese konsolidierte Ansicht erleichtert die Trendanalyse und monatliche Fortschrittsbewertung.";
 "add_report" = "Bericht hinzufügen";
 "add_report_description" = "Das Hinzufügen eines neuen Berichts ist ein unkomplizierter Prozess zur Verfolgung des Fortschritts Ihrer Abteilung. Sie können Abschlussraten, Leistungskennzahlen und spezifische Notizen zu Erfolgen oder Herausforderungen eingeben und so ein klares Bild der Leistung Ihres Teams im Laufe der Zeit erstellen.";
 
 // Tasks Info
 "tasks_overview" = "Aufgabenübersicht";
-"tasks_description" = "Dieses Diagramm zeigt die Beziehung zwischen Arbeitsvolumen und Leistung der Abteilungen, um Engpässe und optimale Arbeitsbedingungen zu identifizieren.";
+"tasks_description" = "Verwalten Sie Ihre Aufgaben effizient mit Funktionen wie Prioritäten (P1, P2, P3), Fälligkeitsdaten, Abschlussstatus und Filterung. Organisieren Sie Ihre Arbeit, setzen Sie Prioritäten und verfolgen Sie den Fortschritt jeder Aufgabe.";
 "how_create_tasks" = "Wie man Aufgaben erstellt";
 "tasks_creation_description" = "Aufgaben werden mit folgenden Informationen erstellt: Ablaufdatum für Fristen, Titel für den Aufgabennamen, Inhalt für Details, Kommentare für zusätzliche Notizen und Priorität für die Dringlichkeit.";
 "sort_tasks" = "Aufgaben sortieren";
@@ -439,7 +439,8 @@
 "volume_chart" = "Produktivitätstrends";
 "volume_description" = "Dieses Liniendiagramm zeigt die Leistungstrends über die Zeit für jede Abteilung. Es hilft dabei, die Entwicklung der Leistungskennzahlen im Laufe des Monats zu verfolgen und Muster, Verbesserungen oder potenzielle Probleme in der Abteilungseffizienz zu erkennen.";
 
-"tasks_chart" = "Arbeitsbelastungsanalyse";
+"workload_chart" = "Arbeitslast-Diagramm";
+"workload_description" = "Das Arbeitslast-Diagramm zeigt die Verteilung und das Volumen der Aufgaben im Zeitverlauf und ermöglicht es Ihnen, Aktivitätsspitzen zu identifizieren und die Ressourcenzuweisung zu optimieren.";
 
 "performance_chart" = "Produktivität";
 "volume_chart" = "Effizienz";
@@ -499,3 +500,5 @@
 "onboarding_quality_description" = "Überwachen und verbessern Sie die Arbeitsqualität mit detaillierten Metriken und personalisierten Empfehlungen.";
 
 "get_started" = "Loslegen";
+
+"recommendations_description" = "Das System analysiert automatisch Leistungsdaten, Arbeitsvolumen und Aufgabenabschlussraten, um personalisierte Empfehlungen zu generieren. Diese Vorschläge helfen, die Arbeitseffizienz und -qualität in jeder Abteilung zu verbessern.";
