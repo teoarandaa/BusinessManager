@@ -476,3 +476,26 @@
 "tasks_created" = "Erstellte Aufgaben";
 "tasks_completed_ontime" = "Pünktlich Abgeschlossene Aufgaben";
 "total_completed" = "Gesamt Abgeschlossen";
+
+// MARK: - Onboarding
+"onboarding_welcome" = "Willkommen bei Business Manager";
+"onboarding_welcome_subtitle" = "Ihre Geschäftslösung";
+"onboarding_welcome_description" = "Eine umfassende Plattform zur Verwaltung und Optimierung Ihres Unternehmens.";
+
+"onboarding_business" = "Geschäftsführung";
+"onboarding_business_subtitle" = "Volle Kontrolle";
+"onboarding_business_description" = "Verwalten Sie Ihr Unternehmen effizient mit intuitiven Tools für Aufgabenverfolgung und Leistungsanalyse.";
+
+"onboarding_reports" = "Detaillierte Berichte";
+"onboarding_reports_subtitle" = "Tracking und Analyse";
+"onboarding_reports_description" = "Erstellen Sie umfassende Berichte über Abteilungsleistung, Aufgabenabschlussraten und Produktivitätstrends.";
+
+"onboarding_analytics" = "Erweiterte Analysen";
+"onboarding_analytics_subtitle" = "Datenvisualisierung";
+"onboarding_analytics_description" = "Visualisieren Sie wichtige Daten mit interaktiven Diagrammen und gewinnen Sie wertvolle Einblicke in die Leistung Ihres Teams.";
+
+"onboarding_quality" = "Qualitätskontrolle";
+"onboarding_quality_subtitle" = "Kontinuierliche Verbesserung";
+"onboarding_quality_description" = "Überwachen und verbessern Sie die Arbeitsqualität mit detaillierten Metriken und personalisierten Empfehlungen.";
+
+"get_started" = "Loslegen";
