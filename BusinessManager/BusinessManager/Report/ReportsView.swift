@@ -167,6 +167,7 @@ struct ReportCell: View {
 struct AddReportSheet: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("departmentIcons") private var iconStorage: String = "{}"
     @State private var date: Date = .now
     @State private var departmentName: String = ""
     @State private var totalTasksCreated: String = ""
@@ -317,6 +318,25 @@ struct AddReportSheet: View {
         
         context.insert(report)
         
+        // Asegurarse de que el nuevo departamento tenga el icono por defecto
+        if let data = iconStorage.data(using: .utf8),
+           var dictionary = try? JSONDecoder().decode([String: String].self, from: data) {
+            if dictionary[trimmedDepartmentName] == nil {
+                dictionary[trimmedDepartmentName] = "building.2"
+                if let encoded = try? JSONEncoder().encode(dictionary),
+                   let string = String(data: encoded, encoding: .utf8) {
+                    iconStorage = string
+                }
+            }
+        } else {
+            // Si no hay iconos guardados, crear un nuevo diccionario con el icono por defecto
+            let dictionary = [trimmedDepartmentName: "building.2"]
+            if let encoded = try? JSONEncoder().encode(dictionary),
+               let string = String(data: encoded, encoding: .utf8) {
+                iconStorage = string
+            }
+        }
+        
         do {
             try context.save()
             let generator = UINotificationFeedbackGenerator()
@@ -356,15 +376,11 @@ struct DepartmentCell: View {
     private func updateCurrentIcon() {
         if let data = iconStorage.data(using: .utf8),
            let dictionary = try? JSONDecoder().decode([String: String].self, from: data) {
-            print("DepartmentCell - Icons dictionary: \(dictionary)")
-            print("DepartmentCell - Looking for department: \(departmentName)")
-            if let icon = dictionary[departmentName] {
-                currentIcon = icon
-                print("DepartmentCell - Found icon: \(icon)")
-            } else {
-                currentIcon = "building.2"
-                print("DepartmentCell - Using default icon")
-            }
+            // Si no hay un icono guardado para este departamento, usar el valor por defecto
+            currentIcon = dictionary[departmentName] ?? "building.2"
+        } else {
+            // Si hay algún error al decodificar o no hay datos, usar el valor por defecto
+            currentIcon = "building.2"
         }
     }
     
