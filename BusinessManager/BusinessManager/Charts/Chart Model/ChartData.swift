@@ -25,4 +25,19 @@ struct ChartData: Identifiable, Equatable {
         self.numberOfFinishedTasks = report.numberOfFinishedTasks
         self.size = Double(report.numberOfFinishedTasks)
     }
+    
+    init(
+        date: Date,
+        departmentName: String,
+        performanceMark: Int,
+        volumeOfWorkMark: Int,
+        numberOfFinishedTasks: Int
+    ) {
+        self.date = date
+        self.departmentName = departmentName
+        self.performanceMark = performanceMark
+        self.volumeOfWorkMark = volumeOfWorkMark
+        self.numberOfFinishedTasks = numberOfFinishedTasks
+        self.size = Double(numberOfFinishedTasks)
+    }
 }

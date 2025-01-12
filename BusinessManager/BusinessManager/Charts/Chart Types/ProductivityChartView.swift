@@ -8,14 +8,40 @@ struct ProductivityChartView: View {
     var chartData: [ChartData] {
         let currentYear = Calendar.current.component(.year, from: Date())
         let currentMonth = Calendar.current.component(.month, from: Date())
-        return reports
-            .filter {
-                let reportYear = Calendar.current.component(.year, from: $0.date)
-                let reportMonth = Calendar.current.component(.month, from: $0.date)
-                return reportYear == currentYear && reportMonth == currentMonth
+        
+        // Primero filtramos por año y mes
+        let filteredReports = reports.filter {
+            let reportYear = Calendar.current.component(.year, from: $0.date)
+            let reportMonth = Calendar.current.component(.month, from: $0.date)
+            return reportYear == currentYear && reportMonth == currentMonth
+        }
+        
+        // Primero agrupamos por departamento
+        let reportsByDepartment = Dictionary(grouping: filteredReports) { $0.departmentName }
+        
+        var result: [ChartData] = []
+        
+        // Para cada departamento, agrupamos por día
+        for (_, departmentReports) in reportsByDepartment {
+            let calendar = Calendar.current
+            let groupedByDay = Dictionary(grouping: departmentReports) { report in
+                calendar.startOfDay(for: report.date)
             }
-            .map { ChartData(from: $0) }
-            .sorted(by: { $0.date < $1.date })
+            
+            // Procesamos cada día
+            for (_, dailyReports) in groupedByDay {
+                let summary = DailyReportSummary.fromReports(dailyReports)
+                result.append(ChartData(
+                    date: summary.date,
+                    departmentName: summary.departmentName,
+                    performanceMark: summary.performanceMark,
+                    volumeOfWorkMark: summary.volumeOfWorkMark,
+                    numberOfFinishedTasks: summary.numberOfFinishedTasks
+                ))
+            }
+        }
+        
+        return result.sorted(by: { $0.date < $1.date })
     }
 
     var groupedReports: [String: [ChartData]] {
