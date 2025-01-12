@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
-    @State private var selectedTab = 1
+    @State private var selectedTab = 2
     @State private var showOnboarding = true
     
     var body: some View {
