@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct AdvancedFilters {
     var dateRange: ClosedRange<Date>?
@@ -264,22 +265,32 @@ struct FilterSheet: View {
 
 struct YearReportsView: View {
     @Environment(\.modelContext) var context
+    @Query(sort: \Report.date) private var allReports: [Report]
     let reports: [Report]
     let year: Int
     @State private var reportToEdit: Report?
     @State private var reportToView: Report?
     @State private var selectedMonth: Int? = nil
 
+    var filteredReports: [Report] {
+        reports.filter { report in
+            Calendar.current.component(.year, from: report.date) == year
+        }
+    }
+
     var body: some View {
-        let reportsByMonth = Dictionary(grouping: reports, by: { Calendar.current.component(.month, from: $0.date) })
+        let calendar = Calendar.current
+        let reportsByMonth = Dictionary(grouping: filteredReports) { report in
+            calendar.component(.month, from: report.date)
+        }
         let months = reportsByMonth.keys.sorted()
         
         List {
             ForEach(months, id: \.self) { month in
                 if selectedMonth == nil || selectedMonth == month {
-                    if let reportsForMonth = reportsByMonth[month] {
+                    if let reportsForMonth = reportsByMonth[month]?.sorted(by: { $0.date > $1.date }) {
                         Section(header: Text(monthName(for: month))) {
-                            ForEach(reportsForMonth) { report in
+                            ForEach(reportsForMonth, id: \.id) { report in
                                 HStack {
                                     ReportCell(report: report)
                                         .contentShape(Rectangle())
@@ -295,7 +306,9 @@ struct YearReportsView: View {
                                         .padding(.leading, 8)
                                 }
                             }
-                            .onDelete(perform: deleteReports)
+                            .onDelete { indexSet in
+                                deleteReports(at: indexSet, from: reportsForMonth)
+                            }
                         }
                     }
                 }
@@ -326,15 +339,38 @@ struct YearReportsView: View {
         }
     }
 
-    private func deleteReports(at offsets: IndexSet) {
-        for index in offsets {
-            let report = reports[index]
-            context.delete(report)
-        }
-        do {
-            try context.save()
-        } catch {
-            print("Failed to delete report: \(error)")
+    private func deleteReports(at indexSet: IndexSet, from monthReports: [Report]) {
+        withAnimation {
+            // Obtener los IDs de los reportes a eliminar
+            let reportsToDelete = indexSet.map { monthReports[$0] }
+            
+            // Eliminar cada reporte del contexto
+            for reportToDelete in reportsToDelete {
+                // Buscar y eliminar todos los reportes con la misma fecha y departamento
+                let reportsToRemove = allReports.filter { report in
+                    Calendar.current.isDate(report.date, inSameDayAs: reportToDelete.date) &&
+                    report.departmentName == reportToDelete.departmentName
+                }
+                
+                for report in reportsToRemove {
+                    context.delete(report)
+                }
+            }
+            
+            // Forzar la actualización del contexto
+            do {
+                try context.save()
+                
+                // Forzar una actualización de la UI
+                DispatchQueue.main.async {
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.notificationOccurred(.success)
+                }
+            } catch {
+                print("Failed to delete report: \(error)")
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.error)
+            }
         }
     }
     

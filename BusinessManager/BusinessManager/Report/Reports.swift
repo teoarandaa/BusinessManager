@@ -4,6 +4,7 @@ import Observation
 
 @Model
 class Report {
+    @Attribute(.unique) var id: UUID
     var date: Date
     var departmentName: String
     var totalTasksCreated: Int
@@ -30,6 +31,7 @@ class Report {
         numberOfFinishedTasks: Int,
         annotations: String
     ) {
+        self.id = UUID()
         self.date = date
         self.departmentName = departmentName
         self.totalTasksCreated = totalTasksCreated
