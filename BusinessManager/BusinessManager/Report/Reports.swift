@@ -61,7 +61,12 @@ struct DailyReportSummary {
         let totalTasksCreated = reports.reduce(0) { $0 + $1.totalTasksCreated }
         let tasksCompletedWithoutDelay = reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
         let numberOfFinishedTasks = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
-        let annotations = reports.map { $0.annotations }.joined(separator: " | ")
+        
+        // Filtrar anotaciones vacías antes de unirlas
+        let annotations = reports
+            .map { $0.annotations }
+            .filter { !$0.isEmpty }
+            .joined(separator: " | ")
         
         // Calculate averages
         let avgPerformance = reports.reduce(0) { $0 + $1.performanceMark } / reports.count
