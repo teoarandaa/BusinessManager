@@ -44,3 +44,36 @@ extension Report: SwiftData.PersistentModel {
 
 extension Report: Observation.Observable {
 }
+
+struct DailyReportSummary {
+    var date: Date
+    var departmentName: String
+    var totalTasksCreated: Int
+    var tasksCompletedWithoutDelay: Int
+    var numberOfFinishedTasks: Int
+    var annotations: String
+    var performanceMark: Int
+    var volumeOfWorkMark: Int
+    
+    static func fromReports(_ reports: [Report]) -> DailyReportSummary {
+        let totalTasksCreated = reports.reduce(0) { $0 + $1.totalTasksCreated }
+        let tasksCompletedWithoutDelay = reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
+        let numberOfFinishedTasks = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+        let annotations = reports.map { $0.annotations }.joined(separator: " | ")
+        
+        // Calculate averages
+        let avgPerformance = reports.reduce(0) { $0 + $1.performanceMark } / reports.count
+        let avgVolumeOfWork = reports.reduce(0) { $0 + $1.volumeOfWorkMark } / reports.count
+        
+        return DailyReportSummary(
+            date: reports[0].date,
+            departmentName: reports[0].departmentName,
+            totalTasksCreated: totalTasksCreated,
+            tasksCompletedWithoutDelay: tasksCompletedWithoutDelay,
+            numberOfFinishedTasks: numberOfFinishedTasks,
+            annotations: annotations,
+            performanceMark: avgPerformance,
+            volumeOfWorkMark: avgVolumeOfWork
+        )
+    }
+}

@@ -78,17 +78,34 @@ struct MonthlySummaryView: View {
         // Reset summary
         monthlySummary = [:]
         
-        for report in reports {
-            let reportDate = Calendar.current.dateComponents([.year, .month], from: report.date)
-            if reportDate.year == currentYear && reportDate.month == currentMonth {
-                if monthlySummary[report.departmentName] == nil {
-                    monthlySummary[report.departmentName] = (finishedTasks: report.numberOfFinishedTasks, totalPerformance: report.performanceMark, totalVolumeOfWork: report.volumeOfWorkMark, reportCount: 1)
-                } else {
-                    monthlySummary[report.departmentName]!.finishedTasks += report.numberOfFinishedTasks
-                    monthlySummary[report.departmentName]!.totalPerformance += report.performanceMark
-                    monthlySummary[report.departmentName]!.totalVolumeOfWork += report.volumeOfWorkMark
-                    monthlySummary[report.departmentName]!.reportCount += 1
+        // Primero agrupar por departamento
+        let reportsByDepartment = Dictionary(grouping: reports) { $0.departmentName }
+        
+        // Procesar cada departamento
+        for (departmentName, departmentReports) in reportsByDepartment {
+            // Agrupar por día dentro del departamento
+            let calendar = Calendar.current
+            let groupedByDay = Dictionary(grouping: departmentReports) { report in
+                calendar.startOfDay(for: report.date)
+            }
+            
+            var departmentSummary: (finishedTasks: Int, totalPerformance: Int, totalVolumeOfWork: Int, reportCount: Int) = (0, 0, 0, 0)
+            
+            // Procesar cada día
+            for (_, dailyReports) in groupedByDay {
+                let reportDate = Calendar.current.dateComponents([.year, .month], from: dailyReports[0].date)
+                if reportDate.year == currentYear && reportDate.month == currentMonth {
+                    let summary = DailyReportSummary.fromReports(dailyReports)
+                    
+                    departmentSummary.finishedTasks += summary.numberOfFinishedTasks
+                    departmentSummary.totalPerformance += summary.performanceMark
+                    departmentSummary.totalVolumeOfWork += summary.volumeOfWorkMark
+                    departmentSummary.reportCount += 1
                 }
+            }
+            
+            if departmentSummary.reportCount > 0 {
+                monthlySummary[departmentName] = departmentSummary
             }
         }
         

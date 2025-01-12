@@ -49,8 +49,27 @@ struct DepartmentReportsView: View {
         return reports
     }
     
+    var groupedReports: [Report] {
+        let calendar = Calendar.current
+        let groupedByDay = Dictionary(grouping: filteredReports) { report in
+            calendar.startOfDay(for: report.date)
+        }
+        
+        return groupedByDay.map { date, reports -> Report in
+            let summary = DailyReportSummary.fromReports(reports)
+            return Report(
+                date: summary.date,
+                departmentName: summary.departmentName,
+                totalTasksCreated: summary.totalTasksCreated,
+                tasksCompletedWithoutDelay: summary.tasksCompletedWithoutDelay,
+                numberOfFinishedTasks: summary.numberOfFinishedTasks,
+                annotations: summary.annotations
+            )
+        }.sorted { $0.date > $1.date }
+    }
+    
     var body: some View {
-        let reportsByYear = Dictionary(grouping: filteredReports, by: { Calendar.current.component(.year, from: $0.date) })
+        let reportsByYear = Dictionary(grouping: groupedReports, by: { Calendar.current.component(.year, from: $0.date) })
         
         List {
             ForEach(reportsByYear.keys.sorted(by: >), id: \.self) { year in
@@ -92,7 +111,7 @@ struct DepartmentReportsView: View {
             FilterSheet(filters: $filters)
         }
         .overlay {
-            if filteredReports.isEmpty {
+            if groupedReports.isEmpty {
                 ContentUnavailableView {
                     Label("no_results".localized(), systemImage: "doc.text.magnifyingglass")
                 } description: {
