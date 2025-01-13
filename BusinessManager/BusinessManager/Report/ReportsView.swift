@@ -373,6 +373,13 @@ struct DepartmentCell: View {
     
     @State private var currentIcon: String = "building.2"
     
+    // Calcular el número real de días con reportes
+    private var uniqueDaysCount: Int {
+        let calendar = Calendar.current
+        let uniqueDays = Set(reports.map { calendar.startOfDay(for: $0.date) })
+        return uniqueDays.count
+    }
+    
     private func updateCurrentIcon() {
         if let data = iconStorage.data(using: .utf8),
            let dictionary = try? JSONDecoder().decode([String: String].self, from: data) {
@@ -389,12 +396,11 @@ struct DepartmentCell: View {
             Image(systemName: currentIcon)
                 .font(.system(size: 16))
                 .foregroundStyle(.accent)
-                .frame(width: 24, height: 24)
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(departmentName)
-                    .font(.system(size: 16))
-                Text("\(reportsCount) " + "reports_count".localized())
+                    .font(.headline)
+                Text("\(uniqueDaysCount) \("reports_count".localized())")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
