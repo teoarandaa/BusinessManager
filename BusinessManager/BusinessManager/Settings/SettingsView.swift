@@ -55,26 +55,22 @@ struct SettingsView: View {
                         print("   • Sound notifications: Enabled")
                         
                         // Restaurar notificaciones usando el contexto del environment
-                        do {
-                            let descriptor = FetchDescriptor<Task>()
-                            if let tasks = try? context.fetch(descriptor) {
-                                print("🔄 Restoring notifications for existing tasks...")
-                                
-                                for task in tasks {
-                                    if !task.isCompleted && task.date > Date() {
-                                        scheduleNotification(for: task)
-                                        print("   • Restored notifications for task: \(task.title)")
-                                    }
-                                }
-                                
-                                // Verificar notificaciones programadas
-                                UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-                                    print("📋 Total notifications restored: \(requests.count)")
-                                    print("✨ Notification system ready\n")
+                        let descriptor = FetchDescriptor<Task>()
+                        if let tasks = try? context.fetch(descriptor) {
+                            print("🔄 Restoring notifications for existing tasks...")
+                            
+                            for task in tasks {
+                                if !task.isCompleted && task.date > Date() {
+                                    scheduleNotification(for: task)
+                                    print("   • Restored notifications for task: \(task.title)")
                                 }
                             }
-                        } catch {
-                            print("❌ Error fetching tasks: \(error.localizedDescription)")
+                            
+                            // Verificar notificaciones programadas
+                            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                                print("📋 Total notifications restored: \(requests.count)")
+                                print("✨ Notification system ready\n")
+                            }
                         }
                     } else {
                         isPushEnabled = false
