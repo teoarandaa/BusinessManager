@@ -7,7 +7,9 @@ struct SettingsView: View {
     @AppStorage("appLanguage") private var appLanguage = "es" // Nuevo AppStorage para el idioma
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var systemColorScheme
+    @Environment(\.modelContext) private var context
     @State private var showLanguageAlert = false
+    @State private var showNotificationSettingsAlert = false
     
     // Definir los idiomas disponibles
     private let availableLanguages = [
@@ -27,6 +29,136 @@ struct SettingsView: View {
             return .dark
         default:
             return systemColorScheme
+        }
+    }
+    
+    private func checkNotificationStatus() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                isPushEnabled = settings.authorizationStatus == .authorized
+            }
+        }
+    }
+    
+    private func handleNotificationToggle() {
+        if isPushEnabled {
+            // Si el usuario quiere activar las notificaciones
+            print("\n🔔 Requesting notification permissions...")
+            
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                DispatchQueue.main.async {
+                    if granted {
+                        isPushEnabled = true
+                        print("✅ Notifications permission granted")
+                        print("   • Alert notifications: Enabled")
+                        print("   • Badge notifications: Enabled")
+                        print("   • Sound notifications: Enabled")
+                        
+                        // Restaurar notificaciones usando el contexto del environment
+                        do {
+                            let descriptor = FetchDescriptor<Task>()
+                            if let tasks = try? context.fetch(descriptor) {
+                                print("🔄 Restoring notifications for existing tasks...")
+                                
+                                for task in tasks {
+                                    if !task.isCompleted && task.date > Date() {
+                                        scheduleNotification(for: task)
+                                        print("   • Restored notifications for task: \(task.title)")
+                                    }
+                                }
+                                
+                                // Verificar notificaciones programadas
+                                UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                                    print("📋 Total notifications restored: \(requests.count)")
+                                    print("✨ Notification system ready\n")
+                                }
+                            }
+                        } catch {
+                            print("❌ Error fetching tasks: \(error.localizedDescription)")
+                        }
+                    } else {
+                        isPushEnabled = false
+                        showNotificationSettingsAlert = true
+                        print("❌ Notifications permission denied")
+                        if let error = error {
+                            print("⚠️ Error: \(error.localizedDescription)")
+                        }
+                        print("💡 User needs to enable notifications in Settings\n")
+                    }
+                }
+            }
+        } else {
+            // Si el usuario quiere desactivar las notificaciones
+            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                print("\n🔕 Disabling all notifications")
+                print("📋 Pending notifications being removed: \(requests.count)")
+                
+                if requests.isEmpty {
+                    print("ℹ️ No pending notifications to remove")
+                } else {
+                    for request in requests {
+                        print("   • Removing notification: \(request.identifier)")
+                    }
+                }
+                
+                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                print("✅ All notifications have been disabled successfully")
+                print("💤 Notification system deactivated\n")
+            }
+        }
+    }
+    
+    // Función auxiliar para programar notificaciones
+    private func scheduleNotification(for task: Task) {
+        let notificationDays = [3, 2, 1, 0]
+        
+        for days in notificationDays {
+            let content = UNMutableNotificationContent()
+            
+            if days == 0 {
+                content.title = "task_due_today_title".localized()
+                content.body = String(format: "task_due_today_body".localized(), task.title)
+            } else {
+                content.title = String(format: "task_due_in_days_title".localized(), days)
+                content.body = String(format: "task_due_in_days_body".localized(), task.title, days)
+            }
+            
+            content.sound = .default
+            
+            let notificationDate = Calendar.current.date(byAdding: .day, value: -days, to: task.date) ?? task.date
+            
+            if notificationDate > Date() {
+                let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                
+                let request = UNNotificationRequest(
+                    identifier: "task-\(task.id)-\(days)",
+                    content: content,
+                    trigger: trigger
+                )
+                
+                UNUserNotificationCenter.current().add(request)
+            }
+        }
+        
+        // Notificación de retraso
+        let delayContent = UNMutableNotificationContent()
+        delayContent.title = "task_overdue_title".localized()
+        delayContent.body = String(format: "task_overdue_body".localized(), task.title)
+        delayContent.sound = .default
+        
+        let delayDate = Calendar.current.date(byAdding: .hour, value: 1, to: task.date) ?? task.date
+        if delayDate > Date() {
+            let delayComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: delayDate)
+            let delayTrigger = UNCalendarNotificationTrigger(dateMatching: delayComponents, repeats: false)
+            
+            let delayRequest = UNNotificationRequest(
+                identifier: "task-\(task.id)-overdue",
+                content: delayContent,
+                trigger: delayTrigger
+            )
+            
+            UNUserNotificationCenter.current().add(delayRequest)
         }
     }
     
@@ -61,6 +193,9 @@ struct SettingsView: View {
                                 .symbolEffect(.bounce, value: isPushEnabled)
                                 .contentTransition(.symbolEffect(.replace))
                         }
+                    }
+                    .onChange(of: isPushEnabled) { oldValue, newValue in
+                        handleNotificationToggle()
                     }
                 }
                 // MARK: - Appearance
@@ -136,6 +271,19 @@ struct SettingsView: View {
                 Button("later".localized(), role: .cancel) { }
             } message: {
                 Text("language_change_message".localized())
+            }
+            .onAppear {
+                checkNotificationStatus()
+            }
+            .alert("notifications_settings_title".localized(), isPresented: $showNotificationSettingsAlert) {
+                Button("open_settings".localized()) {
+                    if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(settingsUrl)
+                    }
+                }
+                Button("cancel".localized(), role: .cancel) { }
+            } message: {
+                Text("notifications_settings_message".localized())
             }
         }
         .preferredColorScheme(colorSchemeValue)

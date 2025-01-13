@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 struct TaskView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
@@ -293,6 +294,89 @@ struct AddTaskSheet: View {
     
     let priorityOptions = ["P3", "P2", "P1"]
     
+    private func scheduleNotification(for task: Task) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+        
+        print("\n📅 Task: \(task.title)")
+        print("📆 Due date: \(dateFormatter.string(from: task.date))")
+        print("🔔 Scheduling notifications:")
+        
+        // Notificaciones antes del vencimiento
+        let notificationDays = [3, 2, 1, 0]
+        
+        for days in notificationDays {
+            let content = UNMutableNotificationContent()
+            
+            if days == 0 {
+                content.title = "task_due_today_title".localized()
+                content.body = String(format: "task_due_today_body".localized(), task.title)
+            } else {
+                content.title = String(format: "task_due_in_days_title".localized(), days)
+                content.body = String(format: "task_due_in_days_body".localized(), task.title, days)
+            }
+            
+            content.sound = .default
+            
+            // Calcular la fecha de notificación
+            let notificationDate = Calendar.current.date(byAdding: .day, value: -days, to: task.date) ?? task.date
+            
+            // Solo programar si la fecha no ha pasado
+            if notificationDate > Date() {
+                let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                
+                let request = UNNotificationRequest(
+                    identifier: "task-\(task.id)-\(days)",
+                    content: content,
+                    trigger: trigger
+                )
+                
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("❌ Error scheduling notification for \(days) days before: \(error.localizedDescription)")
+                    } else {
+                        print("✅ Notification scheduled:")
+                        print("   • \(days) days before")
+                        print("   • Will trigger at: \(dateFormatter.string(from: notificationDate))")
+                        print("   • Message: \(content.body)")
+                    }
+                }
+            } else {
+                print("⚠️ Skipped notification for \(days) days before - Date already passed")
+                print("   • Would have been: \(dateFormatter.string(from: notificationDate))")
+            }
+        }
+        
+        // Notificación de retraso (1 hora después de la fecha de vencimiento)
+        let delayContent = UNMutableNotificationContent()
+        delayContent.title = "task_overdue_title".localized()
+        delayContent.body = String(format: "task_overdue_body".localized(), task.title)
+        delayContent.sound = .default
+        
+        let delayDate = Calendar.current.date(byAdding: .hour, value: 1, to: task.date) ?? task.date
+        let delayComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: delayDate)
+        let delayTrigger = UNCalendarNotificationTrigger(dateMatching: delayComponents, repeats: false)
+        
+        let delayRequest = UNNotificationRequest(
+            identifier: "task-\(task.id)-overdue",
+            content: delayContent,
+            trigger: delayTrigger
+        )
+        
+        UNUserNotificationCenter.current().add(delayRequest) { error in
+            if let error = error {
+                print("❌ Error scheduling overdue notification: \(error.localizedDescription)")
+            } else {
+                print("✅ Overdue notification scheduled:")
+                print("   • Will trigger at: \(dateFormatter.string(from: delayDate))")
+                print("   • Message: \(delayContent.body)")
+            }
+        }
+        
+        print("🔄 Notification setup completed\n")
+    }
+    
     private func saveTask() {
         let task = Task(
             date: date,
@@ -305,7 +389,7 @@ struct AddTaskSheet: View {
         
         do {
             try context.save()
-            print("Task saved: \(task.id) - \(task.title)")
+            scheduleNotification(for: task)  // Programar notificación
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
             dismiss()
@@ -326,9 +410,8 @@ struct AddTaskSheet: View {
                             .bold()
                     }
                     Spacer()
-                    DatePicker("", selection: $date, displayedComponents: .date)
+                    DatePicker("", selection: $date, displayedComponents: [.date, .hourAndMinute])
                         .labelsHidden()
-                        .fixedSize()
                         .padding(.trailing, -8)
                 }
                 
@@ -400,6 +483,105 @@ struct UpdateTaskSheet: View {
     
     let priorityOptions = ["P3", "P2", "P1"]
     
+    private func updateNotification(for task: Task) {
+        // Primero eliminar todas las notificaciones existentes para esta tarea
+        let identifiers = [
+            "task-\(task.id)-3",
+            "task-\(task.id)-2",
+            "task-\(task.id)-1",
+            "task-\(task.id)-0",
+            "task-\(task.id)-overdue"
+        ]
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+        
+        print("\n📅 Task Update: \(task.title)")
+        print("📆 New due date: \(dateFormatter.string(from: task.date))")
+        print("🔔 Rescheduling notifications:")
+        
+        // Reprogramar todas las notificaciones
+        let notificationDays = [3, 2, 1, 0]
+        
+        for days in notificationDays {
+            let content = UNMutableNotificationContent()
+            
+            if days == 0 {
+                content.title = "task_due_today_title".localized()
+                content.body = String(format: "task_due_today_body".localized(), task.title)
+            } else {
+                content.title = String(format: "task_due_in_days_title".localized(), days)
+                content.body = String(format: "task_due_in_days_body".localized(), task.title, days)
+            }
+            
+            content.sound = .default
+            
+            let notificationDate = Calendar.current.date(byAdding: .day, value: -days, to: task.date) ?? task.date
+            
+            if notificationDate > Date() {
+                let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                
+                let request = UNNotificationRequest(
+                    identifier: "task-\(task.id)-\(days)",
+                    content: content,
+                    trigger: trigger
+                )
+                
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("❌ Error scheduling notification for \(days) days before: \(error.localizedDescription)")
+                    } else {
+                        print("✅ Notification rescheduled:")
+                        print("   • \(days) days before")
+                        print("   • Will trigger at: \(dateFormatter.string(from: notificationDate))")
+                        print("   • Message: \(content.body)")
+                    }
+                }
+            } else {
+                print("⚠️ Skipped notification for \(days) days before - Date already passed")
+                print("   • Would have been: \(dateFormatter.string(from: notificationDate))")
+            }
+        }
+        
+        // Notificación de retraso
+        let delayContent = UNMutableNotificationContent()
+        delayContent.title = "task_overdue_title".localized()
+        delayContent.body = String(format: "task_overdue_body".localized(), task.title)
+        delayContent.sound = .default
+        
+        let delayDate = Calendar.current.date(byAdding: .hour, value: 1, to: task.date) ?? task.date
+        let delayComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: delayDate)
+        let delayTrigger = UNCalendarNotificationTrigger(dateMatching: delayComponents, repeats: false)
+        
+        let delayRequest = UNNotificationRequest(
+            identifier: "task-\(task.id)-overdue",
+            content: delayContent,
+            trigger: delayTrigger
+        )
+        
+        UNUserNotificationCenter.current().add(delayRequest) { error in
+            if let error = error {
+                print("❌ Error scheduling overdue notification: \(error.localizedDescription)")
+            } else {
+                print("✅ Overdue notification rescheduled:")
+                print("   • Will trigger at: \(dateFormatter.string(from: delayDate))")
+                print("   • Message: \(delayContent.body)")
+            }
+        }
+        
+        print("🔄 Notification update completed\n")
+    }
+    
+    // Actualizar la función done para incluir la actualización de la notificación
+    private func done() {
+        updateNotification(for: task)
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        dismiss()
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -410,9 +592,8 @@ struct UpdateTaskSheet: View {
                             .bold()
                     }
                     Spacer()
-                    DatePicker("", selection: $task.date, displayedComponents: .date)
+                    DatePicker("", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
                         .labelsHidden()
-                        .fixedSize()
                         .padding(.trailing, -8)
                 }
                 
@@ -469,9 +650,7 @@ struct UpdateTaskSheet: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("done".localized()) {
-                        let generator = UINotificationFeedbackGenerator()
-                        generator.notificationOccurred(.success)
-                        dismiss()
+                        done()
                     }
                 }
             }
@@ -496,7 +675,7 @@ struct TaskDetailSheet: View {
                                 .bold()
                         }
                         Spacer()
-                        Text(task.date, format: .dateTime.year().month(.abbreviated).day())
+                        Text(task.date, format: .dateTime.day().month(.abbreviated).year().hour().minute())
                     }
                     
                     HStack {

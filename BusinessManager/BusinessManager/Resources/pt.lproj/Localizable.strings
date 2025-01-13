@@ -507,3 +507,19 @@
 "get_started" = "Começar";
 
 "recommendations_description" = "O sistema analisa automaticamente dados de desempenho, volume de trabalho e taxas de conclusão de tarefas para gerar recomendações personalizadas. Essas sugestões ajudam a melhorar a eficiência e qualidade do trabalho em cada departamento.";
+
+// MARK: - Task Notifications
+"task_due_today_title" = "Tarefa vence hoje";
+"task_due_today_body" = "A tarefa '%@' vence hoje";
+"task_due_in_days_title" = "Tarefa vence em %d dias";
+"task_due_in_days_body" = "A tarefa '%@' vencerá em %d dias";
+
+"task_completed_title" = "Tarefa Concluída";
+"task_completed_body" = "A tarefa '%@' foi marcada como concluída";
+
+"task_overdue_title" = "Tarefa atrasada";
+"task_overdue_body" = "A tarefa '%@' ultrapassou o prazo";
+
+"notifications_settings_title" = "Ativar Notificações";
+"notifications_settings_message" = "Para receber notificações de tarefas, ative-as nas Configurações";
+"open_settings" = "Abrir Configurações";

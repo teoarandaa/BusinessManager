@@ -503,3 +503,19 @@
 "get_started" = "Get Started";
 
 "recommendations_description" = "The system automatically analyzes performance data, work volume, and task completion rates to generate personalized recommendations. These suggestions help improve work efficiency and quality in each department.";
+
+// MARK: - Task Notifications
+"task_due_today_title" = "Task due today";
+"task_due_today_body" = "The task '%@' is due today";
+"task_due_in_days_title" = "Task due in %d days";
+"task_due_in_days_body" = "The task '%@' will be due in %d days";
+
+"task_completed_title" = "Task Completed";
+"task_completed_body" = "The task '%@' has been marked as completed";
+
+"task_overdue_title" = "Task overdue";
+"task_overdue_body" = "The task '%@' has passed its due date";
+
+"notifications_settings_title" = "Enable Notifications";
+"notifications_settings_message" = "To receive task notifications, please enable them in Settings";
+"open_settings" = "Open Settings";
