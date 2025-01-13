@@ -16,6 +16,40 @@ struct YearChartsView: View {
     
     @State private var isShowingYearlySummary = false
     
+    // Procesar los datos para agrupar por día
+    var processedData: [ChartData] {
+        // Primero agrupamos por departamento
+        let reportsByDepartment = Dictionary(grouping: data) { $0.departmentName }
+        
+        var result: [ChartData] = []
+        
+        // Para cada departamento, agrupamos por día
+        for (_, departmentData) in reportsByDepartment {
+            let calendar = Calendar.current
+            let groupedByDay = Dictionary(grouping: departmentData) { data in
+                calendar.startOfDay(for: data.date)
+            }
+            
+            // Procesamos cada día
+            for (date, dailyData) in groupedByDay {
+                // Calcular promedios
+                let avgPerformance = dailyData.reduce(0) { $0 + $1.performanceMark } / dailyData.count
+                let avgVolume = dailyData.reduce(0) { $0 + $1.volumeOfWorkMark } / dailyData.count
+                let totalTasks = dailyData.reduce(0) { $0 + $1.numberOfFinishedTasks }
+                
+                result.append(ChartData(
+                    date: date,
+                    departmentName: dailyData[0].departmentName,
+                    performanceMark: avgPerformance,
+                    volumeOfWorkMark: avgVolume,
+                    numberOfFinishedTasks: totalTasks
+                ))
+            }
+        }
+        
+        return result.sorted(by: { $0.date < $1.date })
+    }
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 35) {
@@ -28,21 +62,13 @@ struct YearChartsView: View {
                         .padding()
                     
                     Chart {
-                        let sortedData = data.sorted(by: { $0.date < $1.date })
-                        
-                        ForEach(sortedData) { data in
+                        ForEach(processedData) { data in
                             LineMark(
                                 x: .value("date".localized(), data.date),
                                 y: .value("performance".localized(), data.performanceMark)
                             )
                             .foregroundStyle(by: .value("department".localized(), data.departmentName))
                             .symbol(by: .value("department".localized(), data.departmentName))
-                            
-                            PointMark(
-                                x: .value("date".localized(), data.date),
-                                y: .value("performance".localized(), data.performanceMark)
-                            )
-                            .foregroundStyle(by: .value("department".localized(), data.departmentName))
                         }
                     }
                     .chartXAxis {
@@ -69,7 +95,7 @@ struct YearChartsView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     
-                    Chart(data) { data in
+                    Chart(processedData) { data in
                         PointMark(
                             x: .value("volume_of_work".localized(), data.volumeOfWorkMark),
                             y: .value("performance".localized(), data.performanceMark)
