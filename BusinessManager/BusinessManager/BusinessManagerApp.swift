@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 @main
 struct BusinessManagerApp: App {
@@ -24,6 +25,18 @@ struct BusinessManagerApp: App {
         // Configurar el idioma al iniciar la app
         UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
         UserDefaults.standard.synchronize()
+        
+        requestNotificationPermission()
+    }
+    
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("Notification permission granted")
+            } else if let error = error {
+                print("Error requesting notification permission: \(error.localizedDescription)")
+            }
+        }
     }
     
     var body: some Scene {

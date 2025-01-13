@@ -503,3 +503,19 @@
 "get_started" = "Inizia";
 
 "recommendations_description" = "Il sistema analizza automaticamente i dati sulle prestazioni, il volume di lavoro e i tassi di completamento delle attività per generare raccomandazioni personalizzate. Questi suggerimenti aiutano a migliorare l'efficienza e la qualità del lavoro in ogni dipartimento.";
+
+// MARK: - Task Notifications
+"task_due_today_title" = "Attività in scadenza oggi";
+"task_due_today_body" = "L'attività '%@' scade oggi";
+"task_due_in_days_title" = "Attività in scadenza tra %d giorni";
+"task_due_in_days_body" = "L'attività '%@' scadrà tra %d giorni";
+
+"task_completed_title" = "Attività Completata";
+"task_completed_body" = "L'attività '%@' è stata contrassegnata come completata";
+
+"task_overdue_title" = "Attività in ritardo";
+"task_overdue_body" = "L'attività '%@' ha superato la data di scadenza";
+
+"notifications_settings_title" = "Attiva Notifiche";
+"notifications_settings_message" = "Per ricevere notifiche sulle attività, abilitale nelle Impostazioni";
+"open_settings" = "Apri Impostazioni";

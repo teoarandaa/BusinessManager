@@ -502,3 +502,19 @@
 "get_started" = "Loslegen";
 
 "recommendations_description" = "Das System analysiert automatisch Leistungsdaten, Arbeitsvolumen und Aufgabenabschlussraten, um personalisierte Empfehlungen zu generieren. Diese Vorschläge helfen, die Arbeitseffizienz und -qualität in jeder Abteilung zu verbessern.";
+
+// MARK: - Task Notifications
+"task_due_today_title" = "Aufgabe fällig heute";
+"task_due_today_body" = "Die Aufgabe '%@' ist heute fällig";
+"task_due_in_days_title" = "Aufgabe fällig in %d Tagen";
+"task_due_in_days_body" = "Die Aufgabe '%@' wird in %d Tagen fällig";
+
+"task_completed_title" = "Aufgabe Abgeschlossen";
+"task_completed_body" = "Die Aufgabe '%@' wurde als abgeschlossen markiert";
+
+"task_overdue_title" = "Aufgabe überfällig";
+"task_overdue_body" = "Die Aufgabe '%@' hat ihre Frist überschritten";
+
+"notifications_settings_title" = "Benachrichtigungen aktivieren";
+"notifications_settings_message" = "Um Aufgabenbenachrichtigungen zu erhalten, aktivieren Sie sie in den Einstellungen";
+"open_settings" = "Einstellungen öffnen";

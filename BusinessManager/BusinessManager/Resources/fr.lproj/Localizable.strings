@@ -503,3 +503,19 @@
 "get_started" = "Commencer";
 
 "recommendations_description" = "Le système analyse automatiquement les données de performance, le volume de travail et les taux d'achèvement des tâches pour générer des recommandations personnalisées. Ces suggestions aident à améliorer l'efficacité et la qualité du travail dans chaque département.";
+
+// MARK: - Task Notifications
+"task_due_today_title" = "Tâche à échéance aujourd'hui";
+"task_due_today_body" = "La tâche '%@' arrive à échéance aujourd'hui";
+"task_due_in_days_title" = "Tâche à échéance dans %d jours";
+"task_due_in_days_body" = "La tâche '%@' arrivera à échéance dans %d jours";
+
+"task_completed_title" = "Tâche Terminée";
+"task_completed_body" = "La tâche '%@' a été marquée comme terminée";
+
+"task_overdue_title" = "Tâche en retard";
+"task_overdue_body" = "La tâche '%@' a dépassé sa date d'échéance";
+
+"notifications_settings_title" = "Activer les Notifications";
+"notifications_settings_message" = "Pour recevoir les notifications des tâches, activez-les dans les Paramètres";
+"open_settings" = "Ouvrir les Paramètres";
