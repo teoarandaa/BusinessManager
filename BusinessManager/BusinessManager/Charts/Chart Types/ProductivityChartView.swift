@@ -29,14 +29,24 @@ struct ProductivityChartView: View {
             }
             
             // Procesamos cada día
-            for (_, dailyReports) in groupedByDay {
-                let summary = DailyReportSummary.fromReports(dailyReports)
+            for (date, dailyReports) in groupedByDay {
+                // Sumamos todas las tareas del día
+                let totalTasksCreated = dailyReports.reduce(0) { $0 + $1.totalTasksCreated }
+                let tasksCompletedOnTime = dailyReports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
+                let totalTasksCompleted = dailyReports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+                
+                // Calculamos las métricas basadas en los totales
+                let performanceMark = totalTasksCompleted > 0 ? 
+                    Double(tasksCompletedOnTime) / Double(totalTasksCompleted) * 100 : 0
+                let volumeOfWorkMark = totalTasksCreated > 0 ? 
+                    Double(totalTasksCompleted) / Double(totalTasksCreated) * 100 : 0
+                
                 result.append(ChartData(
-                    date: summary.date,
-                    departmentName: summary.departmentName,
-                    performanceMark: summary.performanceMark,
-                    volumeOfWorkMark: summary.volumeOfWorkMark,
-                    numberOfFinishedTasks: summary.numberOfFinishedTasks
+                    date: date,
+                    departmentName: dailyReports[0].departmentName,
+                    performanceMark: Int(round(performanceMark)),
+                    volumeOfWorkMark: Int(round(volumeOfWorkMark)),
+                    numberOfFinishedTasks: totalTasksCompleted
                 ))
             }
         }

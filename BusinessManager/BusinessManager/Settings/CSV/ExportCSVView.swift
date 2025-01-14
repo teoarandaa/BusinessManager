@@ -223,6 +223,16 @@ struct ExportCSVView: View {
         departments = Array(Set(reports.map { $0.departmentName })).sorted()
     }
     
+    private struct ReportKey: Hashable {
+        let date: Date
+        let department: String
+        
+        init(date: Date, department: String) {
+            self.date = Calendar.current.startOfDay(for: date)
+            self.department = department
+        }
+    }
+    
     private func generateCSV() {
         // Headers
         csvString = "\("department".localized()),"
@@ -235,18 +245,33 @@ struct ExportCSVView: View {
         
         let filteredReports = reports.filter { isReportIncluded($0) }
         
+        // Agrupar por fecha y departamento usando ReportKey
+        let groupedReports = Dictionary(grouping: filteredReports) { report in
+            ReportKey(date: report.date, department: report.departmentName)
+        }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         
-        for report in filteredReports {
+        for (key, reports) in groupedReports {
+            let totalTasksCreated = reports.reduce(0) { $0 + $1.totalTasksCreated }
+            let tasksCompletedOnTime = reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
+            let totalTasksCompleted = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+            
+            // Calcular performance y volume basados en los totales
+            let performance = totalTasksCompleted > 0 ? 
+                Double(tasksCompletedOnTime) / Double(totalTasksCompleted) * 100 : 0
+            let volume = totalTasksCreated > 0 ? 
+                Double(totalTasksCompleted) / Double(totalTasksCreated) * 100 : 0
+            
             let row = [
-                report.departmentName,
-                dateFormatter.string(from: report.date),
-                String(report.totalTasksCreated),
-                String(report.tasksCompletedWithoutDelay),
-                String(report.numberOfFinishedTasks),
-                String(Int(report.performanceMark)),
-                String(Int(report.volumeOfWorkMark))
+                key.department,
+                dateFormatter.string(from: key.date),
+                String(totalTasksCreated),
+                String(tasksCompletedOnTime),
+                String(totalTasksCompleted),
+                String(Int(performance)),
+                String(Int(volume))
             ].joined(separator: ",")
             
             csvString += row + "\n"
