@@ -201,18 +201,45 @@ struct QualityAnalysisView: View {
     // MARK: - Computed Properties
     
     private var averagePerformance: Double {
-        filteredReports.map { Double($0.performanceMark) }.average ?? 0
+        let groupedReports = Dictionary(grouping: filteredReports) { report in
+            Calendar.current.startOfDay(for: report.date)
+        }
+        
+        let dailyPerformances = groupedReports.map { _, reports in
+            let totalCompleted = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+            let completedOnTime = reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
+            return totalCompleted > 0 ? Double(completedOnTime) / Double(totalCompleted) * 100 : 0
+        }
+        
+        return dailyPerformances.average ?? 0
     }
     
     private var averageVolume: Double {
-        filteredReports.map { Double($0.volumeOfWorkMark) }.average ?? 0
+        let groupedReports = Dictionary(grouping: filteredReports) { report in
+            Calendar.current.startOfDay(for: report.date)
+        }
+        
+        let dailyVolumes = groupedReports.map { _, reports in
+            let totalCreated = reports.reduce(0) { $0 + $1.totalTasksCreated }
+            let totalCompleted = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+            return totalCreated > 0 ? Double(totalCompleted) / Double(totalCreated) * 100 : 0
+        }
+        
+        return dailyVolumes.average ?? 0
     }
     
     private var averageCompletion: Double {
-        let completed = Double(filteredReports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay })
-        let total = Double(filteredReports.reduce(0) { $0 + $1.totalTasksCreated })
-        guard total > 0 else { return 0 }
-        return (completed / total) * 100
+        let groupedReports = Dictionary(grouping: filteredReports) { report in
+            Calendar.current.startOfDay(for: report.date)
+        }
+        
+        let dailyCompletions = groupedReports.map { _, reports in
+            let completed = Double(reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay })
+            let total = Double(reports.reduce(0) { $0 + $1.totalTasksCreated })
+            return total > 0 ? (completed / total) * 100 : 0
+        }
+        
+        return dailyCompletions.average ?? 0
     }
     
     private var performanceTrend: QualityMetric.MetricTrend {
