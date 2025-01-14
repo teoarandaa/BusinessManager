@@ -14,6 +14,8 @@ struct ReportsView: View {
     @State private var searchText = ""
     @State private var isShowingSettings = false
     
+    @State private var forceRefresh: Bool = false
+    
     var filteredReports: [Report] {
         if searchText.isEmpty {
             return reports
@@ -22,16 +24,17 @@ struct ReportsView: View {
         }
     }
     
+    private var groupedAndSortedReports: [(key: String, value: [Report])] {
+        let grouped = Dictionary(grouping: filteredReports, by: { $0.departmentName })
+        return grouped.sorted(by: { $0.key < $1.key })
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(
-                        Dictionary(grouping: filteredReports, by: { $0.departmentName })
-                            .sorted(by: { $0.key < $1.key }),
-                        id: \.key
-                    ) { department, departmentReports in
-                        NavigationLink(destination: DepartmentReportsView(departmentReports: departmentReports)) {
+                    ForEach(groupedAndSortedReports, id: \.key) { department, departmentReports in
+                        NavigationLink(destination: DepartmentReportsView(departmentName: department)) {
                             DepartmentCell(
                                 departmentName: department,
                                 reportsCount: departmentReports.count,
@@ -41,8 +44,7 @@ struct ReportsView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            let departmentToDelete = Array(Dictionary(grouping: filteredReports, by: { $0.departmentName })
-                                .sorted(by: { $0.key < $1.key }))[index]
+                            let departmentToDelete = groupedAndSortedReports[index]
                             
                             // Eliminar todos los reports del departamento
                             for report in reports where report.departmentName == departmentToDelete.key {
@@ -130,6 +132,9 @@ struct ReportsView: View {
                     }
                 }
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .reportDidUpdate)) { _ in
+            forceRefresh.toggle() // Esto forzará una actualización de la vista
         }
     }
     
@@ -681,6 +686,66 @@ struct UpdateReportSheet: View {
         _annotations = State(initialValue: report.annotations)
     }
     
+    private func updateReport() {
+        // Validaciones...
+        guard date <= Date() else {
+            showAlert = true
+            alertMessage = "err_reports_dates".localized()
+            return
+        }
+
+        guard let totalTasks = Int(totalTasksCreated),
+              let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
+              let finishedTasks = Int(numberOfFinishedTasks) else {
+            showAlert = true
+            alertMessage = "err_valid_num".localized()
+            return
+        }
+        
+        guard totalTasks >= 0 else {
+            showAlert = true
+            alertMessage = "err_negative_totalTasks".localized()
+            return
+        }
+        
+        guard finishedTasks >= tasksWithoutDelay else {
+            showAlert = true
+            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time"
+            return
+        }
+        
+        let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // Crear un nuevo reporte con los valores actualizados
+        let updatedReport = Report(
+            date: date,
+            departmentName: trimmedDepartmentName,
+            totalTasksCreated: totalTasks,
+            tasksCompletedWithoutDelay: tasksWithoutDelay,
+            numberOfFinishedTasks: finishedTasks,
+            annotations: trimmedAnnotations
+        )
+        
+        // Actualizar el reporte existente
+        context.delete(report)
+        context.insert(updatedReport)
+        
+        do {
+            try context.save()
+            NotificationCenter.default.post(name: .reportDidUpdate, object: nil)
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            context.rollback()
+            showAlert = true
+            alertMessage = "Failed to save changes: \(error.localizedDescription)"
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -769,54 +834,6 @@ struct UpdateReportSheet: View {
             }
         }
     }
-    
-    private func updateReport() {
-        // Validar que la fecha no sea futura
-        guard date <= Date() else {
-            showAlert = true
-            alertMessage = "err_reports_dates".localized()
-            return
-        }
-
-        // Convertir Strings a Ints
-        guard let totalTasks = Int(totalTasksCreated),
-              let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
-              let finishedTasks = Int(numberOfFinishedTasks) else {
-            showAlert = true
-            alertMessage = "err_valid_num".localized()
-            return
-        }
-        
-        // Validaciones básicas
-        guard totalTasks >= 0 else {
-            showAlert = true
-            alertMessage = "err_negative_totalTasks".localized()
-            return
-        }
-        
-        let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        // Actualizar report
-        report.date = date
-        report.departmentName = trimmedDepartmentName
-        report.totalTasksCreated = totalTasks
-        report.tasksCompletedWithoutDelay = tasksWithoutDelay
-        report.numberOfFinishedTasks = finishedTasks
-        report.annotations = trimmedAnnotations
-        
-        do {
-            try context.save()
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
-            dismiss()
-        } catch {
-            showAlert = true
-            alertMessage = "Failed to save changes: \(error.localizedDescription)"
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
-        }
-    }
 }
 
 struct EditDepartmentSheet: View {
@@ -886,4 +903,5 @@ struct EditDepartmentSheet: View {
 
 extension Notification.Name {
     static let departmentIconDidChange = Notification.Name("departmentIconDidChange")
+    static let reportDidUpdate = Notification.Name("reportDidUpdate")
 }
