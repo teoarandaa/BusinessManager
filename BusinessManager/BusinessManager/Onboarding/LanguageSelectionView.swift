@@ -24,21 +24,24 @@ struct LanguageSelectionView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Fondo del sistema
                 Color(uiColor: .systemBackground)
                     .opacity(backgroundOpacity)
                     .ignoresSafeArea()
                 
                 NavigationStack {
-                    VStack(spacing: 24) {
-                        // Resto del contenido
-                        VStack(spacing: 24) {
+                    VStack {
+                        Spacer()
+                            .frame(height: geometry.size.height * 0.15)
+                        
+                        // Contenido principal
+                        VStack(spacing: 60) {
                             Text("Select your language")
                                 .font(.title2)
+                                .foregroundColor(.white)
                                 .bold()
                             
                             ScrollView {
-                                VStack(spacing: 12) {
+                                VStack(spacing: 16) {
                                     ForEach(languages, id: \.2) { language in
                                         Button {
                                             handleLanguageSelection(language)
@@ -52,7 +55,8 @@ struct LanguageSelectionView: View {
                                                 Image(systemName: "chevron.right")
                                                     .foregroundColor(.gray)
                                             }
-                                            .padding()
+                                            .padding(.vertical, 16)
+                                            .padding(.horizontal)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 12)
                                                     .fill(Color.gray.opacity(0.1))
@@ -65,51 +69,51 @@ struct LanguageSelectionView: View {
                             }
                         }
                         .opacity(contentOpacity)
+                        
+                        Spacer()
+                            .frame(height: geometry.size.height * 0.1)
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            Text("Business Manager")
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.accentColor)
-                                .opacity(navTitleOpacity)
-                        }
-                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .overlay {
-                        if titleOpacity > 0 && !isNavigating {
+                        ZStack {
+                            // Título animado
+                            if titleOpacity > 0 && !isNavigating {
+                                Text("Business Manager")
+                                    .font(.system(size: 32, weight: .bold))
+                                    .foregroundColor(.accentColor)
+                                    .offset(y: titleOffset)
+                                    .opacity(titleOpacity)
+                            }
+                            
+                            // Título fijo
                             Text("Business Manager")
                                 .font(.system(size: 32, weight: .bold))
                                 .foregroundColor(.accentColor)
-                                .offset(y: titleOffset)
-                                .opacity(titleOpacity)
+                                .offset(y: -geometry.size.height * 0.4)
+                                .opacity(navTitleOpacity)
                         }
                     }
                 }
             }
             .onAppear {
-                // Configurar estado inicial
-                titleOffset = geometry.size.height / 2 - 407
+                titleOffset = -geometry.size.height * 0.01
                 titleOpacity = 1
                 contentOpacity = 0
                 backgroundOpacity = 1
                 navTitleOpacity = 0
                 
-                // Esperar 1 segundo antes de comenzar la animación
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    // Animar el título hacia arriba
                     withAnimation(.easeOut(duration: 1.2)) {
-                        titleOffset = -geometry.size.height / 2 + 0
+                        titleOffset = -geometry.size.height * 0.4
                         backgroundOpacity = 0
                     }
                     
-                    // Desvanecer el título animado y mostrar el título de navegación
                     withAnimation(.easeIn(duration: 0.5).delay(1.2)) {
                         titleOpacity = 0
                         navTitleOpacity = 1
                     }
                     
-                    // Mostrar el contenido ligeramente después
                     withAnimation(.easeIn(duration: 0.7).delay(1.2)) {
                         contentOpacity = 1
                     }
