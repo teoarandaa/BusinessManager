@@ -311,6 +311,32 @@ struct AddTaskSheet: View {
             if days == 0 {
                 content.title = "task_due_today_title".localized()
                 content.body = String(format: "task_due_today_body".localized(), task.title)
+                
+                // Obtener las 00:00 del día de vencimiento
+                let calendar = Calendar.current
+                let notificationDate = calendar.startOfDay(for: task.date)
+                
+                if notificationDate > Date() {
+                    let components = calendar.dateComponents([.year, .month, .day], from: notificationDate)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                    
+                    let request = UNNotificationRequest(
+                        identifier: "task-\(task.id)-\(days)",
+                        content: content,
+                        trigger: trigger
+                    )
+                    
+                    UNUserNotificationCenter.current().add(request) { error in
+                        if let error = error {
+                            print("❌ Error scheduling notification for \(days) days before: \(error.localizedDescription)")
+                        } else {
+                            print("✅ Notification scheduled:")
+                            print("   • \(days) days before")
+                            print("   • Will trigger at: \(dateFormatter.string(from: notificationDate))")
+                            print("   • Message: \(content.body)")
+                        }
+                    }
+                }
             } else {
                 content.title = String(format: "task_due_in_days_title".localized(), days)
                 content.body = String(format: "task_due_in_days_body".localized(), task.title, days)
@@ -510,6 +536,32 @@ struct UpdateTaskSheet: View {
             if days == 0 {
                 content.title = "task_due_today_title".localized()
                 content.body = String(format: "task_due_today_body".localized(), task.title)
+                
+                // Obtener las 00:00 del día de vencimiento
+                let calendar = Calendar.current
+                let notificationDate = calendar.startOfDay(for: task.date)
+                
+                if notificationDate > Date() {
+                    let components = calendar.dateComponents([.year, .month, .day], from: notificationDate)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                    
+                    let request = UNNotificationRequest(
+                        identifier: "task-\(task.id)-\(days)",
+                        content: content,
+                        trigger: trigger
+                    )
+                    
+                    UNUserNotificationCenter.current().add(request) { error in
+                        if let error = error {
+                            print("❌ Error scheduling notification for \(days) days before: \(error.localizedDescription)")
+                        } else {
+                            print("✅ Notification rescheduled:")
+                            print("   • \(days) days before")
+                            print("   • Will trigger at: \(dateFormatter.string(from: notificationDate))")
+                            print("   • Message: \(content.body)")
+                        }
+                    }
+                }
             } else {
                 content.title = String(format: "task_due_in_days_title".localized(), days)
                 content.body = String(format: "task_due_in_days_body".localized(), task.title, days)
