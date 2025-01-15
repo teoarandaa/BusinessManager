@@ -144,6 +144,9 @@ struct OnboardingView: View {
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 if currentPage == onboardingPages.count - 1 {
+                                    let generator = UINotificationFeedbackGenerator()
+                                    generator.notificationOccurred(.success)
+                                    
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         showOnboarding = false
                                     }
