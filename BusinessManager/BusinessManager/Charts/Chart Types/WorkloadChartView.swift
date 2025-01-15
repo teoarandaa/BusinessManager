@@ -36,8 +36,8 @@ struct WorkloadChartView: View {
                 let totalTasksCompleted = dailyReports.reduce(0) { $0 + $1.numberOfFinishedTasks }
                 
                 // Calculamos las métricas basadas en los totales
-                let performanceMark = totalTasksCompleted > 0 ? 
-                    Double(tasksCompletedOnTime) / Double(totalTasksCompleted) * 100 : 0
+                let performanceMark = totalTasksCreated > 0 ? 
+                    Double(tasksCompletedOnTime) / Double(totalTasksCreated) * 100 : 0
                 let volumeOfWorkMark = totalTasksCreated > 0 ? 
                     Double(totalTasksCompleted) / Double(totalTasksCreated) * 100 : 0
                 

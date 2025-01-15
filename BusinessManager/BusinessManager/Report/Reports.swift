@@ -16,15 +16,25 @@ class Report {
     @Relationship(deleteRule: .cascade) var metrics: [QualityMetric]?
     @Attribute(.externalStorage) var cloudID: String = UUID().uuidString
     
+    // Cálculo automático de performance (tareas completadas a tiempo / total tareas creadas)
+    func calculatePerformance() -> Int {
+        guard totalTasksCreated > 0 else { return 0 }
+        return Int((Double(tasksCompletedWithoutDelay) / Double(totalTasksCreated)) * 100)
+    }
+    
+    // Cálculo automático de volume of work (tareas finalizadas / total tareas creadas)
+    func calculateVolumeOfWork() -> Int {
+        guard totalTasksCreated > 0 else { return 0 }
+        return Int((Double(numberOfFinishedTasks) / Double(totalTasksCreated)) * 100)
+    }
+    
     init(
         date: Date = Date.now,
         departmentName: String,
         totalTasksCreated: Int,
         tasksCompletedWithoutDelay: Int,
         numberOfFinishedTasks: Int,
-        annotations: String,
-        performanceMark: Int = 0,
-        volumeOfWorkMark: Int = 0
+        annotations: String
     ) {
         self.id = UUID()
         self.cloudID = UUID().uuidString
@@ -34,8 +44,8 @@ class Report {
         self.tasksCompletedWithoutDelay = tasksCompletedWithoutDelay
         self.numberOfFinishedTasks = numberOfFinishedTasks
         self.annotations = annotations
-        self.performanceMark = performanceMark
-        self.volumeOfWorkMark = volumeOfWorkMark
+        self.performanceMark = calculatePerformance()
+        self.volumeOfWorkMark = calculateVolumeOfWork()
         self.metrics = []
     }
 }

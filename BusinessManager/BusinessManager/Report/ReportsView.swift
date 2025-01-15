@@ -312,6 +312,7 @@ struct AddReportSheet: View {
         let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
         
+        // Crear el reporte con los valores calculados
         let report = Report(
             date: date,
             departmentName: trimmedDepartmentName,
@@ -320,6 +321,10 @@ struct AddReportSheet: View {
             numberOfFinishedTasks: finishedTasks,
             annotations: trimmedAnnotations
         )
+        
+        // Calcular las métricas
+        report.performanceMark = report.calculatePerformance()
+        report.volumeOfWorkMark = report.calculateVolumeOfWork()
         
         context.insert(report)
         
@@ -717,7 +722,7 @@ struct UpdateReportSheet: View {
         let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Crear un nuevo reporte con los valores actualizados
+        // Crear el reporte actualizado con los valores calculados
         let updatedReport = Report(
             date: date,
             departmentName: trimmedDepartmentName,
@@ -726,6 +731,10 @@ struct UpdateReportSheet: View {
             numberOfFinishedTasks: finishedTasks,
             annotations: trimmedAnnotations
         )
+        
+        // Calcular las métricas
+        updatedReport.performanceMark = updatedReport.calculatePerformance()
+        updatedReport.volumeOfWorkMark = updatedReport.calculateVolumeOfWork()
         
         // Actualizar el reporte existente
         context.delete(report)

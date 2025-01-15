@@ -206,9 +206,9 @@ struct QualityAnalysisView: View {
         }
         
         let dailyPerformances = groupedReports.map { _, reports in
-            let totalCompleted = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+            let totalCreated = reports.reduce(0) { $0 + $1.totalTasksCreated }
             let completedOnTime = reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
-            return totalCompleted > 0 ? Double(completedOnTime) / Double(totalCompleted) * 100 : 0
+            return totalCreated > 0 ? Double(completedOnTime) / Double(totalCreated) * 100 : 0
         }
         
         return dailyPerformances.average ?? 0
