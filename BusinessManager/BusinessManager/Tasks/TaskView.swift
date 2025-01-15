@@ -276,7 +276,16 @@ struct TaskRow: View {
     
     // Función para obtener el texto de días de retraso
     private var delayText: String? {
-        guard daysRemaining < 0 && !task.isCompleted else { return nil }
+        if task.isCompleted {
+            // Si la tarea está completada, mostrar los días de retraso congelados (si existen)
+            if let frozenDays = task.frozenDelayDays, frozenDays > 0 {
+                return "(\("delay_days".localized()): \(frozenDays))"
+            }
+            return nil
+        }
+        
+        // Para tareas no completadas, mantener la lógica actual
+        guard daysRemaining < 0 else { return nil }
         let days = abs(daysRemaining)
         return "(\("delay_days".localized()): \(days))"
     }
@@ -328,8 +337,10 @@ struct TaskRow: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            selectedTask = task
+            selectedTask = task  // Permitir ver detalles siempre
         }
+        .opacity(task.isCompleted ? 0.8 : 1)
+        .help(task.isCompleted ? "completed_task_edit_hint".localized() : "")
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {
                 taskToDelete = task
@@ -339,6 +350,10 @@ struct TaskRow: View {
             }
             
             Button {
+                if !task.isCompleted && daysRemaining < 0 {
+                    // Si la tarea se está completando y tiene retraso, congelar los días
+                    task.frozenDelayDays = abs(daysRemaining)
+                }
                 task.isCompleted.toggle()
                 let generator = UIImpactFeedbackGenerator(style: .light)
                 generator.impactOccurred()
@@ -900,8 +915,16 @@ struct TaskDetailSheet: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("edit".localized()) {
-                        showingEditSheet = true
+                    if !task.isCompleted {
+                        Button("edit".localized()) {
+                            showingEditSheet = true
+                        }
+                    } else {
+                        Button("done".localized()) {
+                            let generator = UIImpactFeedbackGenerator(style: .light)
+                            generator.impactOccurred()
+                            dismiss()
+                        }
                     }
                 }
             }

@@ -9,6 +9,7 @@ final class Task: Identifiable {
     var content: String = ""
     var priority: String = ""
     var isCompleted: Bool = false
+    var frozenDelayDays: Int? = nil
     @Attribute(.externalStorage) var cloudID: String = UUID().uuidString
     
     init(date: Date, title: String, content: String, priority: String) {
@@ -19,6 +20,7 @@ final class Task: Identifiable {
         self.content = content
         self.priority = priority
         self.isCompleted = false
+        self.frozenDelayDays = nil
     }
 }
 
