@@ -522,3 +522,14 @@
 
 "select_departments" = "Seleziona Dipartimenti";
 "select_all" = "Seleziona Tutto";
+
+"delete_year_title" = "Elimina Anno";
+"delete_year_message" = "Sei sicuro di voler eliminare tutti i rapporti per quest'anno? Questa azione non può essere annullata.";
+
+// MARK: - Alerts
+"delete_department_title" = "Elimina Dipartimento";
+"delete_department_message" = "Sei sicuro di voler eliminare questo dipartimento e tutti i suoi rapporti? Questa azione non può essere annullata.";
+"delete_report_title" = "Elimina Rapporto";
+"delete_report_message" = "Sei sicuro di voler eliminare questo rapporto? Questa azione non può essere annullata.";
+"delete_task_title" = "Elimina Attività";
+"delete_task_message" = "Sei sicuro di voler eliminare questa attività? Questa azione non può essere annullata.";

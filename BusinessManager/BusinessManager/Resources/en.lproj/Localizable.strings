@@ -522,3 +522,14 @@
 
 "select_departments" = "Select Departments";
 "select_all" = "Select All";
+
+"delete_year_title" = "Delete Year";
+"delete_year_message" = "Are you sure you want to delete all reports for this year? This action cannot be undone.";
+
+// MARK: - Alerts
+"delete_department_title" = "Delete Department";
+"delete_department_message" = "Are you sure you want to delete this department and all its reports? This action cannot be undone.";
+"delete_report_title" = "Delete Report";
+"delete_report_message" = "Are you sure you want to delete this report? This action cannot be undone.";
+"delete_task_title" = "Delete Task";
+"delete_task_message" = "Are you sure you want to delete this task? This action cannot be undone.";

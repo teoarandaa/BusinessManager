@@ -529,3 +529,14 @@
 
 "select_departments" = "Seleccionar Departamentos";
 "select_all" = "Seleccionar Todo";
+
+"delete_year_title" = "Eliminar Año";
+"delete_year_message" = "¿Estás seguro de que quieres eliminar todos los informes de este año? Esta acción no se puede deshacer.";
+
+// MARK: - Alerts
+"delete_department_title" = "Eliminar Departamento";
+"delete_department_message" = "¿Estás seguro de que quieres eliminar este departamento y todos sus informes? Esta acción no se puede deshacer.";
+"delete_report_title" = "Eliminar Informe";
+"delete_report_message" = "¿Estás seguro de que quieres eliminar este informe? Esta acción no se puede deshacer.";
+"delete_task_title" = "Eliminar Tarea";
+"delete_task_message" = "¿Estás seguro de que quieres eliminar esta tarea? Esta acción no se puede deshacer.";

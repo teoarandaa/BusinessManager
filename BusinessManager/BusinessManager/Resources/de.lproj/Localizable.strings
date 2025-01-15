@@ -521,3 +521,14 @@
 
 "select_departments" = "Abteilungen auswählen";
 "select_all" = "Alle auswählen";
+
+"delete_year_title" = "Jahr Löschen";
+"delete_year_message" = "Sind Sie sicher, dass Sie alle Berichte für dieses Jahr löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";
+
+// MARK: - Alerts
+"delete_department_title" = "Abteilung löschen";
+"delete_department_message" = "Sind Sie sicher, dass Sie diese Abteilung und alle zugehörigen Berichte löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";
+"delete_report_title" = "Bericht löschen";
+"delete_report_message" = "Sind Sie sicher, dass Sie diesen Bericht löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";
+"delete_task_title" = "Aufgabe löschen";
+"delete_task_message" = "Sind Sie sicher, dass Sie diese Aufgabe löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";

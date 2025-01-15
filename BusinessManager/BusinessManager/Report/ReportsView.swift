@@ -16,6 +16,9 @@ struct ReportsView: View {
     
     @State private var forceRefresh: Bool = false
     
+    @State private var departmentToDelete: String?
+    @State private var showDeleteAlert = false
+    
     var filteredReports: [Report] {
         if searchText.isEmpty {
             return reports
@@ -41,15 +44,14 @@ struct ReportsView: View {
                                 reports: departmentReports
                             )
                         }
-                    }
-                    .onDelete { indexSet in
-                        for index in indexSet {
-                            let departmentToDelete = groupedAndSortedReports[index]
-                            
-                            // Eliminar todos los reports del departamento
-                            for report in reports where report.departmentName == departmentToDelete.key {
-                                deleteReport(report)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                departmentToDelete = department
+                                showDeleteAlert = true
+                            } label: {
+                                Label("", systemImage: "trash")
                             }
+                            .tint(.red)
                         }
                     }
                 }
@@ -135,6 +137,24 @@ struct ReportsView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .reportDidUpdate)) { _ in
             forceRefresh.toggle() // Esto forzará una actualización de la vista
+        }
+        .alert("delete_department_title".localized(), isPresented: $showDeleteAlert) {
+            Button("cancel".localized(), role: .cancel) {
+                departmentToDelete = nil
+            }
+            Button("delete".localized(), role: .destructive) {
+                if let department = departmentToDelete {
+                    for report in reports where report.departmentName == department {
+                        deleteReport(report)
+                    }
+                }
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.success)
+                
+                departmentToDelete = nil
+            }
+        } message: {
+            Text("delete_department_message".localized())
         }
     }
     

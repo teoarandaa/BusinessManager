@@ -526,3 +526,14 @@
 
 "select_departments" = "Selecionar Departamentos";
 "select_all" = "Selecionar Tudo";
+
+"delete_year_title" = "Excluir Ano";
+"delete_year_message" = "Tem certeza que deseja excluir todos os relatórios deste ano? Esta ação não pode ser desfeita.";
+
+// MARK: - Alerts
+"delete_department_title" = "Excluir Departamento";
+"delete_department_message" = "Tem certeza que deseja excluir este departamento e todos os seus relatórios? Esta ação não pode ser desfeita.";
+"delete_report_title" = "Excluir Relatório";
+"delete_report_message" = "Tem certeza que deseja excluir este relatório? Esta ação não pode ser desfeita.";
+"delete_task_title" = "Excluir Tarefa";
+"delete_task_message" = "Tem certeza que deseja excluir esta tarefa? Esta ação não pode ser desfeita.";

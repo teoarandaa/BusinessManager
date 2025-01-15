@@ -12,6 +12,8 @@ struct TaskView: View {
     @State private var taskToEdit: Task?
     @State private var searchText = ""
     @State private var sortOption: SortOption = .date
+    @State private var showDeleteAlert = false
+    @State private var taskToDelete: Task?
     
     var activeTasks: [Task] {
         sortedTasks.filter { !$0.isCompleted }
@@ -59,14 +61,13 @@ struct TaskView: View {
                 if !activeTasks.isEmpty {
                     Section("active_tasks".localized()) {
                         ForEach(activeTasks) { task in
-                            TaskRow(task: task, context: context, selectedTask: $taskToEdit)
-                        }
-                        .onDelete { indexSet in
-                            for index in indexSet {
-                                context.delete(activeTasks[index])
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.success)
-                            }
+                            TaskRow(
+                                task: task,
+                                context: context,
+                                selectedTask: $taskToEdit,
+                                showDeleteAlert: $showDeleteAlert,
+                                taskToDelete: $taskToDelete
+                            )
                         }
                     }
                 }
@@ -74,14 +75,13 @@ struct TaskView: View {
                 if !completedTasks.isEmpty {
                     Section("completed_tasks".localized()) {
                         ForEach(completedTasks) { task in
-                            TaskRow(task: task, context: context, selectedTask: $taskToEdit)
-                        }
-                        .onDelete { indexSet in
-                            for index in indexSet {
-                                context.delete(completedTasks[index])
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.success)
-                            }
+                            TaskRow(
+                                task: task,
+                                context: context,
+                                selectedTask: $taskToEdit,
+                                showDeleteAlert: $showDeleteAlert,
+                                taskToDelete: $taskToDelete
+                            )
                         }
                     }
                 }
@@ -158,6 +158,21 @@ struct TaskView: View {
                 }
             }
         }
+        .alert("delete_task_title".localized(), isPresented: $showDeleteAlert) {
+            Button("cancel".localized(), role: .cancel) {
+                taskToDelete = nil
+            }
+            Button("delete".localized(), role: .destructive) {
+                if let taskToDelete = taskToDelete {
+                    context.delete(taskToDelete)
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.notificationOccurred(.success)
+                }
+                taskToDelete = nil
+            }
+        } message: {
+            Text("delete_task_message".localized())
+        }
     }
 }
 
@@ -169,6 +184,8 @@ struct TaskRow: View {
     let task: Task
     let context: ModelContext
     @Binding var selectedTask: Task?
+    @Binding var showDeleteAlert: Bool
+    @Binding var taskToDelete: Task?
     
     // Función para calcular los días restantes o de retraso
     private var daysRemaining: Int {
@@ -249,9 +266,8 @@ struct TaskRow: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {
-                context.delete(task)
-                let generator = UINotificationFeedbackGenerator()
-                generator.notificationOccurred(.success)
+                taskToDelete = task
+                showDeleteAlert = true
             } label: {
                 Label("delete".localized(), systemImage: "trash")
             }
@@ -508,6 +524,10 @@ struct AddTaskSheet: View {
 struct UpdateTaskSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var task: Task
+    @State private var showingDeleteAlert = false
+    
+    // Añade el modelContext para poder eliminar la tarea
+    @Environment(\.modelContext) private var modelContext
     
     let priorityOptions = ["P3", "P2", "P1"]
     
@@ -636,6 +656,13 @@ struct UpdateTaskSheet: View {
         dismiss()
     }
     
+    private func deleteTask() {
+        modelContext.delete(task)
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        dismiss()
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -707,6 +734,14 @@ struct UpdateTaskSheet: View {
                         done()
                     }
                 }
+            }
+            .alert("delete_task_title".localized(), isPresented: $showingDeleteAlert) {
+                Button("cancel".localized(), role: .cancel) { }
+                Button("delete".localized(), role: .destructive) {
+                    deleteTask()
+                }
+            } message: {
+                Text("delete_task_message".localized())
             }
         }
     }

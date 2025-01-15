@@ -26,6 +26,8 @@ struct DepartmentReportsView: View {
     let departmentName: String
     @State private var showingFilters = false
     @State private var filters = AdvancedFilters.default
+    @State private var showDeleteAlert = false
+    @State private var yearToDelete: Int?
     
     var availableYears: [Int] {
         let fetchDescriptor = FetchDescriptor<Report>(
@@ -40,10 +42,21 @@ struct DepartmentReportsView: View {
     }
     
     var body: some View {
-        List(availableYears, id: \.self) { year in
-            NavigationLink(destination: YearReportsView(departmentName: departmentName, year: year, filters: filters)) {
-                Text(String(year))
-                    .font(.headline)
+        List {
+            ForEach(availableYears, id: \.self) { year in
+                NavigationLink(destination: YearReportsView(departmentName: departmentName, year: year, filters: filters)) {
+                    Text(String(year))
+                        .font(.headline)
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        yearToDelete = year
+                        showDeleteAlert = true
+                    } label: {
+                        Label("", systemImage: "trash")
+                    }
+                    .tint(.red)
+                }
             }
         }
         .navigationTitle(departmentName)
@@ -59,6 +72,48 @@ struct DepartmentReportsView: View {
         .sheet(isPresented: $showingFilters) {
             FilterSheet(filters: $filters)
         }
+        .alert("delete_year_title".localized(), isPresented: $showDeleteAlert) {
+            Button("cancel".localized(), role: .cancel) {
+                yearToDelete = nil
+            }
+            Button("delete".localized(), role: .destructive) {
+                if let year = yearToDelete {
+                    deleteReportsForYear(year)
+                }
+                yearToDelete = nil
+            }
+        } message: {
+            Text("delete_year_message".localized())
+        }
+    }
+    
+    private func deleteReportsForYear(_ year: Int) {
+        let calendar = Calendar.current
+        let fetchDescriptor = FetchDescriptor<Report>(
+            predicate: #Predicate<Report> { report in
+                report.departmentName == departmentName
+            }
+        )
+        
+        if let reports = try? context.fetch(fetchDescriptor) {
+            let reportsToDelete = reports.filter {
+                calendar.component(.year, from: $0.date) == year
+            }
+            
+            for report in reportsToDelete {
+                context.delete(report)
+            }
+            
+            do {
+                try context.save()
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.success)
+            } catch {
+                print("Error deleting reports: \(error)")
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.error)
+            }
+        }
     }
 }
 
@@ -69,6 +124,8 @@ struct YearReportsView: View {
     let filters: AdvancedFilters
     @State private var reportToEdit: Report?
     @State private var reportToView: Report?
+    @State private var reportToDelete: Report?
+    @State private var showDeleteAlert = false
     
     var reports: [Report] {
         let fetchDescriptor = FetchDescriptor<Report>(
@@ -125,19 +182,14 @@ struct YearReportsView: View {
                         }
                         .padding(.leading, 8)
                 }
-            }
-            .onDelete { indexSet in
-                for index in indexSet {
-                    context.delete(filteredReports[index])
-                }
-                do {
-                    try context.save()
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.notificationOccurred(.success)
-                } catch {
-                    print("Failed to delete report: \(error)")
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.notificationOccurred(.error)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        reportToDelete = report
+                        showDeleteAlert = true
+                    } label: {
+                        Label("", systemImage: "trash")
+                    }
+                    .tint(.red)
                 }
             }
         }
@@ -156,6 +208,28 @@ struct YearReportsView: View {
                     Text("try_adjusting_filters".localized())
                 }
             }
+        }
+        .alert("delete_report_title".localized(), isPresented: $showDeleteAlert) {
+            Button("cancel".localized(), role: .cancel) {
+                reportToDelete = nil
+            }
+            Button("delete".localized(), role: .destructive) {
+                if let report = reportToDelete {
+                    context.delete(report)
+                    do {
+                        try context.save()
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.success)
+                    } catch {
+                        print("Error deleting report: \(error)")
+                        let generator = UINotificationFeedbackGenerator()
+                        generator.notificationOccurred(.error)
+                    }
+                }
+                reportToDelete = nil
+            }
+        } message: {
+            Text("delete_report_message".localized())
         }
     }
 }
