@@ -64,13 +64,14 @@ struct ChartsView: View {
                                 case .productivity:
                                     ProductivityChartView()
                                         .transition(.opacity)
+                                        .frame(maxWidth: .infinity)
                                     
                                 case .efficiency:
                                     WorkloadChartView()
                                         .transition(.opacity)
+                                        .frame(maxWidth: .infinity)
                                 }
                             }
-                            .padding()
                         }
                     }
                 }
