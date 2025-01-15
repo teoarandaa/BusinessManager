@@ -14,6 +14,7 @@ struct LanguageSelectionView: View {
     @State private var selectLanguageTitleOpacity: Double = 0
     @State private var fullScreenOverlay: Bool = false
     @State private var currentTitleIndex = 0
+    @Environment(\.colorScheme) private var colorScheme
     
     private let languages = [
         ("English", "🇺🇸", "en"),
@@ -58,7 +59,7 @@ struct LanguageSelectionView: View {
                             
                             Text(titleTexts[currentTitleIndex])
                                 .font(.title2)
-                                .foregroundColor(.white)
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                                 .bold()
                                 .opacity(selectLanguageTitleOpacity)
                                 .transition(.numericText())

@@ -381,13 +381,12 @@ struct DepartmentCell: View {
     @Environment(\.modelContext) private var context
     let reports: [Report]
     
-    @State private var currentIcon: String = "building.2"
-    
-    private func updateCurrentIcon() {
+    private var currentIcon: String {
         if let data = iconStorage.data(using: .utf8),
            let dictionary = try? JSONDecoder().decode([String: String].self, from: data) {
-            currentIcon = dictionary[departmentName] ?? "building.2"
+            return dictionary[departmentName] ?? "building.2"
         }
+        return "building.2"
     }
     
     var body: some View {
@@ -405,14 +404,24 @@ struct DepartmentCell: View {
             
             Spacer()
         }
-        .onAppear {
-            updateCurrentIcon()
+        .contextMenu {
+            Button {
+                isShowingEditSheet = true
+            } label: {
+                Label("edit_name".localized(), systemImage: "pencil")
+            }
+            
+            Button {
+                isShowingIconPicker = true
+            } label: {
+                Label("change_icon".localized(), systemImage: "photo")
+            }
         }
         .sheet(isPresented: $isShowingEditSheet) {
             EditDepartmentSheet(departmentName: departmentName, reports: reports)
         }
-        .onReceive(NotificationCenter.default.publisher(for: .departmentIconDidChange)) { _ in
-            updateCurrentIcon()
+        .sheet(isPresented: $isShowingIconPicker) {
+            IconPickerView(departmentName: departmentName)
         }
     }
 }
