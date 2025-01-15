@@ -383,73 +383,35 @@ struct DepartmentCell: View {
     
     @State private var currentIcon: String = "building.2"
     
-    // Calcular el número real de días con reportes
-    private var uniqueDaysCount: Int {
-        let calendar = Calendar.current
-        let uniqueDays = Set(reports.map { calendar.startOfDay(for: $0.date) })
-        return uniqueDays.count
-    }
-    
     private func updateCurrentIcon() {
         if let data = iconStorage.data(using: .utf8),
            let dictionary = try? JSONDecoder().decode([String: String].self, from: data) {
-            // Si no hay un icono guardado para este departamento, usar el valor por defecto
             currentIcon = dictionary[departmentName] ?? "building.2"
-        } else {
-            // Si hay algún error al decodificar o no hay datos, usar el valor por defecto
-            currentIcon = "building.2"
         }
     }
     
     var body: some View {
         HStack {
             Image(systemName: currentIcon)
-                .font(.system(size: 16))
                 .foregroundStyle(.accent)
             
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading) {
                 Text(departmentName)
                     .font(.headline)
-                Text("\(uniqueDaysCount) \("reports_count".localized())")
+                Text("\(reportsCount) " + (reportsCount == 1 ? "report".localized() : "reports".localized()))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-        }
-        .padding(.vertical, 4)
-        .contextMenu {
-            Button {
-                isShowingEditSheet = true
-            } label: {
-                Label("edit_name".localized(), systemImage: "pencil")
-            }
             
-            Button {
-                isShowingIconPicker = true
-            } label: {
-                Label("change_icon".localized(), systemImage: "photo")
-            }
+            Spacer()
+        }
+        .onAppear {
+            updateCurrentIcon()
         }
         .sheet(isPresented: $isShowingEditSheet) {
             EditDepartmentSheet(departmentName: departmentName, reports: reports)
         }
-        .sheet(isPresented: $isShowingIconPicker) {
-            IconPickerView(departmentName: departmentName)
-        }
-        .onAppear {
-            updateCurrentIcon()
-            setupNotificationObserver()
-        }
-        .onChange(of: iconStorage) {
-            updateCurrentIcon()
-        }
-    }
-    
-    private func setupNotificationObserver() {
-        NotificationCenter.default.addObserver(
-            forName: .departmentIconDidChange,
-            object: nil,
-            queue: .main
-        ) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .departmentIconDidChange)) { _ in
             updateCurrentIcon()
         }
     }
