@@ -15,11 +15,18 @@ struct YearChartsView: View {
     ]
     
     @State private var isShowingYearlySummary = false
+    @State private var isShowingDepartmentFilter = false
+    @State private var selectedDepartments: Set<String> = []
+    
+    // Add computed property for departments
+    private var availableDepartments: [String] {
+        Array(Set(data.map { $0.departmentName })).sorted()
+    }
     
     // Procesar los datos para agrupar por día
     var processedData: [ChartData] {
-        // Primero agrupamos por departamento
-        let reportsByDepartment = Dictionary(grouping: data) { $0.departmentName }
+        let filteredData = selectedDepartments.isEmpty ? data : data.filter { selectedDepartments.contains($0.departmentName) }
+        let reportsByDepartment = Dictionary(grouping: filteredData) { $0.departmentName }
         
         var result: [ChartData] = []
         
@@ -134,7 +141,6 @@ struct YearChartsView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding(.horizontal)
             }
-            .padding()
         }
         .navigationTitle(String(format: "charts_for".localized(), String(year)))
         .navigationBarTitleDisplayMode(.large)
@@ -147,9 +153,60 @@ struct YearChartsView: View {
                 }
                 .tint(.red)
             }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isShowingDepartmentFilter = true
+                } label: {
+                    Label("select_departments".localized(), systemImage: "line.3.horizontal.decrease.circle")
+                }
+            }
         }
         .sheet(isPresented: $isShowingYearlySummary) {
             YearlySummaryView(year: year, reports: reports)
+        }
+        .sheet(isPresented: $isShowingDepartmentFilter) {
+            NavigationView {
+                List {
+                    ForEach(availableDepartments, id: \.self) { department in
+                        Button {
+                            if selectedDepartments.contains(department) {
+                                selectedDepartments.remove(department)
+                            } else {
+                                selectedDepartments.insert(department)
+                            }
+                        } label: {
+                            HStack {
+                                Text(department)
+                                Spacer()
+                                if selectedDepartments.contains(department) {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                        .foregroundColor(.primary)
+                    }
+                }
+                .navigationTitle("select_departments".localized())
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("all".localized()) {
+                            if selectedDepartments.count == availableDepartments.count {
+                                selectedDepartments.removeAll()
+                            } else {
+                                selectedDepartments = Set(availableDepartments)
+                            }
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("done".localized()) {
+                            isShowingDepartmentFilter = false
+                        }
+                    }
+                }
+            }
         }
     }
 }

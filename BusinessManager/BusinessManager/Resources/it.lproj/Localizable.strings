@@ -519,3 +519,6 @@
 "notifications_settings_title" = "Attiva Notifiche";
 "notifications_settings_message" = "Per ricevere notifiche sulle attività, abilitale nelle Impostazioni";
 "open_settings" = "Apri Impostazioni";
+
+"select_departments" = "Seleziona Dipartimenti";
+"select_all" = "Seleziona Tutto";

@@ -523,3 +523,6 @@
 "notifications_settings_title" = "Ativar Notificações";
 "notifications_settings_message" = "Para receber notificações de tarefas, ative-as nas Configurações";
 "open_settings" = "Abrir Configurações";
+
+"select_departments" = "Selecionar Departamentos";
+"select_all" = "Selecionar Tudo";

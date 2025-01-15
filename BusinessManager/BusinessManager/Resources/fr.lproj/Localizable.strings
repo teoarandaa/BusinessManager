@@ -519,3 +519,6 @@
 "notifications_settings_title" = "Activer les Notifications";
 "notifications_settings_message" = "Pour recevoir les notifications des tâches, activez-les dans les Paramètres";
 "open_settings" = "Ouvrir les Paramètres";
+
+"select_departments" = "Sélectionner les Départements";
+"select_all" = "Tout sélectionner";

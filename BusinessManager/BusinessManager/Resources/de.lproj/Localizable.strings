@@ -518,3 +518,6 @@
 "notifications_settings_title" = "Benachrichtigungen aktivieren";
 "notifications_settings_message" = "Um Aufgabenbenachrichtigungen zu erhalten, aktivieren Sie sie in den Einstellungen";
 "open_settings" = "Einstellungen öffnen";
+
+"select_departments" = "Abteilungen auswählen";
+"select_all" = "Alle auswählen";

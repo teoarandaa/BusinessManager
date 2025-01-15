@@ -519,3 +519,6 @@
 "notifications_settings_title" = "Enable Notifications";
 "notifications_settings_message" = "To receive task notifications, please enable them in Settings";
 "open_settings" = "Open Settings";
+
+"select_departments" = "Select Departments";
+"select_all" = "Select All";
