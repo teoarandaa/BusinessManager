@@ -533,3 +533,6 @@
 "delete_report_message" = "Êtes-vous sûr de vouloir supprimer ce rapport ? Cette action ne peut pas être annulée.";
 "delete_task_title" = "Supprimer la Tâche";
 "delete_task_message" = "Êtes-vous sûr de vouloir supprimer cette tâche ? Cette action ne peut pas être annulée.";
+
+"task_status" = "État";
+"all_tasks" = "Toutes les Tâches";

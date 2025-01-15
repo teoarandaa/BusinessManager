@@ -14,6 +14,19 @@ struct TaskView: View {
     @State private var sortOption: SortOption = .date
     @State private var showDeleteAlert = false
     @State private var taskToDelete: Task?
+    @State private var statusFilter: TaskStatusFilter = .all
+    
+    enum TaskStatusFilter: String, CaseIterable, Identifiable {
+        case all = "all"
+        case active = "active"
+        case completed = "completed"
+        
+        var id: String { self.rawValue }
+        
+        var localizedName: String {
+            rawValue.localized()
+        }
+    }
     
     var activeTasks: [Task] {
         sortedTasks.filter { !$0.isCompleted }
@@ -48,17 +61,26 @@ struct TaskView: View {
     }
     
     var filteredTasks: [Task] {
-        if searchText.isEmpty {
-            return tasks
+        let searchFiltered = if searchText.isEmpty {
+            tasks
         } else {
-            return tasks.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+            tasks.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        }
+        
+        return switch statusFilter {
+        case .all:
+            searchFiltered
+        case .active:
+            searchFiltered.filter { !$0.isCompleted }
+        case .completed:
+            searchFiltered.filter { $0.isCompleted }
         }
     }
     
     var body: some View {
         NavigationStack {
             List {
-                if !activeTasks.isEmpty {
+                if statusFilter != .completed && !activeTasks.isEmpty {
                     Section("active_tasks".localized()) {
                         ForEach(activeTasks) { task in
                             TaskRow(
@@ -72,7 +94,7 @@ struct TaskView: View {
                     }
                 }
                 
-                if !completedTasks.isEmpty {
+                if statusFilter != .active && !completedTasks.isEmpty {
                     Section("completed_tasks".localized()) {
                         ForEach(completedTasks) { task in
                             TaskRow(
@@ -126,11 +148,33 @@ struct TaskView: View {
                         Menu {
                             Picker("sort_by".localized(), selection: $sortOption) {
                                 ForEach(SortOption.allCases) { option in
-                                    Text(option.localizedName).tag(option)
+                                    Label(option.localizedName, systemImage: option == .date ? "calendar" : "flag")
+                                        .tag(option)
                                 }
                             }
+                            
+                            Divider()
+                            
+                            Menu("task_status".localized()) {
+                                Button("all_tasks".localized()) {
+                                    statusFilter = .all
+                                }
+                                .foregroundStyle(statusFilter == .all ? .blue : .primary)
+                                
+                                Divider()
+                                
+                                Button("active_tasks".localized()) {
+                                    statusFilter = .active
+                                }
+                                .foregroundStyle(statusFilter == .active ? .blue : .primary)
+                                
+                                Button("completed_tasks".localized()) {
+                                    statusFilter = .completed
+                                }
+                                .foregroundStyle(statusFilter == .completed ? .blue : .primary)
+                            }
                         } label: {
-                            Label("sort".localized(), systemImage: "arrow.up.arrow.down")
+                            Label("filter_and_sort".localized(), systemImage: "line.3.horizontal.decrease.circle")
                         }
                         
                         Button("add_task".localized(), systemImage: "plus") {

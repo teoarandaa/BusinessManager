@@ -540,3 +540,6 @@
 "delete_report_message" = "¿Estás seguro de que quieres eliminar este informe? Esta acción no se puede deshacer.";
 "delete_task_title" = "Eliminar Tarea";
 "delete_task_message" = "¿Estás seguro de que quieres eliminar esta tarea? Esta acción no se puede deshacer.";
+
+"task_status" = "Estado";
+"all_tasks" = "Todas las Tareas";

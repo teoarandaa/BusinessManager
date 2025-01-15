@@ -537,3 +537,6 @@
 "delete_report_message" = "Tem certeza que deseja excluir este relatório? Esta ação não pode ser desfeita.";
 "delete_task_title" = "Excluir Tarefa";
 "delete_task_message" = "Tem certeza que deseja excluir esta tarefa? Esta ação não pode ser desfeita.";
+
+"task_status" = "Status";
+"all_tasks" = "Todas as Tarefas";

@@ -533,3 +533,7 @@
 "delete_report_message" = "Sei sicuro di voler eliminare questo rapporto? Questa azione non può essere annullata.";
 "delete_task_title" = "Elimina Attività";
 "delete_task_message" = "Sei sicuro di voler eliminare questa attività? Questa azione non può essere annullata.";
+
+// MARK: - Task Status
+"task_status" = "Stato";
+"all_tasks" = "Tutte le Attività";

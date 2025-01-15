@@ -532,3 +532,6 @@
 "delete_report_message" = "Sind Sie sicher, dass Sie diesen Bericht löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";
 "delete_task_title" = "Aufgabe löschen";
 "delete_task_message" = "Sind Sie sicher, dass Sie diese Aufgabe löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.";
+
+"task_status" = "Aufgabenstatus";
+"all_tasks" = "Alle Aufgaben";
