@@ -112,6 +112,10 @@ struct OnboardingView: View {
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .animation(.spring(duration: 0.3), value: currentPage)
+                    .onChange(of: currentPage) { _, _ in
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                    }
                     .safeAreaInset(edge: .bottom) {
                         // Barra de progreso/Botón
                         GeometryReader { geometry in
