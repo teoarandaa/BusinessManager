@@ -295,6 +295,10 @@ struct AddTaskSheet: View {
     let priorityOptions = ["P3", "P2", "P1"]
     
     private func scheduleNotification(for task: Task) {
+        guard UserDefaults.standard.bool(forKey: "isPushEnabled") else { return }
+        
+        let notificationDays = [3, 2, 1, 0]
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
         
@@ -303,8 +307,6 @@ struct AddTaskSheet: View {
         print("🔔 Scheduling notifications:")
         
         // Notificaciones antes del vencimiento
-        let notificationDays = [3, 2, 1, 0]
-        
         for days in notificationDays {
             let content = UNMutableNotificationContent()
             

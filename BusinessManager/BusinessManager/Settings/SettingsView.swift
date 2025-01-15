@@ -35,7 +35,8 @@ struct SettingsView: View {
     private func checkNotificationStatus() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
-                isPushEnabled = settings.authorizationStatus == .authorized
+                let isAuthorized = settings.authorizationStatus == .authorized
+                isPushEnabled = isAuthorized && UserDefaults.standard.bool(forKey: "isPushEnabled")
             }
         }
     }
@@ -49,6 +50,7 @@ struct SettingsView: View {
                 DispatchQueue.main.async {
                     if granted {
                         isPushEnabled = true
+                        UserDefaults.standard.set(true, forKey: "isPushEnabled")
                         print("✅ Notifications permission granted")
                         print("   • Alert notifications: Enabled")
                         print("   • Badge notifications: Enabled")
@@ -74,6 +76,7 @@ struct SettingsView: View {
                         }
                     } else {
                         isPushEnabled = false
+                        UserDefaults.standard.set(false, forKey: "isPushEnabled")
                         showNotificationSettingsAlert = true
                         print("❌ Notifications permission denied")
                         if let error = error {
@@ -84,23 +87,19 @@ struct SettingsView: View {
                 }
             }
         } else {
-            // Si el usuario quiere desactivar las notificaciones
-            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-                print("\n🔕 Disabling all notifications")
-                print("📋 Pending notifications being removed: \(requests.count)")
-                
-                if requests.isEmpty {
-                    print("ℹ️ No pending notifications to remove")
-                } else {
-                    for request in requests {
-                        print("   • Removing notification: \(request.identifier)")
-                    }
-                }
-                
-                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                print("✅ All notifications have been disabled successfully")
-                print("💤 Notification system deactivated\n")
-            }
+            // Cuando se desactiva el toggle
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+            
+            isPushEnabled = false
+            UserDefaults.standard.set(false, forKey: "isPushEnabled")
+            
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            print("\n🔕 Disabling all notifications")
+            print("✅ All notifications have been removed")
+            print("💤 Notification system deactivated\n")
         }
     }
     
