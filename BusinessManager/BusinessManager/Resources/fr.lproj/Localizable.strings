@@ -536,3 +536,8 @@
 
 "task_status" = "État";
 "all_tasks" = "Toutes les Tâches";
+
+"no_active_tasks" = "Aucune tâche active";
+"no_active_tasks_description" = "Vous n'avez aucune tâche active pour le moment. Ajoutez une nouvelle tâche pour commencer.";
+"no_completed_tasks" = "Aucune tâche terminée";
+"no_completed_tasks_description" = "Vous n'avez pas encore terminé de tâches. Les tâches apparaîtront ici une fois marquées comme terminées.";

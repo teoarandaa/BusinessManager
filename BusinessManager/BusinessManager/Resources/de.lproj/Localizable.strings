@@ -535,3 +535,8 @@
 
 "task_status" = "Aufgabenstatus";
 "all_tasks" = "Alle Aufgaben";
+
+"no_active_tasks" = "Keine aktiven Aufgaben";
+"no_active_tasks_description" = "Sie haben derzeit keine aktiven Aufgaben. Fügen Sie eine neue Aufgabe hinzu, um zu beginnen.";
+"no_completed_tasks" = "Keine abgeschlossenen Aufgaben";
+"no_completed_tasks_description" = "Sie haben noch keine Aufgaben abgeschlossen. Aufgaben erscheinen hier, sobald sie als abgeschlossen markiert werden.";

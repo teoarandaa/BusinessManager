@@ -543,3 +543,8 @@
 
 "task_status" = "Estado";
 "all_tasks" = "Todas las Tareas";
+
+"no_active_tasks" = "Sin Tareas Activas";
+"no_active_tasks_description" = "No tienes tareas activas en este momento. Añade una nueva tarea para comenzar.";
+"no_completed_tasks" = "Sin Tareas Completadas";
+"no_completed_tasks_description" = "Aún no has completado ninguna tarea. Las tareas aparecerán aquí una vez marcadas como completadas.";

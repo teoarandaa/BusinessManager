@@ -537,3 +537,8 @@
 // MARK: - Task Status
 "task_status" = "Stato";
 "all_tasks" = "Tutte le Attività";
+
+"no_active_tasks" = "Nessuna Attività Attiva";
+"no_active_tasks_description" = "Non hai attività attive al momento. Aggiungi una nuova attività per iniziare.";
+"no_completed_tasks" = "Nessuna Attività Completata";
+"no_completed_tasks_description" = "Non hai ancora completato nessuna attività. Le attività appariranno qui una volta contrassegnate come completate.";
