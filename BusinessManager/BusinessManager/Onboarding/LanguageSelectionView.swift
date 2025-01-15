@@ -13,6 +13,7 @@ struct LanguageSelectionView: View {
     @State private var languageOpacities: [String: Double] = [:]
     @State private var selectLanguageTitleOpacity: Double = 0
     @State private var fullScreenOverlay: Bool = false
+    @State private var currentTitleIndex = 0
     
     private let languages = [
         ("English", "🇺🇸", "en"),
@@ -22,6 +23,18 @@ struct LanguageSelectionView: View {
         ("Deutsch", "🇩🇪", "de"),
         ("Italiano", "🇮🇹", "it")
     ]
+    
+    private let titleTexts = [
+        "Select your language",
+        "Selecciona tu idioma",
+        "Sélectionnez votre langue",
+        "Seleziona la tua lingua",
+        "Wählen Sie Ihre Sprache",
+        "Selecione seu idioma"
+    ]
+    
+    // Timer para cambiar el texto
+    let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
     
     var body: some View {
         GeometryReader { geometry in
@@ -43,11 +56,13 @@ struct LanguageSelectionView: View {
                                 .frame(width: 100, height: 100)
                                 .opacity(selectLanguageTitleOpacity)
                             
-                            Text("Select your language")
+                            Text(titleTexts[currentTitleIndex])
                                 .font(.title2)
                                 .foregroundColor(.white)
                                 .bold()
                                 .opacity(selectLanguageTitleOpacity)
+                                .transition(.opacity)
+                                .id(currentTitleIndex) // Importante para la animación
                             
                             VStack(spacing: 16) {
                                 ForEach(languages, id: \.2) { language in
@@ -81,6 +96,11 @@ struct LanguageSelectionView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        .onReceive(timer) { _ in
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                currentTitleIndex = (currentTitleIndex + 1) % titleTexts.count
+                            }
+                        }
                     }
                 }
             }
