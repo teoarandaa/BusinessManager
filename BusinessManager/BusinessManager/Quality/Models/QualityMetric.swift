@@ -3,31 +3,32 @@ import SwiftUI
 
 @Model
 class QualityMetric {
-    var id: UUID
-    var date: Date
-    var name: String
-    var value: Double
-    var target: Double
-    var trend: MetricTrend
-    var impact: ImpactLevel
-    @Relationship(deleteRule: .cascade) var report: Report?
+    var id: UUID = UUID()
+    var date: Date = Date.now
+    var name: String = ""
+    var value: Double = 0.0
+    var target: Double = 0.0
+    var trend: MetricTrend = MetricTrend.stable
+    var impact: ImpactLevel = ImpactLevel.medium
+    @Relationship(inverse: \Report.metrics) var report: Report?
+    @Attribute(.externalStorage) var cloudID: String = UUID().uuidString
     
-    enum MetricTrend: Int, Codable {
-        case improving
-        case stable
-        case declining
+    enum MetricTrend: Int, Codable, CaseIterable {
+        case improving = 0
+        case stable = 1
+        case declining = 2
     }
     
-    enum ImpactLevel: Int, Codable {
-        case critical
-        case high
-        case medium
-        case low
+    enum ImpactLevel: Int, Codable, CaseIterable {
+        case critical = 0
+        case high = 1
+        case medium = 2
+        case low = 3
     }
     
     init(
         id: UUID = UUID(),
-        date: Date = .now,
+        date: Date = Date.now,
         name: String,
         value: Double,
         target: Double,
@@ -36,6 +37,7 @@ class QualityMetric {
         report: Report? = nil
     ) {
         self.id = id
+        self.cloudID = UUID().uuidString
         self.date = date
         self.name = name
         self.value = value

@@ -4,40 +4,39 @@ import Observation
 
 @Model
 class Report {
-    @Attribute(.unique) var id: UUID
-    var date: Date
-    var departmentName: String
-    var totalTasksCreated: Int
-    var tasksCompletedWithoutDelay: Int
-    var numberOfFinishedTasks: Int
-    var annotations: String
-    
-    // Propiedades calculadas
-    var performanceMark: Int {
-        let baseNumber = totalTasksCreated == 0 ? tasksCompletedWithoutDelay : totalTasksCreated
-        return Int((Double(tasksCompletedWithoutDelay) / Double(baseNumber)) * 100)
-    }
-    
-    var volumeOfWorkMark: Int {
-        let baseNumber = totalTasksCreated == 0 ? numberOfFinishedTasks : totalTasksCreated
-        return Int((Double(numberOfFinishedTasks) / Double(baseNumber)) * 100)
-    }
+    var id: UUID = UUID()
+    var date: Date = Date.now
+    var departmentName: String = ""
+    var totalTasksCreated: Int = 0
+    var tasksCompletedWithoutDelay: Int = 0
+    var numberOfFinishedTasks: Int = 0
+    var annotations: String = ""
+    var performanceMark: Int = 0
+    var volumeOfWorkMark: Int = 0
+    @Relationship(deleteRule: .cascade) var metrics: [QualityMetric]?
+    @Attribute(.externalStorage) var cloudID: String = UUID().uuidString
     
     init(
-        date: Date = .now,
+        date: Date = Date.now,
         departmentName: String,
         totalTasksCreated: Int,
         tasksCompletedWithoutDelay: Int,
         numberOfFinishedTasks: Int,
-        annotations: String
+        annotations: String,
+        performanceMark: Int = 0,
+        volumeOfWorkMark: Int = 0
     ) {
         self.id = UUID()
+        self.cloudID = UUID().uuidString
         self.date = date
         self.departmentName = departmentName
         self.totalTasksCreated = totalTasksCreated
         self.tasksCompletedWithoutDelay = tasksCompletedWithoutDelay
         self.numberOfFinishedTasks = numberOfFinishedTasks
         self.annotations = annotations
+        self.performanceMark = performanceMark
+        self.volumeOfWorkMark = volumeOfWorkMark
+        self.metrics = []
     }
 }
 
@@ -58,23 +57,24 @@ struct DailyReportSummary {
     var volumeOfWorkMark: Int
     
     static func fromReports(_ reports: [Report]) -> DailyReportSummary {
-        let totalTasksCreated = reports.reduce(0) { $0 + $1.totalTasksCreated }
-        let tasksCompletedWithoutDelay = reports.reduce(0) { $0 + $1.tasksCompletedWithoutDelay }
-        let numberOfFinishedTasks = reports.reduce(0) { $0 + $1.numberOfFinishedTasks }
+        let totalTasksCreated = reports.reduce(into: 0) { $0 += $1.totalTasksCreated }
+        let tasksCompletedWithoutDelay = reports.reduce(into: 0) { $0 += $1.tasksCompletedWithoutDelay }
+        let numberOfFinishedTasks = reports.reduce(into: 0) { $0 += $1.numberOfFinishedTasks }
         
-        // Filtrar anotaciones vacías antes de unirlas
         let annotations = reports
             .map { $0.annotations }
             .filter { !$0.isEmpty }
             .joined(separator: " | ")
         
-        // Calculate averages
-        let avgPerformance = reports.reduce(0) { $0 + $1.performanceMark } / reports.count
-        let avgVolumeOfWork = reports.reduce(0) { $0 + $1.volumeOfWorkMark } / reports.count
+        let totalPerformance = reports.reduce(into: 0) { $0 += $1.performanceMark }
+        let totalVolumeOfWork = reports.reduce(into: 0) { $0 += $1.volumeOfWorkMark }
+        
+        let avgPerformance = reports.isEmpty ? 0 : totalPerformance / reports.count
+        let avgVolumeOfWork = reports.isEmpty ? 0 : totalVolumeOfWork / reports.count
         
         return DailyReportSummary(
-            date: reports[0].date,
-            departmentName: reports[0].departmentName,
+            date: reports.first?.date ?? .now,
+            departmentName: reports.first?.departmentName ?? "",
             totalTasksCreated: totalTasksCreated,
             tasksCompletedWithoutDelay: tasksCompletedWithoutDelay,
             numberOfFinishedTasks: numberOfFinishedTasks,

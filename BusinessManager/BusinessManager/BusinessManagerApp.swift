@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import UserNotifications
+import CloudKit
 
 @main
 struct BusinessManagerApp: App {
@@ -17,7 +18,15 @@ struct BusinessManagerApp: App {
                 QualityInsight.self
             ])
             
-            container = try ModelContainer(for: schema)
+            let modelConfiguration = ModelConfiguration(
+                schema: schema,
+                cloudKitDatabase: .automatic
+            )
+            
+            container = try ModelContainer(
+                for: schema,
+                configurations: [modelConfiguration]
+            )
         } catch {
             fatalError("Could not initialize ModelContainer: \(error)")
         }

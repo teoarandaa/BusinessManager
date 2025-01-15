@@ -3,15 +3,17 @@ import SwiftData
 
 @Model
 final class Task: Identifiable {
-    @Attribute(.unique) var id: String
-    var date: Date
-    var title: String
-    var content: String
-    var priority: String
-    var isCompleted: Bool
+    var id: String = UUID().uuidString
+    var date: Date = Date.now
+    var title: String = ""
+    var content: String = ""
+    var priority: String = ""
+    var isCompleted: Bool = false
+    @Attribute(.externalStorage) var cloudID: String = UUID().uuidString
     
     init(date: Date, title: String, content: String, priority: String) {
         self.id = UUID().uuidString
+        self.cloudID = UUID().uuidString
         self.date = date
         self.title = title
         self.content = content
