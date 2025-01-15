@@ -61,8 +61,9 @@ struct LanguageSelectionView: View {
                                 .foregroundColor(.white)
                                 .bold()
                                 .opacity(selectLanguageTitleOpacity)
-                                .transition(.opacity)
-                                .id(currentTitleIndex) // Importante para la animación
+                                .transition(.numericText())
+                                .animation(.easeInOut(duration: 0.5), value: currentTitleIndex)
+                                .id(currentTitleIndex)
                             
                             VStack(spacing: 16) {
                                 ForEach(languages, id: \.2) { language in
@@ -173,6 +174,15 @@ struct LanguageSelectionView: View {
                 showOnboarding = true
             }
         }
+    }
+}
+
+extension AnyTransition {
+    static func numericText() -> AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .bottom).combined(with: .opacity),
+            removal: .move(edge: .top).combined(with: .opacity)
+        )
     }
 }
 
