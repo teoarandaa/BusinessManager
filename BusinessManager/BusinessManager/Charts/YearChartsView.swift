@@ -167,46 +167,84 @@ struct YearChartsView: View {
         }
         .sheet(isPresented: $isShowingDepartmentFilter) {
             NavigationView {
-                List {
-                    ForEach(availableDepartments, id: \.self) { department in
-                        Button {
-                            if selectedDepartments.contains(department) {
-                                selectedDepartments.remove(department)
-                            } else {
-                                selectedDepartments.insert(department)
-                            }
-                        } label: {
-                            HStack {
-                                Text(department)
-                                Spacer()
-                                if selectedDepartments.contains(department) {
-                                    Image(systemName: "checkmark")
+                VStack(spacing: 0) {
+                    List {
+                        Section {
+                            ForEach(availableDepartments, id: \.self) { department in
+                                Button {
+                                    if selectedDepartments.contains(department) {
+                                        selectedDepartments.remove(department)
+                                    } else {
+                                        selectedDepartments.insert(department)
+                                    }
+                                } label: {
+                                    HStack(spacing: 12) {
+                                        Text(department)
+                                            .foregroundColor(.primary)
+                                        
+                                        Spacer()
+                                        
+                                        if selectedDepartments.contains(department) {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.accentColor)
+                                                .imageScale(.medium)
+                                        } else {
+                                            Image(systemName: "circle")
+                                                .foregroundColor(.gray.opacity(0.5))
+                                                .imageScale(.medium)
+                                        }
+                                    }
+                                    .contentShape(Rectangle())
+                                    .padding(.vertical, 4)
                                 }
                             }
+                        } header: {
+                            Text("\(selectedDepartments.count) / \(availableDepartments.count)")
+                                .foregroundColor(.gray)
+                                .font(.footnote)
+                                .padding(.vertical, 8)
                         }
-                        .foregroundColor(.primary)
+                    }
+                    .listStyle(.insetGrouped)
+                    
+                    // Footer con información
+                    VStack(spacing: 16) {
+                        Divider()
+                        
+                        Text("departments".localized())
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
                     }
                 }
                 .navigationTitle("select_departments".localized())
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button("all".localized()) {
+                        Button {
                             if selectedDepartments.count == availableDepartments.count {
                                 selectedDepartments.removeAll()
                             } else {
                                 selectedDepartments = Set(availableDepartments)
                             }
+                        } label: {
+                            Text("all".localized())
+                                .fontWeight(.medium)
                         }
                     }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("done".localized()) {
+                        Button {
                             isShowingDepartmentFilter = false
+                        } label: {
+                            Text("done".localized())
+                                .fontWeight(.medium)
                         }
                     }
                 }
             }
+            .presentationDetents([.medium, .large])
         }
     }
 }
