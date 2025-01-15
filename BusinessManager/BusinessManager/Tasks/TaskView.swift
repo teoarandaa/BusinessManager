@@ -14,7 +14,7 @@ struct TaskView: View {
     @State private var sortOption: SortOption = .date
     @State private var showDeleteAlert = false
     @State private var taskToDelete: Task?
-    @State private var statusFilter: TaskStatusFilter = .all
+    @State private var statusFilter: TaskStatusFilter = .active
     
     enum TaskStatusFilter: String, CaseIterable, Identifiable {
         case all = "all"
@@ -80,30 +80,52 @@ struct TaskView: View {
     var body: some View {
         NavigationStack {
             List {
-                if statusFilter != .completed && !activeTasks.isEmpty {
-                    Section("active_tasks".localized()) {
-                        ForEach(activeTasks) { task in
-                            TaskRow(
-                                task: task,
-                                context: context,
-                                selectedTask: $taskToEdit,
-                                showDeleteAlert: $showDeleteAlert,
-                                taskToDelete: $taskToDelete
-                            )
+                if !tasks.isEmpty {
+                    if statusFilter != .completed {
+                        Section("active_tasks".localized()) {
+                            if activeTasks.isEmpty {
+                                ContentUnavailableView(label: {
+                                    Label("no_active_tasks".localized(), systemImage: "tray")
+                                }, description: {
+                                    Text("no_active_tasks_description".localized())
+                                })
+                                .listRowBackground(Color.clear)
+                                .listSectionSeparator(.hidden)
+                            } else {
+                                ForEach(activeTasks) { task in
+                                    TaskRow(
+                                        task: task,
+                                        context: context,
+                                        selectedTask: $taskToEdit,
+                                        showDeleteAlert: $showDeleteAlert,
+                                        taskToDelete: $taskToDelete
+                                    )
+                                }
+                            }
                         }
                     }
-                }
-                
-                if statusFilter != .active && !completedTasks.isEmpty {
-                    Section("completed_tasks".localized()) {
-                        ForEach(completedTasks) { task in
-                            TaskRow(
-                                task: task,
-                                context: context,
-                                selectedTask: $taskToEdit,
-                                showDeleteAlert: $showDeleteAlert,
-                                taskToDelete: $taskToDelete
-                            )
+                    
+                    if statusFilter != .active {
+                        Section("completed_tasks".localized()) {
+                            if completedTasks.isEmpty {
+                                ContentUnavailableView(label: {
+                                    Label("no_completed_tasks".localized(), systemImage: "checkmark.circle")
+                                }, description: {
+                                    Text("no_completed_tasks_description".localized())
+                                })
+                                .listRowBackground(Color.clear)
+                                .listSectionSeparator(.hidden)
+                            } else {
+                                ForEach(completedTasks) { task in
+                                    TaskRow(
+                                        task: task,
+                                        context: context,
+                                        selectedTask: $taskToEdit,
+                                        showDeleteAlert: $showDeleteAlert,
+                                        taskToDelete: $taskToDelete
+                                    )
+                                }
+                            }
                         }
                     }
                 }

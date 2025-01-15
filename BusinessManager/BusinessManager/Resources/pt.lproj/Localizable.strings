@@ -540,3 +540,8 @@
 
 "task_status" = "Status";
 "all_tasks" = "Todas as Tarefas";
+
+"no_active_tasks" = "Sem Tarefas Ativas";
+"no_active_tasks_description" = "Você não tem tarefas ativas no momento. Adicione uma nova tarefa para começar.";
+"no_completed_tasks" = "Sem Tarefas Concluídas";
+"no_completed_tasks_description" = "Você ainda não concluiu nenhuma tarefa. As tarefas aparecerão aqui depois de marcadas como concluídas.";

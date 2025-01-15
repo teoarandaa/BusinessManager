@@ -536,3 +536,8 @@
 
 "task_status" = "Status";
 "all_tasks" = "All Tasks";
+
+"no_active_tasks" = "No Active Tasks";
+"no_active_tasks_description" = "You don't have any active tasks at the moment. Add a new task to get started.";
+"no_completed_tasks" = "No Completed Tasks";
+"no_completed_tasks_description" = "You haven't completed any tasks yet. Tasks will appear here once marked as completed.";
