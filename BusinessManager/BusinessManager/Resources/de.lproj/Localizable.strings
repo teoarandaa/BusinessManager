@@ -542,3 +542,12 @@
 "no_completed_tasks_description" = "Sie haben noch keine Aufgaben abgeschlossen. Aufgaben erscheinen hier, sobald sie als abgeschlossen markiert werden.";
 
 "completed_tasks_note" = "Hinweis: Abgeschlossene Aufgaben können nicht bearbeitet werden.";
+
+"security" = "Sicherheit";
+
+"biometric_usage_description" = "Wir verwenden Face ID/Touch ID für den sicheren Zugriff auf die App";
+
+"authenticate" = "Authentifizieren";
+"authentication_error" = "Authentifizierungsfehler";
+
+"biometric_authentication" = "Biometrische Authentifizierung";

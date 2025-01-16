@@ -8,5 +8,7 @@
 	</array>
 	<key>aps-environment</key>
 	<string>development</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>biometric_usage_description</string>
 </dict>
 </plist>

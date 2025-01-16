@@ -36,6 +36,7 @@
 "language_change_message" = "Pour appliquer la nouvelle langue, l'application doit redémarrer.";
 "restart_now" = "Redémarrer maintenant";
 "later" = "Plus tard";
+"security" = "Sécurité";
 
 // MARK: - Reports
 "add_report" = "Ajouter un rapport";
@@ -543,3 +544,10 @@
 "no_completed_tasks_description" = "Vous n'avez pas encore terminé de tâches. Les tâches apparaîtront ici une fois marquées comme terminées.";
 
 "completed_tasks_note" = "Note : Les tâches terminées ne peuvent pas être modifiées.";
+
+"biometric_usage_description" = "Nous utilisons Face ID/Touch ID pour accéder à l'application en toute sécurité";
+
+"authenticate" = "Authentifier";
+"authentication_error" = "Erreur d'authentification";
+
+"biometric_authentication" = "Authentification Biométrique";

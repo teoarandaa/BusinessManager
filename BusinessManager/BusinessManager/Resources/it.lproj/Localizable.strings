@@ -544,3 +544,12 @@
 "no_completed_tasks_description" = "Non hai ancora completato nessuna attività. Le attività appariranno qui una volta contrassegnate come completate.";
 
 "completed_tasks_note" = "Nota: Le attività completate non possono essere modificate.";
+
+"security" = "Sicurezza";
+
+"biometric_usage_description" = "Utilizziamo Face ID/Touch ID per accedere in modo sicuro all'app";
+
+"authenticate" = "Autenticare";
+"authentication_error" = "Errore di autenticazione";
+
+"biometric_authentication" = "Autenticazione Biometrica";

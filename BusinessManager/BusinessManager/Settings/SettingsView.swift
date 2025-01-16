@@ -1,10 +1,12 @@
 import SwiftUI
 import SwiftData
+import LocalAuthentication
 
 struct SettingsView: View {
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     @AppStorage("isPushEnabled") private var isPushEnabled = false
     @AppStorage("appLanguage") private var appLanguage = "es" // Nuevo AppStorage para el idioma
+    @AppStorage("isBiometricEnabled") private var isBiometricEnabled = false // Nuevo AppStorage
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.modelContext) private var context
@@ -157,6 +159,45 @@ struct SettingsView: View {
         }
     }
     
+    // Función para verificar si el dispositivo soporta biometría
+    private func biometricType() -> String {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            switch context.biometryType {
+            case .faceID:
+                return "Face ID"
+            case .touchID:
+                return "Touch ID"
+            default:
+                return ""
+            }
+        }
+        return ""
+    }
+    
+    private func authenticateWithBiometrics() {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "biometric_usage_description".localized()) { success, error in
+                DispatchQueue.main.async {
+                    if success {
+                        isBiometricEnabled = true
+                    } else {
+                        // Si falla la autenticación, revertimos el toggle
+                        isBiometricEnabled = false
+                    }
+                }
+            }
+        } else {
+            // Si no se puede usar biometría, revertimos el toggle
+            isBiometricEnabled = false
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             List {
@@ -240,6 +281,28 @@ struct SettingsView: View {
                     }
                     NavigationLink(destination: ExportCSVView()) {
                         Label("export_csv".localized(), systemImage: "arrow.down.doc")
+                    }
+                }
+                // Añadir nueva sección de seguridad después de notificaciones
+                if !biometricType().isEmpty {
+                    Section("security".localized()) {
+                        Toggle(isOn: Binding(
+                            get: { isBiometricEnabled },
+                            set: { newValue in
+                                if newValue {
+                                    authenticateWithBiometrics()
+                                } else {
+                                    isBiometricEnabled = false
+                                }
+                            }
+                        )) {
+                            Label {
+                                Text("biometric_authentication".localized())
+                            } icon: {
+                                Image(systemName: biometricType() == "Face ID" ? "faceid" : "touchid")
+                                    .symbolEffect(.bounce, value: isBiometricEnabled)
+                            }
+                        }
                     }
                 }
                 Section {

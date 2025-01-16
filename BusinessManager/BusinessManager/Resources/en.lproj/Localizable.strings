@@ -543,3 +543,12 @@
 "no_completed_tasks_description" = "You haven't completed any tasks yet. Tasks will appear here once marked as completed.";
 
 "completed_tasks_note" = "Note: Completed tasks cannot be edited.";
+
+"security" = "Security";
+
+"biometric_usage_description" = "We use Face ID/Touch ID to securely access the app";
+
+"authenticate" = "Authenticate";
+"authentication_error" = "Authentication Error";
+
+"biometric_authentication" = "Biometric Authentication";

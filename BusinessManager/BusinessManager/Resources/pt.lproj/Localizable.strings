@@ -547,3 +547,12 @@
 "no_completed_tasks_description" = "Você ainda não concluiu nenhuma tarefa. As tarefas aparecerão aqui depois de marcadas como concluídas.";
 
 "completed_tasks_note" = "Nota: Tarefas concluídas não podem ser editadas.";
+
+"security" = "Segurança";
+
+"biometric_usage_description" = "Usamos Face ID/Touch ID para acessar o aplicativo com segurança";
+
+"authenticate" = "Autenticar";
+"authentication_error" = "Erro de autenticação";
+
+"biometric_authentication" = "Autenticação Biométrica";
