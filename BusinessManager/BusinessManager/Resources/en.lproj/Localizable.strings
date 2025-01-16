@@ -307,7 +307,7 @@
 "how_create_tasks" = "How to Create Tasks";
 "tasks_creation_description" = "Tasks are created with the following information: expiring date to set deadlines, title for the task name, content for task details, comments for additional notes, and priority to indicate urgency. This data ensures tasks are well-organized and managed effectively.";
 "sort_tasks" = "Sort Tasks";
-"sort_description" = "The Sort functionality organizes your tasks effectively. Sort by date for a chronological view of deadlines, or by priority to focus on critical tasks first. This flexibility helps you manage your workflow according to your current needs.";
+"sort_description" = "The Sort functionality organizes your tasks effectively. Sort by date for a chronological view of deadlines, by priority to focus on critical tasks first, or filter by status (active, completed, or all tasks). This flexibility helps you manage your workflow according to your current needs. Note that completed tasks cannot be edited.";
 "add_task" = "Add Task";
 "add_task_description" = "Creating a new task is an intuitive process where you can specify deadlines, set priorities, and add detailed descriptions. Additional comments provide context and improve task tracking, ensuring clear communication throughout the process.";
 "managing_tasks" = "Managing Tasks";
@@ -541,3 +541,5 @@
 "no_active_tasks_description" = "You don't have any active tasks at the moment. Add a new task to get started.";
 "no_completed_tasks" = "No Completed Tasks";
 "no_completed_tasks_description" = "You haven't completed any tasks yet. Tasks will appear here once marked as completed.";
+
+"completed_tasks_note" = "Note: Completed tasks cannot be edited.";
