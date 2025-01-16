@@ -36,6 +36,7 @@
 "language_change_message" = "Pour appliquer la nouvelle langue, l'application doit redémarrer.";
 "restart_now" = "Redémarrer maintenant";
 "later" = "Plus tard";
+"security" = "Sécurité";
 
 // MARK: - Reports
 "add_report" = "Ajouter un rapport";
@@ -307,7 +308,7 @@
 "how_create_tasks" = "Comment créer des tâches";
 "tasks_creation_description" = "Les tâches incluent : date d'expiration, titre, contenu, commentaires et priorité. Ces éléments assurent une gestion efficace des tâches.";
 "sort_tasks" = "Trier les tâches";
-"sort_description" = "La fonction de tri organise vos tâches efficacement. Triez par date pour une vue chronologique des délais, ou par priorité pour vous concentrer d'abord sur les tâches critiques. Cette flexibilité vous aide à gérer votre flux de travail en fonction de vos besoins actuels.";
+"sort_description" = "La fonction de tri organise vos tâches efficacement. Triez par date pour une vue chronologique des délais, par priorité pour vous concentrer d'abord sur les tâches critiques, ou filtrez par état (actives, terminées ou toutes les tâches). Cette flexibilité vous aide à gérer votre flux de travail en fonction de vos besoins actuels. Notez que les tâches terminées ne peuvent pas être modifiées.";
 "add_task" = "Ajouter une tâche";
 "add_task_description" = "Créer une nouvelle tâche est un processus intuitif où vous pouvez spécifier des délais, définir des priorités et ajouter des descriptions détaillées. Des commentaires supplémentaires fournissent du contexte et améliorent le suivi des tâches, garantissant une communication claire tout au long du processus.";
 "managing_tasks" = "Gestion des tâches";
@@ -541,3 +542,12 @@
 "no_active_tasks_description" = "Vous n'avez aucune tâche active pour le moment. Ajoutez une nouvelle tâche pour commencer.";
 "no_completed_tasks" = "Aucune tâche terminée";
 "no_completed_tasks_description" = "Vous n'avez pas encore terminé de tâches. Les tâches apparaîtront ici une fois marquées comme terminées.";
+
+"completed_tasks_note" = "Note : Les tâches terminées ne peuvent pas être modifiées.";
+
+"biometric_usage_description" = "Nous utilisons Face ID/Touch ID pour accéder à l'application en toute sécurité";
+
+"authenticate" = "Authentifier";
+"authentication_error" = "Erreur d'authentification";
+
+"biometric_authentication" = "Authentification Biométrique";

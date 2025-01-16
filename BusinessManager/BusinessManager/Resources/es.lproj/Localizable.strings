@@ -297,7 +297,7 @@
 "how_create_tasks" = "Cómo Crear Tareas";
 "tasks_creation_description" = "Las tareas se crean con la siguiente información: fecha de vencimiento para establecer plazos, título para el nombre de la tarea, contenido para detalles de la tarea, comentarios para notas adicionales y prioridad para indicar urgencia. Estos datos aseguran que las tareas estén bien organizadas y gestionadas efectivamente.";
 "sort_tasks" = "Ordenar Tareas";
-"sort_description" = "La funcionalidad de Ordenar organiza tus tareas efectivamente. Ordena por fecha para una vista cronológica de plazos, o por prioridad para enfocarte primero en tareas críticas. Esta flexibilidad te ayuda a gestionar tu flujo de trabajo según tus necesidades actuales.";
+"sort_description" = "La funcionalidad de Ordenación organiza tus tareas de forma efectiva. Ordena por fecha para una vista cronológica de los plazos, por prioridad para enfocarte primero en las tareas críticas, o filtra por estado (activas, completadas o todas las tareas). Esta flexibilidad te ayuda a gestionar tu flujo de trabajo según tus necesidades actuales. Ten en cuenta que las tareas completadas no se pueden editar.";
 "add_task" = "Añadir Tarea";
 "add_task_description" = "Crear una nueva tarea es un proceso intuitivo donde puedes especificar plazos, establecer prioridades y añadir descripciones detalladas. Los comentarios adicionales proporcionan contexto y mejoran el seguimiento de tareas, asegurando una comunicación clara durante todo el proceso.";
 "managing_tasks" = "Gestión de Tareas";
@@ -548,3 +548,15 @@
 "no_active_tasks_description" = "No tienes tareas activas en este momento. Añade una nueva tarea para comenzar.";
 "no_completed_tasks" = "Sin Tareas Completadas";
 "no_completed_tasks_description" = "Aún no has completado ninguna tarea. Las tareas aparecerán aquí una vez marcadas como completadas.";
+
+"sort_description" = "La funcionalidad de Ordenación organiza tus tareas de forma efectiva. Ordena por fecha para una vista cronológica de los plazos, por prioridad para enfocarte primero en las tareas críticas, o filtra por estado (activas, completadas o todas las tareas). Esta flexibilidad te ayuda a gestionar tu flujo de trabajo según tus necesidades actuales. Ten en cuenta que las tareas completadas no se pueden editar.";
+"completed_tasks_note" = "Nota: Las tareas completadas no se pueden editar.";
+
+"security" = "Seguridad";
+
+"biometric_usage_description" = "Utilizamos Face ID/Touch ID para acceder de forma segura a la aplicación";
+
+"authenticate" = "Autenticar";
+"authentication_error" = "Error de autenticación";
+
+"biometric_authentication" = "Autenticación Biométrica";

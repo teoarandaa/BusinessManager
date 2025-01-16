@@ -309,7 +309,7 @@
 "how_create_tasks" = "Como Criar Tarefas";
 "tasks_creation_description" = "As tarefas são criadas com as seguintes informações: data de vencimento para definir prazos, título para o nome da tarefa, conteúdo para detalhes da tarefa, comentários para notas adicionais e prioridade para indicar urgência. Esses dados garantem que as tarefas sejam bem organizadas e gerenciadas de forma eficaz.";
 "sort_tasks" = "Ordenar Tarefas";
-"sort_description" = "A funcionalidade de Ordenação organiza suas tarefas de forma eficaz. Ordene por data para uma visão cronológica dos prazos, ou por prioridade para focar primeiro nas tarefas críticas. Essa flexibilidade ajuda você a gerenciar seu fluxo de trabalho de acordo com suas necessidades atuais.";
+"sort_description" = "A funcionalidade de Ordenação organiza suas tarefas de forma eficaz. Ordene por data para uma visão cronológica dos prazos, por prioridade para focar primeiro nas tarefas críticas, ou filtre por status (ativas, concluídas ou todas as tarefas). Essa flexibilidade ajuda você a gerenciar seu fluxo de trabalho de acordo com suas necessidades atuais. Observe que as tarefas concluídas não podem ser editadas.";
 "add_task" = "Adicionar Tarefa";
 "add_task_description" = "Criar uma nova tarefa é um processo intuitivo onde você pode especificar prazos, definir prioridades e adicionar descrições detalhadas. Comentários adicionais fornecem contexto e melhoram o acompanhamento das tarefas, garantindo uma comunicação clara durante todo o processo.";
 "managing_tasks" = "Gerenciando Tarefas";
@@ -545,3 +545,14 @@
 "no_active_tasks_description" = "Você não tem tarefas ativas no momento. Adicione uma nova tarefa para começar.";
 "no_completed_tasks" = "Sem Tarefas Concluídas";
 "no_completed_tasks_description" = "Você ainda não concluiu nenhuma tarefa. As tarefas aparecerão aqui depois de marcadas como concluídas.";
+
+"completed_tasks_note" = "Nota: Tarefas concluídas não podem ser editadas.";
+
+"security" = "Segurança";
+
+"biometric_usage_description" = "Usamos Face ID/Touch ID para acessar o aplicativo com segurança";
+
+"authenticate" = "Autenticar";
+"authentication_error" = "Erro de autenticação";
+
+"biometric_authentication" = "Autenticação Biométrica";

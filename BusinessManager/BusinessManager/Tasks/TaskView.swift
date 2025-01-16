@@ -230,6 +230,20 @@ struct TaskView: View {
             }
             Button("delete".localized(), role: .destructive) {
                 if let taskToDelete = taskToDelete {
+                    // Eliminar las notificaciones antes de eliminar la tarea
+                    let identifiers = [
+                        "task-\(taskToDelete.id)-3",
+                        "task-\(taskToDelete.id)-2",
+                        "task-\(taskToDelete.id)-1",
+                        "task-\(taskToDelete.id)-0",
+                        "task-\(taskToDelete.id)-overdue"
+                    ]
+                    
+                    // Eliminar tanto las notificaciones pendientes como las entregadas
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+                    UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiers)
+                    
+                    // Eliminar la tarea
                     context.delete(taskToDelete)
                     let generator = UINotificationFeedbackGenerator()
                     generator.notificationOccurred(.success)
@@ -252,6 +266,20 @@ struct TaskRow: View {
     @Binding var selectedTask: Task?
     @Binding var showDeleteAlert: Bool
     @Binding var taskToDelete: Task?
+    
+    private func removeTaskNotifications(for task: Task) {
+        let identifiers = [
+            "task-\(task.id)-3",
+            "task-\(task.id)-2",
+            "task-\(task.id)-1",
+            "task-\(task.id)-0",
+            "task-\(task.id)-overdue"
+        ]
+        
+        // Eliminar tanto las notificaciones pendientes como las entregadas
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
     
     // Función para calcular los días restantes o de retraso
     private var daysRemaining: Int {
@@ -345,6 +373,7 @@ struct TaskRow: View {
             Button(role: .destructive) {
                 taskToDelete = task
                 showDeleteAlert = true
+                removeTaskNotifications(for: task)
             } label: {
                 Label("delete".localized(), systemImage: "trash")
             }
@@ -833,6 +862,27 @@ struct TaskDetailSheet: View {
     let task: Task
     let context: ModelContext
     @State private var showingEditSheet = false
+    
+    private func deleteTask() {
+        // Identificadores de todas las notificaciones relacionadas con esta tarea
+        let identifiers = [
+            "task-\(task.id)-3",
+            "task-\(task.id)-2",
+            "task-\(task.id)-1",
+            "task-\(task.id)-0",
+            "task-\(task.id)-overdue"
+        ]
+        
+        // Eliminar tanto las notificaciones pendientes como las entregadas
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiers)
+        
+        // Luego eliminar la tarea
+        context.delete(task)
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        dismiss()
+    }
     
     var body: some View {
         NavigationStack {

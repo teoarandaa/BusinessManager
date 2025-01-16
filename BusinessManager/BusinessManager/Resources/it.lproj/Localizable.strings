@@ -307,7 +307,7 @@
 "how_create_tasks" = "Come Creare Attività";
 "tasks_creation_description" = "Le attività vengono create con le seguenti informazioni: data di scadenza per impostare le scadenze, titolo per il nome dell'attività, contenuto per i dettagli dell'attività, commenti per note aggiuntive e priorità per indicare l'urgenza. Questi dati garantiscono che le attività siano ben organizzate e gestite in modo efficace.";
 "sort_tasks" = "Ordina Attività";
-"sort_description" = "La funzione Ordina organizza efficacemente le tue attività. Ordina per data per una visualizzazione cronologica delle scadenze, o per priorità per concentrarti prima sulle attività critiche. Questa flessibilità ti aiuta a gestire il flusso di lavoro in base alle tue esigenze attuali.";
+"sort_description" = "La funzione Ordina organizza efficacemente le tue attività. Ordina per data per una visualizzazione cronologica delle scadenze, per priorità per concentrarti prima sulle attività critiche, o filtra per stato (attive, completate o tutte le attività). Questa flessibilità ti aiuta a gestire il flusso di lavoro in base alle tue esigenze attuali. Nota che le attività completate non possono essere modificate.";
 "add_task" = "Aggiungi Attività";
 "add_task_description" = "Creare una nuova attività è un processo intuitivo in cui puoi specificare scadenze, impostare priorità e aggiungere descrizioni dettagliate. I commenti aggiuntivi forniscono contesto e migliorano il monitoraggio delle attività, garantendo una comunicazione chiara durante tutto il processo.";
 "managing_tasks" = "Gestione delle Attività";
@@ -542,3 +542,14 @@
 "no_active_tasks_description" = "Non hai attività attive al momento. Aggiungi una nuova attività per iniziare.";
 "no_completed_tasks" = "Nessuna Attività Completata";
 "no_completed_tasks_description" = "Non hai ancora completato nessuna attività. Le attività appariranno qui una volta contrassegnate come completate.";
+
+"completed_tasks_note" = "Nota: Le attività completate non possono essere modificate.";
+
+"security" = "Sicurezza";
+
+"biometric_usage_description" = "Utilizziamo Face ID/Touch ID per accedere in modo sicuro all'app";
+
+"authenticate" = "Autenticare";
+"authentication_error" = "Errore di autenticazione";
+
+"biometric_authentication" = "Autenticazione Biometrica";

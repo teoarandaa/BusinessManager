@@ -307,7 +307,7 @@
 "how_create_tasks" = "Wie man Aufgaben erstellt";
 "tasks_creation_description" = "Aufgaben werden mit folgenden Informationen erstellt: Ablaufdatum für Fristen, Titel für den Aufgabennamen, Inhalt für Details, Kommentare für zusätzliche Notizen und Priorität für die Dringlichkeit.";
 "sort_tasks" = "Aufgaben sortieren";
-"sort_description" = "Die Sortierfunktion organisiert Ihre Aufgaben effektiv. Sortieren Sie nach Datum, um eine chronologische Ansicht der Fristen zu erhalten, oder nach Priorität, um sich zuerst auf wichtige Aufgaben zu konzentrieren. Diese Flexibilität hilft Ihnen, Ihren Arbeitsablauf nach Ihren aktuellen Bedürfnissen zu verwalten.";
+"sort_description" = "Die Sortierfunktion organisiert Ihre Aufgaben effektiv. Sortieren Sie nach Datum für eine chronologische Ansicht der Fristen, nach Priorität, um sich zuerst auf wichtige Aufgaben zu konzentrieren, oder filtern Sie nach Status (aktiv, abgeschlossen oder alle Aufgaben). Diese Flexibilität hilft Ihnen, Ihren Arbeitsablauf nach Ihren aktuellen Bedürfnissen zu gestalten. Beachten Sie, dass abgeschlossene Aufgaben nicht bearbeitet werden können.";
 "add_task" = "Aufgabe hinzufügen";
 "add_task_description" = "Das Erstellen einer neuen Aufgabe ist ein intuitiver Prozess, bei dem Sie Fristen festlegen, Prioritäten setzen und detaillierte Beschreibungen hinzufügen können. Zusätzliche Kommentare bieten Kontext und verbessern die Aufgabenverfolgung, um eine klare Kommunikation im gesamten Prozess sicherzustellen.";
 "managing_tasks" = "Aufgaben verwalten";
@@ -540,3 +540,14 @@
 "no_active_tasks_description" = "Sie haben derzeit keine aktiven Aufgaben. Fügen Sie eine neue Aufgabe hinzu, um zu beginnen.";
 "no_completed_tasks" = "Keine abgeschlossenen Aufgaben";
 "no_completed_tasks_description" = "Sie haben noch keine Aufgaben abgeschlossen. Aufgaben erscheinen hier, sobald sie als abgeschlossen markiert werden.";
+
+"completed_tasks_note" = "Hinweis: Abgeschlossene Aufgaben können nicht bearbeitet werden.";
+
+"security" = "Sicherheit";
+
+"biometric_usage_description" = "Wir verwenden Face ID/Touch ID für den sicheren Zugriff auf die App";
+
+"authenticate" = "Authentifizieren";
+"authentication_error" = "Authentifizierungsfehler";
+
+"biometric_authentication" = "Biometrische Authentifizierung";
