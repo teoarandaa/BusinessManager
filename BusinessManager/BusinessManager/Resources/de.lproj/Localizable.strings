@@ -551,3 +551,8 @@
 "authentication_error" = "Authentifizierungsfehler";
 
 "biometric_authentication" = "Biometrische Authentifizierung";
+
+"biometric_alert_title" = "Face ID aktivieren";
+"biometric_alert_message" = "Möchten Sie Face ID für den sicheren Zugriff auf die App verwenden?";
+"biometric_alert_enable" = "Aktivieren";
+"biometric_alert_skip" = "Überspringen";
