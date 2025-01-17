@@ -6,8 +6,6 @@ struct YearChartsView: View {
     let year: Int
     let data: [ChartData]
     let reports: [Report]
-    @State private var selectedProductivityData: ChartData?
-    @State private var selectedWorkloadData: ChartData?
     
     // Define colors for each month
     let monthColors: [Int: Color] = [
@@ -57,32 +55,6 @@ struct YearChartsView: View {
         }
         
         return result.sorted(by: { $0.date < $1.date })
-    }
-    
-    private func findClosestProductivityPoint(at location: CGPoint, in proxy: ChartProxy, for data: [ChartData], geometry: GeometryProxy) -> ChartData? {
-        guard let plotFrame = proxy.plotFrame else { return nil }
-        let x = location.x - geometry[plotFrame].origin.x
-        
-        guard let date: Date = proxy.value(atX: x) else { return nil }
-        
-        return data.min(by: {
-            abs($0.date.timeIntervalSince(date)) < abs($1.date.timeIntervalSince(date))
-        })
-    }
-    
-    private func findClosestWorkloadPoint(at location: CGPoint, in proxy: ChartProxy, for data: [ChartData], geometry: GeometryProxy) -> ChartData? {
-        guard let plotFrame = proxy.plotFrame else { return nil }
-        let x = location.x - geometry[plotFrame].origin.x
-        let y = location.y - geometry[plotFrame].origin.y
-        
-        guard let volume: Double = proxy.value(atX: x),
-              let performance: Double = proxy.value(atY: y) else { return nil }
-        
-        return data.min(by: {
-            let distance1 = pow(Double($0.volumeOfWorkMark) - volume, 2) + pow(Double($0.performanceMark) - performance, 2)
-            let distance2 = pow(Double($1.volumeOfWorkMark) - volume, 2) + pow(Double($1.performanceMark) - performance, 2)
-            return distance1 < distance2
-        })
     }
     
     private func selectedDataAnnotation(for data: ChartData) -> some View {
@@ -175,16 +147,6 @@ struct YearChartsView: View {
                             .foregroundStyle(by: .value("department".localized(), data.departmentName))
                             .symbol(by: .value("department".localized(), data.departmentName))
                         }
-                        
-                        if let selected = selectedProductivityData {
-                            RuleMark(
-                                x: .value("Selected", selected.date)
-                            )
-                            .foregroundStyle(Color.gray.opacity(0.3))
-                            .annotation(position: annotationPosition(for: selected, in: dateRange)) {
-                                selectedDataAnnotation(for: selected)
-                            }
-                        }
                     }
                     .chartXScale(domain: dateRange.min...dateRange.max)
                     .chartYScale(domain: 0...100)
@@ -195,39 +157,6 @@ struct YearChartsView: View {
                     }
                     .chartYAxis {
                         AxisMarks()
-                    }
-                    .chartOverlay { proxy in
-                        GeometryReader { geometry in
-                            Rectangle()
-                                .fill(.clear)
-                                .contentShape(Rectangle())
-                                .onLongPressGesture(minimumDuration: 0.2) { pressing in
-                                    if !pressing {
-                                        selectedProductivityData = nil
-                                    }
-                                } perform: {
-                                    let generator = UIImpactFeedbackGenerator(style: .light)
-                                    generator.impactOccurred()
-                                }
-                                .simultaneousGesture(
-                                    DragGesture(minimumDistance: 0)
-                                        .onChanged { value in
-                                            if let closest = findClosestProductivityPoint(
-                                                at: value.location,
-                                                in: proxy,
-                                                for: processedData,
-                                                geometry: geometry
-                                            ) {
-                                                withAnimation(.none) {
-                                                    selectedProductivityData = closest
-                                                }
-                                            }
-                                        }
-                                        .onEnded { _ in
-                                            selectedProductivityData = nil
-                                        }
-                                )
-                        }
                     }
                     .aspectRatio(1.0, contentMode: .fit)
                     .padding()
@@ -252,27 +181,6 @@ struct YearChartsView: View {
                         )
                         .foregroundStyle(monthColors[Calendar.current.component(.month, from: data.date)] ?? .black)
                         .symbol(by: .value("department".localized(), data.departmentName))
-                        
-                        if let selected = selectedWorkloadData {
-                            RuleMark(
-                                x: .value("Selected X", selected.volumeOfWorkMark)
-                            )
-                            .foregroundStyle(Color.gray.opacity(0.3))
-                            
-                            RuleMark(
-                                y: .value("Selected Y", selected.performanceMark)
-                            )
-                            .foregroundStyle(Color.gray.opacity(0.3))
-                            
-                            PointMark(
-                                x: .value("volume_of_work".localized(), selected.volumeOfWorkMark),
-                                y: .value("performance".localized(), selected.performanceMark)
-                            )
-                            .foregroundStyle(.primary)
-                            .annotation(position: workloadAnnotationPosition(for: selected)) {
-                                selectedDataAnnotation(for: selected)
-                            }
-                        }
                     }
                     .chartXScale(domain: 0...100)
                     .chartYScale(domain: 0...100)
@@ -281,39 +189,6 @@ struct YearChartsView: View {
                     }
                     .chartYAxis {
                         AxisMarks()
-                    }
-                    .chartOverlay { proxy in
-                        GeometryReader { geometry in
-                            Rectangle()
-                                .fill(.clear)
-                                .contentShape(Rectangle())
-                                .onLongPressGesture(minimumDuration: 0.2) { pressing in
-                                    if !pressing {
-                                        selectedWorkloadData = nil
-                                    }
-                                } perform: {
-                                    let generator = UIImpactFeedbackGenerator(style: .light)
-                                    generator.impactOccurred()
-                                }
-                                .simultaneousGesture(
-                                    DragGesture(minimumDistance: 0)
-                                        .onChanged { value in
-                                            if let closest = findClosestWorkloadPoint(
-                                                at: value.location,
-                                                in: proxy,
-                                                for: processedData,
-                                                geometry: geometry
-                                            ) {
-                                                withAnimation(.none) {
-                                                    selectedWorkloadData = closest
-                                                }
-                                            }
-                                        }
-                                        .onEnded { _ in
-                                            selectedWorkloadData = nil
-                                        }
-                                )
-                        }
                     }
                     .aspectRatio(1.0, contentMode: .fit)
                     .padding()
