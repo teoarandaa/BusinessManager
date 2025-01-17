@@ -84,7 +84,9 @@ struct ChartsView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button(action: { isShowingSettings = true }) {
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
                         Label("settings".localized(), systemImage: "gear")
                             .symbolRenderingMode(.hierarchical)
                     }

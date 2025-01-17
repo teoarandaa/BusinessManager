@@ -315,13 +315,6 @@ struct SettingsView: View {
             }
             .listStyle(.insetGrouped)
             .navigationTitle("settings".localized())
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("done".localized()) {
-                        dismiss()
-                    }
-                }
-            }
             .alert("language_change_title".localized(), isPresented: $showLanguageAlert) {
                 Button("restart_now".localized()) {
                     exit(0) // Esto cerrará la app
@@ -458,13 +451,6 @@ struct ThemePickerView: View {
         }
         .navigationTitle("theme".localized())
         .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("done".localized()) {
-                    dismiss()
-                }
-            }
-        }
     }
     
     private func themeTitle(for index: Int) -> String {

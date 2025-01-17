@@ -158,8 +158,10 @@ struct TaskView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button("settings".localized(), systemImage: "gear") {
-                        isShowingSettings = true
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Label("settings".localized(), systemImage: "gear")
                     }
                     Button("information".localized(), systemImage: "info.circle") {
                         isShowingItemSheet2 = true

@@ -70,8 +70,8 @@ struct ReportsView: View {
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                        Button {
-                            isShowingSettings = true
+                        NavigationLink {
+                            SettingsView()
                         } label: {
                             Label("settings".localized(), systemImage: "gear")
                         }

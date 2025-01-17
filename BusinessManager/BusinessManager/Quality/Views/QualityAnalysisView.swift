@@ -128,8 +128,8 @@ struct QualityAnalysisView: View {
             .navigationTitle("quality_analysis".localized())
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button {
-                        showingSettings = true
+                    NavigationLink {
+                        SettingsView()
                     } label: {
                         Label("settings".localized(), systemImage: "gear")
                     }
