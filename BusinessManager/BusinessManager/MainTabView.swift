@@ -3,8 +3,9 @@ import SwiftUI
 struct MainTabView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("isBiometricEnabled") private var isBiometricEnabled = false
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var selectedTab = 2
-    @State private var showOnboarding = true
+    @State private var showOnboarding = false
     @State private var isAuthenticated = false
     
     var body: some View {
@@ -12,8 +13,13 @@ struct MainTabView: View {
             if !isAuthenticated && isBiometricEnabled {
                 BiometricAuthView(isAuthenticated: $isAuthenticated)
             } else {
-                if showOnboarding {
+                if !hasCompletedOnboarding {
                     OnboardingView(showOnboarding: $showOnboarding)
+                        .onChange(of: showOnboarding) { _, newValue in
+                            if !newValue {
+                                hasCompletedOnboarding = true
+                            }
+                        }
                 } else {
                     TabView(selection: $selectedTab) {
                         ReportsView()
@@ -44,7 +50,6 @@ struct MainTabView: View {
             }
         }
         .onAppear {
-            // Si no está habilitada la autenticación biométrica, marcamos como autenticado
             if !isBiometricEnabled {
                 isAuthenticated = true
             }
