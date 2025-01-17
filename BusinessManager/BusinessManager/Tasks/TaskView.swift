@@ -80,7 +80,7 @@ struct TaskView: View {
     var body: some View {
         NavigationStack {
             List {
-                if !tasks.isEmpty {
+                if !tasks.isEmpty && (searchText.isEmpty || !filteredTasks.isEmpty) {
                     if statusFilter != .completed {
                         Section("active_tasks".localized()) {
                             if activeTasks.isEmpty {
