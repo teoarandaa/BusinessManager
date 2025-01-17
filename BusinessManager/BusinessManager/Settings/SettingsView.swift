@@ -418,36 +418,46 @@ struct ThemePickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
     @Namespace private var animation
+    @State private var temporarySelection: Int
+    
+    init(selection: Binding<Int>) {
+        self._selection = selection
+        self._temporarySelection = State(initialValue: selection.wrappedValue)
+    }
+    
+    private func hapticFeedback() {
+        let impactGenerator = UIImpactFeedbackGenerator(style: .light)
+        impactGenerator.prepare()
+        impactGenerator.impactOccurred()
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Text("theme".localized())
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-                
                 ForEach(0..<3) { index in
                     ThemeCard(
-                        isSelected: selection == index,
+                        isSelected: temporarySelection == index,
                         title: themeTitle(for: index),
-                        icon: themeIcon(for: index),
+                        icon: "",
                         preview: {
                             themePreview(for: index)
                         },
                         action: {
+                            hapticFeedback()
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                temporarySelection = index
                                 selection = index
                             }
                         },
                         namespace: animation
                     )
+                    .transition(.opacity.combined(with: .scale))
                 }
             }
             .padding()
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("theme".localized())
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("done".localized()) {
@@ -509,14 +519,9 @@ struct ThemeCard: View {
         Button(action: action) {
             VStack(spacing: 12) {
                 HStack {
-                    Label(title, systemImage: icon)
+                    Text(title)
                         .font(.headline)
                     Spacer()
-                    if isSelected {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.white)
-                            .matchedGeometryEffect(id: "check", in: namespace)
-                    }
                 }
                 
                 AnyView(preview())
