@@ -417,53 +417,173 @@ struct ThemePickerView: View {
     @Binding var selection: Int
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
+    @Namespace private var animation
+    @State private var temporarySelection: Int
+    
+    init(selection: Binding<Int>) {
+        self._selection = selection
+        self._temporarySelection = State(initialValue: selection.wrappedValue)
+    }
+    
+    private func hapticFeedback() {
+        let impactGenerator = UIImpactFeedbackGenerator(style: .light)
+        impactGenerator.prepare()
+        impactGenerator.impactOccurred()
+    }
     
     var body: some View {
-        List {
-            Button {
-                selection = 0
-                dismiss()
-            } label: {
-                Label {
-                    Text("system".localized())
-                        .foregroundStyle(colorScheme == .dark ? .white : .black)
-                } icon: {
-                    Image(systemName: "iphone")
-                        .foregroundStyle(.accent)
+        ScrollView {
+            VStack(spacing: 20) {
+                ForEach(0..<3) { index in
+                    ThemeCard(
+                        isSelected: temporarySelection == index,
+                        title: themeTitle(for: index),
+                        icon: "",
+                        preview: {
+                            themePreview(for: index)
+                        },
+                        action: {
+                            hapticFeedback()
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                temporarySelection = index
+                                selection = index
+                            }
+                        },
+                        namespace: animation
+                    )
+                    .transition(.opacity.combined(with: .scale))
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
-            Button {
-                selection = 1
-                dismiss()
-            } label: {
-                Label {
-                    Text("light".localized())
-                        .foregroundStyle(colorScheme == .dark ? .white : .black)
-                } icon: {
-                    Image(systemName: "sun.max")
-                        .foregroundStyle(.accent)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            
-            Button {
-                selection = 2
-                dismiss()
-            } label: {
-                Label {
-                    Text("dark".localized())
-                        .foregroundStyle(colorScheme == .dark ? .white : .black)
-                } icon: {
-                    Image(systemName: "moon")
-                        .foregroundStyle(.accent)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
+            .padding()
         }
         .navigationTitle("theme".localized())
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("done".localized()) {
+                    dismiss()
+                }
+            }
+        }
     }
+    
+    private func themeTitle(for index: Int) -> String {
+        switch index {
+        case 0: return "system".localized()
+        case 1: return "light".localized()
+        default: return "dark".localized()
+        }
+    }
+    
+    private func themeIcon(for index: Int) -> String {
+        switch index {
+        case 0: return "iphone"
+        case 1: return "sun.max"
+        default: return "moon"
+        }
+    }
+    
+    private func themePreview(for index: Int) -> AnyView {
+        AnyView(
+            Group {
+                switch index {
+                case 0:
+                    HStack(spacing: 12) {
+                        previewCard(isDark: false)
+                        Image(systemName: "arrow.right")
+                            .foregroundStyle(.secondary)
+                        previewCard(isDark: true)
+                    }
+                    .frame(height: 100)
+                case 1:
+                    previewCard(isDark: false)
+                        .frame(height: 100)
+                default:
+                    previewCard(isDark: true)
+                        .frame(height: 100)
+                }
+            }
+        )
+    }
+}
+
+struct ThemeCard: View {
+    let isSelected: Bool
+    let title: String
+    let icon: String
+    let preview: () -> AnyView
+    let action: () -> Void
+    let namespace: Namespace.ID
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 12) {
+                HStack {
+                    Text(title)
+                        .font(.headline)
+                    Spacer()
+                }
+                
+                AnyView(preview())
+            }
+            .padding()
+            .background {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.1))
+            }
+            .foregroundStyle(isSelected ? .white : .primary)
+            .overlay {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(isSelected ? .white.opacity(0.5) : .clear, lineWidth: 2)
+            }
+            .contentShape(RoundedRectangle(cornerRadius: 16))
+            .scaleEffect(isSelected ? 1.02 : 1)
+            .shadow(color: isSelected ? .accentColor.opacity(0.3) : .clear, radius: 10)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
+        }
+    }
+}
+
+struct PreviewContent: View {
+    let isDark: Bool
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Circle()
+                    .fill(isDark ? .white : .black)
+                    .frame(width: 20)
+                VStack(alignment: .leading, spacing: 4) {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(isDark ? .white : .black)
+                        .frame(width: 80, height: 8)
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(isDark ? .white.opacity(0.5) : .black.opacity(0.5))
+                        .frame(width: 60, height: 6)
+                }
+                Spacer()
+            }
+            
+            HStack(spacing: 6) {
+                ForEach(0..<3) { _ in
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(isDark ? .white.opacity(0.2) : .black.opacity(0.2))
+                        .frame(height: 30)
+                }
+            }
+        }
+        .padding(12)
+        .background {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isDark ? Color.black : .white)
+        }
+    }
+}
+
+@ViewBuilder
+private func previewCard(isDark: Bool) -> some View {
+    PreviewContent(isDark: isDark)
+        .scaleEffect(0.8)
 }
 
 #Preview {
