@@ -56,7 +56,7 @@ struct MonthlySummaryView: View {
                     }
                 }
             }
-            .navigationTitle("monthly_summary".localized())
+            .navigationTitle("monthly_summary_title".localized())
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 loadMonthlySummary()
