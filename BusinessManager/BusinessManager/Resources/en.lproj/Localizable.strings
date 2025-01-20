@@ -70,14 +70,12 @@
 "delete_confirmation" = "Are you sure you want to delete this report?";
 "delete" = "Delete";
 "cancel" = "Cancel";
-"invalid_input" = "Invalid Input";
 "future_date_error" = "Cannot create reports for future dates.";
 "invalid_numbers" = "Please enter valid numbers for tasks.";
 "negative_tasks_error" = "Total tasks cannot be negative.";
 "number" = "Add number";
 "name" = "Add name";
 "add_note" = "Add note";
-"invalid_input" = "Invalid Input";
 "err_reports_dates" = "Cannot create reports for future dates.";
 "err_valid_num" = "Please enter valid numbers for tasks.";
 "err_negative_totalTasks" = "Total tasks cannot be negative.";
@@ -177,7 +175,6 @@
 
 // MARK: - Alerts
 "invalid_input" = "Invalid Input";
-"future_date_error" = "Cannot create reports for future dates.";
 "invalid_numbers" = "Please enter valid numbers for tasks.";
 "negative_tasks_error" = "Total tasks cannot be negative.";
 "delete_confirmation" = "Are you sure you want to delete this?"; 

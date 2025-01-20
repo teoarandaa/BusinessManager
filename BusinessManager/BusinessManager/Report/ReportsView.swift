@@ -210,7 +210,7 @@ struct AddReportSheet: View {
                     Text("date".localized())
                         .bold()
                     Spacer()
-                    DatePicker("", selection: $date, displayedComponents: .date)
+                    DatePicker("", selection: $date, in: ...Date(), displayedComponents: .date)
                         .labelsHidden()
                         .fixedSize()
                         .padding(.trailing, -8)
@@ -290,8 +290,8 @@ struct AddReportSheet: View {
                     .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
                 }
             }
-            .alert("Invalid Input", isPresented: $showAlert) {
-                Button("OK", role: .cancel) { }
+            .alert("invalid_input".localized(), isPresented: $showAlert) {
+                Button("ok".localized(), role: .cancel) { }
             } message: {
                 Text(alertMessage)
             }
@@ -299,33 +299,17 @@ struct AddReportSheet: View {
     }
     
     private func saveReport() {
-        // Validar que la fecha no sea futura
-        guard date <= Date() else {
-            showAlert = true
-            alertMessage = "Cannot create reports for future dates."
-            return
-        }
-
-        // Convertir Strings a Ints
         guard let totalTasks = Int(totalTasksCreated),
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
               let finishedTasks = Int(numberOfFinishedTasks) else {
             showAlert = true
-            alertMessage = "Please enter valid numbers for tasks."
+            alertMessage = "err_valid_num".localized()
             return
         }
         
-        // Validaciones
         guard totalTasks >= 0 else {
             showAlert = true
-            alertMessage = "Total tasks cannot be negative."
-            return
-        }
-        
-        // Nueva validación sin haptic feedback
-        guard finishedTasks >= tasksWithoutDelay else {
-            showAlert = true
-            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time."
+            alertMessage = "err_negative_totalTasks".localized()
             return
         }
         
@@ -683,13 +667,6 @@ struct UpdateReportSheet: View {
     }
     
     private func updateReport() {
-        // Validaciones...
-        guard date <= Date() else {
-            showAlert = true
-            alertMessage = "err_reports_dates".localized()
-            return
-        }
-
         guard let totalTasks = Int(totalTasksCreated),
               let tasksWithoutDelay = Int(tasksCompletedWithoutDelay),
               let finishedTasks = Int(numberOfFinishedTasks) else {
@@ -704,12 +681,7 @@ struct UpdateReportSheet: View {
             return
         }
         
-        guard finishedTasks >= tasksWithoutDelay else {
-            showAlert = true
-            alertMessage = "Finished tasks must be equal to or greater than tasks completed on time"
-            return
-        }
-        
+        report.date = date
         let trimmedDepartmentName = departmentName.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedAnnotations = annotations.trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -754,7 +726,7 @@ struct UpdateReportSheet: View {
                     Text("date".localized())
                         .bold()
                     Spacer()
-                    DatePicker("", selection: $date, displayedComponents: .date)
+                    DatePicker("", selection: $date, in: ...Date(), displayedComponents: .date)
                         .labelsHidden()
                         .fixedSize()
                         .padding(.trailing, -8)
@@ -827,8 +799,8 @@ struct UpdateReportSheet: View {
                         .disabled(departmentName.isEmpty || totalTasksCreated.isEmpty || tasksCompletedWithoutDelay.isEmpty || numberOfFinishedTasks.isEmpty)
                 }
             }
-            .alert("invalid_inpur".localized(), isPresented: $showAlert) {
-                Button("OK", role: .cancel) { }
+            .alert("invalid_input".localized(), isPresented: $showAlert) {
+                Button("ok".localized(), role: .cancel) { }
             } message: {
                 Text(alertMessage)
             }

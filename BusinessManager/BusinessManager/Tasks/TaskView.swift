@@ -566,7 +566,7 @@ struct AddTaskSheet: View {
                             .bold()
                     }
                     Spacer()
-                    DatePicker("", selection: $date, displayedComponents: [.date, .hourAndMinute])
+                    DatePicker("", selection: $date, in: Date()..., displayedComponents: [.date, .hourAndMinute])
                         .labelsHidden()
                         .padding(.trailing, -8)
                 }
@@ -785,7 +785,7 @@ struct UpdateTaskSheet: View {
                             .bold()
                     }
                     Spacer()
-                    DatePicker("", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
+                    DatePicker("", selection: $task.date, in: Date()..., displayedComponents: [.date, .hourAndMinute])
                         .labelsHidden()
                         .padding(.trailing, -8)
                 }
