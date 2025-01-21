@@ -20,6 +20,7 @@ struct BusinessManagerApp: App {
             
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
+                isStoredInMemoryOnly: false,
                 cloudKitDatabase: .automatic
             )
             
@@ -27,15 +28,17 @@ struct BusinessManagerApp: App {
                 for: schema,
                 configurations: [modelConfiguration]
             )
+            
+            // Configurar el idioma al iniciar la app
+            UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
+            UserDefaults.standard.synchronize()
+            
+            requestNotificationPermission()
+            
         } catch {
+            print("CloudKit Error: \(error)")
             fatalError("Could not initialize ModelContainer: \(error)")
         }
-        
-        // Configurar el idioma al iniciar la app
-        UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
-        UserDefaults.standard.synchronize()
-        
-        requestNotificationPermission()
     }
     
     private func requestNotificationPermission() {
