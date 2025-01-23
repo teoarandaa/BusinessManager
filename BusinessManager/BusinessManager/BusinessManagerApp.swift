@@ -20,7 +20,7 @@ struct BusinessManagerApp: App {
             
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: false,
+                isStoredInMemoryOnly: true,
                 cloudKitDatabase: .automatic
             )
             
