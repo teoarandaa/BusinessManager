@@ -8,6 +8,7 @@ struct BusinessManagerApp: App {
     let container: ModelContainer
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     @AppStorage("appLanguage") private var appLanguage = "es"
+    @State private var isAuthenticated = false
     
     init() {
         do {
@@ -53,10 +54,17 @@ struct BusinessManagerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
-                .preferredColorScheme(colorSchemeValue)
+            Group {
+                if isAuthenticated {
+                    MainTabView()
+                        .modelContainer(container)
+                        .preferredColorScheme(colorSchemeValue)
+                } else {
+                    BiometricAuthView(isAuthenticated: $isAuthenticated)
+                }
+            }
+            .animation(.easeInOut, value: isAuthenticated)
         }
-        .modelContainer(container)
     }
     
     private var colorSchemeValue: ColorScheme? {

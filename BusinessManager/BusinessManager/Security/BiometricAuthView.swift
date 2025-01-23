@@ -12,12 +12,17 @@ struct BiometricAuthView: View {
         let context = LAContext()
         var error: NSError?
         
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+        // Si ya está autenticado, no hacer nada
+        guard !isAuthenticated else { return }
+        
+        if isBiometricEnabled && context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                 localizedReason: "biometric_usage_description".localized()) { success, authenticationError in
+                                localizedReason: "biometric_usage_description".localized()) { success, authenticationError in
                 DispatchQueue.main.async {
                     if success {
-                        isAuthenticated = true
+                        withAnimation {
+                            isAuthenticated = true
+                        }
                     } else {
                         errorMessage = authenticationError?.localizedDescription ?? "Authentication failed"
                         showError = true
@@ -25,20 +30,16 @@ struct BiometricAuthView: View {
                 }
             }
         } else {
-            errorMessage = error?.localizedDescription ?? "Biometric authentication not available"
-            showError = true
+            // Si la biometría no está habilitada o no está disponible, autenticar directamente
+            isAuthenticated = true
         }
     }
     
     var body: some View {
-        Color(colorScheme == .dark ? .black : .white)
-            .ignoresSafeArea()
-            .onAppear {
-                if isBiometricEnabled {
-                    authenticate()
-                } else {
-                    isAuthenticated = true
-                }
+        Color.clear
+            .task {
+                // Usar task en lugar de onAppear
+                authenticate()
             }
             .alert("authentication_error".localized(), isPresented: $showError) {
                 Button("ok".localized(), role: .cancel) {
