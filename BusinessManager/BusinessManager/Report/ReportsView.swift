@@ -3,6 +3,7 @@ import SwiftData
 
 struct ReportsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @State private var isShowingAddReportSheet = false
     @State private var isShowingInfoSheet = false
     @Environment(\.modelContext) var context
@@ -70,15 +71,19 @@ struct ReportsView: View {
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                        NavigationLink {
-                            SettingsView()
-                        } label: {
-                            Label("settings".localized(), systemImage: "gear")
-                        }
-                        Button {
-                            isShowingInfoSheet = true
-                        } label: {
-                            Label("information".localized(), systemImage: "info.circle")
+                        HStack(spacing: 16) {
+                            NavigationLink {
+                                SettingsView()
+                            } label: {
+                                Label("settings".localized(), systemImage: "gear")
+                            }
+                            Button {
+                                isShowingInfoSheet = true
+                            } label: {
+                                Label("information".localized(), systemImage: "info.circle")
+                            }
+                            Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                .foregroundStyle(iCloudSync ? .green : .red)
                         }
                     }
                     

@@ -4,6 +4,7 @@ import UserNotifications
 
 struct TaskView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @State private var isShowingSettings = false
@@ -158,13 +159,17 @@ struct TaskView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("settings".localized(), systemImage: "gear")
-                    }
-                    Button("information".localized(), systemImage: "info.circle") {
-                        isShowingItemSheet2 = true
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Label("settings".localized(), systemImage: "gear")
+                        }
+                        Button("information".localized(), systemImage: "info.circle") {
+                            isShowingItemSheet2 = true
+                        }
+                        Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                            .foregroundStyle(iCloudSync ? .green : .red)
                     }
                 }
                 if !tasks.isEmpty {

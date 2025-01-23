@@ -15,6 +15,7 @@ struct QualityAnalysisView: View {
     @AppStorage("minPerformance") private var minPerformance: Double = 0
     @AppStorage("minTaskCompletion") private var minTaskCompletion: Double = 0
     @AppStorage("minVolumeOfWork") private var minVolumeOfWork: Double = 0
+    @AppStorage("iCloudSync") private var iCloudSync = false
     
     @Binding var selectedTab: Int
     
@@ -128,15 +129,19 @@ struct QualityAnalysisView: View {
             .navigationTitle("quality_analysis".localized())
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("settings".localized(), systemImage: "gear")
-                    }
-                    Button {
-                        showingInfo = true
-                    } label: {
-                        Label("information".localized(), systemImage: "info.circle")
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Label("settings".localized(), systemImage: "gear")
+                        }
+                        Button {
+                            showingInfo = true
+                        } label: {
+                            Label("information".localized(), systemImage: "info.circle")
+                        }
+                        Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                            .foregroundStyle(iCloudSync ? .green : .red)
                     }
                 }
                 

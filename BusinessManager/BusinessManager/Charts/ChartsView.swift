@@ -3,6 +3,7 @@ import SwiftData
 
 struct ChartsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @Environment(\.modelContext) var context
     @State private var isShowingItemSheet2 = false
     @State private var showingBottomSheet: Bool = false
@@ -84,15 +85,19 @@ struct ChartsView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("settings".localized(), systemImage: "gear")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    Button(action: { isShowingItemSheet2 = true }) {
-                        Label("information".localized(), systemImage: "info.circle")
-                            .symbolRenderingMode(.hierarchical)
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Label("settings".localized(), systemImage: "gear")
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        Button(action: { isShowingItemSheet2 = true }) {
+                            Label("information".localized(), systemImage: "info.circle")
+                                
+                        }
+                        Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                            .foregroundStyle(iCloudSync ? .green : .red)
                     }
                 }
                 if !reports.isEmpty {

@@ -8,6 +8,7 @@ struct BusinessManagerApp: App {
     let container: ModelContainer
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     @AppStorage("appLanguage") private var appLanguage = "es"
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @State private var isAuthenticated = false
     
     init() {
@@ -30,7 +31,10 @@ struct BusinessManagerApp: App {
                 configurations: [modelConfiguration]
             )
             
-            // Configurar el idioma al iniciar la app
+            // Después de inicializar todas las propiedades, podemos llamar a estos métodos
+            checkICloudStatus()
+            setupICloudObserver()
+            
             UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
             UserDefaults.standard.synchronize()
             
@@ -39,6 +43,32 @@ struct BusinessManagerApp: App {
         } catch {
             print("CloudKit Error: \(error)")
             fatalError("Could not initialize ModelContainer: \(error)")
+        }
+    }
+    
+    private func checkICloudStatus() {
+        DispatchQueue.main.async {
+            // Simplemente verificamos si el token existe
+            if FileManager.default.ubiquityIdentityToken != nil {
+                // iCloud está disponible
+                self.iCloudSync = true
+                print("iCloud está disponible")
+            } else {
+                // iCloud no está disponible
+                self.iCloudSync = false
+                print("iCloud no está disponible")
+            }
+        }
+    }
+    
+    private func setupICloudObserver() {
+        // Observar cambios en el estado de inicio de sesión de iCloud
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name.NSUbiquityIdentityDidChange,
+            object: nil,
+            queue: .main
+        ) { _ in
+            checkICloudStatus()
         }
     }
     
@@ -64,6 +94,9 @@ struct BusinessManagerApp: App {
                 }
             }
             .animation(.easeInOut, value: isAuthenticated)
+            .onReceive(NotificationCenter.default.publisher(for: Notification.Name.NSUbiquityIdentityDidChange)) { _ in
+                checkICloudStatus()
+            }
         }
     }
     

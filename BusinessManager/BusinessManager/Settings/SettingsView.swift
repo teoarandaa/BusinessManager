@@ -6,6 +6,8 @@ struct SettingsView: View {
     @AppStorage("appLanguage") private var appLanguage = "es"
     @AppStorage("colorScheme") private var colorScheme = 0
     @AppStorage("isBiometricEnabled") private var isBiometricEnabled = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @Environment(\.modelContext) private var context
     @State private var isPushEnabled = false
     @State private var showLanguageAlert = false
@@ -63,6 +65,12 @@ struct SettingsView: View {
             notificationAlertButtons
         } message: {
             Text("notifications_settings_message".localized())
+        }
+        .onAppear {
+            checkICloudStatus()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
+            checkICloudStatus()
         }
     }
     
@@ -396,6 +404,14 @@ struct SettingsView: View {
            let window = windowScene.windows.first,
            let rootVC = window.rootViewController {
             rootVC.present(activityVC, animated: true)
+        }
+    }
+    
+    private func checkICloudStatus() {
+        if let _ = FileManager.default.ubiquityIdentityToken {
+            iCloudSync = true
+        } else {
+            iCloudSync = false
         }
     }
 }
