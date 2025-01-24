@@ -4,6 +4,7 @@ import SwiftData
 struct ChartsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("iCloudSync") private var iCloudSync = false
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     @Environment(\.modelContext) var context
     @State private var isShowingItemSheet2 = false
     @State private var showingBottomSheet: Bool = false
@@ -97,13 +98,15 @@ struct ChartsView: View {
                             Label("information".localized(), systemImage: "info.circle")
                         }
                         Menu {
-                            if iCloudSync {
+                            if !isNetworkAvailable {
+                                Text("network_unavailable".localized())
+                            } else if !iCloudSync {
+                                Text("icloud_disabled".localized())
+                            } else {
                                 Text("last_sync".localized() + ": ")
                                 + Text(lastSyncDate, style: .date)
                                 + Text(" ")
                                 + Text(lastSyncDate, style: .time)
-                            } else {
-                                Text("icloud_disabled".localized())
                             }
                         } label: {
                             Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")

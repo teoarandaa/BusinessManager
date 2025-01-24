@@ -564,3 +564,5 @@
 
 "last_sync" = "Última sincronização";
 "icloud_disabled" = "iCloud desativado";
+
+"network_unavailable" = "Sem conexão à Internet";

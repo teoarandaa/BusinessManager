@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 import UserNotifications
 import CloudKit
+import Network
 
 @main
 struct BusinessManagerApp: App {
@@ -10,7 +11,9 @@ struct BusinessManagerApp: App {
     @AppStorage("appLanguage") private var appLanguage = "es"
     @AppStorage("iCloudSync") private var iCloudSync = false
     @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     @State private var isAuthenticated = false
+    private let networkMonitor = NWPathMonitor()
     
     init() {
         do {
@@ -32,13 +35,14 @@ struct BusinessManagerApp: App {
                 configurations: [modelConfiguration]
             )
             
-            // Después de inicializar todas las propiedades, podemos llamar a estos métodos
-            checkICloudStatus()
-            setupICloudObserver()
-            
+            // Después de inicializar el container, podemos configurar el resto
             UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
             UserDefaults.standard.synchronize()
             
+            // Ahora que todas las propiedades están inicializadas, configuramos la red
+            setupNetworkMonitoring()
+            checkICloudStatus()
+            setupICloudObserver()
             requestNotificationPermission()
             
         } catch {
@@ -47,20 +51,33 @@ struct BusinessManagerApp: App {
         }
     }
     
+    private func setupNetworkMonitoring() {
+        networkMonitor.pathUpdateHandler = { path in
+            DispatchQueue.main.async {
+                isNetworkAvailable = path.status == .satisfied
+                if isNetworkAvailable {
+                    checkICloudStatus() // Verificar iCloud cuando la red esté disponible
+                } else {
+                    iCloudSync = false // Desactivar iCloud cuando no hay red
+                }
+            }
+        }
+        networkMonitor.start(queue: DispatchQueue.global())
+    }
+    
     private func checkICloudStatus() {
+        guard isNetworkAvailable else {
+            iCloudSync = false
+            return
+        }
+        
         CKContainer.default().accountStatus { [self] status, error in
             DispatchQueue.main.async {
                 switch status {
                 case .available:
                     iCloudSync = true
-                    lastSyncDate = Date() // Actualizar la fecha de sincronización
-                case .noAccount:
-                    iCloudSync = false
-                case .restricted:
-                    iCloudSync = false
-                case .couldNotDetermine:
-                    iCloudSync = false
-                case .temporarilyUnavailable:
+                    lastSyncDate = Date()
+                case .noAccount, .restricted, .couldNotDetermine, .temporarilyUnavailable:
                     iCloudSync = false
                 @unknown default:
                     iCloudSync = false

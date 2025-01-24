@@ -21,6 +21,7 @@ struct ReportsView: View {
     @State private var showDeleteAlert = false
     
     @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     
     var filteredReports: [Report] {
         if searchText.isEmpty {
@@ -85,13 +86,15 @@ struct ReportsView: View {
                                 Label("information".localized(), systemImage: "info.circle")
                             }
                             Menu {
-                                if iCloudSync {
+                                if !isNetworkAvailable {
+                                    Text("network_unavailable".localized())
+                                } else if !iCloudSync {
+                                    Text("icloud_disabled".localized())
+                                } else {
                                     Text("last_sync".localized() + ": ")
                                     + Text(lastSyncDate, style: .date)
                                     + Text(" ")
                                     + Text(lastSyncDate, style: .time)
-                                } else {
-                                    Text("icloud_disabled".localized())
                                 }
                             } label: {
                                 Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")

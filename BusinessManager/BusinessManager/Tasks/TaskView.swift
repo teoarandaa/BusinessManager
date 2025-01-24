@@ -5,6 +5,8 @@ import UserNotifications
 struct TaskView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("iCloudSync") private var iCloudSync = false
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @State private var isShowingSettings = false
@@ -16,7 +18,6 @@ struct TaskView: View {
     @State private var showDeleteAlert = false
     @State private var taskToDelete: Task?
     @State private var statusFilter: TaskStatusFilter = .active
-    @State private var lastSyncDate: Date = .now
     
     enum TaskStatusFilter: String, CaseIterable, Identifiable {
         case all = "all"
@@ -170,13 +171,15 @@ struct TaskView: View {
                             isShowingItemSheet2 = true
                         }
                         Menu {
-                            if iCloudSync {
+                            if !isNetworkAvailable {
+                                Text("network_unavailable".localized())
+                            } else if !iCloudSync {
+                                Text("icloud_disabled".localized())
+                            } else {
                                 Text("last_sync".localized() + ": ")
                                 + Text(lastSyncDate, style: .date)
                                 + Text(" ")
                                 + Text(lastSyncDate, style: .time)
-                            } else {
-                                Text("icloud_disabled".localized())
                             }
                         } label: {
                             Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")

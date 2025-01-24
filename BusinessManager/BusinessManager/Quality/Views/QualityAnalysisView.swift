@@ -17,6 +17,7 @@ struct QualityAnalysisView: View {
     @AppStorage("minVolumeOfWork") private var minVolumeOfWork: Double = 0
     @AppStorage("iCloudSync") private var iCloudSync = false
     @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     
     @Binding var selectedTab: Int
     
@@ -142,13 +143,15 @@ struct QualityAnalysisView: View {
                             Label("information".localized(), systemImage: "info.circle")
                         }
                         Menu {
-                            if iCloudSync {
+                            if !isNetworkAvailable {
+                                Text("network_unavailable".localized())
+                            } else if !iCloudSync {
+                                Text("icloud_disabled".localized())
+                            } else {
                                 Text("last_sync".localized() + ": ")
                                 + Text(lastSyncDate, style: .date)
                                 + Text(" ")
                                 + Text(lastSyncDate, style: .time)
-                            } else {
-                                Text("icloud_disabled".localized())
                             }
                         } label: {
                             Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
