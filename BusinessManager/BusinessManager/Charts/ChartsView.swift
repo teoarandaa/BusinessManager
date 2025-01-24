@@ -12,6 +12,7 @@ struct ChartsView: View {
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
     @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @State private var isLoading = true
     
     // Definir las opciones como enum para mejor control
     enum ChartType: String, CaseIterable {
@@ -45,7 +46,10 @@ struct ChartsView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if reports.isEmpty {
+                if isLoading && iCloudSync {
+                    ProgressView("syncing_data".localized())
+                        .progressViewStyle(.circular)
+                } else if reports.isEmpty {
                     ContentUnavailableView(label: {
                         Label("no_charts_data".localized(), systemImage: "chart.bar")
                             .font(.title2)
@@ -142,6 +146,16 @@ struct ChartsView: View {
             }
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
+            }
+        }
+        .onAppear {
+            // Simular tiempo de carga de iCloud
+            if iCloudSync {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
+                }
+            } else {
+                isLoading = false
             }
         }
     }

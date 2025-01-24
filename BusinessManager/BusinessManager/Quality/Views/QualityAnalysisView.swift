@@ -18,6 +18,8 @@ struct QualityAnalysisView: View {
     @AppStorage("iCloudSync") private var iCloudSync = false
     @AppStorage("lastSyncDate") private var lastSyncDate = Date()
     @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    @State private var isLoading = true
     
     @Binding var selectedTab: Int
     
@@ -33,7 +35,10 @@ struct QualityAnalysisView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if reports.isEmpty {
+                if isLoading && iCloudSync {
+                    ProgressView("syncing_data".localized())
+                        .progressViewStyle(.circular)
+                } else if reports.isEmpty {
                     ContentUnavailableView(label: {
                         Label("no_quality_data".localized(), systemImage: "checkmark.seal")
                             .font(.title2)
@@ -214,6 +219,15 @@ struct QualityAnalysisView: View {
                     minTaskCompletion: $minTaskCompletion,
                     minVolumeOfWork: $minVolumeOfWork
                 )
+            }
+        }
+        .onAppear {
+            if iCloudSync {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
+                }
+            } else {
+                isLoading = false
             }
         }
     }

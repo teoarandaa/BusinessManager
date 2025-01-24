@@ -588,3 +588,5 @@
 "disable_business_manager" = "Deaktivieren Sie BusinessManager";
 "open_device_settings" = "Geräteeinstellungen öffnen";
 "how_it_works" = "Wie es funktioniert";
+
+"syncing_data" = "Daten werden geladen...";

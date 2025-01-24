@@ -593,3 +593,5 @@
 "disable_business_manager" = "Desative o BusinessManager";
 "open_device_settings" = "Abrir Configurações do Dispositivo";
 "how_it_works" = "Como funciona";
+
+"syncing_data" = "Carregando dados...";

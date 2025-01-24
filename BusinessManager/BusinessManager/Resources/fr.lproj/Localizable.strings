@@ -588,3 +588,5 @@
 "tap_icloud_storage" = "Touchez Stockage iCloud";
 "disable_business_manager" = "Désactivez BusinessManager";
 "open_device_settings" = "Ouvrir les Réglages de l'Appareil";
+
+"syncing_data" = "Chargement des données...";
