@@ -376,7 +376,7 @@
 "privacy_policy_main" = "Política de Privacidad";
 "privacy_policy_details" = "Business Manager para SwiftUI no recopila ningún dato sobre ti.\n\nTodos los datos se almacenarán de forma segura en tu dispositivo. Si en algún momento cambiamos nuestra Política de Privacidad, te lo notificaremos con una notificación.\n";
 "contact_us" = "Contáctanos";
-"privacy_contact_info" = "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en help.businessmanager@gmail.com";
+"privacy_contact_info" = "Si tienes preguntas sobre esta Política de Privacidad, contáctanos en help.businessmanager@gmail.com";
 
 "privacy_contact_prefix" = "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en ";
 "privacy_email" = "help.businessmanager@gmail.com";
@@ -570,3 +570,31 @@
 "icloud_disabled" = "iCloud desactivado";
 
 "network_unavailable" = "Sin conexión a Internet";
+
+"icloud_settings" = "Ajustes de iCloud";
+"icloud_status" = "Estado de iCloud";
+"how_icloud_works" = "¿Cómo funciona iCloud?";
+"icloud_explanation" = "iCloud se utiliza para sincronizar tus datos entre todos tus dispositivos Apple. Esto incluye tus informes, tareas y análisis de calidad. La sincronización es automática cuando iCloud está activado y hay conexión a Internet.";
+"how_to_disable" = "¿Cómo desactivar iCloud?";
+"disable_icloud_steps" = "1. Abre Ajustes\n2. Toca tu cuenta de Apple\n3. Toca iCloud\n4. Toca Guardado en iCloud\n5. Busca BusinessManager\n6. Desactiva el interruptor";
+"open_settings" = "Abrir Ajustes";
+
+"icloud_info" = "Información de iCloud";
+"icloud_sync" = "Sincronización de iCloud";
+
+// iCloud Descriptions
+"icloud_description" = "Mantén tus datos sincronizados y seguros";
+"automatic_sync" = "Sincronización Automática";
+"automatic_sync_description" = "Tus datos se sincronizan automáticamente cuando hay conexión a Internet";
+"multi_device" = "Múltiples Dispositivos";
+"multi_device_description" = "Accede a tus datos desde cualquier dispositivo Apple";
+"secure_sync" = "Sincronización Segura";
+"secure_sync_description" = "Tus datos están encriptados y protegidos";
+"disable_steps" = "Pasos para Desactivar";
+"tap_apple_id" = "Toca tu ID de Apple";
+"tap_icloud" = "Toca iCloud";
+"tap_icloud_storage" = "Toca Almacenamiento iCloud";
+"disable_business_manager" = "Desactiva BusinessManager";
+"open_device_settings" = "Abrir Ajustes del Dispositivo";
+
+"how_it_works" = "Cómo funciona";

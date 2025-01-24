@@ -559,3 +559,31 @@
 "icloud_disabled" = "iCloud disabled";
 
 "network_unavailable" = "No Internet connection";
+
+"icloud_settings" = "iCloud Settings";
+"icloud_status" = "iCloud Status";
+"how_icloud_works" = "How does iCloud work?";
+"icloud_explanation" = "iCloud is used to sync your data across all your Apple devices. This includes your reports, tasks, and quality analysis. Synchronization is automatic when iCloud is enabled and there's an Internet connection.";
+"how_to_disable" = "How to disable iCloud?";
+"disable_icloud_steps" = "1. Open Settings\n2. Tap your Apple ID\n3. Tap iCloud\n4. Tap iCloud Drive\n5. Find BusinessManager\n6. Turn off the switch";
+"open_settings" = "Open Settings";
+
+"icloud_info" = "iCloud Info";
+"icloud_sync" = "iCloud Sync";
+
+// iCloud Descriptions
+"icloud_description" = "Keep your data synced and secure";
+"automatic_sync" = "Automatic Sync";
+"automatic_sync_description" = "Your data syncs automatically when Internet connection is available";
+"multi_device" = "Multi-Device";
+"multi_device_description" = "Access your data from any Apple device";
+"secure_sync" = "Secure Sync";
+"secure_sync_description" = "Your data is encrypted and protected";
+"disable_steps" = "Steps to Disable";
+"tap_apple_id" = "Tap your Apple ID";
+"tap_icloud" = "Tap iCloud";
+"tap_icloud_storage" = "Tap iCloud Storage";
+"disable_business_manager" = "Disable BusinessManager";
+"open_device_settings" = "Open Device Settings";
+
+"how_it_works" = "How it works";

@@ -566,3 +566,30 @@
 "icloud_disabled" = "iCloud desativado";
 
 "network_unavailable" = "Sem conexão à Internet";
+
+"icloud_settings" = "Configurações do iCloud";
+"icloud_status" = "Status do iCloud";
+"how_icloud_works" = "Como funciona o iCloud?";
+"icloud_explanation" = "O iCloud é usado para sincronizar seus dados em todos os seus dispositivos Apple. Isso inclui seus relatórios, tarefas e análises de qualidade. A sincronização é automática quando o iCloud está ativado e há conexão com a Internet.";
+"how_to_disable" = "Como desativar o iCloud?";
+"disable_icloud_steps" = "1. Abra Ajustes\n2. Toque em seu ID Apple\n3. Toque em iCloud\n4. Toque em Armazenamento iCloud\n5. Encontre BusinessManager\n6. Desative o interruptor";
+"open_settings" = "Abrir Ajustes";
+
+"icloud_info" = "Informações do iCloud";
+"icloud_sync" = "Sincronização do iCloud";
+
+// iCloud Descriptions
+"icloud_description" = "Mantenha seus dados sincronizados e seguros";
+"automatic_sync" = "Sincronização Automática";
+"automatic_sync_description" = "Seus dados são sincronizados automaticamente quando há conexão com a Internet";
+"multi_device" = "Múltiplos Dispositivos";
+"multi_device_description" = "Acesse seus dados em qualquer dispositivo Apple";
+"secure_sync" = "Sincronização Segura";
+"secure_sync_description" = "Seus dados são criptografados e protegidos";
+"disable_steps" = "Passos para Desativar";
+"tap_apple_id" = "Toque em seu ID Apple";
+"tap_icloud" = "Toque em iCloud";
+"tap_icloud_storage" = "Toque em Armazenamento iCloud";
+"disable_business_manager" = "Desative o BusinessManager";
+"open_device_settings" = "Abrir Configurações do Dispositivo";
+"how_it_works" = "Como funciona";
