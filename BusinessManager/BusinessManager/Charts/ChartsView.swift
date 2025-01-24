@@ -10,6 +10,7 @@ struct ChartsView: View {
     @Query(sort: \Report.departmentName) var reports: [Report]
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
     
     // Definir las opciones como enum para mejor control
     enum ChartType: String, CaseIterable {
@@ -94,10 +95,20 @@ struct ChartsView: View {
                         }
                         Button(action: { isShowingItemSheet2 = true }) {
                             Label("information".localized(), systemImage: "info.circle")
-                                
                         }
-                        Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
-                            .foregroundStyle(iCloudSync ? .green : .red)
+                        Menu {
+                            if iCloudSync {
+                                Text("last_sync".localized() + ": ")
+                                + Text(lastSyncDate, style: .date)
+                                + Text(" ")
+                                + Text(lastSyncDate, style: .time)
+                            } else {
+                                Text("icloud_disabled".localized())
+                            }
+                        } label: {
+                            Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                .foregroundStyle(iCloudSync ? .green : .red)
+                        }
                     }
                 }
                 if !reports.isEmpty {

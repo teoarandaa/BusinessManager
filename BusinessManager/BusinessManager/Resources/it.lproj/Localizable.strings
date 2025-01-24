@@ -558,3 +558,6 @@
 "biometric_alert_message" = "Vuoi utilizzare Face ID per accedere in modo sicuro all'app?";
 "biometric_alert_enable" = "Attiva";
 "biometric_alert_skip" = "Salta";
+
+"last_sync" = "Ultima sincronizzazione";
+"icloud_disabled" = "iCloud disattivato";

@@ -9,6 +9,7 @@ struct BusinessManagerApp: App {
     @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
     @AppStorage("appLanguage") private var appLanguage = "es"
     @AppStorage("iCloudSync") private var iCloudSync = false
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
     @State private var isAuthenticated = false
     
     init() {
@@ -47,16 +48,23 @@ struct BusinessManagerApp: App {
     }
     
     private func checkICloudStatus() {
-        DispatchQueue.main.async {
-            // Simplemente verificamos si el token existe
-            if FileManager.default.ubiquityIdentityToken != nil {
-                // iCloud está disponible
-                self.iCloudSync = true
-                print("iCloud está disponible")
-            } else {
-                // iCloud no está disponible
-                self.iCloudSync = false
-                print("iCloud no está disponible")
+        CKContainer.default().accountStatus { [self] status, error in
+            DispatchQueue.main.async {
+                switch status {
+                case .available:
+                    iCloudSync = true
+                    lastSyncDate = Date() // Actualizar la fecha de sincronización
+                case .noAccount:
+                    iCloudSync = false
+                case .restricted:
+                    iCloudSync = false
+                case .couldNotDetermine:
+                    iCloudSync = false
+                case .temporarilyUnavailable:
+                    iCloudSync = false
+                @unknown default:
+                    iCloudSync = false
+                }
             }
         }
     }

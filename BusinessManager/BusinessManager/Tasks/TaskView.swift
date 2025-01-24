@@ -16,6 +16,7 @@ struct TaskView: View {
     @State private var showDeleteAlert = false
     @State private var taskToDelete: Task?
     @State private var statusFilter: TaskStatusFilter = .active
+    @State private var lastSyncDate: Date = .now
     
     enum TaskStatusFilter: String, CaseIterable, Identifiable {
         case all = "all"
@@ -168,8 +169,19 @@ struct TaskView: View {
                         Button("information".localized(), systemImage: "info.circle") {
                             isShowingItemSheet2 = true
                         }
-                        Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
-                            .foregroundStyle(iCloudSync ? .green : .red)
+                        Menu {
+                            if iCloudSync {
+                                Text("last_sync".localized() + ": ")
+                                + Text(lastSyncDate, style: .date)
+                                + Text(" ")
+                                + Text(lastSyncDate, style: .time)
+                            } else {
+                                Text("icloud_disabled".localized())
+                            }
+                        } label: {
+                            Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                .foregroundStyle(iCloudSync ? .green : .red)
+                        }
                     }
                 }
                 if !tasks.isEmpty {
