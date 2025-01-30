@@ -3,12 +3,16 @@ import SwiftData
 
 struct ChartsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     @Environment(\.modelContext) var context
     @State private var isShowingItemSheet2 = false
     @State private var showingBottomSheet: Bool = false
     @Query(sort: \Report.departmentName) var reports: [Report]
     @Binding var selectedTab: Int
     @State private var isShowingSettings = false
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @State private var isLoading = true
     
     // Definir las opciones como enum para mejor control
     enum ChartType: String, CaseIterable {
@@ -42,7 +46,10 @@ struct ChartsView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if reports.isEmpty {
+                if isLoading && iCloudSync {
+                    ProgressView("syncing_data".localized())
+                        .progressViewStyle(.circular)
+                } else if reports.isEmpty {
                     ContentUnavailableView(label: {
                         Label("no_charts_data".localized(), systemImage: "chart.bar")
                             .font(.title2)
@@ -84,15 +91,31 @@ struct ChartsView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("settings".localized(), systemImage: "gear")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    Button(action: { isShowingItemSheet2 = true }) {
-                        Label("information".localized(), systemImage: "info.circle")
-                            .symbolRenderingMode(.hierarchical)
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Label("settings".localized(), systemImage: "gear")
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        Button(action: { isShowingItemSheet2 = true }) {
+                            Label("information".localized(), systemImage: "info.circle")
+                        }
+                        Menu {
+                            if !isNetworkAvailable {
+                                Text("network_unavailable".localized())
+                            } else if !iCloudSync {
+                                Text("icloud_disabled".localized())
+                            } else {
+                                Text("last_sync".localized() + ": ")
+                                + Text(lastSyncDate, style: .date)
+                                + Text(" ")
+                                + Text(lastSyncDate, style: .time)
+                            }
+                        } label: {
+                            Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                .foregroundStyle(iCloudSync ? .green : .red)
+                        }
                     }
                 }
                 if !reports.isEmpty {
@@ -123,6 +146,16 @@ struct ChartsView: View {
             }
             .sheet(isPresented: $isShowingSettings) {
                 SettingsView()
+            }
+        }
+        .onAppear {
+            // Simular tiempo de carga de iCloud
+            if iCloudSync {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
+                }
+            } else {
+                isLoading = false
             }
         }
     }

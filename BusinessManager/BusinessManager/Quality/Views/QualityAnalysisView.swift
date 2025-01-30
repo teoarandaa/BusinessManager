@@ -15,6 +15,11 @@ struct QualityAnalysisView: View {
     @AppStorage("minPerformance") private var minPerformance: Double = 0
     @AppStorage("minTaskCompletion") private var minTaskCompletion: Double = 0
     @AppStorage("minVolumeOfWork") private var minVolumeOfWork: Double = 0
+    @AppStorage("iCloudSync") private var iCloudSync = false
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    @State private var isLoading = true
     
     @Binding var selectedTab: Int
     
@@ -30,7 +35,10 @@ struct QualityAnalysisView: View {
     var body: some View {
         NavigationStack {
             Group {
-                if reports.isEmpty {
+                if isLoading && iCloudSync {
+                    ProgressView("syncing_data".localized())
+                        .progressViewStyle(.circular)
+                } else if reports.isEmpty {
                     ContentUnavailableView(label: {
                         Label("no_quality_data".localized(), systemImage: "checkmark.seal")
                             .font(.title2)
@@ -128,15 +136,32 @@ struct QualityAnalysisView: View {
             .navigationTitle("quality_analysis".localized())
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("settings".localized(), systemImage: "gear")
-                    }
-                    Button {
-                        showingInfo = true
-                    } label: {
-                        Label("information".localized(), systemImage: "info.circle")
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Label("settings".localized(), systemImage: "gear")
+                        }
+                        Button {
+                            showingInfo = true
+                        } label: {
+                            Label("information".localized(), systemImage: "info.circle")
+                        }
+                        Menu {
+                            if !isNetworkAvailable {
+                                Text("network_unavailable".localized())
+                            } else if !iCloudSync {
+                                Text("icloud_disabled".localized())
+                            } else {
+                                Text("last_sync".localized() + ": ")
+                                + Text(lastSyncDate, style: .date)
+                                + Text(" ")
+                                + Text(lastSyncDate, style: .time)
+                            }
+                        } label: {
+                            Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                .foregroundStyle(iCloudSync ? .green : .red)
+                        }
                     }
                 }
                 
@@ -194,6 +219,15 @@ struct QualityAnalysisView: View {
                     minTaskCompletion: $minTaskCompletion,
                     minVolumeOfWork: $minVolumeOfWork
                 )
+            }
+        }
+        .onAppear {
+            if iCloudSync {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
+                }
+            } else {
+                isLoading = false
             }
         }
     }

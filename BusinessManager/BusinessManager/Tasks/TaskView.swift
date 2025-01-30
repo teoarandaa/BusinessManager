@@ -4,6 +4,9 @@ import UserNotifications
 
 struct TaskView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
     @State private var isShowingItemSheet1 = false
     @State private var isShowingItemSheet2 = false
     @State private var isShowingSettings = false
@@ -15,6 +18,7 @@ struct TaskView: View {
     @State private var showDeleteAlert = false
     @State private var taskToDelete: Task?
     @State private var statusFilter: TaskStatusFilter = .active
+    @State private var isLoading = true
     
     enum TaskStatusFilter: String, CaseIterable, Identifiable {
         case all = "all"
@@ -79,59 +83,78 @@ struct TaskView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                if !tasks.isEmpty && (searchText.isEmpty || !filteredTasks.isEmpty) {
-                    if statusFilter != .completed {
-                        Section("active_tasks".localized()) {
-                            if activeTasks.isEmpty {
-                                ContentUnavailableView(label: {
-                                    Label("no_active_tasks".localized(), systemImage: "tray")
-                                }, description: {
-                                    Text("no_active_tasks_description".localized())
-                                })
-                                .listRowBackground(Color.clear)
-                                .listSectionSeparator(.hidden)
-                            } else {
-                                ForEach(activeTasks) { task in
-                                    TaskRow(
-                                        task: task,
-                                        context: context,
-                                        selectedTask: $taskToEdit,
-                                        showDeleteAlert: $showDeleteAlert,
-                                        taskToDelete: $taskToDelete
-                                    )
+            Group {
+                if isLoading && iCloudSync {
+                    ProgressView("syncing_data".localized())
+                        .progressViewStyle(.circular)
+                } else if tasks.isEmpty {
+                    ContentUnavailableView(label: {
+                        Label("no_tasks".localized(), systemImage: "list.bullet.clipboard")
+                    }, description: {
+                        Text("no_tasks_description".localized())
+                    }, actions: {
+                        Button {
+                            isShowingItemSheet1 = true
+                        } label: {
+                            Label("add_task".localized(), systemImage: "plus")
+                        }
+                    })
+                    .offset(y: -60)
+                } else if !searchText.isEmpty && filteredTasks.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
+                } else {
+                    List {
+                        if !tasks.isEmpty && (searchText.isEmpty || !filteredTasks.isEmpty) {
+                            if statusFilter != .completed {
+                                Section("active_tasks".localized()) {
+                                    if activeTasks.isEmpty {
+                                        ContentUnavailableView(label: {
+                                            Label("no_active_tasks".localized(), systemImage: "tray")
+                                        }, description: {
+                                            Text("no_active_tasks_description".localized())
+                                        })
+                                        .listRowBackground(Color.clear)
+                                        .listSectionSeparator(.hidden)
+                                    } else {
+                                        ForEach(activeTasks) { task in
+                                            TaskRow(
+                                                task: task,
+                                                context: context,
+                                                selectedTask: $taskToEdit,
+                                                showDeleteAlert: $showDeleteAlert,
+                                                taskToDelete: $taskToDelete
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if statusFilter != .active {
+                                Section("completed_tasks".localized()) {
+                                    if completedTasks.isEmpty {
+                                        ContentUnavailableView(label: {
+                                            Label("no_completed_tasks".localized(), systemImage: "checkmark.circle")
+                                        }, description: {
+                                            Text("no_completed_tasks_description".localized())
+                                        })
+                                        .listRowBackground(Color.clear)
+                                        .listSectionSeparator(.hidden)
+                                    } else {
+                                        ForEach(completedTasks) { task in
+                                            TaskRow(
+                                                task: task,
+                                                context: context,
+                                                selectedTask: $taskToEdit,
+                                                showDeleteAlert: $showDeleteAlert,
+                                                taskToDelete: $taskToDelete
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                    
-                    if statusFilter != .active {
-                        Section("completed_tasks".localized()) {
-                            if completedTasks.isEmpty {
-                                ContentUnavailableView(label: {
-                                    Label("no_completed_tasks".localized(), systemImage: "checkmark.circle")
-                                }, description: {
-                                    Text("no_completed_tasks_description".localized())
-                                })
-                                .listRowBackground(Color.clear)
-                                .listSectionSeparator(.hidden)
-                            } else {
-                                ForEach(completedTasks) { task in
-                                    TaskRow(
-                                        task: task,
-                                        context: context,
-                                        selectedTask: $taskToEdit,
-                                        showDeleteAlert: $showDeleteAlert,
-                                        taskToDelete: $taskToDelete
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .if(!tasks.isEmpty) { view in
-                view.searchable(text: $searchText, prompt: "search_tasks".localized())
+                    .searchable(text: $searchText, prompt: "search_tasks".localized())
                     .searchSuggestions {
                         if searchText.isEmpty {
                             ForEach(tasks.prefix(3)) { task in
@@ -140,6 +163,7 @@ struct TaskView: View {
                             }
                         }
                     }
+                }
             }
             .navigationTitle("tasks".localized())
             .navigationBarTitleDisplayMode(.large)
@@ -158,13 +182,30 @@ struct TaskView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Label("settings".localized(), systemImage: "gear")
-                    }
-                    Button("information".localized(), systemImage: "info.circle") {
-                        isShowingItemSheet2 = true
+                    HStack(spacing: 16) {
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Label("settings".localized(), systemImage: "gear")
+                        }
+                        Button("information".localized(), systemImage: "info.circle") {
+                            isShowingItemSheet2 = true
+                        }
+                        Menu {
+                            if !isNetworkAvailable {
+                                Text("network_unavailable".localized())
+                            } else if !iCloudSync {
+                                Text("icloud_disabled".localized())
+                            } else {
+                                Text("last_sync".localized() + ": ")
+                                + Text(lastSyncDate, style: .date)
+                                + Text(" ")
+                                + Text(lastSyncDate, style: .time)
+                            }
+                        } label: {
+                            Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                .foregroundStyle(iCloudSync ? .green : .red)
+                        }
                     }
                 }
                 if !tasks.isEmpty {
@@ -207,23 +248,14 @@ struct TaskView: View {
                     }
                 }
             }
-            .overlay {
-                if tasks.isEmpty {
-                    ContentUnavailableView(label: {
-                        Label("no_tasks".localized(), systemImage: "list.bullet.clipboard")
-                    }, description: {
-                        Text("no_tasks_description".localized())
-                    }, actions: {
-                        Button {
-                            isShowingItemSheet1 = true
-                        } label: {
-                            Label("add_task".localized(), systemImage: "plus")
-                        }
-                    })
-                    .offset(y: -60)
-                } else if !searchText.isEmpty && filteredTasks.isEmpty {
-                    ContentUnavailableView.search(text: searchText)
+        }
+        .onAppear {
+            if iCloudSync {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
                 }
+            } else {
+                isLoading = false
             }
         }
         .alert("delete_task_title".localized(), isPresented: $showDeleteAlert) {

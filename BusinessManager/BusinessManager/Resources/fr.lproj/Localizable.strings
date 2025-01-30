@@ -37,6 +37,7 @@
 "restart_now" = "Redémarrer maintenant";
 "later" = "Plus tard";
 "security" = "Sécurité";
+"how_it_works" = "Comment ça marche";
 
 // MARK: - Reports
 "add_report" = "Ajouter un rapport";
@@ -556,3 +557,36 @@
 "biometric_alert_message" = "Souhaitez-vous utiliser Face ID pour accéder à l'application en toute sécurité ?";
 "biometric_alert_enable" = "Activer";
 "biometric_alert_skip" = "Passer";
+
+"last_sync" = "Dernière synchronisation";
+"icloud_disabled" = "iCloud désactivé";
+
+"network_unavailable" = "Pas de connexion Internet";
+
+"icloud_settings" = "Paramètres iCloud";
+"icloud_status" = "État d'iCloud";
+"how_icloud_works" = "Comment fonctionne iCloud ?";
+"icloud_explanation" = "iCloud est utilisé pour synchroniser vos données entre tous vos appareils Apple. Cela inclut vos rapports, tâches et analyses qualité. La synchronisation est automatique lorsqu'iCloud est activé et qu'une connexion Internet est disponible.";
+"how_to_disable" = "Comment désactiver iCloud ?";
+"disable_icloud_steps" = "1. Ouvrez Réglages\n2. Touchez votre identifiant Apple\n3. Touchez iCloud\n4. Touchez Stockage iCloud\n5. Trouvez BusinessManager\n6. Désactivez le bouton";
+"open_settings" = "Ouvrir les Réglages";
+
+"icloud_info" = "Informations iCloud";
+"icloud_sync" = "Synchronisation iCloud";
+
+// iCloud Descriptions
+"icloud_description" = "Gardez vos données synchronisées et sécurisées";
+"automatic_sync" = "Synchronisation Automatique";
+"automatic_sync_description" = "Vos données sont synchronisées automatiquement lorsqu'une connexion Internet est disponible";
+"multi_device" = "Multi-Appareils";
+"multi_device_description" = "Accédez à vos données depuis n'importe quel appareil Apple";
+"secure_sync" = "Synchronisation Sécurisée";
+"secure_sync_description" = "Vos données sont cryptées et protégées";
+"disable_steps" = "Étapes de Désactivation";
+"tap_apple_id" = "Touchez votre identifiant Apple";
+"tap_icloud" = "Touchez iCloud";
+"tap_icloud_storage" = "Touchez Stockage iCloud";
+"disable_business_manager" = "Désactivez BusinessManager";
+"open_device_settings" = "Ouvrir les Réglages de l'Appareil";
+
+"syncing_data" = "Chargement des données...";

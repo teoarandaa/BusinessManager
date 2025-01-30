@@ -558,3 +558,38 @@
 "biometric_alert_message" = "Vuoi utilizzare Face ID per accedere in modo sicuro all'app?";
 "biometric_alert_enable" = "Attiva";
 "biometric_alert_skip" = "Salta";
+
+"last_sync" = "Ultima sincronizzazione";
+"icloud_disabled" = "iCloud disattivato";
+
+"network_unavailable" = "Nessuna connessione Internet";
+
+"icloud_settings" = "Impostazioni iCloud";
+"icloud_status" = "Stato iCloud";
+"how_icloud_works" = "Come funziona iCloud?";
+"icloud_explanation" = "iCloud viene utilizzato per sincronizzare i tuoi dati su tutti i tuoi dispositivi Apple. Questo include rapporti, attività e analisi della qualità. La sincronizzazione è automatica quando iCloud è attivo e c'è una connessione Internet.";
+"how_to_disable" = "Come disattivare iCloud?";
+"disable_icloud_steps" = "1. Apri Impostazioni\n2. Tocca il tuo ID Apple\n3. Tocca iCloud\n4. Tocca Archiviazione iCloud\n5. Trova BusinessManager\n6. Disattiva l'interruttore";
+"open_settings" = "Apri Impostazioni";
+
+"icloud_info" = "Informazioni iCloud";
+"icloud_sync" = "Sincronizzazione iCloud";
+
+// iCloud Descriptions
+"icloud_description" = "Mantieni i tuoi dati sincronizzati e sicuri";
+"automatic_sync" = "Sincronizzazione Automatica";
+"automatic_sync_description" = "I tuoi dati vengono sincronizzati automaticamente quando è disponibile una connessione Internet";
+"multi_device" = "Multi-Dispositivo";
+"multi_device_description" = "Accedi ai tuoi dati da qualsiasi dispositivo Apple";
+"secure_sync" = "Sincronizzazione Sicura";
+"secure_sync_description" = "I tuoi dati sono crittografati e protetti";
+"disable_steps" = "Passaggi per Disattivare";
+"tap_apple_id" = "Tocca il tuo ID Apple";
+"tap_icloud" = "Tocca iCloud";
+"tap_icloud_storage" = "Tocca Archiviazione iCloud";
+"disable_business_manager" = "Disattiva BusinessManager";
+"open_device_settings" = "Apri Impostazioni Dispositivo";
+
+"how_it_works" = "Come funziona";
+
+"syncing_data" = "Caricamento dati...";

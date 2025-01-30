@@ -3,6 +3,7 @@ import SwiftData
 
 struct ReportsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @State private var isShowingAddReportSheet = false
     @State private var isShowingInfoSheet = false
     @Environment(\.modelContext) var context
@@ -18,6 +19,11 @@ struct ReportsView: View {
     
     @State private var departmentToDelete: String?
     @State private var showDeleteAlert = false
+    
+    @AppStorage("lastSyncDate") private var lastSyncDate = Date()
+    @AppStorage("isNetworkAvailable") private var isNetworkAvailable = false
+    
+    @State private var isLoading = true // Añadir estado de carga
     
     var filteredReports: [Report] {
         if searchText.isEmpty {
@@ -35,104 +41,136 @@ struct ReportsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                List {
-                    ForEach(groupedAndSortedReports, id: \.key) { department, departmentReports in
-                        NavigationLink(destination: DepartmentReportsView(departmentName: department)) {
-                            DepartmentCell(
-                                departmentName: department,
-                                reportsCount: departmentReports.count,
-                                reports: departmentReports
-                            )
-                        }
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                departmentToDelete = department
-                                showDeleteAlert = true
-                            } label: {
-                                Label("", systemImage: "trash")
+                if isLoading && iCloudSync {
+                    ProgressView("syncing_data".localized())
+                        .progressViewStyle(.circular)
+                } else {
+                    List {
+                        ForEach(groupedAndSortedReports, id: \.key) { department, departmentReports in
+                            NavigationLink(destination: DepartmentReportsView(departmentName: department)) {
+                                DepartmentCell(
+                                    departmentName: department,
+                                    reportsCount: departmentReports.count,
+                                    reports: departmentReports
+                                )
                             }
-                            .tint(.red)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    departmentToDelete = department
+                                    showDeleteAlert = true
+                                } label: {
+                                    Label("", systemImage: "trash")
+                                }
+                                .tint(.red)
+                            }
                         }
                     }
-                }
-                .if(!reports.isEmpty) { view in
-                    view.searchable(text: $searchText, prompt: "search_departments".localized())
-                        .searchSuggestions {
-                            if searchText.isEmpty {
-                                ForEach(reports.prefix(3)) { report in
-                                    Label(report.departmentName, systemImage: "magnifyingglass")
-                                        .searchCompletion(report.departmentName)
+                    .if(!reports.isEmpty) { view in
+                        view.searchable(text: $searchText, prompt: "search_departments".localized())
+                            .searchSuggestions {
+                                if searchText.isEmpty {
+                                    ForEach(reports.prefix(3)) { report in
+                                        Label(report.departmentName, systemImage: "magnifyingglass")
+                                            .searchCompletion(report.departmentName)
+                                    }
+                                }
+                            }
+                    }
+                    .navigationTitle("departments".localized())
+                    .navigationBarTitleDisplayMode(.large)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .navigationBarLeading) {
+                            HStack(spacing: 16) {
+                                NavigationLink {
+                                    SettingsView()
+                                } label: {
+                                    Label("settings".localized(), systemImage: "gear")
+                                }
+                                Button {
+                                    isShowingInfoSheet = true
+                                } label: {
+                                    Label("information".localized(), systemImage: "info.circle")
+                                }
+                                Menu {
+                                    if !isNetworkAvailable {
+                                        Text("network_unavailable".localized())
+                                    } else if !iCloudSync {
+                                        Text("icloud_disabled".localized())
+                                    } else {
+                                        Text("last_sync".localized() + ": ")
+                                        + Text(lastSyncDate, style: .date)
+                                        + Text(" ")
+                                        + Text(lastSyncDate, style: .time)
+                                    }
+                                } label: {
+                                    Label("iCloud".localized(), systemImage: iCloudSync ? "checkmark.icloud" : "xmark.icloud")
+                                        .foregroundStyle(iCloudSync ? .green : .red)
                                 }
                             }
                         }
-                }
-                .navigationTitle("departments".localized())
-                .navigationBarTitleDisplayMode(.large)
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        NavigationLink {
-                            SettingsView()
-                        } label: {
-                            Label("settings".localized(), systemImage: "gear")
-                        }
-                        Button {
-                            isShowingInfoSheet = true
-                        } label: {
-                            Label("information".localized(), systemImage: "info.circle")
-                        }
-                    }
-                    
-                    if !reports.isEmpty {
-                        ToolbarItemGroup(placement: .navigationBarTrailing) {
-                            Button {
-                                isShowingMonthlySummary = true
-                            } label: {
-                                Label("monthly_summary".localized(), systemImage: "calendar.badge.clock")
-                            }
-                            .tint(.red)
-                            
-                            Button {
-                                isShowingAddReportSheet = true
-                            } label: {
-                                Label("add_report".localized(), systemImage: "plus")
+                        
+                        if !reports.isEmpty {
+                            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                                Button {
+                                    isShowingMonthlySummary = true
+                                } label: {
+                                    Label("monthly_summary".localized(), systemImage: "calendar.badge.clock")
+                                }
+                                .tint(.red)
+                                
+                                Button {
+                                    isShowingAddReportSheet = true
+                                } label: {
+                                    Label("add_report".localized(), systemImage: "plus")
+                                }
                             }
                         }
                     }
-                }
-                .sheet(isPresented: $isShowingAddReportSheet) {
-                    AddReportSheet()
-                }
-                .sheet(isPresented: $isShowingInfoSheet) {
-                    ReportsInfoSheetView()
-                        .presentationDetents([.height(550)])
-                }
-                .sheet(item: $reportToEdit) { report in
-                    UpdateReportSheet(report: report)
-                }
-                .sheet(isPresented: $isShowingMonthlySummary) {
-                    MonthlySummaryView()
-                }
-                .sheet(isPresented: $isShowingSettings) {
-                    SettingsView()
-                }
-                .overlay {
-                    if reports.isEmpty {
-                        ContentUnavailableView(label: {
-                            Label("no_reports".localized(), systemImage: "text.document")
-                        }, description: {
-                            Text("start_adding_reports".localized())
-                        }, actions: {
-                            Button {
-                                isShowingAddReportSheet = true
-                            } label: {
-                                Label("add_report".localized(), systemImage: "plus")
-                            }
-                        })
-                        .offset(y: -60)
-                    } else if !searchText.isEmpty && filteredReports.isEmpty {
-                        ContentUnavailableView.search(text: searchText)
+                    .sheet(isPresented: $isShowingAddReportSheet) {
+                        AddReportSheet()
+                    }
+                    .sheet(isPresented: $isShowingInfoSheet) {
+                        ReportsInfoSheetView()
+                            .presentationDetents([.height(550)])
+                    }
+                    .sheet(item: $reportToEdit) { report in
+                        UpdateReportSheet(report: report)
+                    }
+                    .sheet(isPresented: $isShowingMonthlySummary) {
+                        MonthlySummaryView()
+                    }
+                    .sheet(isPresented: $isShowingSettings) {
+                        SettingsView()
+                    }
+                    .overlay {
+                        if reports.isEmpty {
+                            ContentUnavailableView(label: {
+                                Label("no_reports".localized(), systemImage: "text.document")
+                            }, description: {
+                                Text("start_adding_reports".localized())
+                            }, actions: {
+                                Button {
+                                    isShowingAddReportSheet = true
+                                } label: {
+                                    Label("add_report".localized(), systemImage: "plus")
+                                }
+                            })
+                            .offset(y: -60)
+                        } else if !searchText.isEmpty && filteredReports.isEmpty {
+                            ContentUnavailableView.search(text: searchText)
+                        }
                     }
                 }
+            }
+        }
+        .onAppear {
+            // Simular tiempo de carga de iCloud
+            if iCloudSync {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
+                }
+            } else {
+                isLoading = false
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .reportDidUpdate)) { _ in

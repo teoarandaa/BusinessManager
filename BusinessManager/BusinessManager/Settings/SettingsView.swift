@@ -3,17 +3,16 @@ import SwiftData
 import LocalAuthentication
 
 struct SettingsView: View {
-    @AppStorage("colorScheme") private var colorScheme = 0 // 0: System, 1: Light, 2: Dark
-    @AppStorage("isPushEnabled") private var isPushEnabled = false
-    @AppStorage("appLanguage") private var appLanguage = "es" // Nuevo AppStorage para el idioma
-    @AppStorage("isBiometricEnabled") private var isBiometricEnabled = false // Nuevo AppStorage
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var systemColorScheme
+    @AppStorage("appLanguage") private var appLanguage = "es"
+    @AppStorage("colorScheme") private var colorScheme = 0
+    @AppStorage("isBiometricEnabled") private var isBiometricEnabled = false
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("iCloudSync") private var iCloudSync = false
     @Environment(\.modelContext) private var context
+    @State private var isPushEnabled = false
     @State private var showLanguageAlert = false
     @State private var showNotificationSettingsAlert = false
     
-    // Definir los idiomas disponibles
     private let availableLanguages = [
         ("es", "Español"),
         ("en", "English"),
@@ -23,14 +22,159 @@ struct SettingsView: View {
         ("it", "Italiano")
     ]
     
-    private var effectiveColorScheme: ColorScheme {
-        switch colorScheme {
-        case 1:
-            return .light
-        case 2:
-            return .dark
-        default:
-            return systemColorScheme
+    var body: some View {
+        NavigationStack {
+            List {
+                // MARK: - Language
+                Section("language".localized()) {
+                    languageSection
+                }
+                
+                // MARK: - Notifications
+                Section("notifications".localized()) {
+                    notificationsSection
+                }
+                
+                // MARK: - Appearance & Security
+                Section("appearance".localized()) {
+                    appearanceSection
+                }
+                
+                // MARK: - Support
+                Section("support".localized()) {
+                    supportSection
+                }
+                
+                // MARK: - Reports
+                Section("reports".localized()) {
+                    reportsSection
+                }
+                
+                // MARK: - Version
+                versionSection
+            }
+            .listStyle(.insetGrouped)
+            .navigationTitle("settings".localized())
+        }
+        .alert("language_change_title".localized(), isPresented: $showLanguageAlert) {
+            languageAlertButtons
+        } message: {
+            Text("language_change_message".localized())
+        }
+        .alert("notifications_settings_title".localized(), isPresented: $showNotificationSettingsAlert) {
+            notificationAlertButtons
+        } message: {
+            Text("notifications_settings_message".localized())
+        }
+        .onAppear {
+            checkICloudStatus()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)) { _ in
+            checkICloudStatus()
+        }
+    }
+    
+    // MARK: - Section Views
+    private var languageSection: some View {
+        Label {
+            Picker("select_language".localized(), selection: $appLanguage) {
+                ForEach(availableLanguages, id: \.0) { language in
+                    Text(language.1).tag(language.0)
+                }
+            }
+        } icon: {
+            Image(systemName: "globe")
+        }
+        .onChange(of: appLanguage) { _, _ in
+            UserDefaults.standard.set([appLanguage], forKey: "AppleLanguages")
+            UserDefaults.standard.synchronize()
+            showLanguageAlert = true
+        }
+    }
+    
+    private var notificationsSection: some View {
+        Toggle(isOn: $isPushEnabled) {
+            Label {
+                Text("push_notifications".localized())
+            } icon: {
+                Image(systemName: isPushEnabled ? "bell" : "bell.slash")
+            }
+        }
+        .onChange(of: isPushEnabled) { _, _ in
+            handleNotificationToggle()
+        }
+    }
+    
+    private var appearanceSection: some View {
+        Group {
+            NavigationLink {
+                ThemePickerView(selection: $colorScheme)
+            } label: {
+                Label("theme".localized(), systemImage: "paintbrush")
+            }
+            
+            Toggle(isOn: $isBiometricEnabled) {
+                Label("biometric_authentication".localized(), systemImage: "faceid")
+            }
+        }
+    }
+    
+    private var supportSection: some View {
+        Group {
+            NavigationLink(destination: LazyView(FaqView())) {
+                Label("faq".localized(), systemImage: "questionmark.circle")
+            }
+            
+            NavigationLink(destination: LazyView(PrivacyView())) {
+                Label("privacy".localized(), systemImage: "lock.shield")
+            }
+            
+            NavigationLink(destination: LazyView(PlansView())) {
+                Label("subscription_packages".localized(), systemImage: "creditcard")
+            }
+        }
+    }
+    
+    private var reportsSection: some View {
+        Group {
+            NavigationLink(destination: LazyView(MonthlyReportView())) {
+                Label("monthly_summary".localized(), systemImage: "text.document")
+            }
+            
+            NavigationLink(destination: LazyView(ExportCSVView())) {
+                Label("export_csv".localized(), systemImage: "arrow.down.doc")
+            }
+        }
+    }
+    
+    private var versionSection: some View {
+        Section {
+            Text("version".localized() + " \(appVersion ?? "")")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .listRowBackground(Color(.systemGroupedBackground))
+        }
+    }
+    
+    // MARK: - Alert Buttons
+    private var languageAlertButtons: some View {
+        Group {
+            Button("restart_now".localized()) {
+                exit(0)
+            }
+            Button("later".localized(), role: .cancel) { }
+        }
+    }
+    
+    private var notificationAlertButtons: some View {
+        Group {
+            Button("open_settings".localized()) {
+                if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(settingsUrl)
+                }
+            }
+            Button("cancel".localized(), role: .cancel) { }
         }
     }
     
@@ -198,148 +342,6 @@ struct SettingsView: View {
         }
     }
     
-    var body: some View {
-        NavigationStack {
-            List {
-                // MARK: - Language
-                Section("language".localized()) {
-                    Label {
-                        Picker("select_language".localized(), selection: $appLanguage) {
-                            ForEach(availableLanguages, id: \.0) { language in
-                                Text(language.1).tag(language.0)
-                            }
-                        }
-                    } icon: {
-                        Image(systemName: "globe")
-                    }
-                    .onChange(of: appLanguage) { oldValue, newValue in
-                        UserDefaults.standard.set([newValue], forKey: "AppleLanguages")
-                        UserDefaults.standard.synchronize()
-                        showLanguageAlert = true
-                    }
-                }
-                
-                // MARK: - Notifications
-                Section("notifications".localized()) {
-                    Toggle(isOn: $isPushEnabled) {
-                        Label {
-                            Text("push_notifications".localized())
-                        } icon: {
-                            Image(systemName: isPushEnabled ? "bell" : "bell.slash")
-                                .symbolEffect(.bounce, value: isPushEnabled)
-                                .contentTransition(.symbolEffect(.replace))
-                        }
-                    }
-                    .onChange(of: isPushEnabled) { oldValue, newValue in
-                        handleNotificationToggle()
-                    }
-                }
-                // MARK: - Appearance
-                Section("appearance".localized()) {
-                    HStack {
-                        Label {
-                            NavigationLink {
-                                ThemePickerView(selection: $colorScheme)
-                            } label: {
-                                HStack {
-                                    Text("theme".localized())
-                                    Spacer()
-                                    Text(colorScheme == 0 ? "system".localized() : 
-                                         colorScheme == 1 ? "light".localized() : "dark".localized())
-                                        .foregroundStyle(.secondary)
-                                }
-                            }
-                        } icon: {
-                            Image(systemName: "paintbrush")
-                        }
-                    }
-                }
-                // MARK: - Plans
-                Section("pricing".localized()) {
-                    NavigationLink(destination: PlansView()) {
-                        Label("subscription_packages".localized(), systemImage: "creditcard")
-                    }
-                }
-                // MARK: - Resources
-                Section("resources".localized()) {
-                    NavigationLink(destination: FaqView()) {
-                        Label("faq".localized(), systemImage: "questionmark.circle")
-                    }
-                    NavigationLink(destination: PrivacyView()) {
-                        Label("privacy".localized(), systemImage: "lock")
-                    }
-                    Button(action: {
-                        sendEmail(to: "help.businessmanager@gmail.com")
-                    }) {
-                        Label("support".localized(), systemImage: "envelope")
-                    }
-                }
-                // MARK: - Reports
-                Section("reports".localized()) {
-                    NavigationLink(destination: MonthlyReportView()) {
-                        Label("monthly_summary".localized(), systemImage: "text.document")
-                    }
-                    NavigationLink(destination: ExportCSVView()) {
-                        Label("export_csv".localized(), systemImage: "arrow.down.doc")
-                    }
-                }
-                // Añadir nueva sección de seguridad después de notificaciones
-                if !biometricType().isEmpty {
-                    Section("security".localized()) {
-                        Toggle(isOn: Binding(
-                            get: { isBiometricEnabled },
-                            set: { newValue in
-                                if newValue {
-                                    authenticateWithBiometrics()
-                                } else {
-                                    isBiometricEnabled = false
-                                }
-                            }
-                        )) {
-                            Label {
-                                Text("biometric_authentication".localized())
-                            } icon: {
-                                Image(systemName: biometricType() == "Face ID" ? "faceid" : "touchid")
-                                    .symbolEffect(.bounce, value: isBiometricEnabled)
-                            }
-                        }
-                    }
-                }
-                Section {
-                    Text("version".localized() + " \(appVersion!)")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .listRowBackground(Color(.systemGroupedBackground))
-                }
-            }
-            .listStyle(.insetGrouped)
-            .navigationTitle("settings".localized())
-            .alert("language_change_title".localized(), isPresented: $showLanguageAlert) {
-                Button("restart_now".localized()) {
-                    exit(0) // Esto cerrará la app
-                }
-                Button("later".localized(), role: .cancel) { }
-            } message: {
-                Text("language_change_message".localized())
-            }
-            .onAppear {
-                checkNotificationStatus()
-            }
-            .alert("notifications_settings_title".localized(), isPresented: $showNotificationSettingsAlert) {
-                Button("open_settings".localized()) {
-                    if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
-                        UIApplication.shared.open(settingsUrl)
-                    }
-                }
-                Button("cancel".localized(), role: .cancel) { }
-            } message: {
-                Text("notifications_settings_message".localized())
-            }
-        }
-        .preferredColorScheme(colorSchemeValue)
-    }
-    
     private var colorSchemeValue: ColorScheme? {
         switch colorScheme {
         case 1:
@@ -404,92 +406,47 @@ struct SettingsView: View {
             rootVC.present(activityVC, animated: true)
         }
     }
+    
+    private func checkICloudStatus() {
+        if let _ = FileManager.default.ubiquityIdentityToken {
+            iCloudSync = true
+        } else {
+            iCloudSync = false
+        }
+    }
 }
 
 struct ThemePickerView: View {
     @Binding var selection: Int
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var colorScheme
-    @Namespace private var animation
-    @State private var temporarySelection: Int
     
-    init(selection: Binding<Int>) {
-        self._selection = selection
-        self._temporarySelection = State(initialValue: selection.wrappedValue)
-    }
-    
-    private func hapticFeedback() {
-        let impactGenerator = UIImpactFeedbackGenerator(style: .light)
-        impactGenerator.prepare()
-        impactGenerator.impactOccurred()
-    }
+    private let themes = [
+        (title: "system".localized(), icon: "iphone"),
+        (title: "light".localized(), icon: "sun.max"),
+        (title: "dark".localized(), icon: "moon")
+    ]
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                ForEach(0..<3) { index in
-                    ThemeCard(
-                        isSelected: temporarySelection == index,
-                        title: themeTitle(for: index),
-                        icon: "",
-                        preview: {
-                            themePreview(for: index)
-                        },
-                        action: {
-                            hapticFeedback()
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                temporarySelection = index
-                                selection = index
-                            }
-                        },
-                        namespace: animation
-                    )
-                    .transition(.opacity.combined(with: .scale))
+        List {
+            ForEach(0..<3) { index in
+                Button(action: {
+                    selection = index
+                }) {
+                    HStack {
+                        Label(themes[index].title, systemImage: themes[index].icon)
+                        
+                        Spacer()
+                        
+                        if selection == index {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.accentColor)
+                        }
+                    }
                 }
+                .foregroundColor(.primary)
             }
-            .padding()
         }
         .navigationTitle("theme".localized())
         .navigationBarTitleDisplayMode(.large)
-    }
-    
-    private func themeTitle(for index: Int) -> String {
-        switch index {
-        case 0: return "system".localized()
-        case 1: return "light".localized()
-        default: return "dark".localized()
-        }
-    }
-    
-    private func themeIcon(for index: Int) -> String {
-        switch index {
-        case 0: return "iphone"
-        case 1: return "sun.max"
-        default: return "moon"
-        }
-    }
-    
-    private func themePreview(for index: Int) -> AnyView {
-        AnyView(
-            Group {
-                switch index {
-                case 0:
-                    HStack(spacing: 12) {
-                        previewCard(isDark: false)
-                        Image(systemName: "arrow.right")
-                            .foregroundStyle(.secondary)
-                        previewCard(isDark: true)
-                    }
-                    .frame(height: 100)
-                case 1:
-                    previewCard(isDark: false)
-                        .frame(height: 100)
-                default:
-                    previewCard(isDark: true)
-                        .frame(height: 100)
-                }
-            }
-        )
     }
 }
 
@@ -497,9 +454,9 @@ struct ThemeCard: View {
     let isSelected: Bool
     let title: String
     let icon: String
-    let preview: () -> AnyView
+    let isDark: Bool
+    let showBoth: Bool
     let action: () -> Void
-    let namespace: Namespace.ID
     
     var body: some View {
         Button(action: action) {
@@ -510,7 +467,22 @@ struct ThemeCard: View {
                     Spacer()
                 }
                 
-                AnyView(preview())
+                if showBoth {
+                    HStack(spacing: 12) {
+                        PreviewContent(isDark: false)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 100)
+                        Image(systemName: "arrow.right")
+                            .foregroundStyle(.secondary)
+                        PreviewContent(isDark: true)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 100)
+                    }
+                } else {
+                    PreviewContent(isDark: isDark)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 100)
+                }
             }
             .padding()
             .background {
@@ -518,14 +490,6 @@ struct ThemeCard: View {
                     .fill(isSelected ? Color.accentColor : Color.secondary.opacity(0.1))
             }
             .foregroundStyle(isSelected ? .white : .primary)
-            .overlay {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(isSelected ? .white.opacity(0.5) : .clear, lineWidth: 2)
-            }
-            .contentShape(RoundedRectangle(cornerRadius: 16))
-            .scaleEffect(isSelected ? 1.02 : 1)
-            .shadow(color: isSelected ? .accentColor.opacity(0.3) : .clear, radius: 10)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
         }
     }
 }
@@ -566,10 +530,17 @@ struct PreviewContent: View {
     }
 }
 
-@ViewBuilder
-private func previewCard(isDark: Bool) -> some View {
-    PreviewContent(isDark: isDark)
-        .scaleEffect(0.8)
+// MARK: - LazyView
+struct LazyView<Content: View>: View {
+    let build: () -> Content
+    
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    
+    var body: Content {
+        build()
+    }
 }
 
 #Preview {
