@@ -384,7 +384,7 @@
 "privacy_policy_main" = "Datenschutzrichtlinie";
 "privacy_policy_details" = "Business Manager für SwiftUI sammelt keine Daten über Sie.\n\nAlle Daten werden sicher auf Ihrem Gerät gespeichert. Falls wir unsere Datenschutzrichtlinie ändern, benachrichtigen wir Sie mit einer Mitteilung.\n";
 "contact_us" = "Kontaktieren Sie uns";
-"privacy_contact_info" = "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, wenden Sie sich bitte an help.businessmanager@gmail.com";
+"privacy_contact_info" = "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, kontaktieren Sie uns unter help.businessmanager@gmail.com";
 "privacy_contact_prefix" = "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, wenden Sie sich bitte an ";
 "privacy_email" = "help.businessmanager@gmail.com";
 "contact_information_prefix" = "Wenn Sie Fragen zu diesen Bedingungen haben, können Sie uns unter ";
@@ -556,3 +556,37 @@
 "biometric_alert_message" = "Möchten Sie Face ID für den sicheren Zugriff auf die App verwenden?";
 "biometric_alert_enable" = "Aktivieren";
 "biometric_alert_skip" = "Überspringen";
+
+"last_sync" = "Letzte Synchronisierung";
+"icloud_disabled" = "iCloud deaktiviert";
+
+"network_unavailable" = "Keine Internetverbindung";
+
+"icloud_settings" = "iCloud-Einstellungen";
+"icloud_status" = "iCloud-Status";
+"how_icloud_works" = "Wie funktioniert iCloud?";
+"icloud_explanation" = "iCloud wird verwendet, um Ihre Daten über alle Apple-Geräte hinweg zu synchronisieren. Dies umfasst Ihre Berichte, Aufgaben und Qualitätsanalysen. Die Synchronisierung erfolgt automatisch, wenn iCloud aktiviert ist und eine Internetverbindung besteht.";
+"how_to_disable" = "Wie deaktiviere ich iCloud?";
+"disable_icloud_steps" = "1. Öffnen Sie Einstellungen\n2. Tippen Sie auf Ihre Apple-ID\n3. Tippen Sie auf iCloud\n4. Tippen Sie auf iCloud-Speicher\n5. Suchen Sie BusinessManager\n6. Deaktivieren Sie den Schalter";
+"open_settings" = "Einstellungen öffnen";
+
+"icloud_info" = "iCloud-Info";
+"icloud_sync" = "iCloud-Synchronisierung";
+
+// iCloud Descriptions
+"icloud_description" = "Halten Sie Ihre Daten synchronisiert und sicher";
+"automatic_sync" = "Automatische Synchronisierung";
+"automatic_sync_description" = "Ihre Daten werden automatisch synchronisiert, wenn eine Internetverbindung verfügbar ist";
+"multi_device" = "Mehrere Geräte";
+"multi_device_description" = "Greifen Sie von jedem Apple-Gerät auf Ihre Daten zu";
+"secure_sync" = "Sichere Synchronisierung";
+"secure_sync_description" = "Ihre Daten sind verschlüsselt und geschützt";
+"disable_steps" = "Schritte zum Deaktivieren";
+"tap_apple_id" = "Tippen Sie auf Ihre Apple-ID";
+"tap_icloud" = "Tippen Sie auf iCloud";
+"tap_icloud_storage" = "Tippen Sie auf iCloud-Speicher";
+"disable_business_manager" = "Deaktivieren Sie BusinessManager";
+"open_device_settings" = "Geräteeinstellungen öffnen";
+"how_it_works" = "Wie es funktioniert";
+
+"syncing_data" = "Daten werden geladen...";

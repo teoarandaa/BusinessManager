@@ -5,12 +5,17 @@ struct PrivacyView: View {
     
     var body: some View {
         List {
-            Section("general_policies".localized()) {
+            Section {
+                NavigationLink(destination: PrivacyPolicyView()) {
+                    Text("privacy_policy".localized())
+                }
+                
                 NavigationLink(destination: TermsOfUseView()) {
                     Text("terms_of_use".localized())
                 }
-                NavigationLink(destination: PrivacyPolicyView()) {
-                    Text("privacy_policy".localized())
+                
+                NavigationLink(destination: ICloudInfoView()) {
+                    Text("icloud_info".localized())
                 }
             }
         }

@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.teoarandapaez.BusinessManager</string>
+		<string>iCloud.com.businessmanager.BusinessManager</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
@@ -16,7 +16,6 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.yourcompany.BusinessManager</string>
 		<string>group.com.businessmanager.BusinessManager</string>
 	</array>
 </dict>
