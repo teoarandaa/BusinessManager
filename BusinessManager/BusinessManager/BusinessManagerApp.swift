@@ -26,8 +26,8 @@ struct BusinessManagerApp: App {
             
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
-                isStoredInMemoryOnly: true,
-                cloudKitDatabase: .automatic
+                isStoredInMemoryOnly: false,
+                cloudKitDatabase: .private("iCloud.com.businessmanager.BusinessManager")
             )
             
             container = try ModelContainer(
@@ -44,6 +44,9 @@ struct BusinessManagerApp: App {
             checkICloudStatus()
             setupICloudObserver()
             requestNotificationPermission()
+            
+            // Configurar observador de cambios de CloudKit
+            setupCloudKitSubscription()
             
         } catch {
             print("CloudKit Error: \(error)")
@@ -68,18 +71,41 @@ struct BusinessManagerApp: App {
     private func checkICloudStatus() {
         guard isNetworkAvailable else {
             iCloudSync = false
+            print("iCloud sync disabled - network unavailable")
             return
         }
         
         CKContainer.default().accountStatus { [self] status, error in
             DispatchQueue.main.async {
+                if let error = error {
+                    print("iCloud status check error: \(error.localizedDescription)")
+                }
+                
                 switch status {
                 case .available:
                     iCloudSync = true
                     lastSyncDate = Date()
-                case .noAccount, .restricted, .couldNotDetermine, .temporarilyUnavailable:
+                    print("iCloud status: Available")
+                    // Verificar el contenedor específico
+                    CKContainer(identifier: "iCloud.com.businessmanager.BusinessManager").privateCloudDatabase.fetch(withRecordID: CKRecord.ID(recordName: "TestRecord")) { record, error in
+                        if let error = error {
+                            print("Container verification error: \(error.localizedDescription)")
+                        }
+                    }
+                case .noAccount:
+                    print("iCloud status: No Account")
+                    iCloudSync = false
+                case .restricted:
+                    print("iCloud status: Restricted")
+                    iCloudSync = false
+                case .couldNotDetermine:
+                    print("iCloud status: Could Not Determine")
+                    iCloudSync = false
+                case .temporarilyUnavailable:
+                    print("iCloud status: Temporarily Unavailable")
                     iCloudSync = false
                 @unknown default:
+                    print("iCloud status: Unknown")
                     iCloudSync = false
                 }
             }
@@ -103,6 +129,26 @@ struct BusinessManagerApp: App {
                 print("Notification permission granted")
             } else if let error = error {
                 print("Error requesting notification permission: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func setupCloudKitSubscription() {
+        let subscriptionID = "BusinessManagerDataChanges"
+        let subscription = CKQuerySubscription(
+            recordType: "CD_Report",
+            predicate: NSPredicate(value: true),
+            subscriptionID: subscriptionID,
+            options: [.firesOnRecordCreation, .firesOnRecordUpdate, .firesOnRecordDeletion]
+        )
+        
+        let notificationInfo = CKSubscription.NotificationInfo()
+        notificationInfo.shouldSendContentAvailable = true
+        subscription.notificationInfo = notificationInfo
+        
+        CKContainer.default().privateCloudDatabase.save(subscription) { _, error in
+            if let error = error {
+                print("Error setting up CloudKit subscription: \(error)")
             }
         }
     }
